@@ -1,0 +1,23 @@
+{
+  "archive_sha256": "727a5995e27bbb3a5c404055e56a6432b54a2cfd556d90c23721b19fd249008e",
+  "original_files": {
+    "original\\deep_surge_status_addon\\project.godot": "7f01525550e3368612b111ed9474b2e0f4e8239b16adec97f9433af6205f2aab",
+    "original\\deep_surge_status_addon\\README.md": "437621e55a1b4e0c6ab1fd0462ab6e6629fe013cb91325a6f052184681c0e9be",
+    "original\\deep_surge_status_addon\\addons\\deep_surge_status\\action_points_hud.gd": "f61a96c41f1532f3b3f00cf418ea548acbdf5fa9be34007ecd7d5604be538199",
+    "original\\deep_surge_status_addon\\addons\\deep_surge_status\\event_choice_panel.gd": "34aac5e71205ba31aff601871c1fff380bc98b6af3b58f00fd3393ca7ac93804",
+    "original\\deep_surge_status_addon\\addons\\deep_surge_status\\icon.svg": "a9bc3ad13aa4aa3298effa9a6ec201446a5dbacb4868f901835b0aee4b9f4605",
+    "original\\deep_surge_status_addon\\addons\\deep_surge_status\\plugin.cfg": "03cf6cc0be57d5d5bdb86cc797417700ff5f300e38483b998dc5517871c9eae6",
+    "original\\deep_surge_status_addon\\addons\\deep_surge_status\\plugin.gd": "d8a05539231b7b1642d6c6b62a3f21cc76acd00f5347cd3a64d99fd54d91079a",
+    "original\\deep_surge_status_addon\\addons\\deep_surge_status\\status_hud.gd": "1c71977e0e9a5cf5c345624135cb90f97761fed9bde0b6d84ce84de29e909ce2",
+    "original\\deep_surge_status_addon\\demo\\demo.gd": "d931f517aed58b0f887e713032fe72e90be2c1ec5bc6c35a2ad17aab9c14ceef",
+    "original\\deep_surge_status_addon\\demo\\demo.tscn": "fe5b5e729a519374163a7e3a5c5ceb71ca50a1778be6081470425dfcacc5fb93"
+  },
+  "runtime_assets": [
+    "ui.hud.status",
+    "ui.hud.action-points",
+    "ui.hud.event-choices",
+    "ui.hud.voyage-adapter",
+    "ui.hud.story-adapter"
+  ],
+  "notes": "Only 3 reviewed controls integrated. Editor plugin/demo/project settings retained in source; no global plugin enable. Adaptations: inherited Chinese font, legible sizes, AP spacing, optional descriptions/disabled choices/conditional visibility."
+}

@@ -18,6 +18,8 @@ var time := 0.0
 # Per wave: direction, wavenumber k, angular speed, amplitude, steepness, phase.
 var _waves: Array = []
 var _fade := Vector2(20,30)
+var _pose_initialized := false
+var _last_pose_time := 0.0
 
 func create(assets: RefCounted) -> bool:
 	settings = assets.data("data.ocean.toon-config")
@@ -32,6 +34,11 @@ func create(assets: RefCounted) -> bool:
 		dk.append(Vector4(entry.dir.x,entry.dir.y,k,entry.omega)); aq.append(Vector4(entry.a,entry.s,entry.phase,0))
 	_fade = Vector2(settings.amplitude_fade[0],settings.amplitude_fade[1])
 	material = ShaderMaterial.new(); material.shader = SHADER
+	var detail: Dictionary = settings.detail
+	material.set_shader_parameter("detail_texture",assets.texture("texture.ocean.detail"))
+	for key in ["enabled","scale","flow_strength","water_contrast","pore_strength","thread_strength","normal_strength"]:
+		material.set_shader_parameter("detail_"+key,detail[key])
+	material.set_shader_parameter("detail_fade_distance",Vector2(detail.fade_distance[0],detail.fade_distance[1]))
 	material.set_shader_parameter("wave_dk",dk); material.set_shader_parameter("wave_aq",aq)
 	material.set_shader_parameter("amplitude_sum",amplitude_sum)
 	material.set_shader_parameter("amplitude_fade",_fade)
@@ -87,6 +94,8 @@ func set_view_scale(scale_factor: float) -> void:
 	var look: Dictionary = settings.environment
 	var fog := Vector3(float(look.fog_depth_begin)*scale_factor,float(look.fog_depth_end)*scale_factor,look.fog_depth_curve)
 	for material_ref in [material,far_material]: material_ref.set_shader_parameter("fog_depth",fog)
+	var detail_reach := Vector2(settings.detail.fade_distance[0],settings.detail.fade_distance[1])*scale_factor
+	for material_ref in [material,far_material]: material_ref.set_shader_parameter("detail_fade_distance",detail_reach)
 	var reach := Vector2(settings.mist.distance_range[0],settings.mist.distance_range[1])*scale_factor
 	var clear := Vector2(settings.mist.clear_fade[0],settings.mist.clear_fade[1])*scale_factor
 	for material_ref in mist_materials:
@@ -164,6 +173,12 @@ func height_at(x: float, z: float) -> float:
 	var g := _invert(Vector2(x,z),true)
 	return lerpf(displacement(g).y,plane_at(x,z),contact_at(g))
 
+func _soft_limit(value: float, limit: float) -> float:
+	# Smooth asymptotic cap: leaves ordinary slopes almost unchanged and avoids
+	# the acceleration corner introduced by clampf() at the limit.
+	var ratio := absf(value)/limit
+	return value/pow(1.0+pow(ratio,8.0),0.125)
+
 func tick(visual_time: float) -> void:
 	time = visual_time
 	var center := Vector2(raft_bounds.x,raft_bounds.y)
@@ -171,8 +186,22 @@ func tick(visual_time: float) -> void:
 	var left := raw_height_at(center.x-radius.x,center.y); var right := raw_height_at(center.x+radius.x,center.y)
 	var front := raw_height_at(center.x,center.y+radius.y); var back := raw_height_at(center.x,center.y-radius.y)
 	var limit: float = settings.slope_limit
-	plane_slope = Vector2(clampf((right-left)/(radius.x*2),-limit,limit),clampf((front-back)/(radius.y*2),-limit,limit))
-	plane_height = (left+right+front+back+raw_height_at(center.x,center.y))/5.0-plane_slope.dot(center)
+	var target_slope := Vector2((right-left)/(radius.x*2),(front-back)/(radius.y*2))
+	# Soft saturation preserves ordinary slopes while removing the hard-clamp corner.
+	target_slope = Vector2(_soft_limit(target_slope.x,limit),_soft_limit(target_slope.y,limit))
+	var target_height := (left+right+front+back+raw_height_at(center.x,center.y))/5.0-target_slope.dot(center)
+	var delta := clampf(visual_time-_last_pose_time,0.0,0.1)
+	_last_pose_time = visual_time
+	if not _pose_initialized:
+		plane_slope = target_slope
+		plane_height = target_height
+		_pose_initialized = true
+	else:
+		var motion: Dictionary = settings.raft_motion
+		var slope_alpha := 1.0-exp(-delta/float(motion.slope_smoothing_seconds))
+		var height_alpha := 1.0-exp(-delta/float(motion.height_smoothing_seconds))
+		plane_slope = plane_slope.lerp(target_slope,slope_alpha)
+		plane_height = lerpf(plane_height,target_height,height_alpha)
 	for material_ref in mist_materials: material_ref.set_shader_parameter("visual_time",time)
 	for material_ref in [material,far_material]:
 		material_ref.set_shader_parameter("visual_time",time)

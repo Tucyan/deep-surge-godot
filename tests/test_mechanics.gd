@@ -39,7 +39,7 @@ func _init() -> void:
 	var before: Dictionary = s.snapshot()
 	check(not s.dispatch("install",{"uid":"gone","cell":"cell-0"}),"拒绝失效实例")
 	check(s.snapshot() == before,"拒绝完全回滚")
-	check(s.dispatch("expand",{"x":2,"y":0}),"邻接扩建")
+	check(s.dispatch("expand",{"x":0,"y":2}),"邻接扩建")
 	check(s.state.cells.size() == 5 and I.count(s.state,"wood") == 0,"扩建花两木一AP")
 	var action_session = fixture("camp")
 	var action_data: Dictionary = action_session.snapshot()

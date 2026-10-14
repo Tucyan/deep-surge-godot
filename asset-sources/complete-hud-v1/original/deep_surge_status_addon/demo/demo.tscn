@@ -1,0 +1,71 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://addons/deep_surge_status/status_hud.gd" id="1_hud"]
+[ext_resource type="Script" path="res://demo/demo.gd" id="2_demo"]
+[ext_resource type="Script" path="res://addons/deep_surge_status/action_points_hud.gd" id="3_ap"]
+
+[ext_resource type="Script" path="res://addons/deep_surge_status/event_choice_panel.gd" id="4_event"]
+
+[node name="Demo" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_demo")
+
+[node name="Backdrop" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0549, 0.073, 0.1098, 1)
+
+[node name="Hint" type="Label" parent="."]
+layout_mode = 1
+offset_left = 42.0
+offset_top = 40.0
+offset_right = 860.0
+offset_bottom = 140.0
+text = "DEEP SURGE  /  深潮\n按 1/2/3/4 消耗对应状态，按 5/6 调整 AP，按 R 恢复"
+
+[node name="APHUD" type="Control" parent="."]
+script = ExtResource("3_ap")
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -490.0
+offset_top = 272.0
+offset_right = -20.0
+offset_bottom = 376.0
+grow_horizontal = 0
+mouse_filter = 2
+
+[node name="HUD" type="Control" parent="."]
+script = ExtResource("1_hud")
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -550.0
+offset_top = 12.0
+offset_right = -20.0
+offset_bottom = 260.0
+grow_horizontal = 0
+mouse_filter = 2
+
+[node name="EventPanel" type="PanelContainer" parent="."]
+script = ExtResource("4_event")
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -550.0
+offset_top = 387.0
+offset_right = -20.0
+offset_bottom = 698.0
+grow_horizontal = 0

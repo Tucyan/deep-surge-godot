@@ -1,0 +1,10 @@
+{
+  "asset_id": "texture.title.05-rewind-light-v4",
+  "source": "imagegen using title-ui-v2 original 05_rewind_light.png reference",
+  "purpose": "repair clipped right corner, preserve label 回溯潮涌 and clock icon",
+  "sha256": "b60978a3162beaa94168c28fdf7393e233892ca2c70d030f69970ed647169b1e",
+  "dimensions": [
+    2162,
+    727
+  ]
+}

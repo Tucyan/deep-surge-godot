@@ -1,0 +1,41 @@
+{
+  "source": "C:\\Users\\ALmerb\\Desktop\\MyProgram\\yongxian\\raft-model\\raft_v004.blend",
+  "modules": {
+    "deck-intact": {
+      "objects": 3,
+      "bytes": 353432
+    },
+    "deck-damaged": {
+      "objects": 4,
+      "bytes": 377192
+    },
+    "root-decor": {
+      "objects": 6,
+      "bytes": 1752324
+    },
+    "lamp": {
+      "objects": 4,
+      "bytes": 52592
+    },
+    "planter": {
+      "objects": 3,
+      "bytes": 112620
+    },
+    "filter": {
+      "objects": 5,
+      "bytes": 94724
+    },
+    "medkit": {
+      "objects": 4,
+      "bytes": 49108
+    },
+    "crossbow": {
+      "objects": 4,
+      "bytes": 27940
+    },
+    "spearRack": {
+      "objects": 3,
+      "bytes": 32704
+    }
+  }
+}

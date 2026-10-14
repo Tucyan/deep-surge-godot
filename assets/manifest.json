@@ -552,9 +552,10 @@
     },
     "scene.voyage": {
       "dependencies": [
-        "model.raft",
+        "model.raft-state",
         "data.ocean.toon-config",
         "shader.ocean.toon",
+        "texture.ocean.detail",
         "shader.voyage.night-grade",
         "shader.voyage.night-mist",
         "data.ocean.texture-config",
@@ -570,13 +571,21 @@
       ],
       "source": [
         "presentation/voyage_world.gd",
+        "presentation/raft_state_models.gd",
         "presentation/toon_ocean.gd",
         "presentation/model_ocean.gd",
         "presentation/supplied_ocean.gd",
         "presentation/texture_ocean.gd"
       ],
-      "version": 8,
-      "role": "read-only cells projection; visual time only; toon ocean default, original GLB ocean is fallback"
+      "version": 13,
+      "role": "Blender-authored modular raft; four playable cells at 3,4,5,6; two reserved decorative root cells at 1,2; toon ocean default, original GLB ocean fallback",
+      "framing": {
+        "screen_center": [
+          0.3875,
+          0.46
+        ],
+        "method": "project visible raft mesh bounds; translate camera on layout/viewport changes only"
+      }
     },
     "shader.ocean": {
       "source": "assets/shaders/ocean.gdshader",
@@ -964,9 +973,15 @@
       "path": "res://assets/shaders/wet_wood.gdshader",
       "version": 2,
       "source": "assets/shaders/wet_wood.gdshader",
-      "sha256": "0f81514938d469ff935c8d8498fadbb2d7518faed5e13b0ede47a2d485a8ebcc",
+      "sha256": "7edc6a573cfc807bb98ccc9c72e9a6462d08ff65416f6644744d24d7a40c148b",
       "dependencies": [],
-      "license": "project-authored shader/config; source Ocean stays user-supplied"
+      "license": "project-authored shader/config; source Ocean stays user-supplied",
+      "visual_random": "Deterministic object-space wood hash; no gameplay RNG",
+      "parameters": {
+        "grain_strength": 0.4,
+        "knot_strength": 0.3
+      },
+      "description": "Longitudinal grain, sparse knots, end splits, variable roughness and existing wet waterline; no added geometry or texture sampling"
     },
     "data.ocean.model-config": {
       "path": "res://assets/data/model-ocean.json",
@@ -1004,19 +1019,20 @@
     },
     "data.ocean.toon-config": {
       "path": "res://assets/data/toon-ocean.json",
-      "version": 2,
+      "version": 3,
       "source": "assets/data/toon-ocean.json",
-      "sha256": "eb3092da3e1afb110449666f53a820856a70341e1291b803b083e5ee6f42b7ec",
+      "sha256": "6827fef3fad41460778223cb83d551c135fe3c3ca994a116298f7daa56421f74",
       "dependencies": [],
       "license": "project-authored procedural shader/config; no external imagery"
     },
     "shader.ocean.toon": {
       "path": "res://assets/shaders/toon_ocean.gdshader",
-      "version": 1,
+      "version": 2,
       "source": "assets/shaders/toon_ocean.gdshader",
-      "sha256": "c8bae88978af6f00267373c1c34a0bdbf24052243949b6ddda67b1d7343f6eed",
+      "sha256": "418071b30db8f0b124f5f3f70617a8c559ac14706ec90f22644d625ac9ad55f7",
       "dependencies": [
-        "data.ocean.toon-config"
+        "data.ocean.toon-config",
+        "texture.ocean.detail"
       ],
       "license": "project-authored procedural shader/config; no external imagery",
       "role": "procedural Gerstner waves mirrored by presentation/toon_ocean.gd; visual time only"
@@ -1039,6 +1055,846 @@
       ],
       "license": "project-authored procedural shader/config; no external imagery",
       "role": "three low mist planes; clear_bounds follows occupied raft, clear_fade follows view scale"
+    },
+    "texture.ocean.detail": {
+      "path": "res://assets/textures/ocean-detail-v1.png",
+      "version": 1,
+      "source": "tools/generate_ocean_detail.py",
+      "sha256": "18458e124d42a35540db6c611b17ac72fea1190d3d897d4984a9354acd3b4c76",
+      "dimensions": [
+        256,
+        256
+      ],
+      "crop": null,
+      "dependencies": [],
+      "visual_seed": 20261013,
+      "channels": {
+        "R": "broken flow curves",
+        "G": "foam pore/grain",
+        "B": "micro slope U",
+        "A": "micro slope V"
+      },
+      "license": "project-authored mathematical signals; no external images"
+    },
+    "shader.ui.hand-glass": {
+      "path": "res://assets/shaders/hand_glass.gdshader",
+      "source": "assets/shaders/hand_glass.gdshader",
+      "version": 1,
+      "sha256": "358ac0d39a403936610757d454c54fcb8b8c2eef6603dcbcd19e5650cd75c13e",
+      "dependencies": [],
+      "license": "project-authored shader and deterministic procedural ornament; no external artwork"
+    },
+    "ui.hand.border": {
+      "path": "res://presentation/hand_border.gd",
+      "source": "presentation/hand_border.gd",
+      "version": 1,
+      "sha256": "d78df0cdc7ffc96442ea28e443e9849e45bfcace60c116a6b93a9334e8aabcc0",
+      "dependencies": [],
+      "license": "project-authored shader and deterministic procedural ornament; no external artwork"
+    },
+    "ui.hand.fan": {
+      "path": "res://presentation/hand_fan.gd",
+      "source": "presentation/hand_fan.gd",
+      "version": 7,
+      "sha256": "00538f41cf6f645e68e629ded55261eb52e2e76598f87370db8443bd7403ce0e",
+      "dependencies": [
+        "shader.ui.hand-glass",
+        "ui.hand.border",
+        "ui.card.front"
+      ],
+      "license": "project-authored shader and deterministic procedural ornament; no external artwork"
+    },
+    "model.raft-state": {
+      "path": "res://presentation/raft_state_models.gd",
+      "source": [
+        "asset-sources/raft-blender-v1/raft_modules_v005.blend",
+        "presentation/raft_state_models.gd"
+      ],
+      "version": 5,
+      "sha256": "c880a68c78cac657fceb55caa01343395c467263da92c68973b070efb4963b12",
+      "dependencies": [
+        "shader.raft.wet-wood",
+        "model.raft.module.deck-intact",
+        "model.raft.module.deck-damaged",
+        "model.raft.module.deck-intact-2",
+        "model.raft.module.deck-intact-3",
+        "model.raft.module.deck-damaged-2",
+        "model.raft.module.deck-damaged-3",
+        "model.raft.module.root-decor",
+        "model.raft.module.lamp",
+        "model.raft.module.filter",
+        "model.raft.module.planter",
+        "model.raft.module.medkit",
+        "model.raft.module.crossbow",
+        "model.raft.module.spearRack"
+      ],
+      "license": "project-authored Blender meshes; source raft_v005.blend reuse; runtime instantiation only",
+      "coordinates": "Godot metres, Y up; one cell 2.35 x 2.1; geometry owned by VoyageWorld cache",
+      "mapping": "cell.id/x/y/status + equipment.id/level/fuel; detached omitted, damaged retained and disabled",
+      "visual_random": "Blender local seed 5100; coordinate variant (x+2*y)%3; independent of game RNG",
+      "decorative_root": "new layout x=0,1 y=0; four playable cells at 3,4,5,6; expanded legacy saves retain left-side root"
+    },
+    "model.raft.module.crossbow": {
+      "path": "res://assets/models/raft-modules/crossbow.glb",
+      "source": "asset-sources/raft-blender-v1/raft_modules_v005.blend",
+      "version": 1,
+      "sha256": "1acaf1cbc22dca4b11adb961ec62ce46c2ec3f2a1e404bb65e1c60de18dd8e11",
+      "dependencies": [],
+      "license": "project-authored Blender meshes; canopy/lamp/planter reused from original raft_v005.blend",
+      "units": "metres, Godot Y-up, module-local origin"
+    },
+    "model.raft.module.deck-damaged": {
+      "path": "res://assets/models/raft-modules/deck-damaged.glb",
+      "source": "asset-sources/raft-blender-v1/raft_modules_v005.blend",
+      "version": 5,
+      "sha256": "2c803069ba868aabff660040bb6dc12371400758db09c93bfeac202f3aa3b158",
+      "dependencies": [],
+      "license": "project-authored Blender meshes; canopy/lamp/planter reused from original raft_v005.blend",
+      "units": "metres, Godot Y-up, module-local origin"
+    },
+    "model.raft.module.deck-intact": {
+      "path": "res://assets/models/raft-modules/deck-intact.glb",
+      "source": "asset-sources/raft-blender-v1/raft_modules_v005.blend",
+      "version": 5,
+      "sha256": "b64af69a93a1ec23003cb85cca0d89c03b15ce25fa7f80ef77cb4b11f1f085fd",
+      "dependencies": [],
+      "license": "project-authored Blender meshes; canopy/lamp/planter reused from original raft_v005.blend",
+      "units": "metres, Godot Y-up, module-local origin"
+    },
+    "model.raft.module.filter": {
+      "path": "res://assets/models/raft-modules/filter.glb",
+      "source": "asset-sources/raft-blender-v1/raft_modules_v005.blend",
+      "version": 1,
+      "sha256": "6cbd00e0ae326d75087ede0dc102c038b0dac5e402c97cff6fa94daef7c0ca36",
+      "dependencies": [],
+      "license": "project-authored Blender meshes; canopy/lamp/planter reused from original raft_v005.blend",
+      "units": "metres, Godot Y-up, module-local origin"
+    },
+    "model.raft.module.lamp": {
+      "path": "res://assets/models/raft-modules/lamp.glb",
+      "source": "asset-sources/raft-blender-v1/raft_modules_v005.blend",
+      "version": 1,
+      "sha256": "e747d673e494f2339544acac5dd6bc3f7a528aa41a0e07bbab537537f97953cf",
+      "dependencies": [],
+      "license": "project-authored Blender meshes; canopy/lamp/planter reused from original raft_v005.blend",
+      "units": "metres, Godot Y-up, module-local origin"
+    },
+    "model.raft.module.medkit": {
+      "path": "res://assets/models/raft-modules/medkit.glb",
+      "source": "asset-sources/raft-blender-v1/raft_modules_v005.blend",
+      "version": 1,
+      "sha256": "9657594e5f1389a4634479b29f3f569f81aea99df0ba52092009480ef66d9b10",
+      "dependencies": [],
+      "license": "project-authored Blender meshes; canopy/lamp/planter reused from original raft_v005.blend",
+      "units": "metres, Godot Y-up, module-local origin"
+    },
+    "model.raft.module.planter": {
+      "path": "res://assets/models/raft-modules/planter.glb",
+      "source": "asset-sources/raft-blender-v1/raft_modules_v005.blend",
+      "version": 1,
+      "sha256": "d1fdcfcd483242e7275805f81703b95965efe15de18255ed52ed0b441ba4b506",
+      "dependencies": [],
+      "license": "project-authored Blender meshes; canopy/lamp/planter reused from original raft_v005.blend",
+      "units": "metres, Godot Y-up, module-local origin"
+    },
+    "model.raft.module.root-decor": {
+      "path": "res://assets/models/raft-modules/root-decor.glb",
+      "source": "asset-sources/raft-blender-v1/raft_modules_v005.blend",
+      "version": 5,
+      "sha256": "10ca32201dc7061b5abad356213866ad6a68105bfeb8fdc04196e9956b1235b6",
+      "dependencies": [],
+      "license": "project-authored Blender meshes; canopy/lamp/planter reused from original raft_v005.blend",
+      "units": "metres, Godot Y-up, module-local origin"
+    },
+    "model.raft.module.spearRack": {
+      "path": "res://assets/models/raft-modules/spearRack.glb",
+      "source": "asset-sources/raft-blender-v1/raft_modules_v005.blend",
+      "version": 1,
+      "sha256": "0d7f386474cea44660e6216fb2c06c0928b5ffad4cdc39d5a962e1955113763d",
+      "dependencies": [],
+      "license": "project-authored Blender meshes; canopy/lamp/planter reused from original raft_v005.blend",
+      "units": "metres, Godot Y-up, module-local origin"
+    },
+    "model.raft.module.deck-damaged-2": {
+      "path": "res://assets/models/raft-modules/deck-damaged-2.glb",
+      "source": "asset-sources/raft-blender-v1/raft_modules_v005.blend",
+      "version": 5,
+      "sha256": "b1a63559b30b27d212965ed0d8294452404fe12279c07c59624d59f08086f363",
+      "dependencies": [],
+      "license": "project-authored Blender meshes; canopy/lamp/planter reused from original raft_v005.blend",
+      "units": "metres, Godot Y-up, module-local origin"
+    },
+    "model.raft.module.deck-damaged-3": {
+      "path": "res://assets/models/raft-modules/deck-damaged-3.glb",
+      "source": "asset-sources/raft-blender-v1/raft_modules_v005.blend",
+      "version": 5,
+      "sha256": "9dccd2c036358de9aa3f952cca5cdb878eb735a1fe4f6bbf17a2ade950f597ba",
+      "dependencies": [],
+      "license": "project-authored Blender meshes; canopy/lamp/planter reused from original raft_v005.blend",
+      "units": "metres, Godot Y-up, module-local origin"
+    },
+    "model.raft.module.deck-intact-2": {
+      "path": "res://assets/models/raft-modules/deck-intact-2.glb",
+      "source": "asset-sources/raft-blender-v1/raft_modules_v005.blend",
+      "version": 5,
+      "sha256": "c6578e66105b90be5946d22b342f4ec3d92aac6e64059d222ac49611fa70a580",
+      "dependencies": [],
+      "license": "project-authored Blender meshes; canopy/lamp/planter reused from original raft_v005.blend",
+      "units": "metres, Godot Y-up, module-local origin"
+    },
+    "model.raft.module.deck-intact-3": {
+      "path": "res://assets/models/raft-modules/deck-intact-3.glb",
+      "source": "asset-sources/raft-blender-v1/raft_modules_v005.blend",
+      "version": 5,
+      "sha256": "2ebc17d7e6628864955d659b43941ebec030d9faa7e6de38679afe82f534546e",
+      "dependencies": [],
+      "license": "project-authored Blender meshes; canopy/lamp/planter reused from original raft_v005.blend",
+      "units": "metres, Godot Y-up, module-local origin"
+    },
+    "ui.hud.status": {
+      "path": "res://addons/deep_surge_status/status_hud.gd",
+      "version": 4,
+      "sha256": "cd662135f02e6b8cb36785f15026e8527abcca1cb97728373a5e7ab1171c9a59",
+      "source": [
+        "asset-sources/hud-visual-v2/deep_surge_hud_godot4_v2_visual_match.zip",
+        "addons/deep_surge_status/status_hud.gd"
+      ],
+      "dependencies": [
+        "texture.hud.status-art"
+      ],
+      "license": "user-supplied HUD package; no explicit upstream license supplied, project adaptations",
+      "visual_random": "none",
+      "role": "presentation-only; draws current read-only session view; native choices dispatch existing commands"
+    },
+    "ui.hud.action-points": {
+      "path": "res://addons/deep_surge_status/action_points_hud.gd",
+      "version": 2,
+      "sha256": "8319d622506ff7ce6ddc2a50f3666768c18fcbfd806f63c19e1d87224568bf64",
+      "source": [
+        "asset-sources/hud-visual-v2/deep_surge_hud_godot4_v2_visual_match.zip",
+        "addons/deep_surge_status/action_points_hud.gd"
+      ],
+      "dependencies": [
+        "texture.hud.ap-art",
+        "texture.hud.ap-orb-full",
+        "texture.hud.ap-orb-empty"
+      ],
+      "license": "user-supplied HUD package; no explicit upstream license supplied, project adaptations",
+      "visual_random": "none",
+      "role": "presentation-only; draws current read-only session view; native choices dispatch existing commands"
+    },
+    "ui.hud.event-choices": {
+      "path": "res://addons/deep_surge_status/event_choice_panel.gd",
+      "version": 4,
+      "sha256": "9073fc91679ca7902c7196c7a78a70d008255fa8b645395a468053b1cbbff0b9",
+      "source": [
+        "asset-sources/hud-visual-v2/deep_surge_hud_godot4_v2_visual_match.zip",
+        "addons/deep_surge_status/event_choice_panel.gd"
+      ],
+      "dependencies": [
+        "texture.hud.event-art",
+        "ui.hud.frame"
+      ],
+      "license": "user-supplied HUD package; no explicit upstream license supplied, project adaptations",
+      "visual_random": "none",
+      "role": "presentation-only; draws current read-only session view; native choices dispatch existing commands"
+    },
+    "ui.hud.voyage-adapter": {
+      "path": "res://pages/voyage_hud.gd",
+      "version": 4,
+      "sha256": "b62048ee2288937a4a9c68f4a601bf1f525707781477f80c08f4de725e3f7d53",
+      "source": [
+        "asset-sources/hud-visual-v2/deep_surge_hud_godot4_v2_visual_match.zip",
+        "pages/voyage_hud.gd"
+      ],
+      "dependencies": [
+        "ui.hud.status",
+        "ui.hud.action-points",
+        "ui.hand.fan",
+        "ui.hud.frame"
+      ],
+      "license": "user-supplied HUD package; no explicit upstream license supplied, project adaptations",
+      "visual_random": "none",
+      "role": "presentation-only; draws current read-only session view; native choices dispatch existing commands"
+    },
+    "ui.hud.story-adapter": {
+      "path": "res://pages/flow_story.gd",
+      "version": 2,
+      "sha256": "b5e319d891777d24da93eee1216163c87dd7ff20fd90c543b212d4ba41eb5183",
+      "source": [
+        "asset-sources/hud-visual-v2/deep_surge_hud_godot4_v2_visual_match.zip",
+        "pages/flow_story.gd"
+      ],
+      "dependencies": [
+        "ui.hud.event-choices"
+      ],
+      "license": "user-supplied HUD package; no explicit upstream license supplied, project adaptations",
+      "visual_random": "none",
+      "role": "presentation-only; draws current read-only session view; native choices dispatch existing commands"
+    },
+    "texture.hud.status-art": {
+      "path": "res://addons/deep_surge_status/textures/status_art.png",
+      "version": 2,
+      "sha256": "031cbdedabec12dcb03b9aa33e165d1d7c72a2284fc9d524a29f3ffd63d9d0e7",
+      "dimensions": [
+        682,
+        679
+      ],
+      "source": "asset-sources/hud-visual-v2/deep_surge_hud_godot4_v2_visual_match.zip",
+      "dependencies": [],
+      "license": "user supplied visual v2 pack; upstream license not specified",
+      "atlas_regions": {
+        "bars": [
+          [
+            181,
+            45,
+            501,
+            112
+          ],
+          [
+            181,
+            205,
+            501,
+            112
+          ],
+          [
+            181,
+            366,
+            501,
+            112
+          ],
+          [
+            181,
+            530,
+            501,
+            112
+          ]
+        ],
+        "medallions": {
+          "centers": [
+            [
+              108,
+              104
+            ],
+            [
+              108,
+              264
+            ],
+            [
+              108,
+              425
+            ],
+            [
+              108,
+              589
+            ]
+          ],
+          "radius": 86
+        },
+        "layout": "satiety,water,sanity top row; health second row in column 2; action points to its right; 682x190 design cells with 27.28-unit horizontal gaps"
+      }
+    },
+    "texture.hud.ap-art": {
+      "path": "res://addons/deep_surge_status/textures/ap_art.png",
+      "version": 2,
+      "sha256": "447aafa8345585e944d820b0cf4566f19c3db17befef8d78dd78fb630965c681",
+      "dimensions": [
+        738,
+        188
+      ],
+      "source": "asset-sources/hud-visual-v2/deep_surge_hud_godot4_v2_visual_match.zip",
+      "dependencies": [],
+      "license": "user supplied visual v2 pack; upstream license not specified"
+    },
+    "texture.hud.ap-orb-full": {
+      "path": "res://addons/deep_surge_status/textures/ap_orb_full.png",
+      "version": 2,
+      "sha256": "67a1076bbac0b97c757ed3a38891aa846c8aeb366f1425d4b6a6806002f5cc1d",
+      "dimensions": [
+        80,
+        80
+      ],
+      "source": "asset-sources/hud-visual-v2/deep_surge_hud_godot4_v2_visual_match.zip",
+      "dependencies": [],
+      "license": "user supplied visual v2 pack; upstream license not specified"
+    },
+    "texture.hud.ap-orb-empty": {
+      "path": "res://addons/deep_surge_status/textures/ap_orb_empty.png",
+      "version": 2,
+      "sha256": "2548965963efe6d91e5cb7551d0199fe48482ccbc588def90bdb4163742c9697",
+      "dimensions": [
+        80,
+        80
+      ],
+      "source": "asset-sources/hud-visual-v2/deep_surge_hud_godot4_v2_visual_match.zip",
+      "dependencies": [],
+      "license": "user supplied visual v2 pack; upstream license not specified"
+    },
+    "texture.hud.event-art": {
+      "path": "res://addons/deep_surge_status/textures/event_art.png",
+      "version": 2,
+      "sha256": "313caf3e867a8f45a52cf89e517ea47f81689615c49c806c8dcd802d6d629721",
+      "dimensions": [
+        678,
+        745
+      ],
+      "source": "asset-sources/hud-visual-v2/deep_surge_hud_godot4_v2_visual_match.zip",
+      "dependencies": [],
+      "license": "user supplied visual v2 pack; upstream license not specified",
+      "atlas_regions": {
+        "header": [
+          0,
+          0,
+          678,
+          282
+        ],
+        "choices": [
+          [
+            48,
+            489,
+            560,
+            65
+          ],
+          [
+            48,
+            561,
+            560,
+            65
+          ],
+          [
+            48,
+            633,
+            560,
+            65
+          ]
+        ]
+      }
+    },
+    "ui.hud.frame": {
+      "path": "res://presentation/hud_frame.gd",
+      "source": "presentation/hud_frame.gd",
+      "version": 1,
+      "sha256": "19156fbc24b4fefcfb85e18834575275665197cdd0acd6a22905ba843dc8f191",
+      "dependencies": [],
+      "license": "project-authored procedural double-line frame and diamond corners",
+      "visual_random": "none"
+    },
+    "texture.title.01-start-game-dark": {
+      "path": "res://assets/title_ui/01_start_game_dark.png",
+      "source": "asset-sources/title-ui-v2/deep_surge_title_ui_13_assets.zip",
+      "version": 1,
+      "sha256": "e06b86293099b2126499f76b00b1a263c242393b726d89d413a69c2d0ec6148e",
+      "dimensions": [
+        1100,
+        370
+      ],
+      "dependencies": [],
+      "license": "user supplied title artwork/video"
+    },
+    "texture.title.01-start-game-light": {
+      "path": "res://assets/title_ui/01_start_game_light.png",
+      "source": "asset-sources/title-buttons-light-v3/original.zip",
+      "version": 3,
+      "sha256": "6343404336a68aa26482e3bb2d77a13726f414425800b9994ffd2f4f301c76ee",
+      "dimensions": [
+        2162,
+        727
+      ],
+      "dependencies": [],
+      "license": "user supplied title artwork/video"
+    },
+    "texture.title.02-continue-dark": {
+      "path": "res://assets/title_ui/02_continue_dark.png",
+      "source": "asset-sources/title-ui-v2/deep_surge_title_ui_13_assets.zip",
+      "version": 1,
+      "sha256": "89187b247180bead5e5b943a5a7a4565270fac2ce6711cde4ae141a40a1ad62f",
+      "dimensions": [
+        1100,
+        370
+      ],
+      "dependencies": [],
+      "license": "user supplied title artwork/video"
+    },
+    "texture.title.02-continue-light": {
+      "path": "res://assets/title_ui/02_continue_light.png",
+      "source": "asset-sources/title-buttons-light-v3/original.zip",
+      "version": 3,
+      "sha256": "e6a3dad05c4f6b0244533f7ce6c44ecb35c6b3ea6c54c181974f1b1a068c8fec",
+      "dimensions": [
+        2162,
+        727
+      ],
+      "dependencies": [],
+      "license": "user supplied title artwork/video"
+    },
+    "texture.title.03-journal-dark": {
+      "path": "res://assets/title_ui/03_journal_dark.png",
+      "source": "asset-sources/title-ui-v2/deep_surge_title_ui_13_assets.zip",
+      "version": 1,
+      "sha256": "ab8cc40eae3aa4c57d33741e5711470f506dbbe1e48407ca7cbd824b6d5695fa",
+      "dimensions": [
+        1100,
+        370
+      ],
+      "dependencies": [],
+      "license": "user supplied title artwork/video"
+    },
+    "texture.title.03-journal-light": {
+      "path": "res://assets/title_ui/03_journal_light.png",
+      "source": "asset-sources/title-buttons-light-v3/original.zip",
+      "version": 3,
+      "sha256": "3a76ccbf1d445255718fc4ed9095e2df6b58b41e750de88834f6d3e663b041ef",
+      "dimensions": [
+        2162,
+        727
+      ],
+      "dependencies": [],
+      "license": "user supplied title artwork/video"
+    },
+    "texture.title.04-shop-dark": {
+      "path": "res://assets/title_ui/04_shop_dark.png",
+      "source": "asset-sources/title-ui-v2/deep_surge_title_ui_13_assets.zip",
+      "version": 1,
+      "sha256": "1a61e262a590f3d43a4e2fbb4ede087f958f9ba12d906067482aeb2304e53c41",
+      "dimensions": [
+        1100,
+        370
+      ],
+      "dependencies": [],
+      "license": "user supplied title artwork/video"
+    },
+    "texture.title.04-shop-light": {
+      "path": "res://assets/title_ui/04_shop_light.png",
+      "source": "asset-sources/title-buttons-light-v3/original.zip",
+      "version": 3,
+      "sha256": "dfdbe31b9ccf382d76439ba42f6fcb4c0cf14eb9c53b370ad4398b204809347e",
+      "dimensions": [
+        2162,
+        727
+      ],
+      "dependencies": [],
+      "license": "user supplied title artwork/video"
+    },
+    "texture.title.05-rewind-dark": {
+      "path": "res://assets/title_ui/05_rewind_dark.png",
+      "source": "asset-sources/title-ui-v2/deep_surge_title_ui_13_assets.zip",
+      "version": 1,
+      "sha256": "70788a26da0629e2cb400e737aed37a177bd37aab4fcf215e97360fc3683605b",
+      "dimensions": [
+        1100,
+        370
+      ],
+      "dependencies": [],
+      "license": "user supplied title artwork/video"
+    },
+    "texture.title.05-rewind-light": {
+      "path": "res://assets/title_ui/05_rewind_light.png",
+      "source": "asset-sources/title-ui-v2/deep_surge_title_ui_13_assets.zip",
+      "version": 1,
+      "sha256": "543b2772c3691233a2c8224f555f26ae53102eb023b2c4f4208134fac8c6c78e",
+      "dimensions": [
+        1100,
+        370
+      ],
+      "dependencies": [],
+      "license": "user supplied title artwork/video"
+    },
+    "texture.title.06-exit-dark": {
+      "path": "res://assets/title_ui/06_exit_dark.png",
+      "source": "asset-sources/title-ui-v2/deep_surge_title_ui_13_assets.zip",
+      "version": 1,
+      "sha256": "2dafcea28ca3e5f0b3949708c9b5e996c635b61ae066d6cbd06cb6fc56b6a047",
+      "dimensions": [
+        1100,
+        370
+      ],
+      "dependencies": [],
+      "license": "user supplied title artwork/video"
+    },
+    "texture.title.06-exit-light": {
+      "path": "res://assets/title_ui/06_exit_light.png",
+      "source": "asset-sources/title-buttons-light-v3/original.zip",
+      "version": 3,
+      "sha256": "2ab74bdce1232470da5b390eb5f66a321639e0a5551bfffd2da5f11141fb6411",
+      "dimensions": [
+        2162,
+        727
+      ],
+      "dependencies": [],
+      "license": "user supplied title artwork/video"
+    },
+    "texture.title.07-deep-surge-logo": {
+      "path": "res://assets/title_ui/07_deep_surge_logo.png",
+      "source": "asset-sources/title-ui-v2/deep_surge_title_ui_13_assets.zip",
+      "version": 1,
+      "sha256": "55f2cf4cc438254b8418b217bea9c5a82607be847434612f6105d4600f8d7156",
+      "dimensions": [
+        1448,
+        1009
+      ],
+      "dependencies": [],
+      "license": "user supplied title artwork/video"
+    },
+    "texture.title.ocean-poster": {
+      "path": "res://assets/title_ui/ocean_poster.png",
+      "source": "asset-sources/title-ui-v2/海浪和远方的云动态流动_无水印_2x超分辨率.mp4",
+      "version": 1,
+      "sha256": "9432a476e0d6ee7860c40fd7b3ae678a6b94ef6997c93442519c7036a1fcb2e5",
+      "dimensions": [
+        1704,
+        960
+      ],
+      "dependencies": [],
+      "license": "user supplied title artwork/video"
+    },
+    "video.title.ocean": {
+      "path": "res://assets/title_ui/ocean_loop.ogv",
+      "version": 1,
+      "source": "asset-sources/title-ui-v2/海浪和远方的云动态流动_无水印_2x超分辨率.mp4",
+      "sha256": "c34bf15917f8c1bfac0ff7402ab873627b086fbf729c022098d783f5525276b3",
+      "dependencies": [],
+      "license": "user supplied video",
+      "encoding": "FFmpeg 7.1 libtheora quality 7, 1704x960, yuv420p, silent; native Godot Theora loop"
+    },
+    "ui.title.menu": {
+      "path": "res://presentation/title_menu.gd",
+      "source": "presentation/title_menu.gd",
+      "version": 3,
+      "sha256": "dfaced5385618f5011d4292051d797b3df90f42e2aeee580a2a0d17e0404da5e",
+      "dependencies": [
+        "texture.title.01-start-game-dark",
+        "texture.title.01-start-game-light",
+        "texture.title.02-continue-dark",
+        "texture.title.02-continue-light",
+        "texture.title.03-journal-dark",
+        "texture.title.03-journal-light",
+        "texture.title.04-shop-dark",
+        "texture.title.04-shop-light",
+        "texture.title.05-rewind-dark",
+        "texture.title.05-rewind-light",
+        "texture.title.05-rewind-light-v4",
+        "texture.title.06-exit-dark",
+        "texture.title.06-exit-light",
+        "texture.title.07-deep-surge-logo",
+        "texture.title.menu-board-source",
+        "texture.title.ocean-poster",
+        "video.title.ocean",
+        "shader.title.board",
+        "shader.title.button-edge"
+      ],
+      "license": "project authored layout and existing-command routing; supplied title art",
+      "visual_random": "none",
+      "layout": {
+        "reference_size": [
+          1672,
+          941
+        ],
+        "buttons": {
+          "start": [
+            1050.0,
+            280.0,
+            450.0,
+            151.363647460938
+          ],
+          "continue": [
+            1040.0,
+            378.0,
+            450.0,
+            151.363647460938
+          ],
+          "journal": [
+            1038.0,
+            476.0,
+            450.0,
+            151.363647460938
+          ],
+          "shop": [
+            1066.09997558594,
+            580.0,
+            450.0,
+            151.363647460938
+          ],
+          "recall": [
+            1100.30004882813,
+            678.0,
+            450.0,
+            151.363647460938
+          ],
+          "quit": [
+            1160.0,
+            770.0,
+            450.0,
+            151.363647460938
+          ]
+        },
+        "logo": [
+          850.0,
+          -85.0,
+          750.0,
+          474.811828613281
+        ]
+      },
+      "shade": {
+        "texture": "texture.title.menu-board-source",
+        "opacity": 0.78,
+        "mask": "retain supplied grey region only",
+        "reference_size": [
+          1672,
+          941
+        ],
+        "layer_order": [
+          "poster",
+          "video",
+          "shade",
+          "logo",
+          "buttons"
+        ]
+      }
+    },
+    "ui.title.home": {
+      "path": "res://pages/flow_home.gd",
+      "source": "pages/flow_home.gd",
+      "version": 1,
+      "sha256": "0131ba00cbcb344b5ee08c712b106d86e96e6fd881b5ba4578c13f47bee48db2",
+      "dependencies": [
+        "ui.title.menu"
+      ],
+      "license": "project authored layout and existing-command routing; supplied title art",
+      "visual_random": "none"
+    },
+    "texture.title.menu-board-source": {
+      "path": "res://assets/title_ui/menu_board_source.png",
+      "source": "asset-sources/title-ui-v2/menu_board_source.png",
+      "version": 1,
+      "sha256": "4d8d97bd737e17df798da2212160861e81eab89399055046ba7a673d169bcea2",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "dependencies": [],
+      "license": "user supplied title artwork/video"
+    },
+    "shader.title.board": {
+      "path": "res://assets/shaders/title_board.gdshader",
+      "source": "assets/shaders/title_board.gdshader",
+      "version": 1,
+      "sha256": "b7b455e2b228695494629f233446d0a5679b87555a62019aabde0d6126b0dd26",
+      "dependencies": [
+        "texture.title.menu-board-source"
+      ]
+    },
+    "shader.title.button-edge": {
+      "path": "res://assets/shaders/title_button_edge.gdshader",
+      "source": "assets/shaders/title_button_edge.gdshader",
+      "version": 1,
+      "sha256": "69043f2cc8976d2fd9906625d72a488714de6daca0f2fae34c897c32e1c4c22b",
+      "dependencies": [],
+      "trim_texels": 2.5
+    },
+    "ui.title.layout-debug": {
+      "path": "res://presentation/title_layout_debug.gd",
+      "source": "presentation/title_layout_debug.gd",
+      "version": 1,
+      "sha256": "6e872227b2734c457f82030bccb26badbf269ec92b23ce8664f84053d43403b2",
+      "dependencies": [],
+      "license": "project-authored debug-only layout tool"
+    },
+    "texture.title.05-rewind-light-v4": {
+      "path": "res://assets/title_ui/05_rewind_light_v4.png",
+      "source": "asset-sources/title-rewind-v4/05_rewind_light_v4.png",
+      "version": 4,
+      "sha256": "b60978a3162beaa94168c28fdf7393e233892ca2c70d030f69970ed647169b1e",
+      "dimensions": [
+        2162,
+        727
+      ],
+      "dependencies": [],
+      "license": "AI-generated from user supplied rewind button; imagegen"
+    },
+    "ui.story.dialogue": {
+      "path": "res://assets/story_ui/dialogue-v1.png",
+      "version": 1,
+      "source": "asset-sources/story-ui-v1/ui-sheet.png",
+      "source_sha256": "9046afd050a2b4e28117340befee84a0b4063981e472a419886b85f3c9c52841",
+      "crop": [
+        0,
+        4,
+        2105,
+        516
+      ],
+      "dimensions": [
+        2105,
+        516
+      ],
+      "sha256": "e5448e1944c1500622f8bab1aa8995f9ad5345066a55d9881e65942c4ed9b829",
+      "dependencies": [],
+      "show_label": false,
+      "license": "AI-generated using built-in imagegen; style reference user-provided homepage"
+    },
+    "ui.story.choice": {
+      "path": "res://assets/story_ui/choice-v1.png",
+      "version": 1,
+      "source": "asset-sources/story-ui-v1/ui-sheet.png",
+      "source_sha256": "9046afd050a2b4e28117340befee84a0b4063981e472a419886b85f3c9c52841",
+      "crop": [
+        57,
+        526,
+        1189,
+        185
+      ],
+      "dimensions": [
+        1189,
+        185
+      ],
+      "sha256": "4e88313bc0a231bf9be5666342fd3584d00447784006fb7f0dfbafc6988d7614",
+      "dependencies": [],
+      "show_label": false,
+      "license": "AI-generated using built-in imagegen; style reference user-provided homepage"
+    },
+    "ui.story.toolbar": {
+      "path": "res://assets/story_ui/toolbar-v1.png",
+      "version": 1,
+      "source": "asset-sources/story-ui-v1/ui-sheet.png",
+      "source_sha256": "9046afd050a2b4e28117340befee84a0b4063981e472a419886b85f3c9c52841",
+      "crop": [
+        1274,
+        520,
+        795,
+        207
+      ],
+      "dimensions": [
+        795,
+        207
+      ],
+      "sha256": "6966c6a4b44c37a76c2bc07ba9586cb30193f87ef97b8399ff9deaddce4d9324",
+      "dependencies": [],
+      "show_label": false,
+      "license": "AI-generated using built-in imagegen; style reference user-provided homepage"
+    },
+    "ui.story.layout": {
+      "path": "res://pages/story_page.gd",
+      "version": 1,
+      "source": "programmatic layout, font configuration and button states",
+      "reference_size": [
+        1600,
+        900
+      ],
+      "dependencies": [
+        "ui.story.dialogue",
+        "ui.story.choice",
+        "ui.story.toolbar",
+        "texture.title.ocean-poster"
+      ],
+      "visual_seed": null,
+      "sha256": "b6e8cfa760f44cb965b22bd0aab8820eadc467f287a75d1392ac0dfc310545d0"
+    },
+    "ui.node-event.embedded": {
+      "path": "res://pages/flow_story.gd",
+      "source": "pages/flow_story.gd",
+      "sha256": "b5e319d891777d24da93eee1216163c87dd7ff20fd90c543b212d4ba41eb5183",
+      "version": 1,
+      "dependencies": [],
+      "presentation": "native text/button surface above world, below persistent HUD; automatic phase story; no image art"
     }
   }
 }

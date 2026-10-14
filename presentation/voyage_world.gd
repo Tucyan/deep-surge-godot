@@ -6,6 +6,9 @@ const ToonOcean = preload("res://presentation/toon_ocean.gd")
 const NIGHT_GRADE = preload("res://assets/shaders/night_grade.gdshader")
 ## "model" forces the archived GLB ocean (legacy tests); empty uses the toon ocean.
 static var ocean_style_override := ""
+const RaftModels = preload("res://presentation/raft_state_models.gd")
+var raft_models := RaftModels.new()
+var _raft_layout := "123456"
 const WET_WOOD = preload("res://assets/shaders/wet_wood.gdshader")
 var viewport: SubViewport
 var world: Node3D
@@ -29,6 +32,10 @@ var _cell_signature := ""
 var _destination_signature := ""
 var _time := 0.0
 var motion := true
+## Centre of the unobstructed scene area (left of the action panel, above hand).
+const RAFT_SCREEN_CENTER := Vector2(0.3875,0.46)
+var _framing_pending := true
+var _framed_size := Vector2i.ZERO
 
 func create(assets: RefCounted) -> void:
 	_assets = assets
@@ -68,18 +75,12 @@ func create(assets: RefCounted) -> void:
 	if ocean != null: texture_ocean.sea.visible = false
 	if toon_ocean != null: apply_night(env,moon)
 	raft = Node3D.new(); raft.name = "Raft"; world.add_child(raft)
-	var source: PackedScene = assets.model("model.raft")
-	if source != null:
-		var decoration := source.instantiate()
-		decoration.name = "CampDecoration"
-		raft.add_child(decoration)
-		# The original deck is replaced by real logical cells. Rig/cargo are decoration.
-		hide_deck(decoration)
+	raft.add_child(raft_models.decorative_root(self,_font,_raft_layout))
 	cells = Node3D.new(); cells.name = "LogicalCells"; raft.add_child(cells)
 	lantern = OmniLight3D.new()
 	lantern.position = Vector3(-1.2,1.5,0.7); lantern.light_color = Color("ffd38a")
 	lantern.light_energy = 2.2 if toon_ocean == null else float(toon_ocean.settings.environment.lantern_energy)
-	lantern.omni_range = 6.0; raft.add_child(lantern)
+	lantern.omni_range = 6.0; lantern.visible = false; raft.add_child(lantern)
 	destinations = Node3D.new(); destinations.name = "Destinations"; world.add_child(destinations)
 	for i in range(48):
 		var angle: float = float(i) * 2.39996
@@ -171,34 +172,38 @@ func sync(view: Dictionary) -> void:
 	var signature := JSON.stringify(view.cells)
 	if signature != _cell_signature:
 		_cell_signature = signature; clear(cells)
-		texture_ocean.sync_cells(view.cells)
-		if ocean != null: ocean.sync_cells(view.cells)
-		var min_x := 10.0; var min_y := 10.0; var max_x := 0.0; var max_y := 0.0
+		var layout: String = view.get("flags",{}).get("raft_layout","legacy")
+		if layout != _raft_layout:
+			_raft_layout = layout
+			var old = raft.get_node("DecorativeRoot"); raft.remove_child(old); old.queue_free()
+			raft.add_child(raft_models.decorative_root(self,_font,_raft_layout))
+		var hull_cells: Array = view.cells.duplicate(true)+raft_models.root_cells(_raft_layout)
+		texture_ocean.sync_cells(hull_cells)
+		if ocean != null: ocean.sync_cells(hull_cells)
+		var min_x: float = 0.0 if _raft_layout == "123456" else -1.0; var min_y := 0.0; var max_x: float = 1.0 if _raft_layout == "123456" else -1.0; var max_y: float = 0.0 if _raft_layout == "123456" else 1.0
+		lantern.visible = false
 		for cell in view.cells:
 			if cell.status == "detached": continue
 			min_x = minf(min_x,cell.x); min_y = minf(min_y,cell.y)
 			max_x = maxf(max_x,cell.x); max_y = maxf(max_y,cell.y)
-			var tile := Node3D.new(); tile.name = cell.id; tile.position = Vector3((cell.x-0.5)*2.35,0.13,(cell.y-0.5)*2.1)
-			cells.add_child(tile)
-			for plank in range(7):
-				var color := Color("72512f") if plank%2 == 0 else Color("8b6540")
-				if cell.status == "damaged": color = Color("603c36")
-				box(tile,Vector3((plank-3)*0.325,0.08,0),Vector3(0.30,0.16,2.0),color).material_override = wet_wood(color)
-			for support in [-0.70,0.70]: box(tile,Vector3(support,-0.10,0),Vector3(0.30,0.30,2.16),Color("382d21")).material_override = wet_wood(Color("382d21"))
-			if not cell.equipment.is_empty():
-				box(tile,Vector3(0,0.45,0.35),Vector3(0.6,0.65,0.6),Color("536d6b"))
-			var label := Label3D.new()
-			label.font = _font
-			label.text = "空格" if cell.equipment.is_empty() else _assets.label("card."+cell.equipment.id)
-			label.font_size = 28; label.pixel_size = 0.008; label.position = Vector3(0,0.27,0.80)
-			label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-			label.modulate = Color("dfd2ac"); label.outline_modulate = Color("10262b")
-			tile.add_child(label)
+			var tile = raft_models.build(self,cell,_font); cells.add_child(tile)
+			if cell.status == "intact" and cell.equipment.get("id","") == "lamp" and int(cell.equipment.get("fuel",0)) > 0:
+				if not lantern.visible:
+					lantern.position = tile.position+Vector3(0,.74,-.13); lantern.visible = true
+				else:
+					var light := OmniLight3D.new(); light.light_color = lantern.light_color; light.light_energy = lantern.light_energy; light.omni_range = lantern.omni_range
+					light.position = Vector3(0,.74,-.13); tile.add_child(light)
+		if min_x > max_x: min_x = 0; min_y = 0; max_x = 1; max_y = 1
+		if toon_ocean != null:
+			for mat in [toon_ocean.material,toon_ocean.far_material]:
+				mat.set_shader_parameter("lantern_enabled",lantern.visible)
+				mat.set_shader_parameter("lantern_strength",toon_ocean.settings.lantern.strength if lantern.visible else 0.0)
 		var center := Vector3(((min_x+max_x)*0.5-0.5)*2.35,0,((min_y+max_y)*0.5-0.5)*2.1)
-		var scale_factor: float = maxf(1.0,maxf(max_x-min_x+1.0,max_y-min_y+1.0)/2.0)
-		camera.position = center + Vector3(6.5,7.6,12)*scale_factor
-		camera.look_at(center+Vector3(2.0*scale_factor,0.7,0),Vector3.UP)
+		var scale_factor: float = maxf(1.0,pow(maxf(max_x-min_x+1.0,max_y-min_y+1.0)/2.0,0.65))
+		camera.position = center + Vector3(5.5,7.6,10.5)*scale_factor
+		camera.look_at(center+Vector3(1.2*scale_factor,0.35,0),Vector3.UP)
 		apply_view_scale(scale_factor)
+		_framing_pending = true
 	var destination_signature := JSON.stringify([view.phase,view.get("node",{}).get("id",""),view.get("candidates",[])])
 	if destination_signature != _destination_signature:
 		_destination_signature = destination_signature; clear(destinations)
@@ -219,15 +224,43 @@ func _process(delta: float) -> void:
 		raft.position.y = ocean.plane_height-float(ocean.settings.raft_draft)
 		raft.rotation.z = atan(ocean.plane_slope.x)
 		raft.rotation.x = -atan(ocean.plane_slope.y)
-		if toon_ocean != null: toon_ocean.set_lantern(lantern.global_position)
+		if toon_ocean != null and lantern.visible: toon_ocean.set_lantern(lantern.global_position)
 		texture_ocean.foam_material.set_shader_parameter("plane_height",ocean.plane_height)
 		texture_ocean.foam_material.set_shader_parameter("plane_slope",ocean.plane_slope)
 		for key in _materials:
 			if key.begins_with("wet:"):
 				_materials[key].set_shader_parameter("water_height",ocean.plane_height)
 				_materials[key].set_shader_parameter("water_slope",ocean.plane_slope)
+		_frame_raft_if_needed()
 		return
 	var config: Dictionary = texture_ocean.config
 	raft.position.y = float(config.raft_base_height)+sin(_time*0.85)*float(config.bob_amplitude)
 	raft.rotation.z = sin(_time*0.48)*float(config.tilt_amplitude)
 	raft.rotation.x = cos(_time*0.55)*float(config.tilt_amplitude)
+	_frame_raft_if_needed()
+
+## Translate the camera in its own screen plane, preserving angle and distance.
+## Recompute only after layout/viewport changes; waves must not move the camera.
+func _frame_raft_if_needed() -> void:
+	if viewport.size.x < 2 or viewport.size.y < 2: return
+	if not _framing_pending and _framed_size == viewport.size: return
+	var meshes := raft.find_children("*","MeshInstance3D",true,false)
+	if meshes.is_empty(): return
+	var target := Vector2(viewport.size)*RAFT_SCREEN_CENTER
+	for attempt in range(4):
+		var minimum := Vector2(INF,INF)
+		var maximum := Vector2(-INF,-INF)
+		for node in meshes:
+			if not node.is_visible_in_tree() or node.mesh == null: continue
+			var bounds: AABB = node.mesh.get_aabb()
+			for i in range(8):
+				var pixel := camera.unproject_position(node.global_transform*bounds.get_endpoint(i))
+				minimum = minimum.min(pixel); maximum = maximum.max(pixel)
+		if minimum.x == INF: return
+		var error := (minimum+maximum)*0.5-target
+		if error.length() < 0.5: break
+		var depth := -camera.to_local(raft.global_position).z
+		var units_per_pixel := 2.0*depth*tan(deg_to_rad(camera.fov)*0.5)/float(viewport.size.y)
+		camera.position += (camera.basis.x*error.x-camera.basis.y*error.y)*units_per_pixel
+	_framing_pending = false
+	_framed_size = viewport.size

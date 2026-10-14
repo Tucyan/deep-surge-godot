@@ -14,17 +14,9 @@ func build() -> void:
 	else: action(target,"撤退","retreat",{},context.battle.turn < 2,"第二回合起可撤退")
 	var hand := VBoxContainer.new(); hand.size_flags_horizontal = Control.SIZE_EXPAND_FILL; row.add_child(hand)
 	var cards: Array = context.hand.filter(func(card): return card.definition.kind in ["combat","survival","negative"])
-	var pages: int = maxi(1,ceili(float(cards.size())/6.0))
-	var page_index: int = clampi(int(context.ui_state.get("list_page",0)),0,pages-1)
-	var items := W.grid(hand,3)
-	for card in cards.slice(page_index*6,mini(cards.size(),page_index*6+6)):
-		var tile := ItemCard.new(); items.add_child(tile)
-		tile.create(assets,card,"使用 · "+card.definition.name,func(): send("play",{"uid":card.uid}),112,170,card.definition.cost > context.battle.ap)
-	if pages > 1:
-		var pager := HBoxContainer.new(); hand.add_child(pager)
-		W.button(pager,"上一页",func(): request("list_page",str(page_index-1)),page_index == 0)
-		W.counter(pager,"%d/%d" % [page_index+1,pages])
-		W.button(pager,"下一页",func(): request("list_page",str(page_index+1)),page_index == pages-1)
+	var fan = load("res://presentation/hand_fan.gd").new(); hand.add_child(fan)
+	fan.set_meta("presentation_role","battle"); fan.create(assets,cards,context)
+	fan.activated.connect(func(card): send("play",{"uid":card.uid}))
 
 func compact_style() -> StyleBoxFlat:
 	var style := StyleBoxFlat.new(); style.bg_color = Color("142d38"); style.border_color = W.GOLD; style.set_border_width_all(1)

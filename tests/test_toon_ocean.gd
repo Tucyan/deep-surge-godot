@@ -13,7 +13,7 @@ func run() -> void:
 	check(app.world_view.model_ocean == null,"夜海成功时不再加载原GLB海面")
 	check(not app.world_view.texture_ocean.sea.visible,"纹理回退平面隐藏")
 	check(app.world_view.get_material() is ShaderMaterial,"航行视口使用冷夜调色")
-	check(ocean.material.get_shader_parameter("cell_count") == 4,"接触环按四个在位筏格生成")
+	check(ocean.material.get_shader_parameter("cell_count") == 6,"接触环按四个在位筏格和两个装饰筏根生成")
 	var saved: Dictionary = app.session.snapshot()
 	for time in [0.0,0.7,1.9,3.3,5.0,7.5,11.2,0.0001]:
 		app.world_view._time = time; app.world_view.motion = false; app.world_view._process(0)
@@ -33,7 +33,7 @@ func run() -> void:
 	check(absf(far_height) < .0001,"远景振幅衰减到平面，与远景平面衔接")
 	var view: Dictionary = app.session.view().duplicate(true); view.cells[0].status = "detached"
 	app.world_view.sync(view)
-	check(ocean.material.get_shader_parameter("cell_count") == 3,"脱落后接触环更新")
+	check(ocean.material.get_shader_parameter("cell_count") == 5,"脱落后接触环保留装饰筏根并移除脱落格")
 	app.world_view.sync(app.session.view())
 	check(app.session.snapshot() == saved,"夜海播放/水线/泡沫不改变规则与随机")
 	app.queue_free(); await process_frame

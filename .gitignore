@@ -1,2 +1,11 @@
 .godot/
 *.log
+
+# Local logs, Blender backups and secrets
+*.log
+*.blend1
+*.blend2
+__pycache__/
+.env
+.env.*
+

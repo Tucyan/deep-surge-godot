@@ -1,0 +1,23 @@
+{
+  "source": "user supplied light buttons v3",
+  "files": {
+    ".gdignore": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "01_开始游戏.png": "6343404336a68aa26482e3bb2d77a13726f414425800b9994ffd2f4f301c76ee",
+    "02_继续游戏.png": "e6a3dad05c4f6b0244533f7ce6c44ecb35c6b3ea6c54c181974f1b1a068c8fec",
+    "03_航海笔记.png": "3a76ccbf1d445255718fc4ed9095e2df6b58b41e750de88834f6d3e663b041ef",
+    "04_局外商店.png": "dfdbe31b9ccf382d76439ba42f6fcb4c0cf14eb9c53b370ad4398b204809347e",
+    "05_回溯潮涌.png": "3231212517eb4ab2a2dab6bf14721aea44f2f8e36712e14c3e60ceec47d3668d",
+    "06_退出游戏.png": "2ab74bdce1232470da5b390eb5f66a321639e0a5551bfffd2da5f11141fb6411",
+    "original.zip": "866e36b500816e771b6b063fafd06468c6ae4b5b013a147828bfa9e72a615368"
+  },
+  "runtime_mapping": {
+    "01_start_game_light.png": "01_开始游戏.png",
+    "02_continue_light.png": "02_继续游戏.png",
+    "03_journal_light.png": "03_航海笔记.png",
+    "04_shop_light.png": "04_局外商店.png",
+    "06_exit_light.png": "06_退出游戏.png"
+  },
+  "excluded": {
+    "05_回溯潮涌.png": "Image text/icon depict start game; using previous correct rewind image instead"
+  }
+}

@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3]
+[ext_resource type="Script" path="res://addons/deep_surge_status/hud_layout.gd" id="1_layout"]
+[ext_resource type="Script" path="res://addons/deep_surge_status/status_hud.gd" id="2_status"]
+[ext_resource type="Script" path="res://addons/deep_surge_status/action_points_hud.gd" id="3_ap"]
+[ext_resource type="Script" path="res://addons/deep_surge_status/event_choice_panel.gd" id="4_event"]
+[node name="DeepSurgeHUD" type="Control"]
+layout_mode=3
+anchors_preset=15
+anchor_right=1.0
+anchor_bottom=1.0
+grow_horizontal=2
+grow_vertical=2
+mouse_filter=1
+script=ExtResource("1_layout")
+[node name="EventPanel" type="Control" parent="."]
+layout_mode=0
+offset_left=91.0
+offset_top=142.0
+offset_right=769.0
+offset_bottom=887.0
+script=ExtResource("4_event")
+[node name="StatusHUD" type="Control" parent="."]
+layout_mode=0
+offset_left=888.0
+offset_top=24.0
+offset_right=1570.0
+offset_bottom=703.0
+mouse_filter=2
+script=ExtResource("2_status")
+[node name="APHUD" type="Control" parent="."]
+layout_mode=0
+offset_left=824.0
+offset_top=700.0
+offset_right=1562.0
+offset_bottom=888.0
+mouse_filter=2
+script=ExtResource("3_ap")

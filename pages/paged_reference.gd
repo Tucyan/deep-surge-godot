@@ -160,6 +160,9 @@ func raft_page() -> void:
 	if selected == "": selected = context.cells[0].id
 	for y in range(side):
 		for x in range(side):
+			if context.flags.get("raft_layout","") == "123456" and y == 0 and x in [0,1]:
+				W.button(grid,"%d · 装饰筏根" % (x+1),func(): pass,true,"固定装饰区，不提供设备槽位")
+				continue
 			var cell := {}
 			var adjacent := false
 			for c in context.cells:

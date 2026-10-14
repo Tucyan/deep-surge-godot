@@ -1,0 +1,12 @@
+{
+  "after": {
+    "median_ms": 6.939,
+    "p95_ms": 7.328
+  },
+  "before": {
+    "median_ms": 6.949,
+    "p95_ms": 13.136
+  },
+  "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "scope": "Whole-app wall frame intervals; not isolated GPU timing. Fixed camera and simulation time for A/B."
+}

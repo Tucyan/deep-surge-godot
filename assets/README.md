@@ -105,3 +105,40 @@ HUD v2为教学超限手牌预留分页行；`ui.voyage-hud`资产仍对应同�
 重新生成：`python -X utf8 tools/generate_texture_ocean.py`。此工具重新登记生成内容的hash；手工改配置后需同步manifest的hash，避免重新生成覆盖自己的调参。GPU与规则验证见`evidence/texture-ocean-verification.md`。
 
 配置v2按用户反馈放大视觉浪纹：pattern_scale从0.28减至0.12（图案约2.33倍），normal_strength从0.65增至1.8；两层流速增至[0.020,0.014]/[-0.016,0.023]，浪纹亮色改为#315c69。仍是纹理法线表现，不新增顶点位移、采样或网格；木筏和接触泡沫参数保持原值。
+
+## 当前 Toon 海面细节 v1（2026-10-13）
+
+本节为当前运行映射，优先于历史纹理平面说明。默认仍为 Toon/Gerstner 海面；新增 `texture.ocean.detail` → `assets/textures/ocean-detail-v1.png`，256×256 RGBA，139879 字节。R 为断续流纹，G 为泡沫孔洞/水色噪声，BA 为微法线坡度；alpha 是数据，关闭 alpha border 修复，开启 mipmap，shader 使用 repeat/linear_mipmap。替换图必须遵守通道含义。
+
+源为 `tools/generate_ocean_detail.py`，NumPy PCG64 视觉种子 20261013；周期 FFT 数学信号，不使用玩法 RNG 或外部图片。hash、尺寸、来源、通道和依赖登记在 manifest。`data.ocean.toon-config` v3 / `shader.ocean.toon` v2 / `scene.voyage` v9。先生成纹理，再运行 `tools/register_toon_ocean.py` 登记配置及 shader。
+
+`toon-ocean.json` 的 raft_motion 段设置木筏姿态坡度与高度的时间平滑；坡度采用连续软饱和，避免硬截断造成角加速度突变。detail 段控制开关/尺度/流纹/孔洞/细丝/微法线强度/淡出距离。两次采样直接加入原海面材质，不增加网格或透明层；纹理由 AssetCatalog / ResourceLoader 缓存，近远海材质共享纹理引用，材质由海面实例持有。水面大色阶使用原法线，细法线仅影响月光与灯光反射；接触泡沫在孔洞处理后合成。细节距离随镜头缩放，mipmap 减少远处采样锯齿。验证见 `evidence/ocean-detail-verification.md`。
+
+## 手牌底板与展开交互（2026-10-13）
+
+`ui.hand.fan`（presentation/hand_fan.gd）用于航行和战斗手牌：全部实例同排显示，不分页、不滚动，按可用宽度重叠；鼠标经过时局部展开并抬起，停留 0.35 秒显示真实卡牌描述和阶段使用说明。命令通过 UID 发给页面，hover 不修改规则状态。不可弃置牌和战斗 AP 不足仍禁用操作；空白处点击不执行。
+
+`shader.ui.hand-glass` 独立屏幕 mipmap 模糊 shader，带可配置 tint / blur_lod；`ui.hand.border` 独立程序绘制铜金双线、绳纹刻痕与铆钉角饰。装饰公式确定，不使用玩法 RNG；材质归底板实例持有，shader 和卡图由资源缓存共享。用户卡牌图片未重绘。通过 tools/register_hand_ui.py 更新源/hash/依赖。
+
+验证：test_hand_fan、test_clean_ui、test_flow、test_supplied_assets 全部通过；49 个资产 hash 检查通过。test_hand_fan 使用 24 张超限夹具验证两种窗口尺寸、首中尾悬停、说明边界、真实鼠标事件点击 UID 和状态隔离。GPU Compatibility / RTX 4060 实拍 normal / many / hover / 1280 见 evidence/hand-*.png；20 张画面为 UI 夹具，不代表规则允许无限保留手牌。未进行多平台 GPU 性能测试。
+
+每块毛玻璃底板使用局部 BackBufferCopy（24px 模糊边距），保证战斗弹窗采样自己的背景；弹窗遮罩/内容分别位于 z=200/201，底层抬起的手牌不会穿透遮罩。战斗 13 张手牌夹具实机图为 evidence/hand-battle-1280.png。
+
+## 当前木筏状态模型 v1（2026-10-13）
+
+游戏页改为 `model.raft-state`（presentation/raft_state_models.gd）按 cells/设备实例生成，无固定帆/货箱/植物装饰。六种设备分别建模；损坏保留停用设备并断板，脱落移除整格；灯的发光/暖光严格跟随完好状态与燃料。原 GLB 保留作历史源。坐标、状态与木筏详情一一对应。源/hash/依赖通过 tools/register_raft_state.py + tools/register_toon_ocean.py 登记；scene.voyage v10。映射、资源所有权和验证见 docs/raft-state-models.md。
+
+木筏 v2：初始 3×2 中两格是左侧装饰筏根，四格为逻辑筏格；装饰不进入 GameState，水线/泡沫/雾/镜头包含筏根。model.raft-state v2，scene.voyage v11。详见 docs/raft-state-models.md。
+
+## Blender 木筏模块（当前默认）
+
+model.raft.module.deck-intact / deck-damaged / root-decor / lamp / filter / planter / medkit / crossbow / spearRack 分别映射同名 GLB，源为 asset-sources/raft-blender-v1/raft_modules_v001.blend。倒角、UV、法线及 PBR 基色在 Blender 中完成，湿木、发光开关和状态标签归运行时。每个 GLB 的 hash、来源、单位、依赖登记于 manifest，实例共享源网格，状态私有材质按 source+状态缓存。重新建模使用 tools/build_blender_raft.py（本机 Blender），再执行 register_blender_raft.py / register_raft_state.py / register_toon_ocean.py；check_blender_raft.py 检查导出完整性。原文件保持不变，不重新生成或覆盖原木筏源。
+
+
+## HUD Visual Match v2（2026-10-13）
+
+当前使用用户提供的 `deep_surge_hud_godot4_v2_visual_match.zip`。三个 HUD 控件/页面适配记录更新至 v2，新增五个 `texture.hud.*` AssetId，PNG 尺寸/hash/来源/依赖及事件图切片区域登记在 manifest；原包与原始工程保存在 `asset-sources/hud-visual-v2/`。运行控件保持状态与美术解耦，事件为按需原生按钮。布局、缩放与本次验证见 `docs/supplied-hud.md` 的 v2 节。
+
+## 首页素材 v2（2026-10-14）
+
+13张用户PNG、2×MP4派生的静音OGV和首帧poster已接入，独立shade多边形位于动态背景与菜单之间。稳定AssetId、源/hash/尺寸/依赖及shade参数由tools/register_title_ui.py登记。原包和2×/4×原视频归档于asset-sources/title-ui-v2，不使用个人绝对路径运行。布局和入口映射见docs/title-ui.md。

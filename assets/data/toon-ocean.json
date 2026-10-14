@@ -1,5 +1,5 @@
 {
-  "version": "toon-ocean-night-v1-fog-v2",
+  "version": "toon-ocean-night-v1-fog-v2-detail-v1-raft-motion-v1",
   "near_size": 64,
   "near_subdivisions": 200,
   "far_size": 600,
@@ -207,5 +207,22 @@
       1.6,
       5.8
     ]
+  },
+  "detail": {
+    "enabled": true,
+    "scale": 0.22,
+    "flow_strength": 0.42,
+    "water_contrast": 0.12,
+    "pore_strength": 0.88,
+    "thread_strength": 0.35,
+    "normal_strength": 0.08,
+    "fade_distance": [
+      12,
+      36
+    ]
+  },
+  "raft_motion": {
+    "slope_smoothing_seconds": 0.34,
+    "height_smoothing_seconds": 0.22
   }
 }

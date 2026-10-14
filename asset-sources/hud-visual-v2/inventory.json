@@ -1,0 +1,36 @@
+{
+  "archive_sha256": "3e8eddc8d05c9bf74624990e3445bf61edcefe8d4d1a00fc5ba3718930b2d98c",
+  "original_files": {
+    "original\\deep_surge_hud_visual_v2\\project.godot": "b4a28cc097f379e36228218b3549a4006f24acea49fda113cb4904a6ba8bbcde",
+    "original\\deep_surge_hud_visual_v2\\README.md": "5bf9ed2bc115fd1ac3345bd1448c9303728dacf168ffe0645de3b9a5f56d6cca",
+    "original\\deep_surge_hud_visual_v2\\addons\\deep_surge_status\\action_points_hud.gd": "929724aa4712b52bc3c1bc4b0cb950c776a1264507357b5718111d41ba30fbc7",
+    "original\\deep_surge_hud_visual_v2\\addons\\deep_surge_status\\event_choice_panel.gd": "51428f956046078cccdb38a06df0eed6f4b37ab19be81ba28646aed288d4581e",
+    "original\\deep_surge_hud_visual_v2\\addons\\deep_surge_status\\hud_layout.gd": "b770bdd761d655110298c3ab1b71f64cd595e2160fd73d501020bacd891bd58d",
+    "original\\deep_surge_hud_visual_v2\\addons\\deep_surge_status\\icon.svg": "a9bc3ad13aa4aa3298effa9a6ec201446a5dbacb4868f901835b0aee4b9f4605",
+    "original\\deep_surge_hud_visual_v2\\addons\\deep_surge_status\\plugin.cfg": "30447cb73b4d4f43a3c68b0897f50ef0275d0a925ae3b14d3efcdf949e8ebb38",
+    "original\\deep_surge_hud_visual_v2\\addons\\deep_surge_status\\plugin.gd": "456c60775f592cc3886b57ece6600ed054433167b4b533ac9d0dbbe488fcc007",
+    "original\\deep_surge_hud_visual_v2\\addons\\deep_surge_status\\status_hud.gd": "8382bb3f40af50afa33369cecd91f6d8dd8724d12e9d6b72af75caf89ed34724",
+    "original\\deep_surge_hud_visual_v2\\addons\\deep_surge_status\\textures\\ap_art.png": "447aafa8345585e944d820b0cf4566f19c3db17befef8d78dd78fb630965c681",
+    "original\\deep_surge_hud_visual_v2\\addons\\deep_surge_status\\textures\\ap_orb_empty.png": "2548965963efe6d91e5cb7551d0199fe48482ccbc588def90bdb4163742c9697",
+    "original\\deep_surge_hud_visual_v2\\addons\\deep_surge_status\\textures\\ap_orb_full.png": "67a1076bbac0b97c757ed3a38891aa846c8aeb366f1425d4b6a6806002f5cc1d",
+    "original\\deep_surge_hud_visual_v2\\addons\\deep_surge_status\\textures\\demo_bg.png": "4b343c7d7902203e1a6a8b1422f0dff5e819ec17150e738e8ca81aa3deaf442c",
+    "original\\deep_surge_hud_visual_v2\\addons\\deep_surge_status\\textures\\event_art.png": "313caf3e867a8f45a52cf89e517ea47f81689615c49c806c8dcd802d6d629721",
+    "original\\deep_surge_hud_visual_v2\\addons\\deep_surge_status\\textures\\status_art.png": "031cbdedabec12dcb03b9aa33e165d1d7c72a2284fc9d524a29f3ffd63d9d0e7",
+    "original\\deep_surge_hud_visual_v2\\demo\\demo.gd": "344ac3a741aa34677becd7333df51fb2bd3a0f4501c284a74e7462b130d7866b",
+    "original\\deep_surge_hud_visual_v2\\demo\\demo.tscn": "5f706c832004e5e498ba8b403459fe75e9c4895d0305555fbd51c8530859b46f",
+    "original\\deep_surge_hud_visual_v2\\demo\\hud_layout.tscn": "86583ec221d9c4c5f5becc35f684e3ed8896de24709665d139f8b2a326426c7f"
+  },
+  "runtime_assets": [
+    "ui.hud.status",
+    "ui.hud.action-points",
+    "ui.hud.event-choices",
+    "ui.hud.voyage-adapter",
+    "ui.hud.story-adapter",
+    "texture.hud.status-art",
+    "texture.hud.ap-art",
+    "texture.hud.ap-orb-full",
+    "texture.hud.ap-orb-empty",
+    "texture.hud.event-art"
+  ],
+  "notes": "Visual v2 status and AP art, event header and choice frame atlas regions integrated. Native event buttons retain all options and disabled guards; compact layout for 4+ choices, details in tooltips. Original plugin/demo retained as ignored source. Chinese inherited font; original viewport stretch retained."
+}

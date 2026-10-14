@@ -210,6 +210,7 @@ static func raft_action(ctx, command: String, args: Dictionary) -> bool:
 	if command == "expand":
 		var x: int = int(args.get("x",-1))
 		var y: int = int(args.get("y",-1))
+		if ctx.state.flags.get("raft_layout","") == "123456" and y == 0 and x in [0,1]: return ctx.fail("这是装饰筏根，不能扩建或安装设备")
 		var side: int = 4 if int(ctx.profile.purchases.get("raft",0)) > 0 else 3
 		if x < 0 or y < 0 or x >= side or y >= side: return ctx.fail("超出扩建范围")
 		var adjacent := false

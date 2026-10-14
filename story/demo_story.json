@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "id": "demo.lighthouse",
+  "title": "雾中的来信",
+  "entry": "wake",
+  "nodes": [
+    {"id":"wake","speaker":"旁白","description":"无名海域 · 黎明前","text":"海雾抹去了来路。你在甲板上醒来，掌心仍握着一封被海水浸透的信。","next":"voice"},
+    {"id":"voice","speaker":"守灯人","description":"远处的灯塔，每隔三息亮起一次。","text":"“别急着驶向光。有些灯为归航的人点亮，有些……只是在等你靠近。”","next":"signal"},
+    {"id":"signal","speaker":"你","description":"浪声里，传来一段断续的呼救。","text":"信上的坐标就在前方。你望向灯塔，又看了看漂在浪间的旧浮标。","choices":[{"id":"listen","text":"停下，听清雾中的声音","next":"listen"},{"id":"sail","text":"循着灯光，继续航行","next":"sail"}]},
+    {"id":"listen","speaker":"旁白","description":"你收起船帆，让木筏顺着暗流漂行。","text":"呼救声渐渐变成了歌声。浮标下系着一只铜盒，盒盖上刻着与你信中相同的星图。","next":"end"},
+    {"id":"sail","speaker":"守灯人","description":"蓝白色的灯光穿过海雾。","text":"“那么，记住这道光。等潮水再次升起时，它会告诉你回来的是谁。”","next":"end"},
+    {"id":"end","speaker":"旁白","description":"第一缕晨光浮上海面。","text":"你把信收好，记下眼前的航标。故事尚未结束，而此刻的选择，已留在航海笔记里。"}
+  ]
+}

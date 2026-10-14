@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "assets": {
+    "ui.story.dialogue": {
+      "path": "res://assets/story_ui/dialogue-v1.png",
+      "version": 1,
+      "source": "asset-sources/story-ui-v1/ui-sheet.png",
+      "source_sha256": "9046afd050a2b4e28117340befee84a0b4063981e472a419886b85f3c9c52841",
+      "crop": [
+        0,
+        4,
+        2105,
+        516
+      ],
+      "dimensions": [
+        2105,
+        516
+      ],
+      "sha256": "e5448e1944c1500622f8bab1aa8995f9ad5345066a55d9881e65942c4ed9b829",
+      "dependencies": [],
+      "show_label": false,
+      "license": "AI-generated using built-in imagegen; style reference user-provided homepage"
+    },
+    "ui.story.choice": {
+      "path": "res://assets/story_ui/choice-v1.png",
+      "version": 1,
+      "source": "asset-sources/story-ui-v1/ui-sheet.png",
+      "source_sha256": "9046afd050a2b4e28117340befee84a0b4063981e472a419886b85f3c9c52841",
+      "crop": [
+        57,
+        526,
+        1189,
+        185
+      ],
+      "dimensions": [
+        1189,
+        185
+      ],
+      "sha256": "4e88313bc0a231bf9be5666342fd3584d00447784006fb7f0dfbafc6988d7614",
+      "dependencies": [],
+      "show_label": false,
+      "license": "AI-generated using built-in imagegen; style reference user-provided homepage"
+    },
+    "ui.story.toolbar": {
+      "path": "res://assets/story_ui/toolbar-v1.png",
+      "version": 1,
+      "source": "asset-sources/story-ui-v1/ui-sheet.png",
+      "source_sha256": "9046afd050a2b4e28117340befee84a0b4063981e472a419886b85f3c9c52841",
+      "crop": [
+        1274,
+        520,
+        795,
+        207
+      ],
+      "dimensions": [
+        795,
+        207
+      ],
+      "sha256": "6966c6a4b44c37a76c2bc07ba9586cb30193f87ef97b8399ff9deaddce4d9324",
+      "dependencies": [],
+      "show_label": false,
+      "license": "AI-generated using built-in imagegen; style reference user-provided homepage"
+    },
+    "ui.story.layout": {
+      "path": "res://pages/story_page.gd",
+      "version": 1,
+      "source": "programmatic layout, font configuration and button states",
+      "reference_size": [
+        1600,
+        900
+      ],
+      "dependencies": [
+        "ui.story.dialogue",
+        "ui.story.choice",
+        "ui.story.toolbar",
+        "texture.title.ocean-poster"
+      ],
+      "visual_seed": null,
+      "sha256": "b6e8cfa760f44cb965b22bd0aab8820eadc467f287a75d1392ac0dfc310545d0"
+    }
+  },
+  "source_dimensions": [
+    2117,
+    743
+  ],
+  "alpha": "original RGBA preserved; rectangular crop only"
+}

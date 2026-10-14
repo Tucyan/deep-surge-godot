@@ -1,0 +1,36 @@
+[gd_scene load_steps=4 format=3]
+[ext_resource type="Script" path="res://demo/demo.gd" id="1"]
+[ext_resource type="Texture2D" path="res://addons/deep_surge_status/textures/demo_bg.png" id="2"]
+[ext_resource type="PackedScene" path="res://demo/hud_layout.tscn" id="3"]
+[node name="Demo" type="Control"]
+layout_mode=3
+anchors_preset=15
+anchor_right=1.0
+anchor_bottom=1.0
+grow_horizontal=2
+grow_vertical=2
+script=ExtResource("1")
+[node name="Backdrop" type="TextureRect" parent="."]
+layout_mode=1
+anchors_preset=15
+anchor_right=1.0
+anchor_bottom=1.0
+grow_horizontal=2
+grow_vertical=2
+mouse_filter=2
+texture=ExtResource("2")
+expand_mode=1
+stretch_mode=6
+[node name="DeepSurgeHUD" parent="." instance=ExtResource("3")]
+layout_mode=1
+anchors_preset=15
+anchor_right=1.0
+anchor_bottom=1.0
+[node name="Hint" type="Label" parent="."]
+layout_mode=0
+offset_left=44.0
+offset_top=34.0
+offset_right=752.0
+offset_bottom=78.0
+mouse_filter=2
+text="Q/W/E/T 扣状态   A/S 调整 AP   R 恢复   点击事件选项"

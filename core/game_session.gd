@@ -124,7 +124,9 @@ func new_game(args: Dictionary) -> bool:
 	state.mode = args.mode
 	if state.mode == "story": Campaign.initialize(self)
 	else: state.length = 10 + int(R.draw(state.rng, "nodes") * 6)
-	for i in range(4): state.cells.append({"id":"cell-%d" % i, "x":i%2, "y":i/2, "status":"intact", "damaged_at":0, "equipment":{}})
+	state.flags.raft_layout = "123456"
+	var initial_cells := [Vector2i(2,0),Vector2i(0,1),Vector2i(1,1),Vector2i(2,1)]
+	for i in range(4): state.cells.append({"id":"cell-%d" % i, "x":initial_cells[i].x, "y":initial_cells[i].y, "status":"intact", "damaged_at":0, "equipment":{}})
 	for i in range(6): give(R.pick(state.rng, "initial", I.RESOURCES), 1, false, "initial")
 	if int(profile.purchases.get("inheritance",0)) > 0: give("coin",3)
 	if int(profile.pending.get("supply",0)) > 0: give("filter",1,false,"profile"); profile.pending.supply -= 1
@@ -165,6 +167,12 @@ func snapshot() -> Dictionary:
 func restore(data: Dictionary) -> bool:
 	if not Rules.valid_save(self,data): return fail("存档版本、内容或状态无效，未载入")
 	state = data.state.duplicate(true); profile = data.profile.duplicate(true); revision = int(data.revision)
+	# Migrate only old four-cell layouts; expanded legacy saves retain their coordinates.
+	if not state.is_empty() and not state.flags.has("raft_layout") and state.cells.size() == 4 and state.cells.all(func(c): return c.x < 2 and c.y < 2):
+		var positions := [Vector2i(2,0),Vector2i(0,1),Vector2i(1,1),Vector2i(2,1)]
+		for c in state.cells:
+			var old_index: int = int(c.y)*2+int(c.x); c.x = positions[old_index].x; c.y = positions[old_index].y
+		state.flags.raft_layout = "123456"
 	screen = "home"; panel = ""
 	return true
 func view() -> Dictionary:

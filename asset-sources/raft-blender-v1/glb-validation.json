@@ -1,0 +1,80 @@
+{
+  "crossbow": {
+    "triangles": 372,
+    "meshes": 5,
+    "bytes": 27940,
+    "normals_uvs": true
+  },
+  "deck-damaged-2": {
+    "triangles": 5656,
+    "meshes": 4,
+    "bytes": 375952,
+    "normals_uvs": true
+  },
+  "deck-damaged-3": {
+    "triangles": 5656,
+    "meshes": 4,
+    "bytes": 376604,
+    "normals_uvs": true
+  },
+  "deck-damaged": {
+    "triangles": 5656,
+    "meshes": 4,
+    "bytes": 376712,
+    "normals_uvs": true
+  },
+  "deck-intact-2": {
+    "triangles": 5332,
+    "meshes": 3,
+    "bytes": 350588,
+    "normals_uvs": true
+  },
+  "deck-intact-3": {
+    "triangles": 5332,
+    "meshes": 3,
+    "bytes": 352020,
+    "normals_uvs": true
+  },
+  "deck-intact": {
+    "triangles": 5332,
+    "meshes": 3,
+    "bytes": 352900,
+    "normals_uvs": true
+  },
+  "filter": {
+    "triangles": 1356,
+    "meshes": 6,
+    "bytes": 94724,
+    "normals_uvs": true
+  },
+  "lamp": {
+    "triangles": 852,
+    "meshes": 5,
+    "bytes": 52592,
+    "normals_uvs": true
+  },
+  "medkit": {
+    "triangles": 660,
+    "meshes": 5,
+    "bytes": 49108,
+    "normals_uvs": true
+  },
+  "planter": {
+    "triangles": 1508,
+    "meshes": 4,
+    "bytes": 112620,
+    "normals_uvs": true
+  },
+  "root-decor": {
+    "triangles": 22124,
+    "meshes": 18,
+    "bytes": 2119752,
+    "normals_uvs": true
+  },
+  "spearRack": {
+    "triangles": 426,
+    "meshes": 4,
+    "bytes": 32704,
+    "normals_uvs": true
+  }
+}

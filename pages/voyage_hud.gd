@@ -9,11 +9,12 @@ func rect(control: Control, anchors: Vector4, offsets: Vector4) -> void:
 	control.offset_right = offsets.z; control.offset_bottom = offsets.w
 
 func build() -> void:
-	var stage := Control.new(); stage.size_flags_vertical = Control.SIZE_EXPAND_FILL; add_child(stage)
-	var title := VBoxContainer.new(); stage.add_child(title); rect(title,Vector4.ZERO,Vector4(28,20,820,168))
+	mouse_filter=Control.MOUSE_FILTER_IGNORE
+	var stage := Control.new(); stage.mouse_filter=Control.MOUSE_FILTER_IGNORE; stage.size_flags_vertical = Control.SIZE_EXPAND_FILL; add_child(stage)
+	var title := VBoxContainer.new(); title.mouse_filter=Control.MOUSE_FILTER_IGNORE; stage.add_child(title); rect(title,Vector4.ZERO,Vector4(28,20,820,168))
 	W.text(title,"深 潮",46,W.INK)
 	W.text(title,"D E E P   S U R G E  ·  第一层"+("  /  测试剧情" if context.mode == "story" else "  /  挑战"),14,W.MUTED)
-	var menu := HBoxContainer.new(); title.add_child(menu)
+	var menu := HBoxContainer.new(); menu.mouse_filter=Control.MOUSE_FILTER_IGNORE; title.add_child(menu)
 	if context.can_base and context.get("tutorial_operation","") in ["","craft"]: action(menu,"合成","panel",{"id":"craft"})
 	action(menu,"木筏详情","panel",{"id":"raft"})
 	action(menu,"航行日志","panel",{"id":"logs"})
@@ -23,37 +24,53 @@ func build() -> void:
 	action(menu,"返回首页","home")
 	for child in menu.get_children(): child.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	W.text(title,"第 %d / %d 次航行    %s" % [context.voyage,context.length,PHASES[context.phase]],17,W.GOLD)
-	var status := W.panel(stage); rect(status.get_parent(),Vector4(1,0,1,0),Vector4(-356,24,-24,184))
-	status.add_theme_constant_override("separation",8)
-	var names := {"hp":"生命","hunger":"饱食","hydration":"水分","sanity":"SAN"}
-	var colors := {"hp":Color("c58d68"),"hunger":Color("c8ab69"),"hydration":Color("88b9c5"),"sanity":Color("aaa1cd")}
-	for key in names:
-		var row := HBoxContainer.new(); row.add_theme_constant_override("separation",8); status.add_child(row)
-		var label := W.text(row,names[key],15); label.custom_minimum_size.x = 44; label.size_flags_horizontal = 0
-		var bar := ProgressBar.new(); bar.custom_minimum_size = Vector2(0,8); bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER; bar.max_value = context.player[key+"_max"]; bar.value = context.player[key]; bar.show_percentage = false
-		var fill := StyleBoxFlat.new(); fill.bg_color = colors[key]; fill.set_corner_radius_all(4); bar.add_theme_stylebox_override("fill",fill)
-		var back := StyleBoxFlat.new(); back.bg_color = Color("344b55"); back.set_corner_radius_all(4); bar.add_theme_stylebox_override("background",back)
-		row.add_child(bar)
-		var number := W.text(row,"%d/%d" % [context.player[key],context.player[key+"_max"]],14); number.custom_minimum_size.x = 64; number.size_flags_horizontal = 0
+	var status = preload("res://addons/deep_surge_status/status_hud.gd").new(); status.name = "SurgeStatusHUD"; stage.add_child(status)
+	rect(status,Vector4(1,0,1,0),Vector4(-1248,14,-24,94))
+	for key in {"hp":"health","hunger":"satiety","hydration":"water","sanity":"sanity"}:
+		status.set_stat({"hp":"health","hunger":"satiety","hydration":"water","sanity":"sanity"}[key],context.player[key],context.player[key+"_max"])
 	if context.phase not in ["chapterComplete","finished"]:
-		var ap := W.panel(stage); rect(ap.get_parent(),Vector4(1,0,1,0),Vector4(-174,200,-24,252))
-		ap.get_parent().add_theme_stylebox_override("panel",compact_style())
+		var ap = preload("res://addons/deep_surge_status/action_points_hud.gd").new(); ap.name = "SurgeActionPointHUD"; stage.add_child(ap)
+		rect(ap,Vector4(0,1,0,1),Vector4(28,-386,328,-310))
 		var night: Dictionary = context.get("night",{})
 		if not night.is_empty() and night.voyage == context.voyage and context.phase in ["nightHub","story"]:
-			W.text(ap,"今晚机会  %d" % night.budget,20,W.GOLD)
-		else: W.text(ap,"行动点  %d/%d" % [context.battle.ap if context.phase == "battle" else context.ap,context.player.battle_ap if context.phase == "battle" else context.player.base_ap],20,W.GOLD)
-	var operation := W.panel(stage); rect(operation.get_parent(),Vector4(1,0,1,1),Vector4(-356,270,-24,-326))
+			ap.label_text = "今晚机会"; ap.set_ap(night.budget,maxi(1,night.budget)); ap.show_numbers = true
+		else: ap.set_ap(context.battle.ap if context.phase == "battle" else context.ap,context.player.battle_ap if context.phase == "battle" else context.player.base_ap)
+	var frame = preload("res://presentation/hud_frame.gd").new()
+	frame.name = "VoyageOperationFrame"; stage.add_child(frame)
+	frame.add_theme_stylebox_override("panel",compact_style())
+	rect(frame,Vector4(1,0,1,0),Vector4(-356,108,-24,108))
+	var operation := VBoxContainer.new(); frame.add_child(operation)
 	operation.add_theme_constant_override("separation",9)
+	frame.visible=context.phase!="story" or context.ui_state.get("card","")!=""
 	operation_content(operation)
-	var tray := VBoxContainer.new(); stage.add_child(tray); tray.add_theme_constant_override("separation",7)
+	style_operation_buttons(operation)
+	var tray := VBoxContainer.new(); tray.mouse_filter=Control.MOUSE_FILTER_IGNORE; stage.add_child(tray); tray.add_theme_constant_override("separation",7)
 	rect(tray,Vector4(0,1,1,1),Vector4(28,-302,-28,-18))
 	hand(tray)
 
 func compact_style() -> StyleBoxFlat:
-	var style := StyleBoxFlat.new(); style.bg_color = Color(0.05,0.105,0.135,0.93); style.border_color = Color("6e6c57"); style.set_border_width_all(1)
-	style.content_margin_left = 12; style.content_margin_right = 12; style.content_margin_top = 10; style.content_margin_bottom = 10
+	var style := StyleBoxFlat.new(); style.bg_color = Color(0.035,0.065,0.09,0.94); style.border_color = Color("887e64"); style.set_border_width_all(1)
+	style.set_corner_radius_all(4)
+	style.content_margin_left = 20; style.content_margin_right = 20; style.content_margin_top = 20; style.content_margin_bottom = 18
 	return style
+
+func style_operation_buttons(box: Node) -> void:
+	for child in box.get_children():
+		if not child is Button: continue
+		child.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		child.custom_minimum_size.y = 38
+		for state in ["normal","hover","pressed","disabled"]:
+			var style := StyleBoxFlat.new()
+			style.bg_color = Color("182934") if state == "normal" else Color("263b47")
+			style.border_color = Color("817961") if state == "normal" else Color("ddcaa2")
+			if state == "disabled": style.bg_color = Color("111c23"); style.border_color = Color("424c4e")
+			style.set_border_width_all(1); style.set_corner_radius_all(3)
+			style.content_margin_left = 12; style.content_margin_right = 12
+			style.content_margin_top = 7; style.content_margin_bottom = 7
+			child.add_theme_stylebox_override(state,style)
+		child.add_theme_color_override("font_color",Color("eee3cd"))
+		child.add_theme_color_override("font_hover_color",Color("fff8e9"))
+		child.add_theme_color_override("font_pressed_color",Color("fff8e9"))
 
 func operation_content(box: Node) -> void:
 	var selected: String = context.ui_state.get("card","")
@@ -66,6 +83,7 @@ func operation_content(box: Node) -> void:
 			if card.definition.kind in ["equipment","action"]: action(box,"在木筏上使用","panel",{"id":"raft"},not context.can_base)
 			W.button(box,"返回当前阶段",func(): request("card",""))
 			return
+	if context.phase=="story": return
 	W.text(box,PHASES[context.phase],25,W.GOLD)
 	match context.phase:
 		"navigation":
@@ -107,22 +125,10 @@ func operation_content(box: Node) -> void:
 func hand(parent: Node) -> void:
 	var header := HBoxContainer.new(); parent.add_child(header)
 	W.text(header,"手牌 %d/%d   ·   贝币 %d" % [context.capacity,context.player.limit,context.coins],16,W.MUTED)
-	W.text(header,"选择查看用途",14,W.MUTED).horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	var pages: int = maxi(1,ceili(float(context.hand.size())/10.0))
-	var page_index: int = clampi(int(context.ui_state.get("hand_page",0)),0,pages-1)
-	var row := HBoxContainer.new(); row.add_theme_constant_override("separation",8); parent.add_child(row)
-	var width: float = maxf(105.0,(get_viewport_rect().size.x-56.0-72.0)/10.0)
-	for index in range(page_index*10,mini(context.hand.size(),(page_index+1)*10)):
-		var card: Dictionary = context.hand[index]
-		var tile := ItemCard.new(); row.add_child(tile); tile.size_flags_horizontal = 0
-		if context.phase == "discard":
-			tile.create(assets,card,"弃置 · "+card.definition.name,func(): send("discard",{"uid":card.uid}),width,202,card.id in ["punch","pollution"])
-		elif context.can_base and card.definition.kind == "survival":
-			tile.create(assets,card,"使用 · "+card.definition.name,func(): send("play",{"uid":card.uid}),width,202)
-		else: tile.create(assets,card,"查看",func(): request("card",card.uid),width,202)
-	var footer := HBoxContainer.new(); parent.add_child(footer)
-	if pages > 1:
-		W.button(footer,"上一组手牌",func(): request("hand_page",str(page_index-1)),page_index == 0).size_flags_horizontal = 0
-		W.counter(footer,"%d/%d" % [page_index+1,pages])
-		W.button(footer,"下一组手牌",func(): request("hand_page",str(page_index+1)),page_index == pages-1).size_flags_horizontal = 0
-	if context.phase == "discard" and context.coins > 0: action(footer,"弃置全部贝币（%d）" % context.coins,"discard",{"uid":"coins"})
+	var fan = load("res://presentation/hand_fan.gd").new(); parent.add_child(fan)
+	fan.set_meta("presentation_role","voyage"); fan.create(assets,context.hand,context)
+	fan.activated.connect(func(card):
+		if context.phase == "discard": send("discard",{"uid":card.uid})
+		elif context.can_base and card.definition.kind == "survival": send("play",{"uid":card.uid})
+		else: request("card",card.uid))
+	if context.phase == "discard" and context.coins > 0: action(header,"弃置全部贝币（%d）" % context.coins,"discard",{"uid":"coins"})

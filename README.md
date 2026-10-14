@@ -1,5 +1,7 @@
 # Deep Surge · Godot V0.2 流程重做
 
+2026-10-14 新增独立 Galgame 剧情页面：运行 `./launch-story.ps1` 或打开 `scenes/story_demo.tscn` 按 F6。包含打字对白、说明、右上 SKIP、选项与分页 LOG；暂不接入主程序。数据与调用契约分别见[剧情数据结构](docs/story-data.md)、[剧情接口](docs/story-interface.md)；`./launch-story.ps1 -Verify` 可运行专门测试。
+
 2026-10-12 雾调整：深度雾保持14米开始/38米完全浓雾，并保留镜头比例缩放；色彩从蓝色移向低饱和灰青，三层低空雾偏灰绿、缓慢漂移，近筏遮罩保护木筏及扩展范围。没有改海面波形或海面色板。验证见[雾验证](evidence/fog-verification.md)。
 
 2026-10-12 当前海面（风格化冷夜v1）：程序化Gerstner波＋三渲二分档暗蓝着色、浪脊断续硬边泡沫、月光闪点、灯笼暖光、筏格接触环、深度雾与航行视口冷夜调色；参数见`assets/data/toon-ocean.json`。原GLB海面保留为回退。详见[风格化夜海验证](evidence/toon-ocean-verification.md)。下一段GLB海面说明为回退及历史记录。
@@ -113,3 +115,11 @@ godot --path . --script tests/story_ui_smoke.gd -- --capture
 素材原图/原zip/原blend归档在`asset-sources/`，由`.gdignore`隔离自动导入。不直接引用微信下载目录。当前模型外观参数在`assets/data/model-ocean.json`，源采样在`supplied-ocean.json/surface.bin`；通过`tools/register_model_ocean.py`更新hash登记。`tools/generate_texture_ocean.py`保留纹理回退及泡沫纹理生成，不覆盖新版scene.voyage映射。图片/颜色/形变数据/泡沫/逻辑状态独立，源模型文件未修改。
 
 独立本地Git仓库，根仓库忽略此工程；本次未提交、未推送。
+
+当前海面细节 v1：独立 256×256 纹理增加水流细纹、泡沫孔洞和微法线反光，参数位于 assets/data/toon-ocean.json 的 detail 段。最新对照为 evidence/ocean-detail-before.png / ocean-detail-after.png，验证记录 evidence/ocean-detail-verification.md。
+
+手牌交互已更新为无分页重叠排列，鼠标附近展开，停留 0.35 秒显示描述与操作说明。毛玻璃 shader、铜色纹理边框和卡牌图片独立维护。验证：`tests/test_hand_fan.gd`；实机截图：`evidence/hand-hover.png`。
+
+当前木筏按真实筏格与设备生成，取消常驻帆/货箱等固定装饰。空位、设备类型/等级、破损、脱落和灯燃料均同步呈现。映射与验证：docs/raft-state-models.md；截图：evidence/raft-state-*.png。
+
+当前木筏为 Blender 模块版：上排 1、2 装饰，3 可用；下排 4、5、6 可用。几何源 asset-sources/raft-blender-v1/raft_modules_v001.blend，运行 GLB 独立位于 assets/models/raft-modules；通过 AssetCatalog 稳定 ID 加载。完整初始模型：asset-sources/raft-blender-v1/raft_initial_v001.glb。旧四格存档迁移位置，已扩建旧存档保留旧布局。详细映射、边界和验证见 docs/raft-state-models.md。

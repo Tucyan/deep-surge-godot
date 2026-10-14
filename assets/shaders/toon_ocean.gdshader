@@ -1,4 +1,15 @@
 shader_type spatial;
+// R flow, G pores/grain, BA micro slopes. Two samples, no extra draw layer.
+uniform sampler2D detail_texture : repeat_enable, filter_linear_mipmap;
+uniform bool detail_enabled = true;
+uniform bool lantern_enabled = true;
+uniform float detail_scale = 0.22;
+uniform float detail_flow_strength = 0.42;
+uniform float detail_water_contrast = 0.12;
+uniform float detail_pore_strength = 0.88;
+uniform float detail_thread_strength = 0.35;
+uniform float detail_normal_strength = 0.08;
+uniform vec2 detail_fade_distance = vec2(12.0,36.0);
 render_mode unshaded, cull_back, shadows_disabled, fog_disabled;
 // Stylized night ocean. Gerstner math must stay identical to presentation/toon_ocean.gd.
 
@@ -220,6 +231,19 @@ void fragment() {
 	vec3 to_camera = CAMERA_POSITION_WORLD - world_pos;
 	float dist = length(to_camera);
 	vec3 v = to_camera / dist;
+	float detail_fade = detail_enabled ? 1.0-smoothstep(detail_fade_distance.x,detail_fade_distance.y,dist) : 0.0;
+	vec2 flow_axis = normalize(wave_dk[0].xy);
+	vec2 flow_side = vec2(-flow_axis.y,flow_axis.x);
+	vec2 detail_uv = vec2(dot(g,flow_axis),dot(g,flow_side))*detail_scale;
+	vec4 detail_a = vec4(0.0,0.5,0.5,0.5);
+	vec4 detail_b = detail_a;
+	if (detail_fade > 0.0) {
+		detail_a = texture(detail_texture,detail_uv+vec2(-visual_time*0.014,visual_time*0.003));
+		detail_b = texture(detail_texture,detail_uv*4.2+vec2(0.173,0.287)+vec2(-visual_time*0.011,-visual_time*0.009));
+	}
+	vec2 micro_slope = ((detail_a.ba*2.0-1.0)*0.4+(detail_b.ba*2.0-1.0)*0.6)*detail_normal_strength*detail_fade;
+	vec2 micro_xz = flow_axis*micro_slope.x+flow_side*micro_slope.y;
+	vec3 detail_n = normalize(n+vec3(micro_xz.x,0.0,micro_xz.y));
 
 	// Banded body colour from key light and wave height.
 	float ndl = dot(n, normalize(key_direction)) * 0.5 + 0.5;
@@ -231,17 +255,21 @@ void fragment() {
 	col = mix(col, rim_color, aa_step(band_thresholds.w, value));
 	float fresnel = pow(1.0 - clamp(dot(n, v), 0.0, 1.0), fresnel_power) * fresnel_strength;
 	col = mix(col, sky_reflect_color, fresnel);
+	float grain = (detail_a.g+detail_b.g)*0.5-0.5;
+	col *= 1.0+grain*detail_water_contrast*detail_fade;
+	float flow_lines = detail_a.r*0.7+detail_b.r*0.3;
+	col = mix(col,mix(col,rim_color,0.4),flow_lines*detail_flow_strength*detail_fade);
 
 	// Lantern: faint warm pool plus warm glints on facets that reflect the lamp.
-	float lantern = 1.0 - smoothstep(0.0, lantern_radius, length(world_pos.xz - lantern_position.xz));
+	float lantern = lantern_enabled ? 1.0 - smoothstep(0.0, lantern_radius, length(world_pos.xz - lantern_position.xz)) : 0.0;
 	col = mix(col, col + lantern_color * 0.12, aa_step(0.5, lantern) * lantern_strength);
 	vec3 lantern_half = normalize(normalize(lantern_position - world_pos) + v);
-	float lantern_spec = max(dot(n, lantern_half), 0.0);
+	float lantern_spec = max(dot(detail_n, lantern_half), 0.0);
 	col = mix(col, lantern_color, aa_step(lantern_glint_threshold, lantern_spec + (hash21(floor(g * 9.0)) - 0.5) * 0.02) * lantern);
 
 	// Moon path: quantized sheen plus broken hard glints.
 	vec3 half_vector = normalize(normalize(moon_direction) + v);
-	float spec = max(dot(n, half_vector), 0.0);
+	float spec = max(dot(detail_n, half_vector), 0.0);
 	col = mix(col, rim_color * 1.35, pow(spec, sheen_power) * sheen_strength * 3.0);
 	float sparkle = spec + (value_noise(g * 3.1 + visual_time * 0.6) - 0.5) * glint_noise;
 	col = mix(col, glint_color, aa_step(glint_threshold, sparkle));
@@ -255,6 +283,10 @@ void fragment() {
 	float core = aa_step(core_threshold, foam_value) * distance_fade;
 	float edge = voronoi_edge(g * streak_scale + wave_dk[0].xy * visual_time * 0.12 + noise * 0.8);
 	float streak = (1.0 - aa_step(streak_width, edge)) * smoothstep(streak_crest, streak_crest + 0.25, crest) * streak_strength * distance_fade;
+	// Pores affect open-water foam; the raft contact ring is composed afterwards.
+	float pores = smoothstep(0.61,0.73,detail_b.g)*detail_pore_strength*detail_fade;
+	foam *= 1.0-pores; core *= 1.0-pores;
+	float threads = detail_b.r*detail_thread_strength*detail_fade*max(foam,core);
 
 	// Contact rings follow the real cell footprint, not only its bounding box.
 	float sdf = 1000.0;
@@ -269,7 +301,7 @@ void fragment() {
 	foam = max(foam, ring);
 
 	col = mix(col, foam_color, max(streak, foam));
-	col = mix(col, foam_core_color, core);
+	col = mix(col, foam_core_color, max(core,threads));
 	float fog = pow(clamp((dist - fog_depth.x) / (fog_depth.y - fog_depth.x), 0.0, 1.0), fog_depth.z);
 	ALBEDO = mix(col, fog_color, fog);
 }

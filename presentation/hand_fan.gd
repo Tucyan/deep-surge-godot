@@ -1,0 +1,193 @@
+extends Control
+const ItemCard = preload("res://presentation/item_card.gd")
+const W = preload("res://presentation/widgets.gd")
+const Border = preload("res://presentation/hand_border.gd")
+signal activated(card: Dictionary)
+var cards: Array = []
+var tiles: Array = []
+var buttons: Array = []
+var context: Dictionary
+var visual_assets: RefCounted
+var hovered := -1
+var focus_x := 0.0
+var dwell := 0.0
+var back_copy: BackBufferCopy
+var glass: ColorRect
+var border: Control
+var tip: PanelContainer
+var tip_text: Label
+var card_width := 120.0
+var card_height := 184.0
+var base_x: Array = []
+var target_positions: Array[Vector2] = []
+var laid_out := false
+var departures: Array = []
+var refill_delay := 0.0
+const EXIT_DURATION := 0.24
+@export_range(0.05,0.5) var move_duration := 0.18
+func create(assets: RefCounted, entries: Array, view: Dictionary) -> void:
+	add_to_group("hand_fans")
+	context = view; cards = entries; visual_assets = assets
+	custom_minimum_size = Vector2(0,238)
+	size_flags_horizontal = SIZE_EXPAND_FILL
+	size_flags_vertical = SIZE_EXPAND_FILL
+	mouse_filter = MOUSE_FILTER_STOP
+	back_copy = BackBufferCopy.new(); back_copy.copy_mode = BackBufferCopy.COPY_MODE_RECT; add_child(back_copy)
+	glass = ColorRect.new(); glass.mouse_filter = MOUSE_FILTER_IGNORE
+	var mat := ShaderMaterial.new(); mat.shader = preload("res://assets/shaders/hand_glass.gdshader"); glass.material = mat
+	add_child(glass); glass.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
+	border = Border.new(); add_child(border); border.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
+	for i in range(cards.size()):
+		var card: Dictionary = cards[i]
+		var tile := ItemCard.new(); add_child(tile)
+		var disabled: bool = context.phase == "discard" and card.id in ["punch","pollution"]
+		if context.phase == "battle": disabled = card.definition.cost > context.battle.ap
+		tile.create(assets,card,action_name(card),func(): activated.emit(card),120,184,disabled)
+		ignore_mouse(tile)
+		var button: Button = tile.get_child(0).get_child(tile.get_child(0).get_child_count()-1)
+		button.tooltip_text = ""; buttons.append(button)
+		button.focus_entered.connect(func(): focus_card(i))
+		tiles.append(tile)
+	tip = PanelContainer.new(); tip.mouse_filter = MOUSE_FILTER_IGNORE; tip.z_index = 100
+	var style := StyleBoxFlat.new(); style.bg_color = Color(0.025,0.065,0.09,0.97); style.border_color = W.GOLD; style.set_border_width_all(1)
+	style.content_margin_left = 18; style.content_margin_right = 18; style.content_margin_top = 14; style.content_margin_bottom = 14
+	tip.add_theme_stylebox_override("panel",style); add_child(tip)
+	tip_text = Label.new(); tip_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART; tip_text.add_theme_font_size_override("font_size",17); tip_text.mouse_filter = MOUSE_FILTER_IGNORE; tip.add_child(tip_text); tip.hide()
+	resized.connect(arrange)
+	mouse_exited.connect(func(): focus_card(-1))
+	arrange.call_deferred()
+func capture_visual() -> Dictionary:
+	var positions := {}; var entries := {}; var scales := {}; var actions := {}
+	for i in range(cards.size()):
+		positions[cards[i].uid] = tiles[i].position; entries[cards[i].uid] = cards[i]; scales[cards[i].uid] = tiles[i].scale; actions[cards[i].uid] = action_name(cards[i])
+	var exiting := []
+	for exit in departures:
+		exiting.append({"card":exit.card,"origin":exit.origin,"scale":exit.scale,"elapsed":exit.elapsed,"action":exit.get("action","")})
+	return {"actions":actions,"entries":entries,"scales":scales,"departures":exiting,"refill_delay":refill_delay,"positions":positions,"hover_uid":cards[hovered].uid if hovered>=0 else "","dwell":dwell,"tip_visible":tip.visible}
+func restore_visual(saved: Dictionary) -> void:
+	if saved.is_empty(): return
+	arrange()
+	hovered = -1
+	for i in range(cards.size()):
+		if saved.positions.has(cards[i].uid): tiles[i].position = saved.positions[cards[i].uid]
+		if cards[i].uid == saved.hover_uid: hovered = i
+	laid_out = true; dwell = saved.dwell if hovered>=0 else 0.0
+	arrange()
+	if hovered>=0 and saved.tip_visible: show_description()
+	refill_delay = saved.get("refill_delay",0.0)
+	for exit in saved.get("departures",[]): add_departure(exit)
+	for uid in saved.get("entries",{}):
+		if cards.any(func(c): return c.uid == uid): continue
+		add_departure({"card":saved.entries[uid],"origin":saved.positions[uid],"scale":saved.scales[uid],"elapsed":0.0,"action":saved.get("actions",{}).get(uid,"")})
+		refill_delay = maxf(refill_delay,.12)
+func add_departure(exit: Dictionary) -> void:
+	var tile := ItemCard.new(); tile.name = "DepartingCard"; tile.set_meta("departing_uid",exit.card.uid); add_child(tile)
+	tile.create(visual_assets,exit.card,exit.get("action",""),func(): pass,120,184)
+	ignore_mouse(tile); tile.size = Vector2(120,184); tile.pivot_offset = Vector2(60,92); tile.z_index = 30
+	var record := exit.duplicate(); record["tile"] = tile; departures.append(record); draw_departure(record)
+func draw_departure(exit: Dictionary) -> void:
+	var t := clampf(exit.elapsed/EXIT_DURATION,0.0,1.0)
+	var eased := t*t*(3.0-2.0*t)
+	exit.tile.position = exit.origin+Vector2(0,-24)*eased
+	exit.tile.scale = exit.scale*(1.0-.22*eased)
+	exit.tile.modulate.a = 1.0-eased
+func ignore_mouse(node: Control) -> void:
+	node.mouse_filter = MOUSE_FILTER_IGNORE
+	for child in node.get_children():
+		if child is Control: ignore_mouse(child)
+func action_name(card: Dictionary) -> String:
+	if context.phase == "discard": return "弃置 · "+card.definition.name
+	if context.phase == "battle" or (context.can_base and card.definition.kind == "survival"): return "使用 · "+card.definition.name
+	return "查看 · "+card.definition.name
+func usage(card: Dictionary) -> String:
+	var cost := "消耗 %d AP" % card.definition.cost if card.definition.cost > 0 else "不消耗 AP"
+	if context.phase == "discard": return "整理手牌：点击弃置此牌。" if card.id not in ["punch","pollution"] else "此牌不能主动弃置。"
+	if context.phase == "battle": return ("AP 不足。" if card.definition.cost > context.battle.ap else "点击使用。")+cost
+	match card.definition.kind:
+		"survival": return ("点击使用。" if context.can_base else "抵达后的准备或收尾阶段可以使用。")+cost
+		"equipment": return "点击查看；在「木筏详情」选择筏格安装。制造与安装分别收费。"
+		"action": return "点击查看；在「木筏详情」选择目标执行。"+cost
+		"combat","negative": return "战斗中查看与使用。"+cost
+		_: return "制作材料：在「合成」选择配方消耗；点击查看用途。"
+func focus_card(index: int) -> void:
+	if hovered == index: return
+	if index >= 0: focus_x = tiles[index].position.x
+	hovered = index; dwell = 0.0
+	if is_instance_valid(tip): tip.hide()
+	arrange()
+func arrange() -> void:
+	if is_instance_valid(back_copy): back_copy.rect = Rect2(Vector2.ZERO,size).grow(24)
+	card_height = clampf(size.y-40,160,190); card_width = card_height*0.651
+	var plate_top := maxf(0.0,size.y-card_height-28.0)
+	if is_instance_valid(glass): glass.offset_top = plate_top
+	if is_instance_valid(border): border.offset_top = plate_top
+	if tiles.is_empty(): return
+	var available := maxf(1,size.x-40-card_width)
+	var step := minf(card_width+8.0,available/maxi(1,cards.size()-1))
+	var crowded := step < card_width
+	var start := (size.x-(step*(cards.size()-1)+card_width))*0.5
+	base_x.clear()
+	target_positions.clear()
+	for i in range(cards.size()): base_x.append(start+i*step)
+	for i in range(cards.size()):
+		var x: float = base_x[i]
+		if hovered >= 0:
+			# Only the closest two cards on each side make a small amount of room.
+			# The raised card renders above overlap; the rest of the hand stays anchored.
+			focus_x = base_x[hovered]
+			var distance := absi(i-hovered)
+			if crowded and distance > 0 and distance <= 2:
+				# Move only by the overlap with this neighbour, with no added gap.
+				var visible_width := card_width*.5 if i<hovered else card_width
+				var overlap := maxf(0.0,visible_width-step*distance)
+				var movement := minf(overlap,step*.45)
+				x += movement*(-1.0 if i<hovered else 1.0)
+				x = clampf(x,20,size.x-20-card_width)
+		var tile: Control = tiles[i]
+		# ItemCard keeps its authored aspect ratio; scale its fixed base size.
+		tile.size = Vector2(120,184); tile.scale = Vector2.ONE*(card_height/184)
+		var target := Vector2(x,size.y-card_height-14-(14 if i == hovered else 0))
+		target_positions.append(target)
+		if not laid_out: tile.position = target
+		tile.z_index = 20 if i == hovered else 1
+	laid_out = true
+	if is_instance_valid(tip) and tip.visible: place_tip()
+func show_description() -> void:
+	if hovered < 0: return
+	var card: Dictionary = cards[hovered]
+	tip_text.text = card.definition.name+"\n"+card.definition.description+"\n\n"+usage(card)
+	tip_text.custom_minimum_size.x = minf(360,size.x-24)-36
+	tip.size = Vector2(minf(360,size.x-24),0); tip.show(); place_tip(); place_tip.call_deferred()
+func place_tip() -> void:
+	var width := minf(360,size.x-24)
+	tip.size = Vector2(width,0)
+	tip.position = Vector2(clampf(focus_x+card_width*0.5-width*0.5,8,size.x-width-8),-tip.size.y-12)
+	if tip.global_position.y < 8: tip.global_position.y = 8
+func _process(delta: float) -> void:
+	for i in range(departures.size()-1,-1,-1):
+		var exit: Dictionary = departures[i]; exit.elapsed += delta; draw_departure(exit)
+		if exit.elapsed >= EXIT_DURATION: exit.tile.queue_free(); departures.remove_at(i)
+	var move_delta := maxf(0.0,delta-refill_delay)
+	refill_delay = maxf(0.0,refill_delay-delta)
+	var blend := 1.0-exp(-move_delta*4.0/maxf(.05,move_duration))
+	for i in range(mini(tiles.size(),target_positions.size())):
+		var tile: Control = tiles[i]
+		if tile.position.distance_squared_to(target_positions[i]) < .04: tile.position = target_positions[i]
+		else: tile.position = tile.position.lerp(target_positions[i],blend)
+	if tip.visible: place_tip()
+	if hovered >= 0:
+		dwell += delta
+		if dwell >= 0.35 and not tip.visible: show_description()
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion and not cards.is_empty():
+		# Keep the raised card while the pointer is inside it; hit-test the
+		# visible neighbours only after leaving. This avoids layout feedback.
+		if hovered >= 0 and Rect2(tiles[hovered].position,tiles[hovered].size*tiles[hovered].scale).has_point(event.position): return
+		var index := -1
+		for i in range(tiles.size()-1,-1,-1):
+			if Rect2(tiles[i].position,tiles[i].size*tiles[i].scale).has_point(event.position):
+				index = i; break
+		focus_card(index)
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and hovered >= 0:
+		if not buttons[hovered].disabled and Rect2(tiles[hovered].position,tiles[hovered].size*tiles[hovered].scale).has_point(event.position): activated.emit(cards[hovered])
+		accept_event()

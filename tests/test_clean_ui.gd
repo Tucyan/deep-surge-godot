@@ -26,7 +26,7 @@ func run() -> void:
 	check(find(app,"SubViewport").size() == 1 and find(app,"Node3D").size() > 0,"航行必须是真实3D场景")
 	check(find(app,"ScrollContainer").is_empty(),"游戏主界面无滚动容器")
 	check(app.world_view.cells.get_child_count() == 4,"场景按四个逻辑筏格映射")
-	check(find(app.world_view.raft.get_node("CampDecoration"),"MeshInstance3D").size() == 9,"现有木筏GLB九网格导入")
+	check(app.world_view.raft.get_node_or_null("CampDecoration") == null,"空木筏无固定帆/箱/盆栽装饰")
 	var before: Dictionary = app.session.snapshot()
 	app.handle_ui("hand_page","1")
 	await process_frame
