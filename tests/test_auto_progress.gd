@@ -33,27 +33,29 @@ func _init():
 	s=fixture("aftermath",1,["wood","iron"]); s.dispatch("resume")
 	check(s.phase()=="aftermath","legal crafting keeps aftermath open")
 	s.dispatch("craft",{"id":"lamp"})
-	check(s.phase()=="navigation","last AP craft automatically settles")
-	s=fixture("aftermath",1,["filter"]); s.dispatch("resume")
-	check(s.phase()=="aftermath","legal installation with remaining AP is preserved")
+	check(s.phase()=="aftermath","newly crafted equipment can still be installed for 0 AP")
+	s.dispatch("install",{"uid":s.state.hand[0].uid,"auto":true})
+	check(s.phase()=="navigation","installing last equipment automatically settles")
+	s=fixture("aftermath",0,["filter"]); s.dispatch("resume")
+	check(s.phase()=="aftermath","legal 0 AP installation is preserved even with 0 AP")
 	for phase in ["navigation","preparation"]:
 		s=fixture(phase,0,[]); s.dispatch("resume")
 		check(s.phase()==phase,"do not skip required destination or node: "+phase)
-	s=fixture("battle",1,["punch"]); var hp: int=s.state.player.hp
-	s.dispatch("play",{"uid":s.state.hand[0].uid})
+	s=fixture("battle",1,[]); var hp: int=s.state.player.hp
+	s.dispatch("battle_action",{"action":"attack"})
 	check(s.phase()=="battle" and s.state.battle.turn==2 and s.state.battle.ap==3 and s.state.player.hp<hp,"last AP auto runs enemy and refreshes next turn")
-	s=fixture("battle",1,["punch","arrow"])
-	s.dispatch("play",{"uid":s.state.hand[0].uid})
+	s=fixture("battle",1,["arrow"])
+	s.dispatch("battle_action",{"action":"attack"})
 	check(s.state.battle.turn==1 and s.state.battle.ap==0,"free arrow blocks automatic enemy turn")
 	s.dispatch("play",{"uid":s.state.hand[-1].uid})
 	check(s.state.battle.turn==2,"using final free arrow advances turn")
 	s=fixture("battle",0,["water"]); s.state.player.hydration=s.state.player.hydration_max
 	s.dispatch("resume")
 	check(s.state.battle.turn==2,"ineffective free heal does not block battle")
-	s=fixture("battle",1,["punch"]); s.state.battle.hp=1
-	s.dispatch("play",{"uid":s.state.hand[0].uid})
+	s=fixture("battle",1,[]); s.state.battle.hp=1
+	s.dispatch("battle_action",{"action":"attack"})
 	check(s.phase()=="story" and s.state.story_step=="result","victory keeps result instead of advancing enemy")
-	s=fixture("battle",0,["punch"]); s.state.player.hp=1; s.dispatch("resume")
+	s=fixture("battle",0,[]); s.state.player.hp=1; s.dispatch("resume")
 	check(s.phase()=="finished" and s.state.result=="dead","automatic enemy turn handles death and settlement")
 	s=fixture("aftermath",0,["wood"])
 	s.state.cells[0].equipment={"id":"lamp","level":1,"fuel":0,"progress":0}

@@ -43,6 +43,8 @@ def register(manifest):
             entry['planter_mapping'] = 'Only level 1 with progress=0 is seedling; level 1 progress>=1 and all level 2/3 are mature (due to produce this voyage). Damaged retains shape, disabled.'
         from register_filter_states import register as register_filter
         register_filter(manifest)
+        from register_stylized_wood import register as register_stylized
+        register_stylized(manifest)
         return
     source = ROOT/'asset-sources/planter-v2/planter_v002.blend'
     if not source.exists():

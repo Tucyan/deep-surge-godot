@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/models/props/wooden-crate.glb" id="1_crate"]
+
+[node name="StorageCrate" type="Node3D"]
+
+[node name="WoodenCrate" parent="." instance=ExtResource("1_crate")]
+position = Vector3(0, 0.17, 0)

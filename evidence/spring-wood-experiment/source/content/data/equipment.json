@@ -1,0 +1,105 @@
+{
+  "lamp": {
+    "name": "灯",
+    "description": "燃烧时抵消精神耗损；燃料越多燃烧越久。",
+    "fuel": true
+  },
+  "filter": {
+    "name": "滤水器",
+    "description": "自动生产淡水。",
+    "output": "water",
+    "intervals": [
+      2,
+      1,
+      1
+    ],
+    "amounts": [
+      1,
+      1,
+      2
+    ]
+  },
+  "planter": {
+    "name": "土盆",
+    "description": "自动生产食用植物。",
+    "output": "food",
+    "intervals": [
+      2,
+      1,
+      1
+    ],
+    "amounts": [
+      1,
+      1,
+      2
+    ]
+  },
+  "medkit": {
+    "name": "包扎包",
+    "description": "旧档兼容设备；当前包扎包为一次性生存牌，恢复3生命。",
+    "healing": [
+      3,
+      5,
+      6
+    ],
+    "activationCosts": {
+      "cloth": 1
+    }
+  },
+  "crossbow": {
+    "name": "弓弩",
+    "description": "战斗每回合产箭；升级增加堆叠容量。",
+    "battleOutput": "arrow"
+  },
+  "spearRack": {
+    "name": "矛架",
+    "description": "每场战斗开始产一张矛；基础伤害3，二级起伤害5。",
+    "battleOutput": "spear",
+    "battleStartOnly": true
+  },
+  "shieldRack": {
+    "name": "盾架",
+    "description": "每战斗回合开始获得1点本回合护盾。",
+    "battleShield": 1
+  },
+  "generator": {
+    "name": "发电机",
+    "description": "投入尸体获得燃料；周期结束后选择一种战斗增益。",
+    "generator": true,
+    "intervals": [
+      2,
+      1,
+      1
+    ],
+    "capacities": [
+      1,
+      1,
+      2
+    ],
+    "fuelPerCorpse": 3
+  },
+  "fishingNet": {
+    "name": "捕捞网",
+    "description": "每航行轮开始获得一份基础资源。",
+    "output": "random_resource",
+    "intervals": [
+      1,
+      1,
+      1
+    ],
+    "amounts": [
+      1,
+      1,
+      1
+    ]
+  },
+  "crate": {
+    "name": "储物箱",
+    "description": "完好时增加手牌容量。",
+    "capacity": [
+      1,
+      2,
+      3
+    ]
+  }
+}

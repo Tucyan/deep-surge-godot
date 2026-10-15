@@ -1,0 +1,921 @@
+{
+  "source": "Public AgentSession playthrough, godot-flow-v02-9 full resource spring",
+  "seed": 22,
+  "origin": "strong",
+  "mode": "challenge",
+  "steps": [
+    {
+      "command": "voyage",
+      "args": {
+        "id": "candidate-8"
+      }
+    },
+    {
+      "command": "enter",
+      "args": {}
+    },
+    {
+      "command": "advance",
+      "args": {}
+    },
+    {
+      "command": "option",
+      "args": {
+        "id": "rest"
+      }
+    },
+    {
+      "command": "advance",
+      "args": {}
+    },
+    {
+      "command": "salvage",
+      "args": {}
+    },
+    {
+      "command": "salvage",
+      "args": {}
+    },
+    {
+      "command": "salvage",
+      "args": {}
+    },
+    {
+      "command": "craft",
+      "args": {
+        "id": "crossbow"
+      }
+    },
+    {
+      "command": "install",
+      "args": {
+        "cell": "cell-0",
+        "uid": "card-21"
+      }
+    },
+    {
+      "command": "craft",
+      "args": {
+        "id": "filter"
+      }
+    },
+    {
+      "command": "install",
+      "args": {
+        "cell": "cell-1",
+        "uid": "card-22"
+      }
+    },
+    {
+      "command": "voyage",
+      "args": {
+        "id": "candidate-18"
+      }
+    },
+    {
+      "command": "enter",
+      "args": {}
+    },
+    {
+      "command": "advance",
+      "args": {}
+    },
+    {
+      "command": "option",
+      "args": {
+        "id": "listen"
+      }
+    },
+    {
+      "command": "advance",
+      "args": {}
+    },
+    {
+      "command": "craft",
+      "args": {
+        "id": "planter"
+      }
+    },
+    {
+      "command": "install",
+      "args": {
+        "cell": "cell-2",
+        "uid": "card-24"
+      }
+    },
+    {
+      "command": "salvage",
+      "args": {}
+    },
+    {
+      "command": "craft",
+      "args": {
+        "id": "lamp"
+      }
+    },
+    {
+      "command": "install",
+      "args": {
+        "cell": "cell-3",
+        "uid": "card-33"
+      }
+    },
+    {
+      "command": "voyage",
+      "args": {
+        "id": "candidate-30"
+      }
+    },
+    {
+      "command": "enter",
+      "args": {}
+    },
+    {
+      "command": "advance",
+      "args": {}
+    },
+    {
+      "command": "option",
+      "args": {
+        "id": "listen"
+      }
+    },
+    {
+      "command": "advance",
+      "args": {}
+    },
+    {
+      "command": "upgrade",
+      "args": {
+        "cell": "cell-2",
+        "craft": true
+      }
+    },
+    {
+      "command": "salvage",
+      "args": {}
+    },
+    {
+      "command": "end_voyage",
+      "args": {}
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-37"
+      }
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-38"
+      }
+    },
+    {
+      "command": "fuel",
+      "args": {
+        "cell": "cell-3",
+        "material": "wood",
+        "uid": "card-36"
+      }
+    },
+    {
+      "command": "voyage",
+      "args": {
+        "id": "candidate-43"
+      }
+    },
+    {
+      "command": "fuel",
+      "args": {
+        "cell": "cell-3",
+        "material": "wood",
+        "uid": "card-39"
+      }
+    },
+    {
+      "command": "enter",
+      "args": {}
+    },
+    {
+      "command": "advance",
+      "args": {}
+    },
+    {
+      "command": "option",
+      "args": {
+        "id": "emergency"
+      }
+    },
+    {
+      "command": "advance",
+      "args": {}
+    },
+    {
+      "command": "end_voyage",
+      "args": {}
+    },
+    {
+      "command": "discard",
+      "args": {
+        "uid": "card-12"
+      }
+    },
+    {
+      "command": "discard",
+      "args": {
+        "uid": "card-13"
+      }
+    },
+    {
+      "command": "discard",
+      "args": {
+        "uid": "card-29"
+      }
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-47"
+      }
+    },
+    {
+      "command": "voyage",
+      "args": {
+        "id": "candidate-52"
+      }
+    },
+    {
+      "command": "fuel",
+      "args": {
+        "cell": "cell-3",
+        "material": "wood",
+        "uid": "card-41"
+      }
+    },
+    {
+      "command": "enter",
+      "args": {}
+    },
+    {
+      "command": "advance",
+      "args": {}
+    },
+    {
+      "command": "option",
+      "args": {
+        "id": "calm"
+      }
+    },
+    {
+      "command": "advance",
+      "args": {}
+    },
+    {
+      "command": "end_voyage",
+      "args": {}
+    },
+    {
+      "command": "discard",
+      "args": {
+        "uid": "card-42"
+      }
+    },
+    {
+      "command": "discard",
+      "args": {
+        "uid": "card-3"
+      }
+    },
+    {
+      "command": "discard",
+      "args": {
+        "uid": "card-4"
+      }
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-55"
+      }
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-56"
+      }
+    },
+    {
+      "command": "upgrade",
+      "args": {
+        "cell": "cell-1",
+        "craft": true
+      }
+    },
+    {
+      "command": "voyage",
+      "args": {
+        "id": "candidate-61"
+      }
+    },
+    {
+      "command": "fuel",
+      "args": {
+        "cell": "cell-3",
+        "material": "wood",
+        "uid": "card-50"
+      }
+    },
+    {
+      "command": "enter",
+      "args": {}
+    },
+    {
+      "command": "advance",
+      "args": {}
+    },
+    {
+      "command": "option",
+      "args": {
+        "id": "rest"
+      }
+    },
+    {
+      "command": "advance",
+      "args": {}
+    },
+    {
+      "command": "end_voyage",
+      "args": {}
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-65"
+      }
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-66"
+      }
+    },
+    {
+      "command": "voyage",
+      "args": {
+        "id": "candidate-71"
+      }
+    },
+    {
+      "command": "fuel",
+      "args": {
+        "cell": "cell-3",
+        "material": "wood",
+        "uid": "card-51"
+      }
+    },
+    {
+      "command": "enter",
+      "args": {}
+    },
+    {
+      "command": "advance",
+      "args": {}
+    },
+    {
+      "command": "option",
+      "args": {
+        "id": "calm"
+      }
+    },
+    {
+      "command": "advance",
+      "args": {}
+    },
+    {
+      "command": "end_voyage",
+      "args": {}
+    },
+    {
+      "command": "discard",
+      "args": {
+        "uid": "card-69"
+      }
+    },
+    {
+      "command": "discard",
+      "args": {
+        "uid": "card-6"
+      }
+    },
+    {
+      "command": "discard",
+      "args": {
+        "uid": "card-16"
+      }
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-74"
+      }
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-75"
+      }
+    },
+    {
+      "command": "voyage",
+      "args": {
+        "id": "candidate-80"
+      }
+    },
+    {
+      "command": "fuel",
+      "args": {
+        "cell": "cell-3",
+        "material": "wood",
+        "uid": "card-57"
+      }
+    },
+    {
+      "command": "enter",
+      "args": {}
+    },
+    {
+      "command": "advance",
+      "args": {}
+    },
+    {
+      "command": "option",
+      "args": {
+        "id": "rest"
+      }
+    },
+    {
+      "command": "advance",
+      "args": {}
+    },
+    {
+      "command": "end_voyage",
+      "args": {}
+    },
+    {
+      "command": "discard",
+      "args": {
+        "uid": "card-77"
+      }
+    },
+    {
+      "command": "discard",
+      "args": {
+        "uid": "card-25"
+      }
+    },
+    {
+      "command": "discard",
+      "args": {
+        "uid": "card-28"
+      }
+    },
+    {
+      "command": "voyage",
+      "args": {
+        "id": "candidate-89"
+      }
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-83"
+      }
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-84"
+      }
+    },
+    {
+      "command": "fuel",
+      "args": {
+        "cell": "cell-3",
+        "material": "wood",
+        "uid": "card-58"
+      }
+    },
+    {
+      "command": "enter",
+      "args": {}
+    },
+    {
+      "command": "advance",
+      "args": {}
+    },
+    {
+      "command": "option",
+      "args": {
+        "id": "listen"
+      }
+    },
+    {
+      "command": "advance",
+      "args": {}
+    },
+    {
+      "command": "end_voyage",
+      "args": {}
+    },
+    {
+      "command": "discard",
+      "args": {
+        "uid": "card-88"
+      }
+    },
+    {
+      "command": "discard",
+      "args": {
+        "uid": "card-40"
+      }
+    },
+    {
+      "command": "discard",
+      "args": {
+        "uid": "card-87"
+      }
+    },
+    {
+      "command": "discard",
+      "args": {
+        "uid": "card-46"
+      }
+    },
+    {
+      "command": "voyage",
+      "args": {
+        "id": "candidate-99"
+      }
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-93"
+      }
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-94"
+      }
+    },
+    {
+      "command": "fuel",
+      "args": {
+        "cell": "cell-3",
+        "material": "wood",
+        "uid": "card-67"
+      }
+    },
+    {
+      "command": "enter",
+      "args": {}
+    },
+    {
+      "command": "advance",
+      "args": {}
+    },
+    {
+      "command": "option",
+      "args": {
+        "id": "calm"
+      }
+    },
+    {
+      "command": "advance",
+      "args": {}
+    },
+    {
+      "command": "end_voyage",
+      "args": {}
+    },
+    {
+      "command": "discard",
+      "args": {
+        "uid": "card-98"
+      }
+    },
+    {
+      "command": "discard",
+      "args": {
+        "uid": "card-96"
+      }
+    },
+    {
+      "command": "discard",
+      "args": {
+        "uid": "card-49"
+      }
+    },
+    {
+      "command": "voyage",
+      "args": {
+        "id": "candidate-108"
+      }
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-102"
+      }
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-103"
+      }
+    },
+    {
+      "command": "fuel",
+      "args": {
+        "cell": "cell-3",
+        "material": "wood",
+        "uid": "card-68"
+      }
+    },
+    {
+      "command": "enter",
+      "args": {}
+    },
+    {
+      "command": "advance",
+      "args": {}
+    },
+    {
+      "command": "option",
+      "args": {
+        "id": "listen"
+      }
+    },
+    {
+      "command": "advance",
+      "args": {}
+    },
+    {
+      "command": "end_voyage",
+      "args": {}
+    },
+    {
+      "command": "discard",
+      "args": {
+        "uid": "card-105"
+      }
+    },
+    {
+      "command": "discard",
+      "args": {
+        "uid": "card-107"
+      }
+    },
+    {
+      "command": "discard",
+      "args": {
+        "uid": "card-70"
+      }
+    },
+    {
+      "command": "discard",
+      "args": {
+        "uid": "card-78"
+      }
+    },
+    {
+      "command": "voyage",
+      "args": {
+        "id": "candidate-118"
+      }
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-112"
+      }
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-113"
+      }
+    },
+    {
+      "command": "fuel",
+      "args": {
+        "cell": "cell-3",
+        "material": "wood",
+        "uid": "card-76"
+      }
+    },
+    {
+      "command": "enter",
+      "args": {}
+    },
+    {
+      "command": "advance",
+      "args": {}
+    },
+    {
+      "command": "fight",
+      "args": {}
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-119"
+      }
+    },
+    {
+      "command": "battle_action",
+      "args": {
+        "action": "attack"
+      }
+    },
+    {
+      "command": "battle_action",
+      "args": {
+        "action": "attack"
+      }
+    },
+    {
+      "command": "battle_action",
+      "args": {
+        "action": "block",
+        "resource_uid": "card-85"
+      }
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-121"
+      }
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-120"
+      }
+    },
+    {
+      "command": "battle_action",
+      "args": {
+        "action": "block",
+        "resource_uid": "card-92"
+      }
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-122"
+      }
+    },
+    {
+      "command": "battle_action",
+      "args": {
+        "action": "attack"
+      }
+    },
+    {
+      "command": "battle_action",
+      "args": {
+        "action": "attack"
+      }
+    },
+    {
+      "command": "battle_action",
+      "args": {
+        "action": "block",
+        "resource_uid": "card-95"
+      }
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-124"
+      }
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-123"
+      }
+    },
+    {
+      "command": "battle_action",
+      "args": {
+        "action": "block",
+        "resource_uid": "card-104"
+      }
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-125"
+      }
+    },
+    {
+      "command": "battle_action",
+      "args": {
+        "action": "attack"
+      }
+    },
+    {
+      "command": "battle_action",
+      "args": {
+        "action": "attack"
+      }
+    },
+    {
+      "command": "battle_action",
+      "args": {
+        "action": "block",
+        "resource_uid": "card-111"
+      }
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-127"
+      }
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-126"
+      }
+    },
+    {
+      "command": "battle_action",
+      "args": {
+        "action": "block",
+        "resource_uid": "card-114"
+      }
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-128"
+      }
+    },
+    {
+      "command": "battle_action",
+      "args": {
+        "action": "attack"
+      }
+    },
+    {
+      "command": "battle_action",
+      "args": {
+        "action": "attack"
+      }
+    },
+    {
+      "command": "battle_action",
+      "args": {
+        "action": "block",
+        "resource_uid": "card-115"
+      }
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-130"
+      }
+    },
+    {
+      "command": "play",
+      "args": {
+        "uid": "card-129"
+      }
+    },
+    {
+      "command": "battle_action",
+      "args": {
+        "action": "attack"
+      }
+    },
+    {
+      "command": "advance",
+      "args": {}
+    },
+    {
+      "command": "end_voyage",
+      "args": {}
+    },
+    {
+      "command": "discard",
+      "args": {
+        "uid": "card-116"
+      }
+    }
+  ]
+}

@@ -3,6 +3,7 @@ const ItemCard = preload("res://presentation/item_card.gd")
 const W = preload("res://presentation/widgets.gd")
 const Border = preload("res://presentation/hand_border.gd")
 signal activated(card: Dictionary)
+signal battle_action_double_clicked(card: Dictionary)
 signal equipment_double_clicked(card: Dictionary)
 signal equipment_dragged(card: Dictionary, point: Vector2)
 signal equipment_released(card: Dictionary, point: Vector2)
@@ -38,12 +39,56 @@ var laid_out := false
 var departures: Array = []
 var refill_delay := 0.0
 const EXIT_DURATION := 0.24
+var selected_uids: Array = []
 @export_range(0.05,0.5) var move_duration := 0.18
+func set_selected_uids(uids: Array) -> void:
+	selected_uids = uids.duplicate()
+	arrange()
+
 func create(assets: RefCounted, entries: Array, view: Dictionary) -> void:
 	add_to_group("hand_fans")
 	context = view; visual_assets = assets
 	hand_layout = view.get("hand_layout",preload("res://presentation/hand_layout.gd").new())
-	cards = hand_layout.build(entries)
+	cards = hand_layout.build(entries,view.get("phase","")=="battle")
+	if view.get("phase","") == "battle":
+		var attack_card: Dictionary = {
+			"uid": "virtual_action_attack",
+			"id": "action_attack",
+			"action_id": "attack",
+			"is_fixed_action": true,
+			"temporary": false,
+			"quantity": 1,
+			"stack_count": 1,
+			"stack_uids": ["virtual_action_attack"],
+			"definition": {
+				"id": "action_attack",
+				"name": "攻击",
+				"kind": "combat",
+				"cost": 1,
+				"damage": 1,
+				"description": "消耗 1 AP。基础造成 1 点伤害。可与材料牌组合出招。"
+			}
+		}
+		var block_card: Dictionary = {
+			"uid": "virtual_action_block",
+			"id": "action_block",
+			"action_id": "block",
+			"is_fixed_action": true,
+			"temporary": false,
+			"quantity": 1,
+			"stack_count": 1,
+			"stack_uids": ["virtual_action_block"],
+			"definition": {
+				"id": "action_block",
+				"name": "防御",
+				"kind": "combat",
+				"cost": 1,
+				"damage": 0,
+				"description": "消耗 1 AP。基础获得 1 点护盾。可与材料牌组合出招。"
+			}
+		}
+		cards.append(attack_card)
+		cards.append(block_card)
 	custom_minimum_size = Vector2(0,238)
 	size_flags_horizontal = SIZE_EXPAND_FILL
 	size_flags_vertical = SIZE_EXPAND_FILL
@@ -53,14 +98,19 @@ func create(assets: RefCounted, entries: Array, view: Dictionary) -> void:
 	var mat := ShaderMaterial.new(); mat.shader = preload("res://assets/shaders/hand_glass.gdshader"); glass.material = mat
 	add_child(glass); glass.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	border = Border.new(); add_child(border); border.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
+	border.z_index = 2
 	for i in range(cards.size()):
 		var card: Dictionary = cards[i]
 		var tile := ItemCard.new(); add_child(tile)
+		tile.z_index = 2
 		var disabled: bool = context.phase == "discard" and card.id in ["punch","pollution"]
 		if context.phase == "battle": disabled = card.definition.cost > context.battle.ap
 		tile.create(assets,card,action_name(card),func(): activated.emit(card),120,184,disabled)
 		ignore_mouse(tile)
 		var button: Button = tile.get_child(0).get_child(tile.get_child(0).get_child_count()-1)
+		if card.uid == "virtual_action_attack": button.name = "BattleAttack"
+		elif card.uid == "virtual_action_block": button.name = "BattleBlock"
+		elif card.definition.kind == "resource": button.name = "BattleFanResource_" + str(card.uid)
 		button.tooltip_text = ""; buttons.append(button)
 		button.focus_entered.connect(func(): focus_card(i))
 		tiles.append(tile)
@@ -79,9 +129,11 @@ func capture_visual() -> Dictionary:
 	var exiting := []
 	for exit in departures:
 		exiting.append({"card":exit.card,"origin":exit.origin,"scale":exit.scale,"elapsed":exit.elapsed,"action":exit.get("action","")})
-	return {"stack_resources":hand_layout.stack_resources,"actions":actions,"entries":entries,"scales":scales,"departures":exiting,"refill_delay":refill_delay,"positions":positions,"hover_uid":cards[hovered].uid if hovered>=0 else "","dwell":dwell,"tip_visible":tip.visible}
+	return {"selected_uids":selected_uids.duplicate(),"stack_resources":hand_layout.stack_resources,"actions":actions,"entries":entries,"scales":scales,"departures":exiting,"refill_delay":refill_delay,"positions":positions,"hover_uid":cards[hovered].uid if hovered>=0 else "","dwell":dwell,"tip_visible":tip.visible}
 func restore_visual(saved: Dictionary) -> void:
 	if saved.is_empty(): return
+	if saved.has("selected_uids"):
+		selected_uids = saved.selected_uids.duplicate()
 	arrange()
 	hovered = -1
 	for i in range(cards.size()):
@@ -113,11 +165,14 @@ func ignore_mouse(node: Control) -> void:
 	for child in node.get_children():
 		if child is Control: ignore_mouse(child)
 func action_name(card: Dictionary) -> String:
+	if card.get("is_fixed_action", false): return "选择 · "+card.definition.name
 	if card.id == "coin": return "弃置全部 · 贝币" if context.phase == "discard" else "查看 · 贝币"
 	if context.phase == "discard": return "弃置 · "+card.definition.name
+	if context.phase == "battle" and card.definition.kind == "resource": return "选择 · "+card.definition.name
 	if context.phase == "battle" or (context.can_base and card.definition.kind == "survival"): return "使用 · "+card.definition.name
 	return "查看 · "+card.definition.name
 func usage(card: Dictionary) -> String:
+	if context.phase == "battle" and card.definition.kind == "resource": return "选择该资源后，再选攻击或格挡；确认前不会消耗。"
 	if card.id in ["wood","corpse"] and context.can_base: return "长按后拖到已安装的灯上松开，投入一份燃料，不消耗 AP；也可用于合成。"
 	if card.id == "coin":
 		return "整理手牌：点击弃置全部 %d 贝币，腾出一张容量。" % card.stack_count if context.phase == "discard" else "在商店选择商品时自动支付贝币；点击查看，全部贝币共占一张容量。"
@@ -126,10 +181,10 @@ func usage(card: Dictionary) -> String:
 	if context.phase == "battle": return ("AP 不足。" if card.definition.cost > context.battle.ap else "点击使用。")+cost
 	match card.definition.kind:
 		"survival": return ("点击使用。" if context.can_base else "抵达后的准备或收尾阶段可以使用。")+cost
-		"equipment": return "长按拖到木筏空格安装，或拖到同类1级设备合并升级；双击自动安装。安装与升级各消耗1 AP。"
+		"equipment": return "长按拖到木筏空格安装，或拖到同类1级设备合并升级；双击自动安装。安装不消耗 AP，升级消耗 1 AP。"
 		"action": return "点击查看；在「木筏详情」选择目标执行。"+cost
 		"combat","negative": return "战斗中查看与使用。"+cost
-		_: return "制作材料：在「合成」选择配方消耗；点击查看用途。"
+		_: return "制作材料：在「合成/转化」选择配方或转化；点击查看用途。"
 func focus_card(index: int) -> void:
 	if hovered == index: return
 	if index >= 0: focus_x = tiles[index].position.x
@@ -165,13 +220,18 @@ func arrange() -> void:
 				var movement := minf(overlap,step*.45)
 				x += movement*(-1.0 if i<hovered else 1.0)
 				x = clampf(x,left+20,size.x-20-card_width)
+		var is_selected := selected_uids.has(cards[i].uid)
+		var raise_y := 0.0
+		if i == hovered: raise_y += 14.0
+		if is_selected: raise_y += card_height / 3.0
 		var tile: Control = tiles[i]
 		# ItemCard keeps its authored aspect ratio; scale its fixed base size.
 		tile.size = Vector2(120,184); tile.scale = Vector2.ONE*(card_height/184)
-		var target := Vector2(x,size.y-card_height-14-(14 if i == hovered else 0))
+		var target := Vector2(x,size.y-card_height-14-raise_y)
 		target_positions.append(target)
 		if not laid_out: tile.position = target
-		tile.z_index = 20 if i == hovered else 1
+		tile.z_index = 25 if is_selected else (20 if i == hovered else 1)
+		tile.modulate = Color(1.15, 1.1, 0.95) if is_selected else Color.WHITE
 	laid_out = true
 	if is_instance_valid(tip) and tip.visible: place_tip()
 func show_description() -> void:
@@ -189,7 +249,8 @@ func _process(delta: float) -> void:
 	if pressed_index>=0:
 		press_time+=delta
 		if not dragging and press_time>=HOLD_SECONDS:
-			dragging=true; drop_index=pressed_index; tip.hide()
+			if not bool(cards[pressed_index].get("is_fixed_action", false)):
+				dragging=true; drop_index=pressed_index; tip.hide()
 		if dragging:
 			if raft_draggable(cards[pressed_index]) and context.can_base and pointer_point.y<0:
 				tiles[pressed_index].position=pointer_point-press_point
@@ -237,6 +298,12 @@ func _gui_input(event: InputEvent) -> void:
 		if index>=0:
 			if event.double_click and cards[index].definition.kind=="equipment" and context.can_base:
 				accept_event(); equipment_double_clicked.emit(cards[index]); return
+			if event.double_click and context.get("phase","") == "battle":
+				var c: Dictionary = cards[index]
+				if c.get("is_fixed_action", false) or c.get("uid","") in ["virtual_action_attack", "virtual_action_block"] or c.get("action_id","") in ["attack", "block"]:
+					accept_event()
+					battle_action_double_clicked.emit(c)
+					return
 			_begin_press(index,event.position)
 		accept_event()
 
@@ -263,7 +330,9 @@ func _input(event: InputEvent) -> void:
 		pointer_point=next_point
 		if dragging:
 			var step: float = base_x[1]-base_x[0] if base_x.size()>1 else card_width
-			drop_index=clampi(roundi((pointer_point.x-press_point.x-base_x[0])/maxf(1,step)),0,cards.size()-1)
+			var max_drop := cards.size() - 1
+			if context.get("phase","") == "battle": max_drop = maxi(0, cards.size() - 3)
+			drop_index=clampi(roundi((pointer_point.x-press_point.x-base_x[0])/maxf(1,step)),0,max_drop)
 			# Open a destination slot while the held card follows the pointer.
 			arrange()
 			for i in range(cards.size()):
@@ -282,7 +351,9 @@ func _input(event: InputEvent) -> void:
 		if external_drop:
 			equipment_released.emit(held_card,global_position+release_point)
 		elif was_dragging:
-			if destination!=index and destination>=0:
+			var max_dest := cards.size() - 1
+			if context.get("phase","") == "battle": max_dest = maxi(0, cards.size() - 3)
+			if destination!=index and destination>=0 and destination <= max_dest:
 				hand_layout.move_group(cards,index,destination); reordered.emit()
 		elif hit_card(release_point)==index and not buttons[index].disabled:
 			activated.emit(cards[index])

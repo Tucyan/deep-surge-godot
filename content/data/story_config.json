@@ -1,24 +1,120 @@
 {
   "first_layer": {
-    "version":"test-story-v1",
-    "length":15,
-    "fixed_days":{"1":"ST.L1.T01","2":"ST.L1.T02","3":"ST.L1.T03","4":"ST.L1.S04"},
-    "public_nights":{"8":"ST.L1.A08","11":"ST.L1.A11","14":"ST.L1.P14"},
-    "packs":{"1":{"food":3,"water":3,"calm":3},"2":{"wood":1,"plastic":2,"filter":1,"crossbow":1,"food":2,"water":2},"3":{"lamp":1,"wood":3,"food":2,"water":2,"calm":2},"4":{"food":2,"water":2,"corpse":2}},
-    "solo_pack":{"planter":2,"lamp":1,"wood":3,"food":3,"water":3,"calm":3},
-    "rest":{"hp":8,"hunger":50,"hydration":50,"sanity":35},
-    "investigation_sanity_cost":5,
-    "investigations":{
-      "seam":{"name":"检查门框","requires":"","clue":"dry_seam","clue_name":"干燥的接缝","text":"门框接缝干燥得不合常理。潮湿的舱壁在这里突然中断，像是两段结构被勉强拼在一起。"},
-      "knocks":{"name":"记录敲击间隔","requires":"dry_seam","clue":"seven_knocks","clue_name":"七次敲击","text":"你在接缝边记录了七次敲击。每组之间有固定空隙，灯光在空隙里会恢复稳定。这是可重复验证的节律。"},
-      "depth":{"name":"测量舱壁外深度","requires":"seven_knocks","clue":"false_depth","clue_name":"错误的深度","text":"按记录的空隙放下量绳，绳长超过船宽仍未触水。舱壁外的距离无法与旧图纸对应；封闭时必须沿接缝、避开敲击。"},
-      "memory":{"name":"核对分队的记忆","requires":"","clue":"contradictory_memory","clue_name":"相互矛盾的证词","text":"你把每个人记得的走廊画在纸上。几份图彼此矛盾，但所有人都记得同一只碗。这份证词不能解释门的来源。"}
+    "version": "test-story-v1",
+    "length": 15,
+    "fixed_days": {
+      "1": "ST.L1.T01",
+      "2": "ST.L1.T02",
+      "3": "ST.L1.T03",
+      "4": "ST.L1.S04"
     },
-    "ordinary_quest":{"id":"QUEST.L1.SPARE_ROPE","name":"备用缆绳","description":"自愿交付绳索2，换取食物2、淡水2、灯火余温2。无截止惩罚。","costs":{"rope":2},"rewards":{"food":2,"water":2,"calm":2}},
-    "special_quest":{"id":"QUEST.L1.ANOMALOUS_CABIN","name":"异常舱门","description":"记录可验证的观察，准备物资与设备，在第15站处理危机。"},
-    "exchange_reward":{"food":1,"water":1,"calm":1},
-    "final_seal_costs":{"wood":2,"rope":1},
-    "final_tow_costs":{"rope":2},
-    "emergency_hp_cost":4
+    "public_nights": {
+      "8": "ST.L1.A08",
+      "11": "ST.L1.A11",
+      "14": "ST.L1.P14"
+    },
+    "packs": {
+      "1": {
+        "food": 3,
+        "water": 3,
+        "calm": 3
+      },
+      "2": {
+        "wood": 1,
+        "plastic": 2,
+        "filter": 1,
+        "crossbow": 1,
+        "food": 2,
+        "water": 2
+      },
+      "3": {
+        "lamp": 1,
+        "wood": 3,
+        "food": 2,
+        "water": 2,
+        "calm": 2
+      },
+      "4": {
+        "food": 2,
+        "water": 2,
+        "corpse": 2
+      }
+    },
+    "solo_pack": {
+      "planter": 2,
+      "lamp": 1,
+      "wood": 3,
+      "food": 3,
+      "water": 3,
+      "calm": 3
+    },
+    "rest": {
+      "hp": 3,
+      "hunger": 50,
+      "hydration": 50,
+      "sanity": 35
+    },
+    "investigation_sanity_cost": 5,
+    "investigations": {
+      "seam": {
+        "name": "检查门框",
+        "requires": "",
+        "clue": "dry_seam",
+        "clue_name": "干燥的接缝",
+        "text": "门框接缝干燥得不合常理。潮湿的舱壁在这里突然中断，像是两段结构被勉强拼在一起。"
+      },
+      "knocks": {
+        "name": "记录敲击间隔",
+        "requires": "dry_seam",
+        "clue": "seven_knocks",
+        "clue_name": "七次敲击",
+        "text": "你在接缝边记录了七次敲击。每组之间有固定空隙，灯光在空隙里会恢复稳定。这是可重复验证的节律。"
+      },
+      "depth": {
+        "name": "测量舱壁外深度",
+        "requires": "seven_knocks",
+        "clue": "false_depth",
+        "clue_name": "错误的深度",
+        "text": "按记录的空隙放下量绳，绳长超过船宽仍未触水。舱壁外的距离无法与旧图纸对应；封闭时必须沿接缝、避开敲击。"
+      },
+      "memory": {
+        "name": "核对分队的记忆",
+        "requires": "",
+        "clue": "contradictory_memory",
+        "clue_name": "相互矛盾的证词",
+        "text": "你把每个人记得的走廊画在纸上。几份图彼此矛盾，但所有人都记得同一只碗。这份证词不能解释门的来源。"
+      }
+    },
+    "ordinary_quest": {
+      "id": "QUEST.L1.SPARE_ROPE",
+      "name": "备用缆绳",
+      "description": "自愿交付绳索2，换取食物2、淡水2、灯火余温2。无截止惩罚。",
+      "costs": {
+        "rope": 2
+      },
+      "rewards": {
+        "food": 2,
+        "water": 2,
+        "calm": 2
+      }
+    },
+    "special_quest": {
+      "id": "QUEST.L1.ANOMALOUS_CABIN",
+      "name": "异常舱门",
+      "description": "记录可验证的观察，准备物资与设备，在第15站处理危机。"
+    },
+    "exchange_reward": {
+      "food": 1,
+      "water": 1,
+      "calm": 1
+    },
+    "final_seal_costs": {
+      "wood": 2,
+      "rope": 1
+    },
+    "final_tow_costs": {
+      "rope": 2
+    },
+    "emergency_hp_cost": 2
   }
 }

@@ -1,0 +1,6 @@
+{
+  "ready": {"name":"待领取增益","description":"发电机已完成生产，领取时选择效果。"},
+  "power": {"name":"动力强化","description":"附加到攻击：直接伤害+2。","damageBonus":2},
+  "barrier": {"name":"屏障强化","description":"附加到护盾行动：额外2盾，持续到下回合敌方行动结束。","shieldBonus":2,"lifetime":1},
+  "production": {"name":"设备增压","description":"附加到滤水器、土盆或捕捞网：下次生产额外获得1份产物。","amountBonus":1}
+}

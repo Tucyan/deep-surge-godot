@@ -4,6 +4,10 @@ const W = preload("res://presentation/widgets.gd")
 var context: Dictionary
 var catalog: RefCounted
 var assets: RefCounted
+var session: RefCounted
+
+func configure_session(value: RefCounted) -> void:
+	session = value
 
 func setup(view: Dictionary, content: RefCounted, art: RefCounted) -> void:
 	context = view.duplicate(true)

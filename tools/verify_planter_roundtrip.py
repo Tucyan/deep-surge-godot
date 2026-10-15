@@ -11,9 +11,11 @@ def bounds(scene):
     return [[min(v[k] for v in pts) for k in range(3)], [max(v[k] for v in pts) for k in range(3)]]
 
 v3 = ROOT/'asset-sources/planter-v3/planter_v003.blend'
-path = v3 if v3.exists() else ROOT/'asset-sources/planter-v2/planter_v002.blend'
+v4 = ROOT/'asset-sources/planter-v4/planter_v004.blend'
+path = v4 if v4.exists() else v3 if v3.exists() else ROOT/'asset-sources/planter-v2/planter_v002.blend'
 bpy.ops.wm.open_mainfile(filepath=str(path))
 variants = [('Planter_Mature_v003','planter'),('Planter_Seedling_v003','planter-seedling')] if v3.exists() else [(bpy.context.scene.name,'planter')]
+if v4.exists():variants=[('Planter_Mature_v004','planter'),('Planter_Seedling_v004','planter-seedling')]
 reports = {}
 for scene_name,filename in variants:
     source_scene = bpy.data.scenes[scene_name]

@@ -1,6 +1,7 @@
 extends RefCounted
 const EXPANSION_COST := {"wood":2}
 const EXPANSION_AP := 1
+const Health = preload("res://core/health_balance.gd")
 const I = preload("res://core/inventory.gd")
 const R = preload("res://core/random_streams.gd")
 const Stats = preload("res://core/run_statistics.gd")
@@ -79,9 +80,9 @@ static func voyage(ctx, id: String) -> bool:
 		if cell.status == "intact" and cell.equipment.get("id","") == "lamp" and cell.equipment.fuel > 0:
 			ctx.change("sanity",15+5*(int(cell.equipment.level)-1),"lamp"); cell.equipment.fuel -= 1
 			Stats.device_used(s,"lamp",cell.id)
-	var hunger_damage: int = 2 if s.player.hunger == 0 else 0
-	var thirst_damage: int = 3 if s.player.hydration == 0 else 0
-	ctx.change("hp",-mini(4,hunger_damage+thirst_damage),"deprivation")
+	var hunger_damage: int = Health.DEPRIVATION_EACH if s.player.hunger == 0 else 0
+	var thirst_damage: int = Health.DEPRIVATION_EACH if s.player.hydration == 0 else 0
+	ctx.change("hp",-mini(Health.DEPRIVATION_CAP,hunger_damage+thirst_damage),"deprivation")
 	ctx.log_text("抵达%s；移动支付食水%d/%d、SAN%d。" % [node.name,30-reduction,30-reduction,sanity_cost])
 	if not ctx.alive(): return true
 	s.phase = "preparation"
@@ -192,8 +193,55 @@ static func craft(ctx, id: String) -> bool:
 		if I.count(ctx.state,material) < int(recipe.ingredients[material]): return ctx.fail("材料不足")
 	for material in recipe.ingredients: I.consume(ctx.state,material,int(recipe.ingredients[material]),"craft")
 	ctx.state.ap -= int(recipe.cost); ctx.give(recipe.output,1,false,"craft")
-	ctx.log_text("制造%s；安装需另付AP。" % ctx.catalog.entry("cards",recipe.output).name)
+	ctx.log_text("制造%s；安装不消耗AP。" % ctx.catalog.entry("cards",recipe.output).name)
 	return true
+
+static func claim_boost(ctx,args: Dictionary) -> bool:
+	if not ctx.base_action(): return false
+	var cell := find_cell(ctx.state,str(args.get("cell","")))
+	if cell.is_empty() or cell.status!="intact" or cell.equipment.get("id","")!="generator": return ctx.fail("请选择完好发电机")
+	var boost_uid: String=""
+	for boost in cell.equipment.get("boost_cards",[]):
+		if boost.get("id","")=="ready": boost_uid=boost.uid; break
+	if boost_uid=="": return ctx.fail("没有已完成的增益可领取")
+	var chosen: String=str(args.get("id",""))
+	if chosen not in ["power","barrier","production"]: return ctx.fail("请选择一种已生成的增益")
+	for boost in cell.equipment.boost_cards:
+		if boost.uid==boost_uid: boost.id=chosen; break
+	ctx.discover("boost."+chosen); ctx.log_text("发电机领取增益："+ctx.catalog.entry("boosts",chosen).name)
+	return true
+
+static func boost_device(ctx,args: Dictionary) -> bool:
+	if not ctx.base_action(): return false
+	var cell := find_cell(ctx.state,str(args.get("cell","")))
+	if cell.is_empty() or cell.status!="intact" or cell.equipment.is_empty(): return ctx.fail("请选择完好目标设备")
+	var equipment_id: String=str(cell.equipment.get("id",""))
+	if equipment_id not in ["filter","planter","fishingNet"]: return ctx.fail("增产只能附加到滤水器、土盆或捕鱼网")
+	if int(cell.equipment.get("production_bonus",0))>0: return ctx.fail("设备已有待生产增益")
+	var uid: String=str(args.get("buff_uid","")); var boost := find_boost(ctx.state,uid)
+	if boost.is_empty() or boost.id!="production": return ctx.fail("没有可用于生产的增益")
+	cell.equipment.production_bonus=int(ctx.catalog.entry("boosts","production").get("amountBonus",1)); BattleConsume(ctx.state,uid)
+	ctx.log_text("已将增产增益附加到"+ctx.catalog.entry("equipment",equipment_id).name)
+	return true
+
+static func find_cell(state: Dictionary,id: String) -> Dictionary:
+	for cell in state.get("cells",[]):
+		if cell.get("id","")==id: return cell
+	return {}
+
+static func find_boost(state: Dictionary,uid: String) -> Dictionary:
+	if uid=="": return {}
+	for cell in state.get("cells",[]):
+		if cell.get("status","")!="intact": continue
+		for boost in cell.get("equipment",{}).get("boost_cards",[]):
+			if boost.get("uid","")==uid: return boost.duplicate(true)
+	return {}
+
+static func BattleConsume(state: Dictionary,uid: String) -> void:
+	for cell in state.get("cells",[]):
+		var boosts: Array=cell.get("equipment",{}).get("boost_cards",[])
+		for i in range(boosts.size()):
+			if boosts[i].get("uid","")==uid: boosts.remove_at(i); return
 
 static func salvage(ctx) -> bool:
 	if not ctx.base_action(): return ctx.fail("当前阶段不可打捞")
@@ -206,12 +254,46 @@ static func salvage(ctx) -> bool:
 	ctx.log_text("海面打捞：获得%s×1。" % ctx.catalog.entry("cards", item).name)
 	return true
 
+static func transmute(ctx, target: String, inputs: Array = [], count: int = 1) -> bool:
+	if not ctx.base_action(): return ctx.fail("当前阶段不可转化")
+	if target not in I.RESOURCES: return ctx.fail("无效的转化目标类型")
+	count = maxi(1, count)
+	if ctx.state.ap < count: return ctx.fail("基地AP不足")
+	var resource_cards: Array = []
+	for card in ctx.state.hand:
+		if not card.temporary and ctx.catalog.entry("cards", card.id).kind == "resource":
+			resource_cards.append(card)
+	var needed: int = count * 3
+	var to_consume: Array = []
+	if not inputs.is_empty():
+		if inputs.size() != needed: return ctx.fail("转化必须投入正好%d张资源牌" % needed)
+		var seen: Dictionary = {}
+		for uid in inputs:
+			if seen.has(uid): return ctx.fail("选中的资源牌重复")
+			seen[uid] = true
+			var card: Dictionary = I.find(ctx.state, uid)
+			if card.is_empty() or card.temporary or ctx.catalog.entry("cards", card.id).kind != "resource":
+				return ctx.fail("选中的资源牌无效")
+			to_consume.append(card)
+	else:
+		var non_target: Array = resource_cards.filter(func(c): return c.id != target)
+		var same_target: Array = resource_cards.filter(func(c): return c.id == target)
+		var candidates: Array = non_target + same_target
+		if candidates.size() < needed: return ctx.fail("可用资源牌不足%d张" % needed)
+		to_consume = candidates.slice(0, needed)
+	ctx.state.ap -= count
+	for card in to_consume:
+		I.remove(ctx.state, card.uid, "cost_consumed")
+	ctx.give(target, count * 2, false, "transmute")
+	ctx.log_text("资源转化：消耗%d张资源，获得%s×%d。" % [needed, ctx.catalog.entry("cards", target).name, count * 2])
+	return true
+
 
 static func play(ctx, args: Dictionary) -> bool:
 	var card: Dictionary = I.find(ctx.state,args.get("uid",""))
 	if card.is_empty(): return ctx.fail("手牌已变化")
 	var definition: Dictionary = ctx.catalog.entry("cards",card.id)
-	if ctx.phase() == "battle": return ctx.Battle.play(ctx,card,definition)
+	if ctx.phase() == "battle": return ctx.Battle.play(ctx,card,definition,args)
 	if not ctx.base_action() or definition.kind != "survival": return ctx.fail("此牌需要对应设备或阶段入口")
 	if not effects(ctx,definition.effects): return false
 	Stats.card(ctx.state,card.id,"used",1,"play",card.uid)
@@ -285,9 +367,7 @@ static func raft_action(ctx, command: String, args: Dictionary) -> bool:
 		var card: Dictionary = I.find(ctx.state,args.get("uid",""))
 		if card.is_empty() or ctx.catalog.entry("cards",card.id).kind != "equipment": return false
 		if cell.status != "intact" or not cell.equipment.is_empty(): return ctx.fail("需要完好空格")
-		if ctx.state.ap < 1: return ctx.fail("安装需要1 AP")
-		ctx.state.ap -= 1
-		cell.equipment = {"id":card.id,"level":1,"fuel":0,"progress":0}
+		cell.equipment = {"id":card.id,"level":1,"fuel":0,"progress":0,"boost_cards":[],"production_bonus":0}
 		I.remove(ctx.state,card.uid,"deployed"); ctx.log_text("安装" + ctx.catalog.entry("cards",card.id).name)
 		return true
 	if command == "repair_cell":
@@ -345,7 +425,19 @@ static func raft_action(ctx, command: String, args: Dictionary) -> bool:
 		return true
 	if command == "fuel":
 		var material: String = args.get("material","wood")
-		if material not in ["wood","corpse"] or cell.equipment.get("id","") != "lamp": return false
+		var equipment_id: String=str(cell.equipment.get("id",""))
+		if equipment_id=="generator":
+			if material!="corpse": return ctx.fail("发电机只接受尸体燃料")
+			if args.has("uid"):
+				var corpse: Dictionary=I.find(ctx.state,str(args.uid))
+				if corpse.is_empty() or corpse.id!="corpse" or corpse.temporary: return ctx.fail("燃料不足")
+				I.remove(ctx.state,corpse.uid,"cost_consumed")
+			elif not I.consume(ctx.state,"corpse",1,"fuel"): return ctx.fail("燃料不足")
+			cell.equipment.fuel=int(cell.equipment.get("fuel",0))+int(ctx.catalog.entry("equipment","generator").get("fuelPerCorpse",3))
+			Stats.device_used(ctx.state,"generator_fuel",cell.id,"corpse",1)
+			ctx.log_text("投入尸体燃料：增加3单位。")
+			return true
+		if material not in ["wood","corpse"] or equipment_id != "lamp": return false
 		if args.has("uid"):
 			var fuel_card: Dictionary=I.find(ctx.state,args.uid)
 			if fuel_card.is_empty() or fuel_card.id!=material or fuel_card.temporary: return ctx.fail("燃料不足")
@@ -368,18 +460,46 @@ static func settle(ctx) -> bool:
 	for cell in s.cells:
 		if cell.status == "damaged" and s.voyage - cell.damaged_at >= 2:
 			cell.status = "detached"; cell.equipment = {}; ctx.log_text("筏格老化脱落："+cell.id)
+		if not cell.equipment.is_empty():
+			for i in range(cell.equipment.get("boost_cards",[]).size()-1,-1,-1):
+				var boost: Dictionary=cell.equipment.boost_cards[i]
+				if boost.has("expires_voyage") and int(boost.expires_voyage)<=int(s.voyage): cell.equipment.boost_cards.remove_at(i)
+	ctx.log_text("轮末处理筏格老化与临时增益到期；整理后在下一轮开始生产。")
+	s.phase = "discard"
+	if I.capacity(s) <= I.hand_limit(s,ctx.catalog): next_voyage(ctx)
+	return true
+
+static func produce_at_round_start(ctx) -> void:
+	var s: Dictionary = ctx.state
+	# Older discard saves already produced at settlement. Do not tick twice across migration.
+	if s.flags.get("skip_next_production",false):
+		s.flags.erase("skip_next_production")
+		return
+	for cell in s.cells:
 		if cell.status != "intact" or cell.equipment.is_empty(): continue
 		var equipment: Dictionary = ctx.catalog.entry("equipment",cell.equipment.id)
 		if equipment.has("output"):
 			cell.equipment.progress += 1
 			var level: int = int(cell.equipment.level) - 1
 			if cell.equipment.progress >= int(equipment.intervals[level]):
-				ctx.give(equipment.output,int(equipment.amounts[level]),false,"production",cell.equipment.id,cell.id)
+				var amount: int = int(equipment.amounts[level])+int(cell.equipment.get("production_bonus",0))
+				var output: String = str(equipment.output)
+				if output=="random_resource": output=R.pick(s.rng,"rewards",I.RESOURCES)
+				ctx.give(output,amount,false,"production",cell.equipment.id,cell.id)
+				cell.equipment.production_bonus=0
 				cell.equipment.progress = 0
-	ctx.log_text("轮末处理老化与生产，移动航耗不重复。")
-	s.phase = "discard"
-	if I.capacity(s) <= s.player.limit: next_voyage(ctx)
-	return true
+		if equipment.get("generator",false):
+			var level: int=clampi(int(cell.equipment.level)-1,0,2)
+			if int(cell.equipment.get("fuel",0))>0: cell.equipment.progress+=1
+			if cell.equipment.progress>=int(equipment.intervals[level]) and int(cell.equipment.get("fuel",0))>0:
+				cell.equipment.fuel-=1; cell.equipment.progress=0
+				var permanent_count: int=cell.equipment.boost_cards.filter(func(card):return not card.has("expires_voyage")).size()
+				var generated: Dictionary={"uid":"boost-%d" % int(ctx.state.get("next_boost_id",1)),"id":"ready"}
+				if permanent_count>=int(equipment.capacities[level]): generated.expires_voyage=int(s.voyage)
+				cell.equipment.boost_cards.append(generated)
+				ctx.state.next_boost_id=int(ctx.state.get("next_boost_id",1))+1
+				Stats.device_used(ctx.state,"generator",cell.id,"boost",1); Stats.increment(ctx.state,"produced",1)
+	ctx.log_text("新一轮开始：完好设备推进生产，产物自动入手。")
 
 static func next_voyage(ctx) -> void:
 	var s: Dictionary = ctx.state
@@ -389,12 +509,14 @@ static func next_voyage(ctx) -> void:
 		return
 	s.voyage += 1; s.phase = "navigation"; s.node = {}; s.battle = {}; ctx.panel = ""
 	refresh_voyage_ap(ctx)
+	produce_at_round_start(ctx)
+	ctx.give("wood",1,false,"spring")
 	for i in range(3): ctx.give(R.pick(s.rng,"initial",I.RESOURCES),1,false,"spring")
 	candidates(ctx)
-	ctx.log_text("领取本轮涌泉三张；开放导航。")
+	ctx.log_text("领取本轮涌泉：固定木头1份＋随机基础资源3张（可含木头）；开放导航。")
 
 static func discard(ctx, uid: String) -> bool:
-	if ctx.phase() != "discard" or I.capacity(ctx.state) <= ctx.state.player.limit: return false
+	if ctx.phase() != "discard" or I.capacity(ctx.state) <= I.hand_limit(ctx.state,ctx.catalog): return false
 	if uid == "coins":
 		Stats.card(ctx.state,"coin","discarded",ctx.state.coins,"discard")
 		ctx.log_text("弃置贝币%d。" % ctx.state.coins)
@@ -404,7 +526,7 @@ static func discard(ctx, uid: String) -> bool:
 		if card.is_empty() or card.id == "pollution" or card.id == "punch": return ctx.fail("此牌不能通过弃置腾出容量")
 		I.remove(ctx.state,uid,"discarded")
 		ctx.log_text("弃置："+ctx.catalog.entry("cards",card.id).name)
-	if I.capacity(ctx.state) <= ctx.state.player.limit: next_voyage(ctx)
+	if I.capacity(ctx.state) <= I.hand_limit(ctx.state,ctx.catalog): next_voyage(ctx)
 	return true
 
 static func profile_modifiers(ctx, stats: Dictionary) -> void:
@@ -437,10 +559,8 @@ static func meta_buy(ctx, command: String, id: String) -> bool:
 	return true
 
 static func valid_save(ctx, data: Dictionary) -> bool:
-	var current: bool = data.get("content_version") == ctx.VERSION and data.get("fingerprint") in [ctx.catalog.fingerprint(),ctx.catalog.previous_balance_fingerprint()]
-	var previous: bool = data.get("content_version") == "godot-flow-v02-3" and data.get("fingerprint") == ctx.catalog.fingerprint()
-	var legacy: bool = data.get("content_version") == "godot-flow-v02-2" and data.get("fingerprint") == ctx.catalog.legacy_fingerprint() and data.get("state") is Dictionary and data.state.get("mode","challenge") == "challenge"
-	if (data.get("schema")!=1 and data.get("schema")!=2) or not (current or previous or legacy) or data.get("random_version") != "xorshift32-godot-v1": return false
+	var current: bool = data.get("content_version") == ctx.VERSION and data.get("fingerprint") == ctx.catalog.fingerprint()
+	if not current or data.get("schema")!=2 or data.get("random_version")!="xorshift32-godot-v1": return false
 	if current and (data.get("schema")!=2 or not ctx.Settlement.valid_report(data.get("last_settlement"))): return false
 	if not data.get("state") is Dictionary or not data.get("profile") is Dictionary or not data.get("revision") is float and not data.get("revision") is int: return false
 	var p: Dictionary = data.profile
@@ -489,21 +609,65 @@ static func valid_save(ctx, data: Dictionary) -> bool:
 	for cell in s.cells:
 		if not cell is Dictionary or not cell.has("id") or cell.get("status") not in ["intact","damaged","detached"] or not cell.get("equipment") is Dictionary: return false
 		if not integer(cell.get("x")) or not integer(cell.get("y")) or not integer(cell.get("damaged_at")): return false
-		if not cell.equipment.is_empty() and (not cell.equipment.has("level") or not cell.equipment.has("fuel") or not cell.equipment.has("progress") or ctx.catalog.entry("equipment",cell.equipment.get("id","")).is_empty()): return false
+		if not cell.equipment.is_empty():
+			if not cell.equipment.has("level") or not cell.equipment.has("fuel") or not cell.equipment.has("progress") or ctx.catalog.entry("equipment",cell.equipment.get("id","")).is_empty(): return false
+			if not integer(cell.equipment.level) or cell.equipment.level<1 or cell.equipment.level>3 or not integer(cell.equipment.fuel) or cell.equipment.fuel<0 or cell.equipment.fuel>999 or not integer(cell.equipment.progress) or cell.equipment.progress<0 or cell.equipment.progress>999: return false
+			if current and cell.equipment.get("id","")=="generator" and (not cell.equipment.get("boost_cards") is Array or not integer(cell.equipment.get("production_bonus")) or cell.equipment.production_bonus<0 or cell.equipment.production_bonus>1): return false
+			if current and cell.equipment.has("boost_cards") and not cell.equipment.boost_cards is Array: return false
+			if current and cell.equipment.has("production_bonus") and (not integer(cell.equipment.production_bonus) or cell.equipment.production_bonus<0 or cell.equipment.production_bonus>1): return false
+			for boost in cell.equipment.get("boost_cards",[]):
+				if not boost is Dictionary or not boost.get("uid","") is String or boost.uid=="" or boost.get("id","") not in ["ready","power","barrier","production"]: return false
+				if boost.uid in seen: return false
+				seen.append(boost.uid)
+			if cell.equipment.get("id","")=="generator":
+				var cap: int=int(ctx.catalog.entry("equipment","generator").capacities[cell.equipment.level-1])
+				var boosts: Array=cell.equipment.get("boost_cards",[])
+				var permanent_count: int=0
+				for boost in boosts:
+					if boost.has("expires_voyage"):
+						if not integer(boost.expires_voyage) or boost.expires_voyage<s.voyage or boost.expires_voyage>s.voyage+1: return false
+					else: permanent_count+=1
+				if permanent_count>cap or boosts.size()>cap+1: return false
+			elif not cell.equipment.get("boost_cards",[]).is_empty(): return false
 	if s.phase in ["preparation","story","interaction","battle","aftermath","nightHub","chapterComplete"] and ctx.catalog.entry("nodes",s.node.get("id","")).is_empty() and ctx.catalog.entry("story_nodes",s.node.get("id","")).is_empty(): return false
-	if not s.node.is_empty() and not valid_node(ctx,s.node,s.mode): return false
+	if not s.node.is_empty() and not valid_node(ctx,s.node,s.mode,false,false): return false
 	if s.phase == "story" and s.story_step not in ["intro","choice","result"]: return false
 	if s.phase == "interaction" and s.node.get("kind") != "shop": return false
 	if s.phase == "battle" and (s.battle.is_empty() or not s.battle.has("hp") or not s.battle.has("turn") or not s.battle.has("ap") or not s.battle.has("entry_hp") or ctx.catalog.entry("enemies",s.battle.get("id","")).is_empty()): return false
+	if current:
+		for key in ["next_boost_id","next_shield_id"]:
+			if not integer(s.get(key)) or s[key]<1: return false
+		if s.phase=="battle":
+			if not integer(s.battle.get("turn")) or s.battle.turn<1 or not integer(s.battle.get("hp")) or s.battle.hp<0 or not integer(s.battle.get("ap")) or s.battle.ap<0: return false
+			if not s.battle.get("shields") is Array: return false
+			var shield_uids: Array=[]
+			var shield_sequence := 0
+			for shield in s.battle.shields:
+				if not shield is Dictionary or not shield.get("uid","") is String or shield.uid=="" or not shield.get("source","") is String or not integer(shield.get("amount")) or shield.amount<1 or shield.amount>100 or not integer(shield.get("expires_turn")) or shield.expires_turn<s.battle.turn or shield.expires_turn>s.battle.turn+3 or not shield.get("extendable") is bool or not shield.get("extended") is bool: return false
+				if shield.uid in shield_uids: return false
+				shield_uids.append(shield.uid)
+				shield_sequence=maxi(shield_sequence,uid_suffix(shield.uid,"shield-"))
+			if int(s.next_shield_id)<=shield_sequence: return false
+		var boost_sequence := 0
+		for cell in s.cells:
+			for boost in cell.get("equipment",{}).get("boost_cards",[]): boost_sequence=maxi(boost_sequence,uid_suffix(boost.uid,"boost-"))
+		if int(s.next_boost_id)<=boost_sequence: return false
 	for node in s.candidates:
 		if not node is Dictionary or not node.has("visit_id"): return false
-		if not valid_node(ctx,node,s.mode): return false
+		if not valid_node(ctx,node,s.mode,false,false): return false
+	if current and s.phase=="battle" and (not integer(s.battle.get("turn")) or s.battle.turn<1 or not integer(s.battle.get("hp")) or s.battle.hp<0 or not integer(s.battle.get("ap")) or s.battle.ap<0): return false
 	return ctx.Campaign.valid_save(ctx,s)
+
+static func uid_suffix(uid: String,prefix: String) -> int:
+	if not uid.begins_with(prefix): return 0
+	var suffix: String=uid.trim_prefix(prefix)
+	if suffix.is_empty() or not suffix.is_valid_int(): return 0
+	return int(suffix)
 
 static func integer(value) -> bool:
 	return (value is int or value is float) and is_finite(float(value)) and float(value) == floor(float(value))
 
-static func valid_node(ctx, node: Dictionary, mode: String = "challenge") -> bool:
+static func valid_node(ctx, node: Dictionary, mode: String = "challenge", allow_old_hard_marker: bool = false, allow_old_production_text: bool = false) -> bool:
 	var definition: Dictionary = ctx.catalog.entry("nodes",node.get("id",""))
 	if definition.is_empty():
 		if mode != "story": return false
@@ -519,4 +683,8 @@ static func valid_node(ctx, node: Dictionary, mode: String = "challenge") -> boo
 	definition.erase("variants")
 	var actual := node.duplicate(true)
 	actual.erase("visit_id"); actual.erase("variant_id"); actual.erase("variants")
+	if allow_old_production_text and node_id=="ST.L1.T02" and actual.get("lines") is Array:
+		for i in range(actual.lines.size()):
+			if actual.lines[i] is String: actual.lines[i]=actual.lines[i].replace("Ⅱ级滤水器每次轮末产水","Ⅱ级滤水器每轮开始产水")
+	if allow_old_hard_marker and actual.get("id","")=="ruin" and not actual.has("difficulty") and definition.get("difficulty","")=="hard": actual.difficulty="hard"
 	return JSON.stringify(actual) == JSON.stringify(definition)

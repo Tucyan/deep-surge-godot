@@ -22,11 +22,11 @@ func run():
 	app.world_view.sync(fixture); await process_frame
 	model = app.world_view.cells.get_node("cell-2/Equipment")
 	check(model.get_meta("production_stage","") == "ready","production voyage replaces plant mesh")
-	check(app.world_view.cells.get_node("cell-2/StateLabel").text.contains("本轮产水"),"ready label")
+	check(app.world_view.cells.get_node("cell-2/StateLabel").text.contains("下轮开始产水"),"ready label forecasts next round start")
 	fixture.cells[2].status = "damaged"; app.world_view.sync(fixture); await process_frame
 	model = app.world_view.cells.get_node("cell-2/Equipment")
 	check(model.get_meta("production_stage","") == "ready" and not model.get_meta("active",true),"damage retains filter shape and disables equipment")
-	check(app.world_view.cells.get_node("cell-2/StateLabel").text.contains("过滤暂停") and not app.world_view.cells.get_node("cell-2/StateLabel").text.contains("本轮产水"),"damaged filter does not promise production")
+	check(app.world_view.cells.get_node("cell-2/StateLabel").text.contains("过滤暂停") and not app.world_view.cells.get_node("cell-2/StateLabel").text.contains("下轮开始产水"),"damaged filter does not promise production")
 	fixture.cells[2].status = "intact"; fixture.cells[2].equipment.progress = 0
 	app.world_view.sync(fixture); await process_frame
 	model = app.world_view.cells.get_node("cell-2/Equipment")

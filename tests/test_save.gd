@@ -24,8 +24,9 @@ func _init() -> void:
 	check(loaded.restore(JSON.parse_string(JSON.stringify(saved))),"JSON完整往返")
 	check(same(loaded.snapshot(),saved),"随机/资源/阶段一致")
 	var legacy: Dictionary = saved.duplicate(true)
+	legacy.state.player.hp=40; legacy.state.player.hp_max=40; legacy.state.stats.minimum.hp=40
 	legacy.content_version = "godot-flow-v02-2"; legacy.fingerprint = catalog.legacy_fingerprint()
-	check(loaded.restore(JSON.parse_string(JSON.stringify(legacy))),"上一版挑战存档迁移")
+	check(not loaded.restore(JSON.parse_string(JSON.stringify(legacy))),"Demo开发期拒绝旧版挑战存档")
 	check(loaded.snapshot().content_version == s.VERSION,"写回新格式，状态与随机不重建")
 	var bad: Dictionary = saved.duplicate(true)
 	bad.profile.points = -100

@@ -15,7 +15,7 @@ func _init() -> void:
 	check(s.dispatch("new", {"mode":"challenge", "origin":"strong", "seed":17}), "挑战新局")
 	check(s.view().phase == "navigation", "首次导航")
 	check(s.view().hand.size() == 7 and s.view().ap == s.view().player.base_ap, "随心所欲七张资源/首次无涌泉，导航可用AP")
-	check(s.view().player.hp == 40, "出身上限实际生效")
+	check(s.view().player.hp == 16, "出身上限实际生效")
 	check(s.dispatch("panel", {"id":"craft"}), "导航允许合成")
 	s.dispatch("close")
 	var before: Dictionary = s.snapshot()

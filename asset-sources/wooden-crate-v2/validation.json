@@ -1,0 +1,37 @@
+{
+  "result": "PASS",
+  "triangles": 7000,
+  "meshes": 9,
+  "materials": 5,
+  "embedded_images": 3,
+  "bytes": 6488548,
+  "source_bounds_z_up": [
+    [
+      -0.588212251663208,
+      -0.45000001788139343,
+      0.0
+    ],
+    [
+      0.5890209674835205,
+      0.4276256859302521,
+      0.7824652194976807
+    ]
+  ],
+  "reimport_bounds_z_up": [
+    [
+      -0.588212251663208,
+      -0.45000001788139343,
+      0.0
+    ],
+    [
+      0.5890209674835205,
+      0.4276256859302521,
+      0.7824652194976807
+    ]
+  ],
+  "independent_lid": true,
+  "no_degenerate_triangles": true,
+  "uvs": true,
+  "origin_at_base": true,
+  "staged_not_gameplay": true
+}

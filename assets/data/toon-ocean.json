@@ -228,6 +228,7 @@
     "pore_strength": 0.88,
     "thread_strength": 0.35,
     "normal_strength": 0.08,
+    "distortion": 0.08,
     "fade_distance": [
       12,
       36

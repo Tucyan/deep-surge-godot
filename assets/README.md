@@ -1,5 +1,9 @@
 # 素材登记
 
+2026-10-15 生图手绘木纹覆盖：共用暖棕/深褐/灰木三张1254贴图（`texture.shared.stylized-wood.*-albedo`）应用于箱子v2及木盆v4两植株状态，取代这两个模型此前的程序木纹。几何、生产规则及箱子待接入状态保持；木材采用粗糙度0.90，不叠旧微法线。Godot导入派生图片一并登记hash/尺寸/依赖，原始生图和完整提示词保留。当前来源与复建见 [手绘木纹记录](../asset-sources/stylized-wood-v1/README.md)。
+
+2026-10-15 独立木箱资产：新增 `model.prop.wooden-crate`，状态 `staged-not-integrated`，不替换筏根旧箱、不加入储物/合成/安装玩法。33块错落拼板、斜撑、独立箱盖、铁件与绳提手；7000三角面/9网格批次，5张512木纹PBR图片内嵌GLB。源 `asset-sources/wooden-crate-v1/wooden_crate_v001.blend`，来源与复建见 [木箱源记录](../asset-sources/wooden-crate-v1/README.md)。
+
 2026-10-15 一级滤水器状态：`model.raft.module.filter` 为本轮产水有水桶，新增 `model.raft.module.filter-waiting` 开口空桶。源 `asset-sources/filter-states-v1/filter_states_v001.blend`，工具 `refine_filter_states.py` / `register_filter_states.py`；两状态共用相同框架与空心接水桶，水位随本轮生产安排切换，不改规则或增加储水库存。此项覆盖下文filter旧源映射，详见 [外观状态](../docs/filter-production-visuals.md) 与 [源记录](../asset-sources/filter-states-v1/README.md)。
 
 2026-10-15 土盆 v3：`model.raft.module.planter` 为成长完高植株，新增 `model.raft.module.planter-seedling` 六株圆子叶小苗；共用10块错落围板和土层，六张512×512木纹/土壤PBR图片已内嵌GLB并逐项登记hash/尺寸/种子。源为 `asset-sources/planter-v3/planter_v003.blend`；工具 `generate_planter_textures.py` / `refine_planter_v3.py` / `register_planter_model.py`。此项覆盖下文v1/v2土盆的历史源映射，详见 [当前外观规则](../docs/planter-growth-visuals.md) 和 [源记录](../asset-sources/planter-v3/README.md)。
@@ -156,3 +160,11 @@ model.raft.module.deck-intact / deck-damaged / root-decor / lamp / filter / plan
 ## 首页素材 v2（2026-10-14）
 
 13张用户PNG、2×MP4派生的静音OGV和首帧poster已接入，独立shade多边形位于动态背景与菜单之间。稳定AssetId、源/hash/尺寸/依赖及shade参数由tools/register_title_ui.py登记。原包和2×/4×原视频归档于asset-sources/title-ui-v2，不使用个人绝对路径运行。布局和入口映射见docs/title-ui.md。
+
+## 木筏新设备模型 v1（2026-10-15）
+
+新增 `model.raft.module.shieldRack`、`generator`、`fishingNet`，源为 `asset-sources/equipment-models-v1/` 下的同名 v001 Blender 文件；箱子入口 `model.raft.module.crate` 通过轻量场景复用现有 `model.prop.wooden-crate`，适配甲板高度。三模型共用三色手绘木纹，源像素不变。生成、登记、重导入和 GPU 验证流程见 [源记录](../asset-sources/equipment-models-v1/README.md)；状态为 staged-not-integrated，未以视觉夹具声明设备玩法完成。总登记器保留独立源映射。预览与验收见 [模型验证](../evidence/equipment-v1-verification.md)。
+
+2026-10-15 用户提供五张新波纹木纹，依序用于盾架、发电机、捕捞网、箱子和成熟/幼苗木盆。对应模型材料与 UV 已更新，位置和网格未改。五张 PNG 与原附件像素一致，作为源纹理登记。版本化 Blender 源、导出备份和 Godot 运行贴图登记见 [木纹 v2 记录](../asset-sources/stylized-wood-user-v2/README.md)。
+
+2026-10-15 设备战斗 UI：`ui.battle.equipment` 对应固定攻击/格挡与本地预览确认、盾/敌意图摘要、发电机燃料和增益领取/指派，以及箱子有效手牌上限。设备模型继续使用上列稳定 AssetId；仅在资源加载失败时显示明确标注的临时占位。UI 与模型分开登记，详见 manifest。

@@ -1,0 +1,74 @@
+{
+  "wooden-crate.glb": {
+    "category": "crate",
+    "texture": "assets/textures/stylized-wood-user-v2/wood-crate-albedo.png",
+    "texture_sha256": "3e7d8f9d0c870379bb98f43b67ecfde955de251da1d7601404d839aa74495e13",
+    "geometry_signature": "f1ccc879cf80be401577bedbf57a6a8a7db31c2fef9ab0c643161adaaa599e0e",
+    "uv_signature": "7e5d5c89d4562e57625b3c44c92c4cececb6c74f74faae1216936211f23e59a6",
+    "geometry_unchanged": true,
+    "uv_unchanged": true,
+    "bytes": 1844824,
+    "glb_sha256": "2ddd5351d80d884e1f5d5fb256d9de9f82dc6ee565952f2a6e73fcc861a43e65",
+    "roughness": 0.9
+  },
+  "planter.glb": {
+    "category": "planter",
+    "texture": "assets/textures/stylized-wood-user-v2/wood-planter-albedo.png",
+    "texture_sha256": "c1ebf25a2ef462c3562f62636a26163cc547bda452b3bfd749454b6a4d5af35b",
+    "geometry_signature": "65887c178308174c0b666696daf02d52fe88aab63562c125dc32ec16fbd1d69c",
+    "uv_signature": "267b4b4217974e1bc4c1c7c9e164102033292e99bfd173cdeb5fd00f4896a7cc",
+    "geometry_unchanged": true,
+    "uv_unchanged": true,
+    "bytes": 2416376,
+    "glb_sha256": "916860ad7a561fc376f77a6f3a8f25d8b405031f833d75c2de9b83d202b5d423",
+    "roughness": 0.9
+  },
+  "planter-seedling.glb": {
+    "category": "planter",
+    "texture": "assets/textures/stylized-wood-user-v2/wood-planter-albedo.png",
+    "texture_sha256": "c1ebf25a2ef462c3562f62636a26163cc547bda452b3bfd749454b6a4d5af35b",
+    "geometry_signature": "a121f24854793d40d6c9029763fe44ec2269f8d610d6d9fc5d9c958596ceb980",
+    "uv_signature": "15b4757250bde63e9bea433e526c21cdfb1cd54482e376f22d38a3f84ad65e9a",
+    "geometry_unchanged": true,
+    "uv_unchanged": true,
+    "bytes": 2431356,
+    "glb_sha256": "5fd6208da367a5645d3fc2b565eac427e395eba5c1d8f539769b241fcd75b680",
+    "roughness": 0.9
+  },
+  "shieldRack.glb": {
+    "category": "shieldRack",
+    "texture": "assets/textures/stylized-wood-user-v2/wood-shieldRack-albedo.png",
+    "texture_sha256": "f40ed7ef1c47fa8e748f601c6c52432d150556b1eba61259d4326ab7ed9aad76",
+    "geometry_signature": "78d37bcafbcc35e6765df6ffb35763f84400c046b210157b68c4c783ec7dc587",
+    "uv_signature": "a2b7f1866272ea49db3a6204b80feec4bdc2fed7cb2c90dbee6dd1c195011f93",
+    "geometry_unchanged": true,
+    "uv_unchanged": true,
+    "bytes": 1505080,
+    "glb_sha256": "893b8c31e82b57151ba95b247f5e9b73411d121369079ffe1d691b1e02cd680e",
+    "roughness": 0.9
+  },
+  "generator.glb": {
+    "category": "generator",
+    "texture": "assets/textures/stylized-wood-user-v2/wood-generator-albedo.png",
+    "texture_sha256": "341c65d9448f2fe4d1ece3fd96e2cfeff35d9265bcfb2d1f37408b28a10c7d52",
+    "geometry_signature": "4d0a30123064e9eeb2d8c11ac72d9c2fffc35a233302ecf950a1cef7a18d9741",
+    "uv_signature": "db30fee7b010d5a43e9e403d6f004fe22dfad94ed4f4c251d3d4274ee86d94ff",
+    "geometry_unchanged": true,
+    "uv_unchanged": true,
+    "bytes": 2061564,
+    "glb_sha256": "a723905f875857b25f01b3909d55666674884fc9baa6e365e78bbf41527832ad",
+    "roughness": 0.9
+  },
+  "fishingNet.glb": {
+    "category": "fishingNet",
+    "texture": "assets/textures/stylized-wood-user-v2/wood-fishingNet-albedo.png",
+    "texture_sha256": "d0b6df62f71568b751456d33a409ddf4bdd1440a5f45189b9f9095e3228143b8",
+    "geometry_signature": "28524b860dec69b0f42ebe9ae37efd67499926ee3a8ac6ad5d4d933900831501",
+    "uv_signature": "73c2c69f548b82702d93619a5755b69c552ac8ce283b07e02efb3f13661ab055",
+    "geometry_unchanged": true,
+    "uv_unchanged": true,
+    "bytes": 2069520,
+    "glb_sha256": "20f10ff43a546728cb132f8ace15e61f6c053bbabb1deb533cefee6cdbfeb725",
+    "roughness": 0.9
+  }
+}

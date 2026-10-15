@@ -47,6 +47,14 @@ static func capacity(state: Dictionary) -> int:
 	for limit in arrow_groups: ordinary += ceili(float(arrow_groups[limit])/float(limit))
 	return ordinary + (1 if state.coins > 0 else 0)
 
+static func hand_limit(state: Dictionary, catalog: RefCounted) -> int:
+	var result: int = int(state.get("player", {}).get("limit", 10))
+	for cell in state.get("cells", []):
+		if cell.get("status", "") != "intact": continue
+		var equipment: Dictionary = cell.get("equipment", {})
+		if equipment.get("id", "") == "crate": result += int(catalog.entry("equipment", "crate").get("capacity", [1,2,3])[clampi(int(equipment.get("level", 1))-1,0,2)])
+	return result
+
 static func find(state: Dictionary, uid: String) -> Dictionary:
 	for card in state.hand:
 		if card.uid == uid:

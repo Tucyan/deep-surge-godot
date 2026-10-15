@@ -57,9 +57,9 @@
   "guardian": {
     "name": "守潮骨片",
     "rarity": "normal",
-    "description": "生命上限+5。",
+    "description": "生命上限+2。",
     "modifiers": {
-      "hpMax": 5
+      "hpMax": 2
     }
   },
   "curse": {

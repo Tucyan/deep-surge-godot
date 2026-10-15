@@ -3,64 +3,342 @@ const W = preload("res://presentation/widgets.gd")
 const Display = preload("res://presentation/display_settings.gd")
 
 static func build(parent: Node, app: Control, view: Dictionary) -> void:
-	var prefs=app.display_settings
-	var tabs:=HBoxContainer.new(); parent.add_child(tabs)
-	for id in ["display","game"]:
-		var tab_id: String=id
-		W.button(tabs,"显示" if id=="display" else "游戏",func(): app.settings_tab=tab_id; app.render.call_deferred())
-	if app.settings_tab=="display":
-		W.text(parent,"显示设置",28,W.GOLD)
-		var scale_label:=W.text(parent,"UI 大小 · %d%%" % roundi(prefs.ui_scale*100),20)
-		var slider:=HSlider.new(); slider.name="UIScale"; slider.custom_minimum_size.y=44
-		slider.min_value=100; slider.max_value=125; slider.step=1; slider.value=prefs.ui_scale*100
-		slider.accessibility_name="UI 大小百分比"; parent.add_child(slider)
-		slider.drag_started.connect(func(): slider.set_meta("dragging",true))
-		slider.value_changed.connect(func(value):
-			scale_label.text="UI 大小 · %d%%" % roundi(value)
-			if not slider.get_meta("dragging",false):
-				prefs.ui_scale=value/100.0; app.apply_display_settings.call_deferred(false))
-		slider.drag_ended.connect(func(changed):
-			slider.set_meta("dragging",false)
-			if changed: prefs.ui_scale=slider.value/100.0; app.apply_display_settings.call_deferred(false))
-		W.text(parent,"拖动后松开生效，支持 100%～125% 逐百分比调整。",16,W.MUTED)
-		var fps_row:=HBoxContainer.new(); parent.add_child(fps_row)
-		W.text(fps_row,"帧率上限",20)
-		var fps:=OptionButton.new(); fps.name="FrameRateLimit"; fps.custom_minimum_size.y=44; fps.size_flags_horizontal=Control.SIZE_EXPAND_FILL
-		fps.accessibility_name="帧率上限"
-		for limit in Display.FRAME_RATES: fps.add_item("无限制" if limit==0 else "%d FPS" % limit)
-		fps.select(Display.FRAME_RATES.find(prefs.fps_limit)); fps_row.add_child(fps)
-		fps.item_selected.connect(func(index): prefs.fps_limit=Display.FRAME_RATES[index]; app.apply_display_settings.call_deferred(false))
-		if prefs.mobile:
-			W.text(parent,"清晰度",20)
-			var quality:=OptionButton.new(); quality.name="MobileQuality"; quality.custom_minimum_size.y=44
-			for label in ["流畅 · 较模糊","均衡","清晰"]: quality.add_item(label)
-			quality.select(prefs.quality); parent.add_child(quality)
-			quality.item_selected.connect(func(index): prefs.quality=index; app.apply_display_settings.call_deferred(false))
-			W.text(parent,"清晰度只影响海面和木筏画面，文字与按钮保持清晰。",18,W.MUTED)
-		else:
-			W.text(parent,"分辨率",20)
-			var resolution:=OptionButton.new(); resolution.name="DesktopResolution"; resolution.custom_minimum_size.y=44
-			for value in Display.RESOLUTIONS: resolution.add_item("%d × %d" % [value.x,value.y])
-			resolution.select(Display.RESOLUTIONS.find(prefs.resolution)); parent.add_child(resolution)
-			resolution.item_selected.connect(func(index): prefs.resolution=Display.RESOLUTIONS[index]; app.apply_display_settings.call_deferred())
-			var fullscreen:=CheckButton.new(); fullscreen.name="DesktopFullscreen"; fullscreen.text="全屏"; fullscreen.custom_minimum_size.y=44
-			fullscreen.button_pressed=prefs.fullscreen; parent.add_child(fullscreen)
-			fullscreen.toggled.connect(func(enabled): prefs.fullscreen=enabled; app.apply_display_settings.call_deferred())
-			W.text(parent,"窗口模式调整窗口大小；全屏时调整场景渲染分辨率。",18,W.MUTED)
-		W.text(parent,"设置自动保存。",18,W.MUTED)
+	var prefs = app.display_settings
+	var current_tab: String = app.settings_tab if app.settings_tab in ["display", "game"] else "display"
+
+	# Subtitle / context description
+	var subtitle := Label.new()
+	subtitle.text = "D E E P   S U R G E  ·  系统选项与运行偏好"
+	subtitle.add_theme_font_size_override("font_size", 13)
+	subtitle.add_theme_color_override("font_color", Color("8ca1b0"))
+	parent.add_child(subtitle)
+
+	# 1. Tab Navigation Bar (Segmented Control with Highlight)
+	var tab_bar := HBoxContainer.new()
+	tab_bar.name = "SettingsTabBar"
+	tab_bar.add_theme_constant_override("separation", 8)
+	parent.add_child(tab_bar)
+
+	var tab_display := Button.new()
+	tab_display.name = "TabDisplay"
+	tab_display.text = "画面显示"
+	tab_display.custom_minimum_size = Vector2(0, 36)
+	tab_display.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	tab_bar.add_child(tab_display)
+
+	var tab_game := Button.new()
+	tab_game.name = "TabGame"
+	tab_game.text = "游戏偏好"
+	tab_game.custom_minimum_size = Vector2(0, 36)
+	tab_game.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	tab_bar.add_child(tab_game)
+
+	# 2. Tab Content Containers
+	var content_area := VBoxContainer.new()
+	content_area.name = "SettingsContentArea"
+	content_area.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	content_area.add_theme_constant_override("separation", 6)
+	parent.add_child(content_area)
+
+	var display_box := VBoxContainer.new()
+	display_box.name = "DisplayTabContent"
+	display_box.add_theme_constant_override("separation", 6)
+	content_area.add_child(display_box)
+
+	var game_box := VBoxContainer.new()
+	game_box.name = "GameTabContent"
+	game_box.add_theme_constant_override("separation", 6)
+	content_area.add_child(game_box)
+
+	# --- TAB 1: 画面显示 ---
+	# Row 1: UI 缩放
+	var scale_row := HBoxContainer.new()
+	scale_row.alignment = BoxContainer.ALIGNMENT_END
+	scale_row.add_theme_constant_override("separation", 8)
+
+	var scale_label := Label.new()
+	scale_label.name = "UIScaleValue"
+	scale_label.text = "%d%%" % roundi(prefs.ui_scale * 100)
+	scale_label.custom_minimum_size.x = 44
+	scale_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	scale_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	scale_label.add_theme_font_size_override("font_size", 14)
+	scale_label.add_theme_color_override("font_color", W.GOLD)
+	scale_row.add_child(scale_label)
+
+	var slider := HSlider.new()
+	slider.name = "UIScale"
+	slider.custom_minimum_size = Vector2(140, 32)
+	slider.min_value = 100; slider.max_value = 125; slider.step = 1; slider.value = prefs.ui_scale * 100
+	slider.accessibility_name = "UI 大小百分比"
+	slider.drag_started.connect(func(): slider.set_meta("dragging", true))
+	slider.value_changed.connect(func(val):
+		scale_label.text = "%d%%" % roundi(val)
+		if not slider.get_meta("dragging", false):
+			prefs.ui_scale = val / 100.0
+			app.apply_display_settings.call_deferred(false)
+	)
+	slider.drag_ended.connect(func(changed):
+		slider.set_meta("dragging", false)
+		if changed:
+			prefs.ui_scale = slider.value / 100.0
+			app.apply_display_settings.call_deferred(false)
+	)
+	scale_row.add_child(slider)
+	display_box.add_child(make_row("界面缩放 (UI Scale)", "调整文字、卡牌与界面大小（100% ~ 125%）", scale_row, 195))
+
+	# Row 2: 帧率限制
+	var fps := OptionButton.new()
+	fps.name = "FrameRateLimit"
+	fps.custom_minimum_size = Vector2(160, 32)
+	fps.accessibility_name = "帧率上限"
+	for limit in Display.FRAME_RATES:
+		fps.add_item("无限制" if limit == 0 else "%d FPS" % limit)
+	fps.select(Display.FRAME_RATES.find(prefs.fps_limit))
+	fps.item_selected.connect(func(idx):
+		prefs.fps_limit = Display.FRAME_RATES[idx]
+		app.apply_display_settings.call_deferred(false)
+	)
+	display_box.add_child(make_row("帧率限制 (FPS Cap)", "限制游戏最大渲染帧率，降低功耗与发热", fps, 160))
+
+	# Row 3: 分辨率 (桌面) / 画面质量 (移动端)
+	if prefs.mobile:
+		var quality := OptionButton.new()
+		quality.name = "MobileQuality"
+		quality.custom_minimum_size = Vector2(160, 32)
+		for label in ["流畅 · 较模糊", "均衡", "清晰"]: quality.add_item(label)
+		quality.select(prefs.quality)
+		quality.item_selected.connect(func(idx):
+			prefs.quality = idx
+			app.apply_display_settings.call_deferred(false)
+		)
+		display_box.add_child(make_row("画面清晰度 (Quality)", "调整海面与场景渲染质量，文字与UI保持清晰", quality, 160))
 	else:
-		W.text(parent,"游戏设置",28,W.GOLD)
-		var toggle:=CheckButton.new(); toggle.text="海面与木筏动态"; toggle.button_pressed=prefs.motion; toggle.custom_minimum_size.y=44
-		parent.add_child(toggle); toggle.toggled.connect(func(enabled): prefs.motion=enabled; app.apply_display_settings.call_deferred(false))
-		for key in ["auto_sort","stack_resources"]:
-			var option_key: String=key
-			var option:=CheckButton.new(); option.name=key; option.custom_minimum_size.y=44
-			option.text="自动理牌" if key=="auto_sort" else "同类资源合并显示（叠牌）"
-			option.button_pressed=app.hand_layout.get(key); parent.add_child(option)
-			option.toggled.connect(func(enabled):
-				app.hand_layout.set(option_key,enabled)
-				if app.persistence and app.hand_layout.save_preferences()!=OK: app.message="手牌设置保存失败"
-				app.render.call_deferred())
-		W.text(parent,"同种资源达到 4 张时合并；长按卡牌 0.2 秒后可拖动排序，手动排序会关闭自动理牌。",18,W.MUTED)
-		if view.active: W.button(parent,"放弃本局",func(): app.confirm_abandon())
-	if view.screen=="game": W.button(parent,"返回首页",func(): app.handle_command("home"))
+		var resolution := OptionButton.new()
+		resolution.name = "DesktopResolution"
+		resolution.custom_minimum_size = Vector2(160, 32)
+		for val in Display.RESOLUTIONS:
+			resolution.add_item("%d × %d" % [val.x, val.y])
+		resolution.select(Display.RESOLUTIONS.find(prefs.resolution))
+		resolution.item_selected.connect(func(idx):
+			prefs.resolution = Display.RESOLUTIONS[idx]
+			app.apply_display_settings.call_deferred()
+		)
+		display_box.add_child(make_row("桌面分辨率 (Resolution)", "窗口模式调整窗口大小，全屏时调整渲染精度", resolution, 160))
+
+		# Row 4: 全屏显示 (桌面)
+		var fullscreen := CheckButton.new()
+		fullscreen.name = "DesktopFullscreen"
+		fullscreen.text = "开启全屏"
+		fullscreen.button_pressed = prefs.fullscreen
+		fullscreen.toggled.connect(func(enabled):
+			prefs.fullscreen = enabled
+			app.apply_display_settings.call_deferred()
+		)
+		display_box.add_child(make_row("全屏显示 (Fullscreen)", "在全屏模式与窗口化模式之间切换", fullscreen, 130))
+
+	# Row 5: 海面与木筏动态 (归类到画面显示)
+	var toggle := CheckButton.new()
+	toggle.name = "MotionToggle"
+	toggle.text = "波浪起伏"
+	toggle.button_pressed = prefs.motion
+	toggle.toggled.connect(func(enabled):
+		prefs.motion = enabled
+		app.apply_display_settings.call_deferred(false)
+	)
+	display_box.add_child(make_row("海面与木筏动效 (Motion)", "开启后海面波浪与木筏随潮晃动；关闭可提升性能", toggle, 130))
+
+	# --- TAB 2: 游戏偏好 ---
+	# Row 1: 自动理牌
+	var opt_sort := CheckButton.new()
+	opt_sort.name = "auto_sort"
+	opt_sort.text = "自动理牌"
+	opt_sort.button_pressed = app.hand_layout.auto_sort
+	opt_sort.toggled.connect(func(enabled):
+		app.hand_layout.auto_sort = enabled
+		if app.persistence and app.hand_layout.save_preferences() != OK:
+			app.message = "手牌设置保存失败"
+		app.render.call_deferred()
+	)
+	game_box.add_child(make_row("自动理牌 (Auto-Sort)", "抽牌与整理时按卡牌类型与稀有度自动排序手牌", opt_sort, 130))
+
+	# Row 2: 资源叠牌
+	var opt_stack := CheckButton.new()
+	opt_stack.name = "stack_resources"
+	opt_stack.text = "叠牌合并"
+	opt_stack.button_pressed = app.hand_layout.stack_resources
+	opt_stack.toggled.connect(func(enabled):
+		app.hand_layout.stack_resources = enabled
+		if app.persistence and app.hand_layout.save_preferences() != OK:
+			app.message = "手牌设置保存失败"
+		app.render.call_deferred()
+	)
+	game_box.add_child(make_row("资源合并显示 (叠牌)", "同种基础资源达到 4 张时自动合并为单格显示，减少拥挤", opt_stack, 130))
+
+	# Row 3: 游戏操作与手势提示卡片
+	var tip_card := PanelContainer.new()
+	var tip_style := StyleBoxFlat.new()
+	tip_style.bg_color = Color(0.02, 0.045, 0.075, 0.7)
+	tip_style.border_color = Color(0.3, 0.42, 0.52, 0.35)
+	tip_style.set_border_width_all(1)
+	tip_style.set_corner_radius_all(4)
+	tip_style.content_margin_left = 14; tip_style.content_margin_right = 14
+	tip_style.content_margin_top = 8; tip_style.content_margin_bottom = 8
+	tip_card.add_theme_stylebox_override("panel", tip_style)
+
+	var tip_vbox := VBoxContainer.new()
+	tip_vbox.add_theme_constant_override("separation", 3)
+	tip_card.add_child(tip_vbox)
+
+	var tip_title := Label.new()
+	tip_title.text = "💡 操作与手势提示"
+	tip_title.add_theme_font_size_override("font_size", 14)
+	tip_title.add_theme_color_override("font_color", W.GOLD)
+	tip_vbox.add_child(tip_title)
+
+	var tip_body := Label.new()
+	tip_body.text = "· 手牌长按 0.2 秒后可自由拖动排序；手动调整顺序后会自动关闭自动理牌。\n· 双击手牌中的装备卡可自动安装到木筏空格，合并升级需 1 AP。\n· 战斗中双击最右侧的「攻击」或「防御」卡牌可直接以当前组合快速迎击。"
+	tip_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	tip_body.add_theme_font_size_override("font_size", 12)
+	tip_body.add_theme_color_override("font_color", Color("9ab0be"))
+	tip_vbox.add_child(tip_body)
+	game_box.add_child(tip_card)
+
+	# --- Tab Switching Behavior (Instant, No Full Screen Reload) ---
+	var active_tab_style := StyleBoxFlat.new()
+	active_tab_style.bg_color = Color(0.12, 0.22, 0.30, 0.95)
+	active_tab_style.border_color = W.GOLD
+	active_tab_style.set_border_width_all(1)
+	active_tab_style.border_width_bottom = 2
+	active_tab_style.set_corner_radius_all(3)
+
+	var inactive_tab_style := StyleBoxFlat.new()
+	inactive_tab_style.bg_color = Color(0.035, 0.065, 0.09, 0.7)
+	inactive_tab_style.border_color = Color(0.22, 0.32, 0.42, 0.4)
+	inactive_tab_style.set_border_width_all(1)
+	inactive_tab_style.set_corner_radius_all(3)
+
+	var update_tabs = func(target: String):
+		app.settings_tab = target
+		display_box.visible = (target == "display")
+		game_box.visible = (target == "game")
+		
+		for state in ["normal", "hover", "pressed", "focus"]:
+			tab_display.add_theme_stylebox_override(state, active_tab_style if target == "display" else inactive_tab_style)
+			tab_game.add_theme_stylebox_override(state, active_tab_style if target == "game" else inactive_tab_style)
+		tab_display.add_theme_color_override("font_color", Color("fff8e9") if target == "display" else Color("8ca1b0"))
+		tab_game.add_theme_color_override("font_color", Color("fff8e9") if target == "game" else Color("8ca1b0"))
+
+	tab_display.pressed.connect(func(): update_tabs.call("display"))
+	tab_game.pressed.connect(func(): update_tabs.call("game"))
+	update_tabs.call(current_tab)
+
+	# --- Bottom Section: 航程管理 (Voyage Actions) ---
+	if view.screen == "game" or view.active:
+		var voyage_panel := PanelContainer.new()
+		voyage_panel.name = "VoyageControlPanel"
+		voyage_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		var vp_style := StyleBoxFlat.new()
+		vp_style.bg_color = Color(0.02, 0.04, 0.065, 0.8)
+		vp_style.border_color = Color(0.55, 0.45, 0.3, 0.45)
+		vp_style.set_border_width_all(1)
+		vp_style.set_corner_radius_all(4)
+		vp_style.content_margin_left = 12; vp_style.content_margin_right = 12
+		vp_style.content_margin_top = 8; vp_style.content_margin_bottom = 8
+		voyage_panel.add_theme_stylebox_override("panel", vp_style)
+		parent.add_child(voyage_panel)
+
+		var vp_vbox := VBoxContainer.new()
+		vp_vbox.add_theme_constant_override("separation", 6)
+		voyage_panel.add_child(vp_vbox)
+
+		var vp_header := HBoxContainer.new()
+		vp_vbox.add_child(vp_header)
+		var vp_title := Label.new()
+		vp_title.text = "◆ 航程管理 ◆"
+		vp_title.add_theme_font_size_override("font_size", 13)
+		vp_title.add_theme_color_override("font_color", W.GOLD)
+		vp_header.add_child(vp_title)
+
+		var vp_hint := Label.new()
+		vp_hint.text = "当前航行中，可安全暂停返回主页，或放弃航程结算"
+		vp_hint.add_theme_font_size_override("font_size", 12)
+		vp_hint.add_theme_color_override("font_color", Color("8ca1b0"))
+		vp_header.add_child(vp_hint)
+
+		var btn_row := HBoxContainer.new()
+		btn_row.add_theme_constant_override("separation", 10)
+		vp_vbox.add_child(btn_row)
+
+		if view.screen == "game":
+			var home_btn := Button.new()
+			home_btn.text = "返回首页"
+			home_btn.name = "SettingsHomeButton"
+			home_btn.tooltip_text = "安全保存当前航程进度，返回游戏主菜单"
+			home_btn.custom_minimum_size.y = 36
+			home_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			home_btn.pressed.connect(func(): app.handle_command("home"))
+			btn_row.add_child(home_btn)
+
+		if view.active:
+			var abandon_btn := Button.new()
+			abandon_btn.text = "放弃本局"
+			abandon_btn.name = "SettingsAbandonButton"
+			abandon_btn.tooltip_text = "放弃当前航行并按已完成节点进行结算"
+			abandon_btn.custom_minimum_size.y = 36
+			abandon_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			var ab_style := StyleBoxFlat.new()
+			ab_style.bg_color = Color(0.18, 0.08, 0.08, 0.9)
+			ab_style.border_color = Color(0.75, 0.35, 0.3, 0.8)
+			ab_style.set_border_width_all(1)
+			ab_style.set_corner_radius_all(3)
+			for state in ["normal", "hover", "pressed", "focus"]:
+				abandon_btn.add_theme_stylebox_override(state, ab_style)
+			abandon_btn.add_theme_color_override("font_color", Color("f09d92"))
+			abandon_btn.pressed.connect(func(): app.confirm_abandon())
+			btn_row.add_child(abandon_btn)
+
+static func make_row(title_text: String, hint_text: String, control: Control, control_width: float = 160.0) -> PanelContainer:
+	var panel := PanelContainer.new()
+	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var p_style := StyleBoxFlat.new()
+	p_style.bg_color = Color(0.02, 0.045, 0.07, 0.65)
+	p_style.border_color = Color(0.22, 0.32, 0.42, 0.35)
+	p_style.set_border_width_all(1)
+	p_style.set_corner_radius_all(3)
+	p_style.content_margin_left = 12
+	p_style.content_margin_right = 12
+	p_style.content_margin_top = 6
+	p_style.content_margin_bottom = 6
+	panel.add_theme_stylebox_override("panel", p_style)
+
+	var hbox := HBoxContainer.new()
+	hbox.add_theme_constant_override("separation", 12)
+	panel.add_child(hbox)
+
+	var left_vbox := VBoxContainer.new()
+	left_vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	left_vbox.add_theme_constant_override("separation", 2)
+	hbox.add_child(left_vbox)
+
+	var t_lbl := Label.new()
+	t_lbl.text = title_text
+	t_lbl.add_theme_font_size_override("font_size", 15)
+	t_lbl.add_theme_color_override("font_color", Color("eee3cd"))
+	left_vbox.add_child(t_lbl)
+
+	if hint_text != "":
+		var h_lbl := Label.new()
+		h_lbl.text = hint_text
+		h_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		h_lbl.add_theme_font_size_override("font_size", 12)
+		h_lbl.add_theme_color_override("font_color", Color("8ca1b0"))
+		left_vbox.add_child(h_lbl)
+
+	if control != null:
+		control.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		if control_width > 0:
+			control.custom_minimum_size.x = control_width
+		hbox.add_child(control)
+
+	return panel

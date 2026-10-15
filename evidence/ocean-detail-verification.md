@@ -1,15 +1,14 @@
-# 海面细节 v1 · 2026-10-13
+# 海面细节与动态优化 v2 · 2026-10-15
 
-当前默认 Toon/Gerstner 夜海增加低对比流纹、泡沫孔洞/细丝与不规则微法线反光。大浪、色阶、雾和接触环参数沿用原版。截图 before/after 为种子 22、同一镜头、同一视觉时间 3 秒，仅切换 detail_enabled。另检查 0/6 秒和 1280×720 截图。排线状微法线在首轮对照中被发现，已替换为周期噪声梯度并启用 mipmap。
+在原 Toon/Gerstner 夜海细节系统基础上完成三项核心演进：
+1. **大浪形变推挤 UV**：微纹理采样叠加由大浪解析法线导出的局部流向斜率扰动（`detail_distortion = 0.08`），使微流纹随大浪起伏呈现自然的挤压与舒张，打破单纯的直线平移感。
+2. **周期性 Voronoi & FBM 离线纹理分流**：由 `generate_ocean_detail.py` 离线预烘焙独立的周期性无缝四通道噪声图 `res://assets/textures/ocean-foam-noise-v1.png`（R: 周期 Voronoi 细胞边缘、G: 多频段 FBM 泡沫侵蚀、B: 接触环湍流、A: 月光碎闪），全面替换片元着色器内原本每像素运行的 9 次循环 Voronoi 与多阶 FBM 哈希循环。
+3. **木筏接触环 SDF 范围粗筛剪枝**：基于木筏全局 AABB 外包围区（`raft_bounds`）进行提前退出检测，远离木筏（>1.5m）的大面积海面片元完全跳过 48 格中心距离场迭代。
 
-本次实际验证：Godot 4.7.2 / Compatibility / RTX 4060 Laptop GPU。
+本次实际验证环境：Godot 4.7.2 / Compatibility / RTX 4060 Laptop GPU / Python 3.11。
 
-- `test_ocean_detail.gd` PASS：素材绑定、默认开关、原网格/雾层数量、玩法状态隔离。
-- `test_toon_ocean.gd`、`test_fog.gd`、`test_clean_ui.gd` PASS。
-- `check_supplied_assets.py` PASS：46 个 hash 绑定，20 张原始 PNG，GLB 原数据完整。
-- `ocean_detail_visual.gd` PASS：原生 GPU 渲染，1600×900 / 1280×720，保存截图成功、状态未变。日志无 shader 编译错误。
-- 同进程全应用帧间隔：关闭中位数 6.949 ms，开启 6.939 ms；P95 分别 13.136 / 7.328 ms。数据受同步和系统调度影响，不能解读为 GPU 提速或独立 shader 成本；详见 ocean-detail-metrics.json。
-
-近海仍为 80802 三角形，远海 2 三角形；没有新增 draw layer、粒子或反射相机。细节为每个有效片元两次纹理采样，距离淡出。截图是离散时刻检查，未据此声称连续动画完全无闪烁，也未验证其他 GPU 或发行构建。
-
-纹理独立于规则数据，程序纹理视觉种子 20261013；在配置 detail 段可调整强度、尺度、距离或关闭。当前是材质细节，不是流体模拟。
+- `check_supplied_assets.py` PASS：129 个 hash 绑定（含新增 `texture.ocean.foam-noise` 及更新后的 `texture.ocean.detail`），20 张原始 PNG，GLB 原数据完整。
+- `test_ocean_detail.gd` PASS：双 256×256 纹理绑定正确、大浪推挤形变生效、原网格 80802 三角形与 3 层雾保持不变、状态隔离未受影响。
+- `test_toon_ocean.gd` PASS：CPU 与 GPU 的 Gerstner 采样与水线完全同构。
+- `test_clean_ui.gd` 与 `test_flow.gd` PASS。
+- `ocean_detail_visual.gd` PASS：原生 GPU 渲染 1600×900 及 1280×720，成功保存截图，着色器无报错。详见 `evidence/ocean-detail-*.png` 与 `ocean-detail-metrics.json`。

@@ -1,0 +1,35 @@
+[
+  {
+    "mode": "challenge",
+    "seed": 0,
+    "terminal": true,
+    "outcome": "mad",
+    "completed": 10,
+    "steps": 88,
+    "phase": "finished",
+    "replay_ok": true,
+    "stderr": []
+  },
+  {
+    "mode": "challenge",
+    "seed": 22,
+    "terminal": true,
+    "outcome": "survived",
+    "completed": 12,
+    "steps": 131,
+    "phase": "finished",
+    "replay_ok": true,
+    "stderr": []
+  },
+  {
+    "mode": "story",
+    "seed": 22,
+    "terminal": true,
+    "outcome": "",
+    "completed": 15,
+    "steps": 231,
+    "phase": "chapterComplete",
+    "replay_ok": true,
+    "stderr": []
+  }
+]

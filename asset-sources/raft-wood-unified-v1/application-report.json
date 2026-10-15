@@ -1,0 +1,68 @@
+{
+  "wooden-crate.glb": {
+    "texture": "assets/textures/raft-wood/weathered_wood_albedo.png",
+    "texture_sha256": "b1f116eb46d6c1c7f3b03369969ca2ab6d202c6908ea0bfd7f3f15ea47e3e017",
+    "geometry_signature": "f1ccc879cf80be401577bedbf57a6a8a7db31c2fef9ab0c643161adaaa599e0e",
+    "uv_signature": "7e5d5c89d4562e57625b3c44c92c4cececb6c74f74faae1216936211f23e59a6",
+    "geometry_unchanged": true,
+    "uv_unchanged": true,
+    "bytes": 1409920,
+    "glb_sha256": "5f120d38627569df5b29752665c09eed6061b5fb89bed52ad2c0cf0014ebf86f",
+    "roughness": 0.8
+  },
+  "planter.glb": {
+    "texture": "assets/textures/raft-wood/weathered_wood_albedo.png",
+    "texture_sha256": "b1f116eb46d6c1c7f3b03369969ca2ab6d202c6908ea0bfd7f3f15ea47e3e017",
+    "geometry_signature": "65887c178308174c0b666696daf02d52fe88aab63562c125dc32ec16fbd1d69c",
+    "uv_signature": "267b4b4217974e1bc4c1c7c9e164102033292e99bfd173cdeb5fd00f4896a7cc",
+    "geometry_unchanged": true,
+    "uv_unchanged": true,
+    "bytes": 1997204,
+    "glb_sha256": "73b6f12178f3a1735e87b103402537a8897b9549404a0cb3a926d10a1e3b0754",
+    "roughness": 0.8
+  },
+  "planter-seedling.glb": {
+    "texture": "assets/textures/raft-wood/weathered_wood_albedo.png",
+    "texture_sha256": "b1f116eb46d6c1c7f3b03369969ca2ab6d202c6908ea0bfd7f3f15ea47e3e017",
+    "geometry_signature": "a121f24854793d40d6c9029763fe44ec2269f8d610d6d9fc5d9c958596ceb980",
+    "uv_signature": "15b4757250bde63e9bea433e526c21cdfb1cd54482e376f22d38a3f84ad65e9a",
+    "geometry_unchanged": true,
+    "uv_unchanged": true,
+    "bytes": 2012188,
+    "glb_sha256": "dfaad4892dd826667bdac332bb31387fbbf2d7a58e6deaa1b86e036488c82d07",
+    "roughness": 0.8
+  },
+  "shieldRack.glb": {
+    "texture": "assets/textures/raft-wood/weathered_wood_albedo.png",
+    "texture_sha256": "b1f116eb46d6c1c7f3b03369969ca2ab6d202c6908ea0bfd7f3f15ea47e3e017",
+    "geometry_signature": "78d37bcafbcc35e6765df6ffb35763f84400c046b210157b68c4c783ec7dc587",
+    "uv_signature": "a2b7f1866272ea49db3a6204b80feec4bdc2fed7cb2c90dbee6dd1c195011f93",
+    "geometry_unchanged": true,
+    "uv_unchanged": true,
+    "bytes": 1058428,
+    "glb_sha256": "38aba8e6302ef65462e52eeb0910c8768bb2bb774cbdbbf26e98190f6a0a62f5",
+    "roughness": 0.8
+  },
+  "generator.glb": {
+    "texture": "assets/textures/raft-wood/weathered_wood_albedo.png",
+    "texture_sha256": "b1f116eb46d6c1c7f3b03369969ca2ab6d202c6908ea0bfd7f3f15ea47e3e017",
+    "geometry_signature": "4d0a30123064e9eeb2d8c11ac72d9c2fffc35a233302ecf950a1cef7a18d9741",
+    "uv_signature": "db30fee7b010d5a43e9e403d6f004fe22dfad94ed4f4c251d3d4274ee86d94ff",
+    "geometry_unchanged": true,
+    "uv_unchanged": true,
+    "bytes": 1599520,
+    "glb_sha256": "a2e5787e1fc7704a3bffd5a703e3e92c13b6b0c464007f50c10f6b99a9ae153e",
+    "roughness": 0.8
+  },
+  "fishingNet.glb": {
+    "texture": "assets/textures/raft-wood/weathered_wood_albedo.png",
+    "texture_sha256": "b1f116eb46d6c1c7f3b03369969ca2ab6d202c6908ea0bfd7f3f15ea47e3e017",
+    "geometry_signature": "28524b860dec69b0f42ebe9ae37efd67499926ee3a8ac6ad5d4d933900831501",
+    "uv_signature": "73c2c69f548b82702d93619a5755b69c552ac8ce283b07e02efb3f13661ab055",
+    "geometry_unchanged": true,
+    "uv_unchanged": true,
+    "bytes": 1661380,
+    "glb_sha256": "7392e54203252b6b53426b6360e634eca59fd080f25536af5c1ae00f81f6d3e5",
+    "roughness": 0.8
+  }
+}

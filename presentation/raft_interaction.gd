@@ -55,8 +55,6 @@ func select_target(target: Dictionary) -> void:
 	popup.add_theme_stylebox_override("panel",style); column.add_theme_constant_override("separation",5)
 	var header:=HBoxContainer.new(); column.add_child(header)
 	W.text(header,"新建筏格" if target.kind=="expand" else "筏格 %d,%d" % [target.x+1,target.y+1],16,W.GOLD)
-	var close:=W.button(header,"X",func(): select_target({})); close.name="CloseX"
-	close.size_flags_horizontal=Control.SIZE_SHRINK_END; close.custom_minimum_size=Vector2(36,36)
 	if target.kind=="expand":
 		W.text(column,"消耗：木头 %d · AP %d" % [target.cost.wood,target.ap],15)
 		if not target.allowed: W.text(column,target.reason,14,Color("efaaa0"))
@@ -77,7 +75,7 @@ func select_target(target: Dictionary) -> void:
 				for item in options: choices.add_item(item.label); choices.set_item_disabled(choices.item_count-1,not item.allowed)
 				var first: int=options.find(options.filter(func(a):return a.allowed)[0]) if options.any(func(a):return a.allowed) else 0
 				choices.select(first)
-				var button:=W.button(column,{"install":"安装","upgrade":"升级","repair":"修复"}[operation]+" · AP1",func(): _execute(options[choices.selected]),not options[first].allowed)
+				var button:=W.button(column,{"install":"安装","upgrade":"升级 · AP1","repair":"修复 · AP1"}[operation],func(): _execute(options[choices.selected]),not options[first].allowed)
 				button.name="RaftAction_"+operation; button.custom_minimum_size.y=38
 				var hint:=W.text(column,_action_hint(options[first]),14,Color("efaaa0")); hint.name="RaftHint_"+operation; hint.visible=not hint.text.is_empty()
 				choices.item_selected.connect(func(index):

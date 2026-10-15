@@ -2,8 +2,9 @@
   "biter": {
     "name": "啃筏者",
     "hp": 6,
-    "damage": 2,
-    "intent": "咬击：生命−2。"
+    "damage": 1,
+    "intent": "咬击：生命−1，并使一格筏格破损。",
+    "raftDamage": 1
   },
   "jelly": {
     "name": "胶膜水母",
@@ -15,21 +16,21 @@
   "crab": {
     "name": "绝壳蟹",
     "hp": 9,
-    "damage": 3,
-    "intent": "重击：生命−3。"
+    "damage": 2,
+    "intent": "重击：生命−2。"
   },
   "sentinel": {
     "name": "遗迹守卫",
     "hp": 11,
-    "damage": 3,
-    "intent": "回响：生命−3，并施加畏惧。",
+    "damage": 2,
+    "intent": "回响：生命−2，并施加畏惧。",
     "buff": "fearful"
   },
   "boss": {
     "name": "涌潮之眼",
     "hp": 18,
-    "damage": 3,
-    "intent": "潮蚀：生命−3；隔回合污染手牌。",
+    "damage": 2,
+    "intent": "潮蚀：生命−2；隔回合污染手牌。",
     "buff": "fearful",
     "pollution": true
   }

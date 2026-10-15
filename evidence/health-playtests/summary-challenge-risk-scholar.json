@@ -1,0 +1,26 @@
+[
+  {
+    "case": "challenge-fool-20261015-risk-scholar",
+    "outcome": "survived",
+    "completed": 11,
+    "voyage": 11,
+    "hp": 8,
+    "hp_max": 14,
+    "minimum_hp": 8,
+    "battles": 5,
+    "steps": 163,
+    "heals": 1
+  },
+  {
+    "case": "challenge-fool-4294967295-risk-scholar",
+    "outcome": "survived",
+    "completed": 12,
+    "voyage": 12,
+    "hp": 10,
+    "hp_max": 15,
+    "minimum_hp": 5,
+    "battles": 6,
+    "steps": 165,
+    "heals": 4
+  }
+]

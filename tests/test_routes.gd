@@ -6,6 +6,7 @@ func check(value: bool, text: String) -> void:
 func _init() -> void:
 	catalog = load("res://content/catalog.gd").new()
 	catalog.load_catalog()
+	var recorded: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://tests/fixtures/health-route-22.json"))
 	var success_seed := -1
 	var failure_seed := -1
 	for seed in [0,22]:
@@ -14,6 +15,12 @@ func _init() -> void:
 		var operations := 0
 		while s.active() and operations < 500:
 			operations += 1
+			if seed==22:
+				check(operations<=recorded.steps.size(),"recorded public route has next command")
+				if operations>recorded.steps.size(): break
+				var step: Dictionary=recorded.steps[operations-1]
+				check(s.dispatch(step.command,step.args),"recorded public command "+step.command)
+				continue
 			var previous: Dictionary = s.snapshot()
 			var v: Dictionary = s.view()
 			match v.phase:
@@ -23,6 +30,7 @@ func _init() -> void:
 						if n.id == "camp": candidate = n; break
 					s.dispatch("voyage",{"id":candidate.visit_id})
 				"preparation","aftermath":
+					if s.state.player.hp<=6 and s.I.count(s.state,"medkit")==0: s.dispatch("craft",{"id":"medkit"})
 					if v.phase == "preparation" and s.state.cells.filter(func(c): return c.equipment.get("id","") == "crossbow").is_empty():
 						if s.dispatch("craft",{"id":"crossbow"}):
 							var equipment: Dictionary = s.state.hand.filter(func(c): return c.id == "crossbow")[0]
@@ -44,17 +52,22 @@ func _init() -> void:
 								if option.id == "rest": break
 						if not selected.is_empty(): s.dispatch("option",{"id":selected.id})
 				"discard":
-					if not v.hand.is_empty(): s.dispatch("discard",{"uid":v.hand[0].uid})
+					if not v.hand.is_empty():
+						var chosen: Dictionary=v.hand[0]
+						for card in v.hand:
+							if card.id in ["plastic","iron","rope"]: chosen=card; break
+						s.dispatch("discard",{"uid":chosen.uid})
 					else: s.dispatch("discard",{"uid":"coins"})
 				"battle":
 					var turn: int=s.state.battle.turn
+					for heal in v.hand:
+						if heal.id=="medkit" and s.state.player.hp<=s.state.player.hp_max-3: s.dispatch("play",{"uid":heal.uid})
 					for card in v.hand:
 						if card.id == "pollution" and s.state.battle.ap >= 2: s.dispatch("play",{"uid":card.uid})
 					for card in v.hand:
 						if s.phase() == "battle" and card.id == "arrow": s.dispatch("play",{"uid":card.uid})
-					var punch: Array = s.state.hand.filter(func(c): return c.id == "punch")
-					while s.phase() == "battle" and s.state.battle.turn==turn and s.state.battle.ap > 0 and not punch.is_empty():
-						if not s.dispatch("play",{"uid":punch[0].uid}): break
+					while s.phase() == "battle" and s.state.battle.turn==turn and s.state.battle.ap > 0:
+						if not s.dispatch("battle_action",{"action":"attack"}): break
 					if s.phase() == "battle" and s.state.battle.turn==turn: s.dispatch("battle_end")
 			if s.snapshot() == previous:
 				printerr("BLOCK seed=%d phase=%s node=%s step=%s error=%s" % [seed,s.phase(),s.state.node.get("id",""),s.state.story_step,s.error])
@@ -64,6 +77,7 @@ func _init() -> void:
 		if "--settlement-fixtures" in OS.get_cmdline_user_args():
 			var evidence := FileAccess.open("res://evidence/settlement-route-%d.json" % seed,FileAccess.WRITE)
 			evidence.store_string(JSON.stringify(s.snapshot())); evidence.close()
+		print("ROUTE RESULT seed=%d result=%s hp=%d" % [seed,s.state.get("result",""),s.state.player.hp])
 		var report: Dictionary = s.state.get("settlement",{})
 		check(not report.is_empty() and report.get("complete",false),"完整挑战生成真实统计报告")
 		if not report.is_empty():

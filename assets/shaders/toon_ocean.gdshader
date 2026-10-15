@@ -1,6 +1,7 @@
 shader_type spatial;
 // R flow, G pores/grain, BA micro slopes. Two samples, no extra draw layer.
 uniform sampler2D detail_texture : repeat_enable, filter_linear_mipmap;
+uniform sampler2D foam_noise_texture : repeat_enable, filter_linear_mipmap;
 uniform bool detail_enabled = true;
 uniform bool lantern_enabled = true;
 uniform float detail_scale = 0.22;
@@ -9,6 +10,7 @@ uniform float detail_water_contrast = 0.12;
 uniform float detail_pore_strength = 0.88;
 uniform float detail_thread_strength = 0.35;
 uniform float detail_normal_strength = 0.08;
+uniform float detail_distortion = 0.08;
 uniform vec2 detail_fade_distance = vec2(12.0,36.0);
 render_mode unshaded, cull_back, shadows_disabled, fog_disabled;
 // Stylized night ocean. Gerstner math must stay identical to presentation/toon_ocean.gd.
@@ -183,46 +185,6 @@ float hash21(vec2 p) {
 	return fract(p.x * p.y);
 }
 
-vec2 hash22(vec2 p) {
-	return vec2(hash21(p), hash21(p + 19.19));
-}
-
-float value_noise(vec2 p) {
-	vec2 i = floor(p);
-	vec2 f = fract(p);
-	vec2 u = f * f * (3.0 - 2.0 * f);
-	return mix(mix(hash21(i), hash21(i + vec2(1.0, 0.0)), u.x),
-		mix(hash21(i + vec2(0.0, 1.0)), hash21(i + vec2(1.0, 1.0)), u.x), u.y);
-}
-
-float fbm(vec2 p) {
-	float v = 0.0;
-	float a = 0.5;
-	for (int i = 0; i < 3; i++) {
-		v += a * value_noise(p);
-		p = p * 2.03 + vec2(17.1, 9.2);
-		a *= 0.5;
-	}
-	return v / 0.875;
-}
-
-// F2-F1 cell distance: thin bright lines along Voronoi edges.
-float voronoi_edge(vec2 p) {
-	vec2 i = floor(p);
-	vec2 f = fract(p);
-	float f1 = 8.0;
-	float f2 = 8.0;
-	for (int y = -1; y <= 1; y++) {
-		for (int x = -1; x <= 1; x++) {
-			vec2 o = vec2(float(x), float(y));
-			vec2 r = o + hash22(i + o) - f;
-			float d = dot(r, r);
-			if (d < f1) { f2 = f1; f1 = d; } else if (d < f2) { f2 = d; }
-		}
-	}
-	return sqrt(f2) - sqrt(f1);
-}
-
 float aa_step(float edge, float x) {
 	float w = fwidth(x) * 0.75 + 0.0001;
 	return smoothstep(edge - w, edge + w, x);
@@ -266,6 +228,8 @@ void fragment() {
 	vec2 flow_axis = normalize(wave_dk[0].xy);
 	vec2 flow_side = vec2(-flow_axis.y,flow_axis.x);
 	vec2 detail_uv = vec2(dot(g,flow_axis),dot(g,flow_side))*detail_scale;
+	vec2 wave_slope_local = vec2(dot(n.xz,flow_axis),dot(n.xz,flow_side));
+	detail_uv += wave_slope_local * (detail_distortion * detail_fade);
 	vec4 detail_a = vec4(0.0,0.5,0.5,0.5);
 	vec4 detail_b = detail_a;
 	if (detail_fade > 0.0) {
@@ -302,33 +266,44 @@ void fragment() {
 	vec3 half_vector = normalize(normalize(moon_direction) + v);
 	float spec = max(dot(detail_n, half_vector), 0.0);
 	col = mix(col, rim_color * 1.35, pow(spec, sheen_power) * sheen_strength * 3.0);
-	float sparkle = spec + (value_noise(g * 3.1 + visual_time * 0.6) - 0.5) * glint_noise;
+	vec2 glint_uv = g * 0.31 + vec2(visual_time * 0.06);
+	float sparkle_sample = texture(foam_noise_texture, glint_uv).a;
+	float sparkle = spec + (sparkle_sample - 0.5) * glint_noise;
 	col = mix(col, glint_color, aa_step(glint_threshold, sparkle));
 
-	// Crest foam where the Gerstner surface folds, eroded by drifting noise.
-	float noise = fbm(g * noise_scale + foam_drift * visual_time);
+	// Crest foam where the Gerstner surface folds, eroded by drifting noise texture.
+	vec2 foam_uv = g * noise_scale + foam_drift * visual_time;
+	vec4 foam_noise_sample = texture(foam_noise_texture, foam_uv);
+	float noise = foam_noise_sample.g;
 	float crest = ridge * crest_gain + (1.0 - jac) * fold_gain + max(hn, 0.0) * height_gain;
 	float foam_value = crest - noise * erosion;
 	float distance_fade = 1.0 - smoothstep(foam_fade_distance.x, foam_fade_distance.y, dist);
 	float foam = aa_step(foam_threshold, foam_value) * distance_fade;
 	float core = aa_step(core_threshold, foam_value) * distance_fade;
-	float edge = voronoi_edge(g * streak_scale + wave_dk[0].xy * visual_time * 0.12 + noise * 0.8);
+	vec2 streak_uv = g * streak_scale + wave_dk[0].xy * visual_time * 0.12 + vec2(noise * 0.8);
+	float edge = texture(foam_noise_texture, streak_uv).r;
 	float streak = (1.0 - aa_step(streak_width, edge)) * smoothstep(streak_crest, streak_crest + 0.25, crest) * streak_strength * distance_fade;
 	// Pores affect open-water foam; the raft contact ring is composed afterwards.
 	float pores = smoothstep(0.61,0.73,detail_b.g)*detail_pore_strength*detail_fade;
 	foam *= 1.0-pores; core *= 1.0-pores;
 	float threads = detail_b.r*detail_thread_strength*detail_fade*max(foam,core);
 
-	// Contact rings follow the real cell footprint, not only its bounding box.
-	float sdf = 1000.0;
-	for (int i = 0; i < MAX_CELLS; i++) {
-		if (i >= cell_count) break;
-		vec2 q = abs(world_pos.xz - cell_centers[i]) - cell_half;
+	// Contact rings follow the real cell footprint, with early-out bounding box pruning.
+	float ring = 0.0;
+	vec2 q_raft = max(abs(world_pos.xz - raft_bounds.xy) - raft_bounds.zw, vec2(0.0));
+	if (length(q_raft) <= contact_width + 0.2 && cell_count > 0) {
+		float sdf = 1000.0;
+		for (int i = 0; i < MAX_CELLS; i++) {
+			if (i >= cell_count) break;
+			vec2 q = abs(world_pos.xz - cell_centers[i]) - cell_half;
 		sdf = min(sdf, length(max(q, vec2(0.0))) + min(max(q.x, q.y), 0.0));
+		}
+		float ring_mask = 1.0 - smoothstep(contact_width * 0.45, contact_width, sdf);
+		float ring_wave = sin((sdf * contact_frequency - visual_time * contact_speed) * 6.2831853) * 0.5 + 0.5;
+		vec2 ring_noise_uv = g * 0.23 - vec2(visual_time * 0.01);
+		float ring_noise = texture(foam_noise_texture, ring_noise_uv).b;
+		ring = aa_step(contact_threshold, ring_wave * ring_mask + (ring_noise - 0.5) * contact_noise) * ring_mask * contact_strength;
 	}
-	float ring_mask = 1.0 - smoothstep(contact_width * 0.45, contact_width, sdf);
-	float ring_wave = sin((sdf * contact_frequency - visual_time * contact_speed) * 6.2831853) * 0.5 + 0.5;
-	float ring = aa_step(contact_threshold, ring_wave * ring_mask + (fbm(g * 2.3 - visual_time * 0.1) - 0.5) * contact_noise) * ring_mask * contact_strength;
 	foam = max(foam, ring);
 
 	col = mix(col, foam_color, max(streak, foam));

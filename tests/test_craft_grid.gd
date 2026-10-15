@@ -19,10 +19,11 @@ func run():
 	check(badge.get_child(0).text=="%d/%d" % [app.session.view().capacity,app.session.state.player.limit],"badge shows only capacity")
 	check(absf(badge.get_global_rect().get_center().x-app.find_child("VoyageHandTray",true,false).get_global_rect().get_center().x)<1,"capacity badge horizontally centered on tray")
 	check(craft!=null,"fixed craft entry in hand area")
-	if craft!=null: check(craft.get_global_rect().get_center().x<240 and craft.get_global_rect().get_center().y>700,"craft entry at lower left")
-	if "--capture" in OS.get_cmdline_user_args():
-		await RenderingServer.frame_post_draw
-		root.get_texture().get_image().save_png("res://evidence/navigation-actions-1600.png")
+	if craft!=null: check(craft.get_global_rect().get_center().x>1300 and craft.get_global_rect().get_center().y>700,"craft entry at lower right")
+	await RenderingServer.frame_post_draw
+	var path: String = ProjectSettings.globalize_path("res://evidence/navigation-actions-1600.png")
+	var err: Error = root.get_texture().get_image().save_png(path)
+	if err != OK: printerr("Failed to save image: ", err)
 	app.handle_command("panel",{"id":"craft"})
 	await process_frame; await process_frame
 	var grid=app.find_child("RecipeGrid",true,false)
@@ -49,7 +50,7 @@ func run():
 	app.handle_ui("list_page","1")
 	await process_frame; await process_frame
 	grid=app.find_child("RecipeGrid",true,false)
-	check(grid!=null and grid.get_child_count()==1 and grid.get_child(0).get_meta("recipe_id")=="extra","ninth recipe is alone on second page")
+	check(grid!=null and grid.get_child_count()==5 and grid.get_child(4).get_meta("recipe_id")=="extra","extra recipe is on second page")
 	check(app.session.snapshot()==before,"pagination changes no state or RNG")
 	app.handle_ui("list_page","0")
 	await process_frame; await process_frame

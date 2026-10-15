@@ -16,7 +16,7 @@ func save_preferences() -> Error:
 	config.set_value("hand","auto_sort",auto_sort)
 	config.set_value("hand","stack_resources",stack_resources)
 	return config.save(path)
-func build(entries: Array) -> Array:
+func build(entries: Array, force_unstack_resources: bool = false) -> Array:
 	var sorted := entries.duplicate()
 	if auto_sort:
 		sorted.sort_custom(func(a,b):
@@ -37,7 +37,7 @@ func build(entries: Array) -> Array:
 			resource_counts[entry.id]=int(resource_counts.get(entry.id,0))+1
 	for entry in sorted:
 		# Temporary resources stay separate from permanent crafting inventory.
-		var merge: bool = stack_resources and entry.definition.kind=="resource" and not entry.get("temporary",false) and int(resource_counts.get(entry.id,0))>=STACK_MINIMUM
+		var merge: bool = stack_resources and not force_unstack_resources and entry.definition.kind=="resource" and not entry.get("temporary",false) and int(resource_counts.get(entry.id,0))>=STACK_MINIMUM
 		if merge and stacks.has(entry.id):
 			var group: Dictionary = stacks[entry.id]; group.stack_count+=1; group.stack_uids.append(entry.uid)
 		else:

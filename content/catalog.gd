@@ -2,6 +2,7 @@ extends RefCounted
 ## Loads data at the composition boundary; consumers receive independent copies.
 var _tables: Dictionary = {}
 var error := ""
+var _fingerprint := ""
 
 func load_catalog() -> bool:
 	var manifest = JSON.parse_string(FileAccess.get_file_as_string("res://content/manifest.json"))
@@ -9,7 +10,7 @@ func load_catalog() -> bool:
 		error = "内容清单格式错误"
 		return false
 	var pending := {}
-	for table in ["cards", "nodes", "enemies", "equipment", "recipes", "shops", "meta_shop", "tech", "relics", "story_nodes", "story_config"]:
+	for table in ["cards", "nodes", "enemies", "equipment", "boosts", "recipes", "shops", "meta_shop", "tech", "relics", "story_nodes", "story_config"]:
 		var path: String = manifest.tables.get(table, "")
 		if not path.begins_with("res://content/data/") or ".." in path:
 			error = "内容路径非法：" + table
@@ -49,6 +50,7 @@ func load_catalog() -> bool:
 		for id in pack:
 			if not pending.cards.has(id) or not (pack[id] is float or pack[id] is int) or pack[id] < 1 or floor(float(pack[id])) != float(pack[id]): error = "剧情补给引用/数量非法"; return false
 	_tables = pending
+	_fingerprint = JSON.stringify(_tables).sha256_text()
 	return true
 
 func table(id: String) -> Dictionary:
@@ -58,19 +60,18 @@ func entry(table_id: String, id: String) -> Dictionary:
 	return _tables.get(table_id, {}).get(id, {}).duplicate(true)
 
 func fingerprint() -> String:
-	return JSON.stringify(_tables).sha256_text()
+	return _fingerprint
+
+## Exact content fingerprint before round-start production (2026-10-15).
+func previous_production_fingerprint() -> String:
+	return "5cb5232ab877fd50088ba7a3143e45b6e2c79f294bd86843d1da7497ad316dcc"
 
 ## Exact content fingerprint before the 2026-10-14 medkit/spear revision.
 func previous_balance_fingerprint() -> String:
-	var previous:=_tables.duplicate(true)
-	previous.cards.medkit={"name":"包扎包","kind":"equipment","cost":1,"description":"安装后花1 AP与布条×1恢复生命8，高等级治疗更多。"}
-	previous.cards.spear.description="造成4伤害；本场战斗有效。"; previous.cards.spear.damage=4
-	previous.cards.spearRack.description="每战斗回合产生矛击。"
-	previous.equipment.spearRack.description="战斗每回合产矛；升级提高伤害。"
-	previous.equipment.spearRack.erase("battleStartOnly")
-	return JSON.stringify(previous).sha256_text()
+	return "be2b3aebf83c9a36beb2fc99c8a174de78eaf5ba2749883584b4e3b2b67cc9fe"
+
+func prior_flow_fingerprint() -> String:
+	return "a7bff4df6d81283c3f09e76b8af60e1298f985da4b90a4a3adfcac25709e4f9c"
 
 func legacy_fingerprint() -> String:
-	var original := _tables.duplicate(true)
-	original.erase("story_nodes"); original.erase("story_config")
-	return JSON.stringify(original).sha256_text()
+	return "05bc868335a128050d30745c9a0d0c47b862a1c78d9f169367e55b04bb6bb134"

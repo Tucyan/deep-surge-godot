@@ -7,11 +7,11 @@
   },
   "body": {
     "name": "提高身体素质",
-    "description": "永久生命、饱食、水分、精神上限各+5。",
+    "description": "永久生命上限+2，饱食、水分、精神上限各+5。",
     "price": 6,
     "maxPurchases": 3,
     "modifiers": {
-      "hpMax": 5,
+      "hpMax": 2,
       "hungerMax": 5,
       "hydrationMax": 5,
       "sanityMax": 5

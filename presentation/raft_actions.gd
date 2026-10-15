@@ -1,19 +1,17 @@
 extends RefCounted
-## Read-only command quotes: validation runs on a restored copy, never the live run.
-const Session=preload("res://core/game_session.gd")
+## UI labels/filtering over the shared core query at one captured revision.
+const Query=preload("res://core/action_query.gd")
 const Rules=preload("res://core/run_rules.gd")
 var view: Dictionary
-var _snapshot: Dictionary
+var _session: RefCounted
 var _catalog: RefCounted
 var _cache: Dictionary={}
 func refresh(session: RefCounted) -> void:
-	view=session.view(); _snapshot=session.snapshot(); _catalog=session.catalog; _cache.clear()
+	view=session.view(); _session=Query.fork(session); _catalog=session.catalog; _cache.clear()
 func quote(command: String,args: Dictionary) -> Dictionary:
 	var key:=command+JSON.stringify(args)
 	if _cache.has(key): return _cache[key]
-	var copy=Session.new(_catalog)
-	var allowed: bool=copy.restore(_snapshot) and copy.dispatch(command,args)
-	var result: Dictionary={"command":command,"args":args.duplicate(true),"allowed":allowed,"reason":copy.error}
+	var result: Dictionary=Query.quote(_session,command,args)
 	result.args.revision=view.revision; _cache[key]=result
 	return result
 func cell_actions(id: String) -> Array:
@@ -36,7 +34,7 @@ func cell_actions(id: String) -> Array:
 		for card in view.hand:
 			if card.definition.kind=="equipment" and not seen.has(card.id):
 				seen[card.id]=true
-				var install:=quote("install",{"cell":id,"uid":card.uid}); install.label="安装 · "+card.definition.name+" / AP1"; result.append(install)
+				var install:=quote("install",{"cell":id,"uid":card.uid}); install.label="安装 · "+card.definition.name; result.append(install)
 	if not cell.equipment.is_empty():
 		var upgrades: Array=[]
 		if cell.equipment.level==1:

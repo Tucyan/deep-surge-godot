@@ -1,0 +1,95 @@
+{
+  "lamp": {
+    "id": "lamp",
+    "name": "制造灯",
+    "ingredients": {
+      "wood": 1,
+      "iron": 1
+    },
+    "output": "lamp",
+    "cost": 1,
+    "tool": "handtool"
+  },
+  "filter": {
+    "id": "filter",
+    "name": "制造滤水器",
+    "ingredients": {
+      "plastic": 2,
+      "wood": 1
+    },
+    "output": "filter",
+    "cost": 1,
+    "tool": "handtool"
+  },
+  "planter": {
+    "id": "planter",
+    "name": "制造土盆",
+    "ingredients": {
+      "plastic": 1,
+      "wood": 1
+    },
+    "output": "planter",
+    "cost": 1,
+    "tool": "handtool"
+  },
+  "medkit": {
+    "id": "medkit",
+    "name": "制造包扎包",
+    "ingredients": {
+      "cloth": 2,
+      "wood": 1
+    },
+    "output": "medkit",
+    "cost": 1,
+    "tool": "handtool"
+  },
+  "crossbow": {
+    "id": "crossbow",
+    "name": "制造弓弩",
+    "ingredients": {
+      "iron": 1,
+      "rope": 1,
+      "wood": 1
+    },
+    "output": "crossbow",
+    "cost": 1,
+    "tool": "handtool"
+  },
+  "spearRack": {
+    "id": "spearRack",
+    "name": "制造矛架",
+    "ingredients": {
+      "wood": 2,
+      "iron": 1
+    },
+    "output": "spearRack",
+    "cost": 1,
+    "tool": "handtool"
+  },
+  "shieldRack": {"id":"shieldRack","name":"制造护盾架","ingredients":{"wood":2,"iron":1},"output":"shieldRack","cost":1,"tool":"handtool"},
+  "generator": {"id":"generator","name":"制造发电机","ingredients":{"wood":1,"iron":2,"rope":1},"output":"generator","cost":1,"tool":"handtool"},
+  "fishingNet": {"id":"fishingNet","name":"制造捕鱼网","ingredients":{"wood":1,"rope":2},"output":"fishingNet","cost":1,"tool":"handtool"},
+  "crate": {"id":"crate","name":"制造储物箱","ingredients":{"wood":2,"rope":1},"output":"crate","cost":1,"tool":"handtool"},
+  "dismantle": {
+    "id": "dismantle",
+    "name": "制造拆除牌",
+    "ingredients": {
+      "wood": 1,
+      "iron": 1
+    },
+    "output": "dismantle",
+    "cost": 1,
+    "tool": "handtool"
+  },
+  "repair": {
+    "id": "repair",
+    "name": "制造修补包",
+    "ingredients": {
+      "iron": 1,
+      "rope": 1
+    },
+    "output": "repair",
+    "cost": 1,
+    "tool": "handtool"
+  }
+}

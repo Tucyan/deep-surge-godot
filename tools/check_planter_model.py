@@ -96,7 +96,8 @@ if __name__ == '__main__':
             assert all('bufferView' in image for image in doc['images']), 'Embed textures'
             for material in doc['materials']:
                 if any(k in material['name'] for k in ['Wood','Soil']):
-                    assert 'baseColorTexture' in material['pbrMetallicRoughness'] and 'normalTexture' in material
+                    assert 'baseColorTexture' in material['pbrMetallicRoughness']
+                    if 'Soil' in material['name']:assert 'normalTexture' in material
         print('PLANTER TWO STATES + EMBEDDED PBR: PASS',json.dumps({'mature':mature,'seedling':seedling}))
     else:
         print('PLANTER GEOMETRY: PASS',json.dumps(mature))

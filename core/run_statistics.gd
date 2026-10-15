@@ -2,7 +2,7 @@ extends RefCounted
 ## Serializable facts written inside the same transaction as their effects.
 const VERSION := "run-stats-v1"
 const CARD_FIELDS := ["obtained","used","use_consumed","cost_consumed","deployed","discarded","lost","cleared"]
-const GAME_COMMANDS := ["voyage","enter","advance","skip","option","shop_enter","shop_leave","buy","fight","leave_encounter","play","battle_end","retreat","craft","salvage","install","fuel","repair_cell","heal","expand","upgrade","action_card","end_voyage","night_actions","night_action","night_ack","finish_night","accept_quest","submit_quest","night_exchange","discard","abandon"]
+const GAME_COMMANDS := ["voyage","enter","advance","skip","option","shop_enter","shop_leave","buy","fight","leave_encounter","play","battle_action","claim_boost","boost_device","battle_end","retreat","craft","salvage","transmute","install","fuel","repair_cell","heal","expand","upgrade","action_card","end_voyage","night_actions","night_action","night_ack","finish_night","accept_quest","submit_quest","night_exchange","discard","abandon"]
 
 static func initialize(state: Dictionary, complete: bool = true) -> void:
 	var initial: Array = []
@@ -120,6 +120,7 @@ static func commit(state: Dictionary, before: Dictionary, command: String, args:
 			for cell in state.cells:
 				if old.id==cell.id and old.status=="damaged" and cell.status=="intact": increment(state,"repairs")
 	if command=="repair_cell": increment(state,"repairs")
+	if command=="transmute": increment(state,"transmutes",int(args.get("count",1)))
 	if command=="expand": increment(state,"expansions")
 	if command=="install": increment(state,"installations")
 	if command=="upgrade": increment(state,"upgrades")

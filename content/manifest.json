@@ -23,6 +23,7 @@
     "nodes": "res://content/data/nodes.json",
     "enemies": "res://content/data/enemies.json",
     "equipment": "res://content/data/equipment.json",
+    "boosts": "res://content/data/boosts.json",
     "recipes": "res://content/data/recipes.json",
     "shops": "res://content/data/shops.json",
     "meta_shop": "res://content/data/meta_shop.json",

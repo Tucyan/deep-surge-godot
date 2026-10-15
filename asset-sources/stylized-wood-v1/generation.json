@@ -1,0 +1,53 @@
+{
+  "request": "太清晰了，更风格化一点；然后应用贴图在箱子和木盆上",
+  "records": [
+    {
+      "id": "warm",
+      "prompt": "Use case: style-transfer. Edit target: the supplied generated wood albedo image. Transform it into a restrained stylized HAND-PAINTED GAME WOOD TEXTURE for a low-poly nautical survival game. Keep a full-bleed square flat timber surface, horizontal grain, and the same overall wood color family. Dramatically simplify the realistic photograph: broad softly painted organic wood-grain ribbons, about 8 to 12 main flowing bands across the height, a few secondary lines, one or two simple drawn oval wood knots. Use 4 to 6 muted tonal values with gently brushed transitions and slightly irregular hand-painted edges. Readable wood grain, but soft and illustrative, low frequency, not highly sharp or highly detailed. Quiet attractive painted game art, matte and weathered, no photorealism, no tiny fibers, no photographic pores, no granular noise, no razor-sharp cracks, no glossy or baked directional highlights, no 3D relief shading, no dramatic shadows. No individual planks, seams, objects, perspective, material spheres, borders, labels or text. Texture fills every pixel. Grain flows left to right so it can follow UVs. Opposite edges compatible for tiling, avoid a major distinguishing knot at the border. Muted warm ochre / medium honey-brown wood, with warm brown painted grain; not bright orange.",
+      "reference": "C:\\Users\\ALmerb\\.codex\\generated_images\\01a13d5a-709c-71c3-8ae8-20bdb8a37762\\exec-8e659f64-12b7-4b3e-ad79-3ce0734a64b1.png",
+      "generated_file": "C:\\Users\\ALmerb\\.codex\\generated_images\\01a13d5a-709c-71c3-8ae8-20bdb8a37762\\exec-d13a454e-0c63-4ae8-9f38-94ea2d58e374.png",
+      "asset_file": "assets/textures/stylized-wood-v1/wood-warm-albedo.png",
+      "provider": "built-in image_gen; style-transfer edit",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "7cb928ceeb5293ba424364561f05a925ba73d902d733a5677ef53bb05f4956f4",
+      "source_asset_id": "texture.shared.stylized-wood.warm-albedo",
+      "version": 1,
+      "archived_reference": "asset-sources/generated-wood-v1/originals/wood-warm-albedo.png"
+    },
+    {
+      "id": "dark",
+      "prompt": "Use case: style-transfer. Edit target: the supplied generated wood albedo image. Transform it into a restrained stylized HAND-PAINTED GAME WOOD TEXTURE for a low-poly nautical survival game. Keep a full-bleed square flat timber surface, horizontal grain, and the same overall wood color family. Dramatically simplify the realistic photograph: broad softly painted organic wood-grain ribbons, about 8 to 12 main flowing bands across the height, a few secondary lines, one or two simple drawn oval wood knots. Use 4 to 6 muted tonal values with gently brushed transitions and slightly irregular hand-painted edges. Readable wood grain, but soft and illustrative, low frequency, not highly sharp or highly detailed. Quiet attractive painted game art, matte and weathered, no photorealism, no tiny fibers, no photographic pores, no granular noise, no razor-sharp cracks, no glossy or baked directional highlights, no 3D relief shading, no dramatic shadows. No individual planks, seams, objects, perspective, material spheres, borders, labels or text. Texture fills every pixel. Grain flows left to right so it can follow UVs. Opposite edges compatible for tiling, avoid a major distinguishing knot at the border. Muted walnut brown wood, medium-dark chocolate and earthy brown painted grain; keep visible midtones, not nearly black.",
+      "reference": "C:\\Users\\ALmerb\\.codex\\generated_images\\01a13d5a-709c-71c3-8ae8-20bdb8a37762\\exec-7efe079b-b5f7-4762-844a-03a2cddd2c21.png",
+      "generated_file": "C:\\Users\\ALmerb\\.codex\\generated_images\\01a13d5a-709c-71c3-8ae8-20bdb8a37762\\exec-4744b46f-9b54-400c-ab1e-e6bab92370f2.png",
+      "asset_file": "assets/textures/stylized-wood-v1/wood-dark-albedo.png",
+      "provider": "built-in image_gen; style-transfer edit",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "8e8f64e67c01d2555b69dc0670e7d095815823f025c869c8fe7d50890358d76d",
+      "source_asset_id": "texture.shared.stylized-wood.dark-albedo",
+      "version": 1,
+      "archived_reference": "asset-sources/generated-wood-v1/originals/wood-dark-albedo.png"
+    },
+    {
+      "id": "grey",
+      "prompt": "Use case: style-transfer. Edit target: the supplied generated wood albedo image. Transform it into a restrained stylized HAND-PAINTED GAME WOOD TEXTURE for a low-poly nautical survival game. Keep a full-bleed square flat timber surface, horizontal grain, and the same overall wood color family. Dramatically simplify the realistic photograph: broad softly painted organic wood-grain ribbons, about 8 to 12 main flowing bands across the height, a few secondary lines, one or two simple drawn oval wood knots. Use 4 to 6 muted tonal values with gently brushed transitions and slightly irregular hand-painted edges. Readable wood grain, but soft and illustrative, low frequency, not highly sharp or highly detailed. Quiet attractive painted game art, matte and weathered, no photorealism, no tiny fibers, no photographic pores, no granular noise, no razor-sharp cracks, no glossy or baked directional highlights, no 3D relief shading, no dramatic shadows. No individual planks, seams, objects, perspective, material spheres, borders, labels or text. Texture fills every pixel. Grain flows left to right so it can follow UVs. Opposite edges compatible for tiling, avoid a major distinguishing knot at the border. Muted weathered driftwood, warm grey / beige and taupe painted grain; no blue and no stark white.",
+      "reference": "C:\\Users\\ALmerb\\.codex\\generated_images\\01a13d5a-709c-71c3-8ae8-20bdb8a37762\\exec-82571014-8803-46d0-b1b1-35b5278daa82.png",
+      "generated_file": "C:\\Users\\ALmerb\\.codex\\generated_images\\01a13d5a-709c-71c3-8ae8-20bdb8a37762\\exec-8320fc9c-9712-4c3d-b577-ee987f1d95b1.png",
+      "asset_file": "assets/textures/stylized-wood-v1/wood-grey-albedo.png",
+      "provider": "built-in image_gen; style-transfer edit",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "468a30bbdcc5bce7f6e9fa3dd8f613629355fbd3e2c4dd08a957d97c68894871",
+      "source_asset_id": "texture.shared.stylized-wood.grey-albedo",
+      "version": 1,
+      "archived_reference": "asset-sources/generated-wood-v1/originals/wood-grey-albedo.png"
+    }
+  ]
+}

@@ -38,5 +38,5 @@ func build() -> void:
 			action(choices,"记下今晚结果","night_ack")
 		"complete":
 			W.text(info,"今晚已完成",26,W.GOLD)
-			W.text(info,"接下来处理筏格老化与设备生产，超限时整理手牌。",20)
+			W.text(info,"接下来处理筏格老化，超限时整理手牌；下一轮开始时设备生产。",20)
 			action(choices,"完成今晚，整理手牌","finish_night")

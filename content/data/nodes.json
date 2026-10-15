@@ -290,12 +290,12 @@
       {
         "id": "rest",
         "name": "包扎补给休整",
-        "description": "免费休整；生命+15，饱食、水分、精神各+40，获得休整余裕。",
+        "description": "免费休整；生命+6，饱食、水分、精神各+40，获得休整余裕。",
         "effects": [
           {
             "type": "ChangeCurrent",
             "stat": "hp",
-            "delta": 15
+            "delta": 6
           },
           {
             "type": "ChangeCurrent",
@@ -388,8 +388,8 @@
       },
       {
         "id": "blood",
-        "name": "包扎后献出5点生命",
-        "description": "投入布条×1并损失5生命；50%获得普通藏品，否则无所得。",
+        "name": "包扎后献出2点生命",
+        "description": "投入布条×1并损失2生命；50%获得普通藏品，否则无所得。",
         "effects": [],
         "cost": 0,
         "special": "blood",
@@ -734,11 +734,11 @@
       {
         "id": "blood",
         "name": "献出鲜血",
-        "description": "支付8 HP且至少剩1，获得所选普通藏品。",
+        "description": "支付3 HP且至少剩1，获得所选普通藏品。",
         "effects": [],
         "cost": 0,
         "statCosts": {
-          "hp": 8
+          "hp": 3
         },
         "special": "altar"
       },
@@ -824,7 +824,8 @@
     "name": "沉没遗迹",
     "kind": "ruin",
     "description": "困难战斗；胜利50%获得藏品，50%获得日记。败退恢复进入时生命。",
-    "monster": "sentinel"
+    "monster": "sentinel",
+    "difficulty": "hard"
   },
   "boss": {
     "id": "boss",

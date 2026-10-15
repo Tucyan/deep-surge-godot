@@ -1,14 +1,20 @@
 extends RefCounted
 ## Blender-authored geometry; runtime only instantiates modules and projects state labels.
-const NAMES := {"lamp":"灯","filter":"滤水器","planter":"土盆","medkit":"包扎包","crossbow":"弓弩","spearRack":"矛架"}
+const NAMES := {"lamp":"灯","filter":"滤水器","planter":"土盆","medkit":"包扎包","crossbow":"弓弩","spearRack":"矛架","shieldRack":"护盾架","generator":"发电机","fishingNet":"捕捞网","crate":"储物箱"}
 func planter_stage(equipment: Dictionary) -> String:
-	# Visual forecast of this voyage's existing production schedule, no rule changes.
+	# Forecast the next round-start production tick; presentation never advances it.
 	return "mature" if int(equipment.get("level",1)) >= 2 or int(equipment.get("progress",0)) >= 1 else "seedling"
 func filter_stage(equipment: Dictionary) -> String:
 	return "ready" if int(equipment.get("level",1)) >= 2 or int(equipment.get("progress",0)) >= 1 else "waiting"
 func module(world,id: String) -> Node3D:
 	var source: PackedScene = world._assets.model("model.raft.module."+id)
-	if source == null: push_error("Missing Blender raft module: "+id); return Node3D.new()
+	if source == null:
+		var fallback:=Node3D.new(); fallback.name="TemporaryEquipmentPlaceholder"
+		fallback.set_meta("temporary_placeholder",true); fallback.set_meta("asset_id","model.raft.module."+id)
+		var mesh:=MeshInstance3D.new(); var shape:=BoxMesh.new(); shape.size=Vector3(.72,.5,.55); mesh.mesh=shape
+		var material:=StandardMaterial3D.new(); material.albedo_color=Color("95774f"); mesh.material_override=material; fallback.add_child(mesh)
+		var marker:=Label3D.new(); marker.name="TemporaryModelLabel"; marker.text="临时模型 · "+NAMES.get(id,id); marker.font_size=24; marker.pixel_size=.01; marker.no_depth_test=true; fallback.add_child(marker)
+		return fallback
 	var result: Node3D = source.instantiate(); result.set_meta("blender_source",id); return result
 func style_meshes(world,node: Node,intact: bool,deck: bool,lit: bool=false) -> void:
 	if node is MeshInstance3D:
@@ -57,7 +63,11 @@ func build(world,cell: Dictionary,font: Font) -> Node3D:
 		tile.add_child(model); style_meshes(world,model,not damaged,false,active and eq.id=="lamp")
 		text = prefix+" · "+NAMES.get(eq.id,eq.id)+" %d级" % int(eq.level)
 		if eq.id == "planter": text += "\n"+("小苗" if stage == "seedling" else "成长完")
-		if eq.id == "filter": text += "\n"+("过滤暂停" if damaged else "过滤中" if water_stage == "waiting" else "本轮产水")
+		if eq.id == "filter": text += "\n"+("过滤暂停" if damaged else "过滤中" if water_stage == "waiting" else "下轮开始产水")
+		if eq.id == "generator":
+			var ready_count: int=eq.get("boost_cards",[]).filter(func(boost):return boost.get("id","")=="ready").size()
+			text += "\n燃料 %d · 进度 %d · 待领取 %d" % [int(eq.get("fuel",0)),int(eq.get("progress",0)),ready_count]
+		if eq.id == "fishingNet": text += "\n生产中 · 下轮开始获得资源"
 		if damaged: text += "\n停用 · 待修补"
 		elif eq.id == "lamp": text += "\n燃料 %d" % int(eq.fuel)
 	elif damaged: text += "\n待修补"

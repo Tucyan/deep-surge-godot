@@ -14,7 +14,7 @@ func find_button(node: Node, text: String) -> Button:
 	return matches[0] if not matches.is_empty() else null
 func all_buttons(node: Node, text: String) -> Array:
 	var result: Array = []
-	if node is Button and node.text == text: result.append(node)
+	if node is Button and (node.text == text or (text == "合成" and node.text == "合成/转化") or (text == "使用 · 出拳" and node.name == "BattleAttack")): result.append(node)
 	for child in node.get_children():
 		result.append_array(all_buttons(child,text))
 	return result

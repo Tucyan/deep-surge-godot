@@ -1,0 +1,51 @@
+{
+  "request": "调用生图能力生成纹理明显的木头贴图，包含三种颜色；然后应用贴图在箱子和木盆上",
+  "records": [
+    {
+      "id": "warm",
+      "prompt": "Use case: photorealistic-natural. Asset type: square game-ready wood base-color/albedo texture for UV mapping to individual planks on a weathered handmade wooden supply crate and wooden planter. Generate ONE full-bleed square texture, not a mockup or material ball. Straight-on orthographic scan of one continuous wide timber surface, horizontal grain left to right. Strong clearly visible organic growth-ring grain, elongated fibers, occasional small natural knots, irregular fine lengthwise cracks and worn pores, clearly readable at game-camera scale, detailed but not noisy. Dry rough unfinished wood. Flat even diffuse color illumination, no cast shadows, no directional highlights, no vignette, no perspective, no board seams or outlines, no nails, no hardware, no objects, no borders, no words or labels, no watermark. Grain scale: about 12 to 20 broad dark/light grain bands across the height, with finer fibers and 1 or 2 small elongated knots. Realistic stylized game texture suitable for the supplied timber props. Color must retain strong grain contrast. Seamless-compatible opposite edges with uninterrupted material; all four corners fully wood. Palette: warm honey/amber brown oak, medium brown grooves and golden tan fibers; not orange and not pale cream.",
+      "generated_file": "C:\\Users\\ALmerb\\.codex\\generated_images\\01a13d5a-709c-71c3-8ae8-20bdb8a37762\\exec-8e659f64-12b7-4b3e-ad79-3ce0734a64b1.png",
+      "asset_file": "asset-sources/generated-wood-v1/originals/wood-warm-albedo.png",
+      "provider": "built-in image_gen",
+      "variant": "warm",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "e25e317fa56bab2aba1052b7385e43587902e0b83d23f9c00575a7d4df64b84d",
+      "source_asset_id": "source.imagegen.wood-realistic.warm",
+      "version": 1
+    },
+    {
+      "id": "dark",
+      "prompt": "Use case: photorealistic-natural. Asset type: square game-ready wood base-color/albedo texture for UV mapping to individual planks on a weathered handmade wooden supply crate and wooden planter. Generate ONE full-bleed square texture, not a mockup or material ball. Straight-on orthographic scan of one continuous wide timber surface, horizontal grain left to right. Strong clearly visible organic growth-ring grain, elongated fibers, occasional small natural knots, irregular fine lengthwise cracks and worn pores, clearly readable at game-camera scale, detailed but not noisy. Dry rough unfinished wood. Flat even diffuse color illumination, no cast shadows, no directional highlights, no vignette, no perspective, no board seams or outlines, no nails, no hardware, no objects, no borders, no words or labels, no watermark. Grain scale: about 12 to 20 broad dark/light grain bands across the height, with finer fibers and 1 or 2 small elongated knots. Realistic stylized game texture suitable for the supplied timber props. Color must retain strong grain contrast. Seamless-compatible opposite edges with uninterrupted material; all four corners fully wood. Palette: rich dark walnut/chestnut brown, deep chocolate grain grooves and medium warm brown fibers, keep readable midtones; not black.",
+      "generated_file": "C:\\Users\\ALmerb\\.codex\\generated_images\\01a13d5a-709c-71c3-8ae8-20bdb8a37762\\exec-7efe079b-b5f7-4762-844a-03a2cddd2c21.png",
+      "asset_file": "asset-sources/generated-wood-v1/originals/wood-dark-albedo.png",
+      "provider": "built-in image_gen",
+      "variant": "dark",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "f822bec0a0a096c88f2c278f393dda10b894bf1edeff727127e23f2a7460f106",
+      "source_asset_id": "source.imagegen.wood-realistic.dark",
+      "version": 1
+    },
+    {
+      "id": "grey",
+      "prompt": "Use case: photorealistic-natural. Asset type: square game-ready wood base-color/albedo texture for UV mapping to individual planks on a weathered handmade wooden supply crate and wooden planter. Generate ONE full-bleed square texture, not a mockup or material ball. Straight-on orthographic scan of one continuous wide timber surface, horizontal grain left to right. Strong clearly visible organic growth-ring grain, elongated fibers, occasional small natural knots, irregular fine lengthwise cracks and worn pores, clearly readable at game-camera scale, detailed but not noisy. Dry rough unfinished wood. Flat even diffuse color illumination, no cast shadows, no directional highlights, no vignette, no perspective, no board seams or outlines, no nails, no hardware, no objects, no borders, no words or labels, no watermark. Grain scale: about 12 to 20 broad dark/light grain bands across the height, with finer fibers and 1 or 2 small elongated knots. Realistic stylized game texture suitable for the supplied timber props. Color must retain strong grain contrast. Seamless-compatible opposite edges with uninterrupted material; all four corners fully wood. Palette: weathered driftwood grey-brown, silvery grey-beige fibers and deep taupe grey grooves, restrained desaturated warmth; not white and not blue.",
+      "generated_file": "C:\\Users\\ALmerb\\.codex\\generated_images\\01a13d5a-709c-71c3-8ae8-20bdb8a37762\\exec-82571014-8803-46d0-b1b1-35b5278daa82.png",
+      "asset_file": "asset-sources/generated-wood-v1/originals/wood-grey-albedo.png",
+      "provider": "built-in image_gen",
+      "variant": "grey",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "a8fad84e6b1ee5956dbc9505d67fa3c6917f49815daed8f770a5bd8c79fd1ef9",
+      "source_asset_id": "source.imagegen.wood-realistic.grey",
+      "version": 1
+    }
+  ],
+  "status": "archived-not-selected; superseded by user-requested hand-painted stylized images"
+}

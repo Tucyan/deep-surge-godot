@@ -15,7 +15,7 @@ func run() -> void:
 			var label: Label3D=app.world_view.cells.get_node(NodePath(cell.id+"/StateLabel"))
 			check(label.no_depth_test and label.render_priority>0 and label.outline_render_priority>0,"Device annotation and outline stay visible through geometry")
 			if cell.equipment.id=="planter": check("成长完" in label.text,"Mature planter description is present")
-			if cell.equipment.id=="filter": check("本轮产水" in label.text,"Ready filter description is present")
+			if cell.equipment.id=="filter": check("下轮开始产水" in label.text,"Ready filter description forecasts next round start")
 		var bounds: Rect2=interaction().surface.screen_rect(interaction().selected)
 		check(absf(interaction().popup.global_position.x-(bounds.end.x-bounds.size.x*.2))<2,"Popup aligns with selected cell right fifth")
 		var frozen_y: float=interaction().popup.position.y

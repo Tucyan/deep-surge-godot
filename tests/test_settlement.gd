@@ -83,16 +83,18 @@ func _init() -> void:
 	check(same(copy.get("last_settlement"),report),"下一局保留最近报告")
 	var legacy: Dictionary = before.duplicate(true)
 	legacy.schema=1; legacy.content_version="godot-flow-v02-3"
+	# Synthetic v3 migration fixtures must carry v3's accepted fingerprint,
+	# rather than the current content fingerprint inherited from `before`.
+	legacy.fingerprint=c.prior_flow_fingerprint()
 	legacy.state.erase("stats"); legacy.state.erase("run_id"); legacy.erase("last_settlement")
-	check(copy.restore(legacy),"旧活动档兼容")
-	check(copy.dispatch("abandon"),"旧档结束")
-	check(not copy.state.settlement.complete and copy.state.settlement.score.is_empty(),"缺历史不虚构分数")
-	check(copy.state.settlement.player.hp==copy.state.player.hp,"旧档保留已知终点状态")
+	var before_reject: Dictionary=copy.snapshot()
+	check(not copy.restore(legacy) and same(copy.snapshot(),before_reject),"旧活动档拒绝且不覆盖当前会话")
 	var old_finished: Dictionary=saved.duplicate(true)
 	old_finished.schema=1; old_finished.content_version="godot-flow-v02-3"
+	old_finished.fingerprint=c.prior_flow_fingerprint()
 	old_finished.state.erase("stats"); old_finished.state.erase("run_id"); old_finished.state.erase("settlement"); old_finished.erase("last_settlement")
-	check(copy.restore(old_finished),"已发放的旧终局兼容")
-	check(copy.profile.points==points and not copy.state.settlement.complete,"旧终局不重复奖励或虚构评分")
+	check(not copy.restore(old_finished),"旧终局版本拒绝")
+	check(same(copy.snapshot(),before_reject),"拒绝旧终局不改积分或状态")
 	if ResourceLoader.exists("res://core/settlement.gd"):
 		var scoring = load("res://core/settlement.gd")
 		var fixture := {"completed":12,"length":12,"goal":true,"hp":0.8,"sanity":0.7,"cells":1.0,"events_entered":0,"events_won":0,"battles_entered":0,"battles_won":0,"tags":3}

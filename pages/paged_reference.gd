@@ -7,7 +7,7 @@ var detail: VBoxContainer
 func build() -> void:
 	match context.panel:
 		"craft":
-			heading("合成","选择配方查看材料，制造与安装分别收费。")
+			heading("合成","选择配方查看材料，制造消耗 AP，设备安装不消耗 AP。")
 			list_body(["filter"] if context.get("tutorial_operation","") != "" else catalog.table("recipes").keys(),recipe_names(),Callable(self,"recipe_detail"))
 		"shop":
 			heading(context.node.name,"贝币 %d  ·  尸体 %d" % [context.coins,amount("corpse")])
@@ -59,7 +59,7 @@ func recipe_detail(id: String) -> void:
 		W.text(detail,"%s   持有 %d / 需要 %d" % [catalog.entry("cards",material).name,amount(material),recipe.ingredients[material]],18)
 		if amount(material) < recipe.ingredients[material]: valid = false
 	if id == "spearRack" and "spear" not in context.profile.tech: valid = false
-	W.text(detail,"基地AP %d  ·  安装需要另付1 AP" % context.ap,16,W.MUTED)
+	W.text(detail,"基地AP %d  ·  安装不消耗 AP" % context.ap,16,W.MUTED)
 	if context.get("tutorial_operation","") in ["install","upgrade"]: W.text(detail,context.tutorial_reason,18,W.GOLD)
 	action(detail,recipe.name+" · %d AP" % recipe.cost,"craft",{"id":id},not valid,"材料/AP不足或科技未解锁")
 
@@ -166,6 +166,7 @@ func raft_page() -> void:
 				var token := "pos:%d:%d" % [x,y]
 				W.button(grid,"扩建\n%d,%d" % [x+1,y+1],func(): request("selected_id",token),not adjacent or not context.can_base or context.get("tutorial_operation","") != "")
 	W.text(map,"基地AP %d · 木头 %d" % [context.ap,amount("wood")],18,W.MUTED)
+	W.text(map,"有效手牌上限 %d" % int(context.get("player",{}).get("limit",0)),16,W.GOLD)
 	detail = W.panel(body)
 	if selected.begins_with("pos:"):
 		var parts := selected.split(":")
@@ -199,16 +200,24 @@ func cell_detail(cell: Dictionary) -> void:
 		var choices := OptionButton.new()
 		for card in held: choices.add_item(card.definition.name)
 		detail.add_child(choices)
-		var button := W.button(detail,"安装 · "+held[0].definition.name,func(): send("install",{"cell":cell.id,"uid":held[choices.selected].uid}),disabled)
+		var install_disabled: bool = not context.can_base
+		var button := W.button(detail,"安装 · "+held[0].definition.name,func(): send("install",{"cell":cell.id,"uid":held[choices.selected].uid}),install_disabled)
 		choices.item_selected.connect(func(index): button.text = "安装 · "+held[index].definition.name)
 		return
 	var equipment: Dictionary = catalog.entry("equipment",cell.equipment.id)
 	W.text(detail,"%s · %d级" % [equipment.name,cell.equipment.level],25)
 	W.text(detail,equipment.description,18)
-	if equipment.get("fuel",false):
-		W.text(detail,"剩余燃料 %d" % cell.equipment.fuel,18,W.MUTED)
+	if equipment.get("fuel",false) or cell.equipment.id=="generator":
+		var fuel_label:=W.text(detail,"剩余燃料 %d" % cell.equipment.fuel,18,W.MUTED)
+		if cell.equipment.id=="generator": fuel_label.name="GeneratorFuel"
 		var fuel_row := HBoxContainer.new(); detail.add_child(fuel_row)
-		for material in ["wood","corpse"]: action(fuel_row,"投入 · "+catalog.entry("cards",material).name,"fuel",{"cell":cell.id,"material":material},not context.can_base or amount(material) == 0)
+		var materials: Array=["corpse"] if cell.equipment.id=="generator" else ["wood","corpse"]
+		for material in materials:
+			if cell.equipment.id=="generator":
+				var fuel_button:=W.button(fuel_row,"投入尸体燃料 · +3",func():send("fuel",{"cell":cell.id,"material":"corpse"}),not context.can_base or amount("corpse")==0)
+				fuel_button.name="GeneratorFuelButton"
+			else: action(fuel_row,"投入 · "+catalog.entry("cards",material).name,"fuel",{"cell":cell.id,"material":material},not context.can_base or amount(material) == 0)
+	if cell.equipment.id=="generator": generator_detail(cell,equipment)
 	if equipment.has("healing"): action(detail,"治疗 · 布条1/AP1","heal",{"cell":cell.id},disabled or amount("cloth") == 0)
 	var donors: Array = []
 	for other in context.cells:
@@ -230,3 +239,45 @@ func cell_detail(cell: Dictionary) -> void:
 			detail.add_child(choices)
 			W.button(detail,"拆除设备 · AP1",func(): send("action_card",{"cell":cell.id,"uid":card.uid,"material":materials[choices.selected]}),disabled)
 			break
+
+func generator_detail(cell: Dictionary,equipment: Dictionary) -> void:
+	var boosts: Array=cell.equipment.get("boost_cards",[])
+	var capacity: int=int(equipment.get("capacities",[1])[clampi(int(cell.equipment.get("level",1))-1,0,equipment.get("capacities",[1]).size()-1)])
+	var permanent: int=boosts.filter(func(boost):return not bool(boost.get("temporary",false)) and int(boost.get("expires_voyage",0))<=0).size()
+	var ready: int=boosts.filter(func(boost):return boost.get("id","")=="ready").size()
+	var temporary: int=boosts.filter(func(boost):return bool(boost.get("temporary",false)) or int(boost.get("expires_voyage",0))>0).size()
+	var status:=W.text(detail,"生产进度 %d · 长期槽 %d/%d · 待领取 %d · 临时 %d" % [int(cell.equipment.get("progress",0)),permanent,capacity,ready,temporary],17,W.GOLD)
+	status.name="GeneratorCapacity"
+	var progress:=W.text(detail,"周期进度 %d · 燃料 %d" % [int(cell.equipment.get("progress",0)),int(cell.equipment.get("fuel",0))],15,W.MUTED); progress.name="GeneratorProgress"
+	if temporary>0: W.text(detail,"临时增益 · 下轮结算消失",15,W.MUTED)
+	var next_ready: Dictionary={}
+	for boost in boosts:
+		if boost.get("id","")=="ready":
+			next_ready=boost
+			break
+	if not next_ready.is_empty():
+		var row:=HBoxContainer.new(); detail.add_child(row)
+		W.text(row,"领取下一张增益",15,W.INK)
+		for id in ["power","barrier","production"]:
+			var title: String={"power":"强击","barrier":"屏障","production":"增产"}[id]
+			var claim:=W.button(row,title,func():send("claim_boost",{"cell":cell.id,"id":id}),not context.can_base)
+			claim.name="ClaimBoost_"+str(next_ready.uid)+"_"+id
+	production_targets(detail)
+
+func production_targets(parent: Node) -> void:
+	for boost in context.get("boost_cards",[]):
+		if boost.get("id","")!="production": continue
+		var targets: Array=[]
+		for cell in context.cells:
+			if cell.status=="intact" and cell.equipment.get("id","") in ["filter","planter","fishingNet"] and int(cell.equipment.get("production_bonus",0))==0:
+				targets.append(cell)
+		var row:=HBoxContainer.new(); parent.add_child(row)
+		var expiry: String=" · 临时·下轮结算消失" if bool(boost.get("temporary",false)) or int(boost.get("expires_voyage",0))>0 else ""
+		W.text(row,"增产增益%s →" % expiry,15,W.MUTED)
+		if targets.is_empty():
+			W.text(row,"没有可接收增益的滤水器、土盆或捕鱼网。",15,W.MUTED)
+			continue
+		var select:=OptionButton.new(); select.name="ProductionTargetSelect_"+str(boost.uid); row.add_child(select)
+		for target in targets: select.add_item("%s · %d,%d" % [catalog.entry("equipment",target.equipment.id).name,int(target.x)+1,int(target.y)+1])
+		var apply:=W.button(row,"确认增产",func():send("boost_device",{"cell":targets[select.selected].id,"buff_uid":boost.uid}))
+		apply.name="ApplyProductionBoost_"+str(boost.uid); apply.disabled=not context.can_base

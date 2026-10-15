@@ -24,7 +24,7 @@ var hand_layout = preload("res://presentation/hand_layout.gd").new()
 var world_view: TextureRect
 var local_panel := ""
 var reset_hand_visual := false
-var ui_state := {"hand_page":0,"list_page":0,"selected_id":"","category":"","card":""}
+var ui_state := {"hand_page":0,"list_page":0,"selected_id":"","category":"","card":"","battle_selection":"","craft_tab":"craft","transmute_target":"wood","transmute_uids":"","transmute_count":1}
 
 func _ready() -> void:
 	theme = W.theme()
@@ -86,6 +86,11 @@ func handle_ui(action: String, value: String = "") -> void:
 		"selected_id": ui_state.selected_id = value
 		"category": ui_state.category = value; ui_state.list_page = 0; ui_state.selected_id = ""
 		"card": ui_state.card = value
+		"craft_tab": ui_state.craft_tab = value
+		"transmute_target": ui_state.transmute_target = value
+		"transmute_uids": ui_state.transmute_uids = value
+		"transmute_count": ui_state.transmute_count = maxi(1, int(value))
+		"battle_selection": ui_state.battle_selection = value
 		"settlement_exit":
 			local_panel=""; handle_command("home"); return
 		"hand_reordered":
@@ -101,8 +106,11 @@ func handle_command(command: String, args: Dictionary = {}) -> void:
 		message = ""
 		local_panel = ""
 		ui_state.card = ""
+		ui_state.battle_selection = ""
 		if old_panel != session.panel:
 			ui_state.list_page = 0; ui_state.selected_id = ""; ui_state.category = ""
+			ui_state.craft_tab = "craft"; ui_state.transmute_target = "wood"; ui_state.transmute_uids = ""
+			ui_state.transmute_count = 1
 		if command == "new": setup_mode = ""; save_blocked = false; hand_layout.order.clear()
 		if persistence and not save_blocked and not store.write(session.snapshot()): message = store.error
 	render()
@@ -114,6 +122,7 @@ func page(id: String, parent: Node, view: Dictionary) -> Control:
 	result.command_requested.connect(handle_command)
 	result.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	if parent is Control and not parent is Container: result.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	if result.has_method("configure_session"): result.configure_session(session)
 	result.setup(view,catalog,assets)
 	return result
 
@@ -183,13 +192,15 @@ func render() -> void:
 		page("story",event_content,view)
 	current_page = page("setup" if view.screen == "home" and setup_mode != "" else view.screen,host,view)
 	var panel_id: String = local_panel if local_panel != "" else view.panel
-	if view.screen=="game" and view.phase=="story" and panel_id=="story": panel_id=""
+	if view.screen=="game" and view.phase in ["story","battle"] and panel_id in ["story","battle"]: panel_id=""
 	if panel_id != "":
 		disable_buttons(current_page)
 		var shade := ColorRect.new(); shade.z_index = 200; shade.color = Color(0.01,0.02,0.03,0.85)
 		shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT); host.add_child(shade)
 		var inset := MarginContainer.new(); inset.z_index = 201; inset.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		inset.anchor_left = 0.12; inset.anchor_right = 0.88; inset.anchor_top = 0.10; inset.anchor_bottom = 0.77
+		if panel_id in ["battle","raft"]:
+			inset.anchor_left=0.035; inset.anchor_right=0.965; inset.anchor_top=0.035; inset.anchor_bottom=0.965
 		if panel_id == "craft":
 			inset.anchor_left=0; inset.anchor_right=1; inset.anchor_top=0; inset.anchor_bottom=1
 		if panel_id=="settings":
@@ -228,7 +239,7 @@ func local_content(parent: Node, id: String, view: Dictionary) -> void:
 				W.text(parent,{"survived":"灯火未熄","withdrawn":"离开潮眼","dead":"沉入深潮","mad":"迷失潮声","abandon":"返回岸边"}.get(ending,ending),20)
 	elif id == "help":
 		W.text(parent,"航行须知",32,W.GOLD)
-		for line in ["出发支付一次食水与SAN航耗，抵达后进入准备。","准备与收尾共享基地AP；制造与安装分别收费。","事件先读文字，再作选择；战斗和商店结束后返回剧情。","轮末先处理筏格老化与生产，超限时整理手牌。","事件自动显示在航行画面，完成当前事件后才能再次导航。"]: W.text(parent,line,20)
+		for line in ["出发支付一次食水与SAN航耗，抵达后进入准备。","准备与收尾共享基地AP；制造消耗AP，设备安装不消耗AP。","事件先读文字，再作选择；战斗和商店结束后返回剧情。","轮末处理筏格老化与超限整理；下一轮开始时设备生产。","事件自动显示在航行画面，完成当前事件后才能再次导航。"]: W.text(parent,line,20)
 	else:
 		preload("res://presentation/settings_panel.gd").build(parent,self,view)
 

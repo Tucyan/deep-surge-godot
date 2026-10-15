@@ -113,10 +113,11 @@ func play_route(c, route: String, plan: String) -> void:
 			"battle":
 				if s.state.battle.ap <= 0: command(s,"battle_end")
 				else:
-					var card: Dictionary = s.state.hand.filter(func(h): return h.id == "punch")[0]
+					var card: Dictionary = {}
 					for arrow in s.state.hand:
 						if arrow.id == "arrow": card = arrow; break
-					command(s,"play",{"uid":card.uid})
+					if card.is_empty(): command(s,"battle_action",{"action":"attack"})
+					else: command(s,"play",{"uid":card.uid})
 			"aftermath":
 				use_survival(s)
 				if s.phase()=="aftermath": fuel(s)

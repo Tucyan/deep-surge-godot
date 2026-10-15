@@ -1,0 +1,44 @@
+{
+  "date": "2026-10-15",
+  "source_hashes": {
+    "core/run_rules.gd": "6a99921d70a0df0e40457983f1664f8e896660a54cbd6c473099934322aea98a",
+    "core/battle_rules.gd": "2004207dbe7fe2fac1bd6c265b53ad8e30b2b697d6e3c70d4ad8fad577d1df60",
+    "core/game_session.gd": "cf65c3b994d4fa70e082fd71e94d3b4aaeb227b6023353fafcd2e63985be903a",
+    "core/health_balance.gd": "5e3346baaad3d08497e7816aeae9d07f93a6a402141e73ceebbde4ce38293ca8",
+    "content/data/recipes.json": "2de8e56603d70345aaaff3bb6626582761cad47c32bf6fad8387938d11be504a",
+    "content/data/cards.json": "aeb6d24571b065b3ac4a103a1763d93714f10e7e954571cbfcc5a0a1bcdca93f",
+    "content/data/equipment.json": "0936d22e24556fd035646fa39115aa471ee02179c3482e0274d2571dd01a77d1",
+    "tools/health_playtest.py": "c5a4dac48eec1d74482b4cf69002007a9f461a618ad13578fd7d36b4ba5ea7c2",
+    "tools/spring_balance_experiment.py": "350526db656df1e1f7d5a534ce1b89cbded83b5742359f4352d0209e820f0bd0"
+  },
+  "isolation": "tmp/spring-wood-experiment; no user save access",
+  "random_control": "Every spring consumes three initial-stream draws. Fixed variants use the first two and discard the third for pairing. Random two includes wood. First voyage keeps seven random initial resources and no spring.",
+  "origin": "fool",
+  "profile": "empty",
+  "policies": [
+    "survival four-cell heuristic",
+    "builder six-device heuristic including legal 3-to-2 conversion"
+  ],
+  "additional_variant": "wood1-other3: fixed one wood plus three draws from iron/plastic/rope/cloth; exactly one wood, four total cards",
+  "policy_note": "Challenge policies unchanged. Supplementary story runs reserve AP before arriving at tutorial nodes after one diagnosed policy interruption; not a game-rule change.",
+  "original_experiment_tool_hash": "2501ed89e8767939d35d319f287b6c72e08a5669029cfaf10b908260df9d9a92",
+  "final_cases": 68,
+  "paired_springs_checked": 582,
+  "followup": {
+    "variant": "wood1-random3",
+    "fixed_wood": 1,
+    "random_pool": [
+      "wood",
+      "iron",
+      "plastic",
+      "rope",
+      "cloth"
+    ],
+    "random_draws": 3,
+    "additional_cases": 17,
+    "all_cases_after_followup": 85,
+    "paired_springs_after_followup": 776,
+    "experiment_tool_hash": "8653f28dae51565c194b9729c877b33285313b449382e3f1601723e947a8b755",
+    "runtime_status": "v8 remains wood1-other3; wood1-random3 is not adopted"
+  }
+}

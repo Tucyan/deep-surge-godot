@@ -3,7 +3,9 @@ extends SceneTree
 func _init() -> void:
 	var catalog = load("res://content/catalog.gd").new()
 	assert(catalog.load_catalog(), catalog.error)
-	assert(catalog.table("cards").size() == 22)
+	assert(catalog.table("cards").size() == 26)
+	for id in ["shieldRack","generator","fishingNet","crate"]:
+		assert(catalog.entry("cards",id).kind=="equipment")
 	assert(catalog.table("nodes").size() == 12)
 	var card: Dictionary = catalog.entry("cards", "water")
 	card.name = "changed"

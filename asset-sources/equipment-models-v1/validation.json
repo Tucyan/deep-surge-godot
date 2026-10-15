@@ -1,0 +1,110 @@
+{
+  "shieldRack": {
+    "result": "PASS",
+    "triangles": 2400,
+    "meshes": 7,
+    "materials": 7,
+    "bytes": 6137056,
+    "sha256": "383bd09ad9ac335ec086688953282a80cc03c3d3fea2a2178aa084c1419b503f",
+    "source_bounds_z_up": [
+      [
+        -0.6546432971954346,
+        -0.29738733172416687,
+        0.1599999964237213
+      ],
+      [
+        0.7068524360656738,
+        0.5373873114585876,
+        1.2516244649887085
+      ]
+    ],
+    "reimport_bounds_z_up": [
+      [
+        -0.6546432971954346,
+        -0.29738733172416687,
+        0.1599999964237213
+      ],
+      [
+        0.7068524360656738,
+        0.5373873114585876,
+        1.2516244649887085
+      ]
+    ],
+    "finite_normals_uvs": true,
+    "no_degenerate_triangles": true,
+    "status": "staged-not-integrated",
+    "shared_texture_pixels_unchanged": true
+  },
+  "generator": {
+    "result": "PASS",
+    "triangles": 9444,
+    "meshes": 10,
+    "materials": 10,
+    "bytes": 6678148,
+    "sha256": "5823423879b371840cda17e91c9e1355211d989bbe5aae9acd9d2e408cf43f8f",
+    "source_bounds_z_up": [
+      [
+        -0.5625,
+        -0.6100000739097595,
+        0.14499999582767487
+      ],
+      [
+        0.5856308341026306,
+        0.5322421193122864,
+        1.0800000429153442
+      ]
+    ],
+    "reimport_bounds_z_up": [
+      [
+        -0.5625,
+        -0.6100000739097595,
+        0.14499999582767487
+      ],
+      [
+        0.5856308341026306,
+        0.5322421193122864,
+        1.0800000429153442
+      ]
+    ],
+    "finite_normals_uvs": true,
+    "no_degenerate_triangles": true,
+    "status": "staged-not-integrated",
+    "shared_texture_pixels_unchanged": true
+  },
+  "fishingNet": {
+    "result": "PASS",
+    "triangles": 9456,
+    "meshes": 6,
+    "materials": 6,
+    "bytes": 6740008,
+    "sha256": "4026a04f6fb4a9b5a67a27d2cbed976da6e4505d71540c7645923f052f784dbb",
+    "source_bounds_z_up": [
+      [
+        -0.6159999966621399,
+        -1.738471269607544,
+        -0.1730000078678131
+      ],
+      [
+        0.6159999966621399,
+        0.23322317004203796,
+        1.1924159526824951
+      ]
+    ],
+    "reimport_bounds_z_up": [
+      [
+        -0.6159999966621399,
+        -1.738471269607544,
+        -0.1730000078678131
+      ],
+      [
+        0.6159999966621399,
+        0.23322317004203796,
+        1.1924159526824951
+      ]
+    ],
+    "finite_normals_uvs": true,
+    "no_degenerate_triangles": true,
+    "status": "staged-not-integrated",
+    "shared_texture_pixels_unchanged": true
+  }
+}

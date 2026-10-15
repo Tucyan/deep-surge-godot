@@ -83,10 +83,10 @@
     ]
   },
   "punch": {
-    "name": "出拳",
+    "name": "攻击",
     "kind": "combat",
     "cost": 1,
-    "description": "造成1伤害；打出或弃置后回到手牌。",
+    "description": "旧存档迁移标记；固定攻击不占手牌。",
     "damage": 1,
     "traits": [
       "return"
@@ -110,12 +110,12 @@
     "name": "潮蚀污染",
     "kind": "negative",
     "cost": 2,
-    "description": "留手每战斗回合损失2生命；花2 AP清除。不能附魔或直接弃掉。",
+    "description": "留手每战斗回合损失1生命；花2 AP清除。不能附魔或直接弃掉。",
     "heldEffects": [
       {
         "type": "ChangeCurrent",
         "stat": "hp",
-        "delta": -2,
+        "delta": -1,
         "reason": "pollution"
       }
     ]
@@ -123,39 +123,69 @@
   "lamp": {
     "name": "灯",
     "kind": "equipment",
-    "cost": 1,
+    "cost": 0,
     "description": "安装后投入木头/尸体，燃烧时每节点恢复精神15。"
   },
   "filter": {
     "name": "滤水器",
     "kind": "equipment",
-    "cost": 1,
+    "cost": 0,
     "description": "Ⅰ级每两节点产淡水；Ⅱ级起每节点产淡水。"
   },
   "planter": {
     "name": "土盆",
     "kind": "equipment",
-    "cost": 1,
+    "cost": 0,
     "description": "Ⅰ级每两节点产植物；Ⅱ级起每节点产植物。"
   },
   "medkit": {
     "name": "包扎包",
     "kind": "survival",
     "cost": 0,
-    "description": "恢复生命8，0 AP一次性使用；不需要安装或额外布条。",
-    "effects": [{"type":"ChangeCurrent","stat":"hp","delta":8}]
+    "description": "恢复生命3，0 AP一次性使用；不需要安装或额外布条。",
+    "effects": [
+      {
+        "type": "ChangeCurrent",
+        "stat": "hp",
+        "delta": 3
+      }
+    ]
   },
   "crossbow": {
     "name": "弓弩",
     "kind": "equipment",
-    "cost": 1,
+    "cost": 0,
     "description": "每战斗回合产生射箭；Ⅱ/Ⅲ级每2/3张箭占一格。"
   },
   "spearRack": {
     "name": "矛架",
     "kind": "equipment",
-    "cost": 1,
+    "cost": 0,
     "description": "每场战斗开始获得一张矛；基础伤害3，二级起伤害5。"
+  },
+  "shieldRack": {
+    "name": "护盾架",
+    "kind": "equipment",
+    "cost": 0,
+    "description": "每战斗回合开始获得1点本回合护盾。"
+  },
+  "generator": {
+    "name": "发电机",
+    "kind": "equipment",
+    "cost": 0,
+    "description": "周期生产战斗增益；需要尸体燃料。"
+  },
+  "fishingNet": {
+    "name": "捕鱼网",
+    "kind": "equipment",
+    "cost": 0,
+    "description": "每航行轮开始获得一份基础资源。"
+  },
+  "crate": {
+    "name": "储物箱",
+    "kind": "equipment",
+    "cost": 0,
+    "description": "完好时增加手牌容量。"
   },
   "dismantle": {
     "name": "拆除",

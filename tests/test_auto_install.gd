@@ -26,7 +26,7 @@ func run():
 	root.push_input(event,true); await process_frame
 	event.pressed=false; event.double_click=false; root.push_input(event,true); await process_frame
 	check(app.session.state.cells[1].equipment.get("id","")=="filter","double click installs at first intact empty cell")
-	check(app.session.state.ap==2 and app.session.I.count(app.session.state,"filter")==0,"installation costs one AP and consumes card")
+	check(app.session.state.ap==3 and app.session.I.count(app.session.state,"filter")==0,"installation costs 0 AP and consumes card")
 	app.session.give("lamp")
 	var uid: String=app.session.state.hand[-1].uid
 	for cell in app.session.state.cells:
@@ -35,9 +35,8 @@ func run():
 	check(not app.session.dispatch("install",{"uid":uid,"auto":true}),"reject no available cell")
 	check(app.session.snapshot()==before,"no empty cell preserves card AP and RNG")
 	app.session.state.cells[2].equipment={}; app.session.state.ap=0
-	before=app.session.snapshot()
-	check(not app.session.dispatch("install",{"uid":uid,"auto":true}),"reject insufficient AP")
-	check(app.session.snapshot()==before,"insufficient AP rolls back")
+	check(app.session.dispatch("install",{"uid":uid,"auto":true}),"0 AP allows installation")
+	check(app.session.state.ap==0 and app.session.state.cells[2].equipment.get("id","")=="lamp","installation costs 0 AP")
 	app.session.state.ap=3; app.session.state.phase="battle"
 	check(not app.session.dispatch("install",{"uid":uid,"auto":true}),"battle still blocks base installation")
 	app.queue_free(); await process_frame

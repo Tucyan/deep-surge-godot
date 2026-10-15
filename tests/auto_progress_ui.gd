@@ -10,8 +10,7 @@ func run():
 	var s=app.session; s.state.phase="story"; s.state.story_step="choice"
 	s.state.node=app.catalog.entry("nodes","battle"); s.state.node.visit_id="auto-ui"; s.state.hand=[]; s.state.player.hp=20
 	app.handle_command("fight"); s.state.battle.ap=1; s.give("medkit"); app.render(); await process_frame; await process_frame
-	var punch: Dictionary=s.state.hand.filter(func(c):return c.id=="punch")[0]
-	app.handle_command("play",{"uid":punch.uid}); await process_frame
+	app.handle_command("battle_action",{"action":"attack"}); await process_frame
 	check(s.state.battle.ap==0 and s.state.battle.turn==1,"medkit preserves free action in UI")
 	var medkit: Dictionary=s.state.hand.filter(func(c):return c.id=="medkit")[0]
 	app.handle_command("play",{"uid":medkit.uid}); await process_frame; await process_frame

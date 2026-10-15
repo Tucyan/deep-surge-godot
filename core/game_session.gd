@@ -7,13 +7,14 @@ const Campaign = preload("res://core/campaign_rules.gd")
 const Stats = preload("res://core/run_statistics.gd")
 const Settlement = preload("res://core/settlement.gd")
 const AutoProgress = preload("res://core/auto_progress.gd")
-const VERSION := "godot-flow-v02-4"
+const Health = preload("res://core/health_balance.gd")
+const VERSION := "godot-flow-v02-9"
 const ORIGINS := {
-	"strong":{"name":"强壮之人", "description":"生命/食水上限各+10"},
+	"strong":{"name":"强壮之人", "description":"生命上限+4，食水上限各+10"},
 	"fool":{"name":"愚者", "description":"非自愿精神损失少5"},
 	"restless":{"name":"多动症", "description":"基地/战斗AP上限各+1"},
 	"hoarder":{"name":"囤积癖", "description":"容量+1"},
-	"zealot":{"name":"战斗狂热", "description":"普通撤退损失减少5"},
+	"zealot":{"name":"战斗狂热", "description":"普通撤退免生命损失"},
 	"skeptic":{"name":"无魔之人", "description":"免疫敌方负面战斗Buff"}
 }
 var catalog: RefCounted
@@ -77,10 +78,14 @@ func dispatch(command: String, args: Dictionary = {}) -> bool:
 				Stats.resolve_crisis(state,false)
 				result_story("选择离开遭遇，没有战斗奖励。" ); ok = true
 		"play": ok = Rules.play(self, args)
+		"battle_action": ok = Battle.action(self,args)
+		"claim_boost": ok = Rules.claim_boost(self,args)
+		"boost_device": ok = Rules.boost_device(self,args)
 		"battle_end": ok = Battle.end_turn(self)
 		"retreat": ok = Battle.retreat(self)
 		"craft": ok = Rules.craft(self, args.get("id", ""))
 		"salvage": ok = Rules.salvage(self)
+		"transmute": ok = Rules.transmute(self, args.get("target", ""), args.get("uids", []), int(args.get("count", 1)))
 		"install", "fuel", "repair_cell", "heal", "expand", "upgrade", "action_card": ok = Rules.raft_action(self, command, args)
 		"end_voyage": ok = Campaign.end_day(self) if Campaign.enabled(self) else Rules.settle(self)
 		"night_actions": ok = Campaign.open_actions(self) if Campaign.enabled(self) else false
@@ -146,8 +151,8 @@ func new_game(args: Dictionary) -> bool:
 		if not id is String or id not in I.RESOURCES: return fail("只能选择基础资源牌")
 		counts[id]=int(counts.get(id,0))+1
 		if counts[id]>2: return fail("每类起手资源最多2张")
-	var stats := {"hp":30, "hunger":40, "hydration":40, "sanity":80, "hp_max":30, "hunger_max":100, "hydration_max":100, "sanity_max":100, "base_ap":3, "battle_ap":3, "limit":10, "damage":0}
-	if origin == "strong": stats.hp += 10; stats.hp_max += 10; stats.hunger_max += 10; stats.hydration_max += 10
+	var stats := {"hp":Health.BASE_HP, "hunger":40, "hydration":40, "sanity":80, "hp_max":Health.BASE_HP, "hunger_max":100, "hydration_max":100, "sanity_max":100, "base_ap":3, "battle_ap":3, "limit":10, "damage":0}
+	if origin == "strong": stats.hp += Health.STRONG_BONUS; stats.hp_max += Health.STRONG_BONUS; stats.hunger_max += 10; stats.hydration_max += 10
 	if origin == "restless": stats.base_ap += 1; stats.battle_ap += 1
 	if origin == "hoarder": stats.limit += 1
 	Rules.profile_modifiers(self, stats)
@@ -158,6 +163,7 @@ func new_game(args: Dictionary) -> bool:
 	state.flags.raft_layout = "123456"
 	var initial_cells := [Vector2i(2,0),Vector2i(0,1),Vector2i(1,1),Vector2i(2,1)]
 	for i in range(4): state.cells.append({"id":"cell-%d" % i, "x":initial_cells[i].x, "y":initial_cells[i].y, "status":"intact", "damaged_at":0, "equipment":{}})
+	state.next_boost_id=1; state.next_shield_id=1
 	state.run_id=Crypto.new().generate_random_bytes(16).hex_encode()
 	state._stat_command="new"; state._stat_revision=revision+1; state._stat_subsequence=0
 	Stats.initialize(state)
@@ -212,6 +218,16 @@ func snapshot() -> Dictionary:
 func restore(data: Dictionary) -> bool:
 	if not Rules.valid_save(self,data): return fail("存档版本、内容或状态无效，未载入")
 	state = data.state.duplicate(true); profile = data.profile.duplicate(true); revision = int(data.revision)
+	if not state.is_empty():
+		if not state.has("next_boost_id"): state.next_boost_id=1
+		if not state.has("next_shield_id"): state.next_shield_id=1
+		for cell in state.get("cells",[]):
+			if cell.equipment.is_empty(): continue
+			if not cell.equipment.has("boost_cards"): cell.equipment.boost_cards=[]
+			if not cell.equipment.has("production_bonus"): cell.equipment.production_bonus=0
+		for card in state.get("hand",[]).duplicate(true):
+			if card.get("id","")=="punch": I.remove(state,card.uid,"cleared")
+		if state.get("phase","")=="battle" and not state.battle.has("shields"): state.battle.shields=[]
 	if state.get("phase","") not in ["finished","chapterComplete"]:
 		for cell in state.get("cells",[]):
 			if cell.equipment.get("id","")=="medkit":
@@ -239,12 +255,21 @@ func view() -> Dictionary:
 	result.erase("rng"); result.erase("pool")
 	if not state.is_empty():
 		result.capacity = I.capacity(state)
+		result.player.limit = I.hand_limit(state,catalog)
 		result.can_base = base_action()
 		if int(state.flags.get("rested_until",0)) >= state.voyage:
 			result.player.base_ap += 1
 		for card in result.hand: card.definition = catalog.entry("cards",card.id)
 		if state.coins > 0:
 			result.hand.append({"uid":"coins", "id":"coin", "quantity":state.coins, "temporary":false, "source":"currency", "definition":catalog.entry("cards","coin")})
+		result.boost_cards=[]
+		for cell in state.cells:
+			if cell.status!="intact" or cell.equipment.is_empty(): continue
+			for boost in cell.equipment.get("boost_cards",[]): result.boost_cards.append({"uid":boost.uid,"id":boost.id,"definition":catalog.entry("boosts",boost.id),"cell":cell.id,"expires_voyage":boost.get("expires_voyage",0),"temporary":boost.has("expires_voyage")})
+		result.battle_actions=[]
+		if phase()=="battle":
+			for action in ["attack","block"]: result.battle_actions.append({"action":action,"ap":1,"enabled":int(state.battle.get("ap",0))>0})
+			result.battle_preview=Battle.preview(self,{"action":"attack"})
 		if phase() == "story" and state.story_step == "choice":
 			for option in result.node.get("options",[]): option.disabled_reason = Rules.option_reason(self,option)
 		Campaign.project(self,result)

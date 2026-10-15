@@ -1,0 +1,26 @@
+[
+  {
+    "case": "story-fool-22-careful-scholar",
+    "outcome": "chapterComplete",
+    "completed": 15,
+    "voyage": 15,
+    "hp": 12,
+    "hp_max": 12,
+    "minimum_hp": 12,
+    "battles": 1,
+    "steps": 237,
+    "heals": 0
+  },
+  {
+    "case": "story-strong-22-careful-scholar",
+    "outcome": "chapterComplete",
+    "completed": 15,
+    "voyage": 15,
+    "hp": 16,
+    "hp_max": 16,
+    "minimum_hp": 16,
+    "battles": 1,
+    "steps": 238,
+    "heals": 0
+  }
+]

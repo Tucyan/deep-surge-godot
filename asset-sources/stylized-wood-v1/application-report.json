@@ -1,0 +1,22 @@
+{
+  "crate": {
+    "geometry_unchanged": true,
+    "geometry_signature": "a27ef66f63cb1739a83be920db1c877631c0de8a811cf97a6cf862036e3b0035",
+    "bytes": 6488548,
+    "source": "asset-sources/wooden-crate-v2/wooden_crate_v002.blend"
+  },
+  "planter.glb": {
+    "geometry_unchanged": true,
+    "geometry_signature": "d6ef8bc4c7b7a3ab0c3ca8f498eb35ebbb5e0890eb47d7778a6fb60fda826bf4",
+    "bytes": 7075832,
+    "plank_count": 11,
+    "source": "asset-sources/planter-v4/planter_v004.blend"
+  },
+  "planter-seedling.glb": {
+    "geometry_unchanged": true,
+    "geometry_signature": "5844200905ea37a967c5ce41cb4afeb9c7839ae72c3b3bd0fb109713f09f526f",
+    "bytes": 7090816,
+    "plank_count": 11,
+    "source": "asset-sources/planter-v4/planter_v004.blend"
+  }
+}

@@ -36,8 +36,10 @@ func create(assets: RefCounted) -> bool:
 	material = ShaderMaterial.new(); material.shader = SHADER
 	var detail: Dictionary = settings.detail
 	material.set_shader_parameter("detail_texture",assets.texture("texture.ocean.detail"))
+	material.set_shader_parameter("foam_noise_texture",assets.texture("texture.ocean.foam-noise"))
 	for key in ["enabled","scale","flow_strength","water_contrast","pore_strength","thread_strength","normal_strength"]:
 		material.set_shader_parameter("detail_"+key,detail[key])
+	material.set_shader_parameter("detail_distortion",detail.get("distortion",0.08))
 	material.set_shader_parameter("detail_fade_distance",Vector2(detail.fade_distance[0],detail.fade_distance[1]))
 	material.set_shader_parameter("wave_dk",dk); material.set_shader_parameter("wave_aq",aq)
 	var noise: Dictionary=settings.wave_noise

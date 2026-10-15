@@ -34,7 +34,7 @@ static func tutorial_reason(ctx) -> String:
 	if not enabled(ctx) or ctx.state.voyage != 2: return ""
 	var t: Dictionary = ctx.state.campaign.tutorial
 	if not t.get("crafted_filter",false): return "先在合成页制造滤水器（木头1、塑料2、AP1）"
-	if not t.get("installed_filter",false): return "先在木筏页安装滤水器（AP1）"
+	if not t.get("installed_filter",false): return "先在木筏页安装滤水器"
 	if not t.get("upgraded_filter",false): return "先用另一张滤水器将它升至Ⅱ级（AP1）"
 	return ""
 
@@ -48,7 +48,7 @@ static func tutorial_operation(ctx) -> String:
 
 static func tutorial_guard(ctx, command: String, args: Dictionary) -> String:
 	var operation := tutorial_operation(ctx)
-	if operation == "" or command not in ["craft","install","upgrade","expand","heal","repair_cell","action_card","salvage"]: return ""
+	if operation == "" or command not in ["craft","install","upgrade","expand","heal","repair_cell","action_card","salvage","transmute"]: return ""
 	if command != operation: return tutorial_reason(ctx)
 	if command == "craft" and args.get("id","") != "filter": return "设备教学先完成滤水器，保留安装和升级所需AP"
 	if command == "install" and I.find(ctx.state,args.get("uid","")).get("id","") != "filter": return "设备教学先安装滤水器"
@@ -249,7 +249,7 @@ static func night_action(ctx, id: String) -> bool:
 	c.night.budget = 0; c.night.selected = id; c.night.stage = "result"
 	if id == "rest":
 		for stat in config(ctx).rest: ctx.change(stat,int(config(ctx).rest[stat]))
-		c.night.result = "你在灯下休息。生命+8、食水各+50、SAN+35（受上限限制）。夜间主要行动已用完。"
+		c.night.result = "你在灯下休息。生命+3、食水各+50、SAN+35（受上限限制）。夜间主要行动已用完。"
 	else:
 		var investigation: Dictionary = config(ctx).investigations[id]
 		var cost: int = int(config(ctx).investigation_sanity_cost)
@@ -336,7 +336,7 @@ static func project(ctx, view: Dictionary) -> void:
 	view.night = c.night.duplicate(true)
 	view.night_actions = []
 	if ctx.phase() == "nightHub" and c.night.stage == "awaitAction":
-		view.night_actions.append({"id":"rest","name":"休息","reason":action_reason(ctx,"rest"),"description":"生命+8、食水各+50、SAN+35"})
+		view.night_actions.append({"id":"rest","name":"休息","reason":action_reason(ctx,"rest"),"description":"生命+3、食水各+50、SAN+35"})
 		if c.route == "scholar":
 			for id in config(ctx).investigations:
 				var d: Dictionary = config(ctx).investigations[id]

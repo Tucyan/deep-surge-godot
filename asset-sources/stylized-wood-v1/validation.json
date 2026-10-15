@@ -1,0 +1,38 @@
+{
+  "props/wooden-crate.glb": {
+    "result": "PASS",
+    "colors": [
+      "dark",
+      "grey",
+      "warm"
+    ],
+    "embedded_pixels_match_original": true,
+    "bytes": 6488548,
+    "sha256": "885e1fd1adcba648dcd6e6121adcb5d834bda5f043b3c1ce64a6d777bd0c5478",
+    "wood_micro_normal": false
+  },
+  "raft-modules/planter.glb": {
+    "result": "PASS",
+    "colors": [
+      "warm",
+      "dark",
+      "grey"
+    ],
+    "embedded_pixels_match_original": true,
+    "bytes": 7075832,
+    "sha256": "60b489d96fe51b5e1cf0f827ea204d70eb58ea78033c1600bb5bd811f9aa34f8",
+    "wood_micro_normal": false
+  },
+  "raft-modules/planter-seedling.glb": {
+    "result": "PASS",
+    "colors": [
+      "warm",
+      "dark",
+      "grey"
+    ],
+    "embedded_pixels_match_original": true,
+    "bytes": 7090816,
+    "sha256": "45984f5aaedb579fc1e8ef9a9b9af1eb2cda7f7a61e3344ba639cddaa5458136",
+    "wood_micro_normal": false
+  }
+}

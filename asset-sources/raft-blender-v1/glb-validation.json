@@ -53,6 +53,18 @@
     "bytes": 84140,
     "normals_uvs": true
   },
+  "fishingNet": {
+    "triangles": 9456,
+    "meshes": 6,
+    "bytes": 6740008,
+    "normals_uvs": true
+  },
+  "generator": {
+    "triangles": 9444,
+    "meshes": 10,
+    "bytes": 6678148,
+    "normals_uvs": true
+  },
   "lamp": {
     "triangles": 852,
     "meshes": 5,
@@ -68,19 +80,25 @@
   "planter-seedling": {
     "triangles": 1686,
     "meshes": 4,
-    "bytes": 2201112,
+    "bytes": 7090816,
     "normals_uvs": true
   },
   "planter": {
     "triangles": 1508,
     "meshes": 4,
-    "bytes": 2178792,
+    "bytes": 7075832,
     "normals_uvs": true
   },
   "root-decor": {
     "triangles": 22124,
     "meshes": 18,
     "bytes": 2119752,
+    "normals_uvs": true
+  },
+  "shieldRack": {
+    "triangles": 2400,
+    "meshes": 7,
+    "bytes": 6137056,
     "normals_uvs": true
   },
   "slot-ghost": {

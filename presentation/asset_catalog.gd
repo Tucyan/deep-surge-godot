@@ -12,21 +12,34 @@ func _init() -> void:
 		_definitions = data.get("assets", {})
 
 func texture(asset_id: String) -> Texture2D:
+	if asset_id in ["card.action_attack","card.attack"]:
+		return texture("card.punch")
+	if asset_id in ["card.action_block","card.block"]:
+		if not _cache.has(asset_id): _cache[asset_id] = _create_shield_texture()
+		return _cache[asset_id]
 	if _cache.has(asset_id):
 		return _cache[asset_id]
 	var definition: Dictionary = _definitions.get(asset_id, {})
 	var path: String = definition.get("path", "")
-	if path.begins_with("res://assets/") and ".." not in path and ResourceLoader.exists(path):
-		var resource = load(path)
-		if resource is Texture2D:
-			if definition.get("region") is Array and definition.region.size() == 4:
-				var region: Array = definition.region
-				var atlas := AtlasTexture.new(); atlas.atlas = resource
-				atlas.region = Rect2(region[0],region[1],region[2],region[3]); atlas.filter_clip = true
-				resource = atlas
-			_cache[asset_id] = resource
-			_placeholders[asset_id] = false
-			return resource
+	if path.begins_with("res://assets/") and ".." not in path:
+		if ResourceLoader.exists(path):
+			var resource = load(path)
+			if resource is Texture2D:
+				if definition.get("region") is Array and definition.region.size() == 4:
+					var region: Array = definition.region
+					var atlas := AtlasTexture.new(); atlas.atlas = resource
+					atlas.region = Rect2(region[0],region[1],region[2],region[3]); atlas.filter_clip = true
+					resource = atlas
+				_cache[asset_id] = resource
+				_placeholders[asset_id] = false
+				return resource
+		elif FileAccess.file_exists(path):
+			var img := Image.load_from_file(path)
+			if img != null:
+				var tex := ImageTexture.create_from_image(img)
+				_cache[asset_id] = tex
+				_placeholders[asset_id] = false
+				return tex
 	var image := Image.create(64, 64, false, Image.FORMAT_RGBA8)
 	image.fill(Color.from_string(definition.get("color", "#244b5b"), Color.DARK_SLATE_GRAY))
 	var result := ImageTexture.create_from_image(image)
@@ -63,3 +76,24 @@ func bytes(asset_id: String) -> PackedByteArray:
 	var path: String = _definitions.get(asset_id,{}).get("path","")
 	if path.begins_with("res://assets/data/") and ".." not in path: return FileAccess.get_file_as_bytes(path)
 	return PackedByteArray()
+
+func _create_shield_texture() -> Texture2D:
+	var img := Image.create(128, 128, false, Image.FORMAT_RGBA8)
+	img.fill(Color(0,0,0,0))
+	var gold := Color("ddcaa2"); var inner := Color("1b3240"); var dark := Color("12222d")
+	for y in range(128):
+		for x in range(128):
+			var nx := (x - 64.0) / 48.0
+			var ny := (y - 32.0) / 72.0
+			if ny >= 0.0 and ny <= 1.0:
+				var max_w := 1.0 - ny * ny * 0.7
+				if absf(nx) <= max_w:
+					var border_dist := max_w - absf(nx)
+					if border_dist < 0.12 or ny < 0.08 or (1.0 - ny) < 0.08:
+						img.set_pixel(x, y, gold)
+					elif border_dist < 0.22:
+						img.set_pixel(x, y, inner)
+					else:
+						img.set_pixel(x, y, dark)
+	return ImageTexture.create_from_image(img)
+

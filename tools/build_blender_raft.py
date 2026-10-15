@@ -161,3 +161,5 @@ import runpy
 runpy.run_path(str(ROOT/'tools/rebuild_planter.py'),run_name='__main__')
 runpy.run_path(str(ROOT/'tools/refine_planter_v3.py'),run_name='__main__')
 runpy.run_path(str(ROOT/'tools/refine_filter_states.py'),run_name='__main__')
+if (ROOT/'assets/textures/stylized-wood-v1/wood-warm-albedo.png').exists():
+    runpy.run_path(str(ROOT/'tools/apply_stylized_wood.py'),run_name='__main__')
