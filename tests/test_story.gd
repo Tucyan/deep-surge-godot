@@ -117,7 +117,10 @@ func play_route(c, route: String, plan: String) -> void:
 					for arrow in s.state.hand:
 						if arrow.id == "arrow": card = arrow; break
 					command(s,"play",{"uid":card.uid})
-			"aftermath": use_survival(s); fuel(s); command(s,"end_voyage")
+			"aftermath":
+				use_survival(s)
+				if s.phase()=="aftermath": fuel(s)
+				if s.phase()=="aftermath": command(s,"end_voyage")
 			"nightHub":
 				var night: Dictionary = s.state.campaign.night
 				check(not s.dispatch("end_voyage"),"夜间未完成不能直接航行结算")
@@ -153,6 +156,13 @@ func play_route(c, route: String, plan: String) -> void:
 		check(not s.view().has("campaign"),"前端不暴露固定事件账本或未来剧本")
 	check(s.phase() == "chapterComplete","实际15站到达章节停点 "+route+"/"+plan+"，实际"+s.phase()+" 第"+str(s.state.voyage))
 	check(s.state.completed == 15 and not s.state.awarded and s.profile.points == 0,"章节完成不伪造整局结算")
+	if "--settlement-fixtures" in OS.get_cmdline_user_args() and route=="scholar" and plan=="seal":
+		var evidence := FileAccess.open("res://evidence/settlement-chapter-A.json",FileAccess.WRITE)
+		evidence.store_string(JSON.stringify(s.snapshot())); evidence.close()
+	check(s.state.settlement.scope=="chapter" and s.state.settlement.points.granted==0 and s.state.settlement.points.pending==15,"章节报告展示未入账点数")
+	check(s.state.stats.completed_ids.size()==15,"夜间/尾声不重复增加日间节点统计")
+	for row in s.state.settlement.cards:
+		check(row.obtained==row.remaining+row.use_consumed+row.cost_consumed+row.deployed+row.discarded+row.lost+row.cleared,"完整剧情卡牌收支守恒 "+row.id)
 	check(night_actions == 9,"第6到14晚恰好九次行动")
 	if route == "scholar":
 		check(visited_public == ["ST.L1.A08","ST.L1.A11","ST.L1.P14"],"公共异变按顺序各触发一次")
@@ -160,5 +170,8 @@ func play_route(c, route: String, plan: String) -> void:
 	else: check(s.state.campaign.clues.is_empty() and s.state.campaign.quests.is_empty() and visited_public.is_empty(),"独航不暗中改为学者路线")
 	roundtrip(s)
 	command(s,"abandon"); check(s.profile.points == 15,"主动结束本局才发一次整局点数")
+	check(s.state.settlement.scope=="run" and s.state.settlement.outcome=="abandon" and s.last_settlement.points.granted==15,"章节后真实整局报告独立更新")
+	check(s.state.chapter_report.scope=="chapter" and s.state.settlement.prior_chapters.size()==1,"章节成绩独立保存")
+	check(s.state.settlement.campaign_summary.route==route,"结算冻结实际剧情路线")
 	check(not s.dispatch("abandon") and s.profile.points == 15,"不重复结算")
 	print("STORY ROUTE %s/%s: phase=%s, day=%d, actions=%d, hp=%d SAN=%d" % [route,plan,s.phase(),s.state.voyage,night_actions,s.state.player.hp,s.state.player.sanity])

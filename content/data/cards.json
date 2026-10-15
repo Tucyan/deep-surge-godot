@@ -22,7 +22,7 @@
     "name": "绳索",
     "kind": "resource",
     "cost": 0,
-    "description": "弓弩的制造材料。"
+    "description": "制造材料；可制造修补包与弓弩；两根绳索亦可直接修补破损木筏。"
   },
   "cloth": {
     "name": "布条",
@@ -103,8 +103,8 @@
     "name": "矛击",
     "kind": "combat",
     "cost": 1,
-    "description": "造成4伤害；本场战斗有效。",
-    "damage": 4
+    "description": "造成3伤害；二级矛架提供的矛造成5伤害；本场战斗有效。",
+    "damage": 3
   },
   "pollution": {
     "name": "潮蚀污染",
@@ -140,9 +140,10 @@
   },
   "medkit": {
     "name": "包扎包",
-    "kind": "equipment",
-    "cost": 1,
-    "description": "安装后花1 AP与布条×1恢复生命8，高等级治疗更多。"
+    "kind": "survival",
+    "cost": 0,
+    "description": "恢复生命8，0 AP一次性使用；不需要安装或额外布条。",
+    "effects": [{"type":"ChangeCurrent","stat":"hp","delta":8}]
   },
   "crossbow": {
     "name": "弓弩",
@@ -154,7 +155,7 @@
     "name": "矛架",
     "kind": "equipment",
     "cost": 1,
-    "description": "每战斗回合产生矛击。"
+    "description": "每场战斗开始获得一张矛；基础伤害3，二级起伤害5。"
   },
   "dismantle": {
     "name": "拆除",
@@ -168,6 +169,6 @@
     "kind": "action",
     "targetOperation": "repair",
     "cost": 1,
-    "description": "修复指定的破损筏格。"
+    "description": "消耗 1 AP，修复指定的破损筏格。"
   }
 }

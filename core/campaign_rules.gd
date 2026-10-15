@@ -1,6 +1,7 @@
 extends RefCounted
 ## Test-story scheduling owns no scene, widget, art resource or wall-clock time.
 const I = preload("res://core/inventory.gd")
+const Stats = preload("res://core/run_statistics.gd")
 
 static func config(ctx) -> Dictionary:
 	return ctx.catalog.entry("story_config","first_layer")
@@ -47,7 +48,7 @@ static func tutorial_operation(ctx) -> String:
 
 static func tutorial_guard(ctx, command: String, args: Dictionary) -> String:
 	var operation := tutorial_operation(ctx)
-	if operation == "" or command not in ["craft","install","upgrade","expand","heal","repair_cell","action_card"]: return ""
+	if operation == "" or command not in ["craft","install","upgrade","expand","heal","repair_cell","action_card","salvage"]: return ""
 	if command != operation: return tutorial_reason(ctx)
 	if command == "craft" and args.get("id","") != "filter": return "设备教学先完成滤水器，保留安装和升级所需AP"
 	if command == "install" and I.find(ctx.state,args.get("uid","")).get("id","") != "filter": return "设备教学先安装滤水器"
@@ -82,6 +83,7 @@ static func start_scene(ctx, id: String, return_to: String, visit: String = "") 
 	c.ledger[id] = {"status":"entered","visit_id":visit,"voyage":ctx.state.voyage}
 	ctx.state.phase = "story"; ctx.state.story_step = "intro"; ctx.state.result_text = ""; ctx.panel = "story"
 	ctx.log_text("剧情："+ctx.catalog.entry("story_nodes",id).name)
+	ctx.log_text(ctx.catalog.entry("story_nodes",id).lines[0])
 
 static func has_scene(ctx) -> bool:
 	return enabled(ctx) and not ctx.state.campaign.runtime.is_empty()
@@ -91,8 +93,10 @@ static func advance(ctx, skip: bool = false) -> bool:
 	if ctx.phase() != "story": return false
 	var node: Dictionary = ctx.catalog.entry("story_nodes",r.id)
 	if ctx.state.story_step == "intro":
+		var first_unread: int = int(r.index)+1
 		if skip: r.index = node.lines.size()-1
 		else: r.index += 1
+		for index in range(first_unread,mini(int(r.index)+1,node.lines.size())): ctx.log_text(node.lines[index])
 		if r.index >= node.lines.size()-1: ctx.state.story_step = "choice"
 		return true
 	if ctx.state.story_step == "choice": return ctx.fail("必须选择当前行动，不能跳过")
@@ -148,6 +152,8 @@ static func option(ctx, id: String) -> bool:
 	if node.choices.filter(func(o): return o.id == id).is_empty(): return ctx.fail("不属于当前剧情的选择")
 	var reason := choice_reason(ctx,id)
 	if reason != "": return ctx.fail(reason)
+	for choice in node.choices:
+		if choice.id==id: ctx.log_text("选择："+choice.name)
 	var result: String = "已记录："+node.name
 	match node.handler:
 		"route":
@@ -177,12 +183,12 @@ static func resolve_final(ctx, plan: String) -> String:
 	match plan:
 		"seal":
 			var costs: Dictionary = config(ctx).final_seal_costs
-			for material in costs: I.consume(ctx.state,material,int(costs[material]))
+			for material in costs: I.consume(ctx.state,material,int(costs[material]),"final_plan")
 			var lamp := burning_lamp(ctx); lamp.equipment.fuel -= 1
 			resolution.merge({"outcome":"A","costs":costs.duplicate(),"lamp_cell":lamp.id,"lamp_fuel":1,"relationship":"信任增加"})
 			text = "你沿干燥接缝，在七次敲击的空隙里封闭舱段。灯燃料1、木头2、绳索1已消耗。人员与主要物资保住了，领队愿意继续信任你的判断。"
 		"tow":
-			I.consume(ctx.state,"rope",int(config(ctx).final_tow_costs.rope))
+			I.consume(ctx.state,"rope",int(config(ctx).final_tow_costs.rope),"final_plan")
 			var outer: Array = ctx.Rules.outer_cells(ctx.state).filter(func(cell): return cell.status == "intact")
 			outer.sort_custom(func(a,b): return a.id < b.id)
 			var damaged: Dictionary = outer[0]; damaged.status = "damaged"; damaged.damaged_at = ctx.state.voyage
@@ -194,6 +200,7 @@ static func resolve_final(ctx, plan: String) -> String:
 			resolution.merge({"outcome":"C","costs":{"hp":loss},"losses":["公共储备严重流失"],"relationship":"信任受损"})
 			text = "你解开缆绳，协助人员撤离。生命减少%d；公共储备严重流失。门仍在原处，你没有解除危机，只能撤离。领队沉默地收起研究记录。" % loss
 	c.resolution = resolution
+	Stats.resolve_crisis(ctx.state,true)
 	c.quests[config(ctx).special_quest.id].status = "completed"
 	c.quests[config(ctx).special_quest.id].resolution = resolution.outcome
 	return text
@@ -278,7 +285,7 @@ static func quest(ctx, command: String) -> bool:
 	if not quests.has(q.id) or quests[q.id].status != "active" or quests[q.id].claimed: return ctx.fail("没有可提交的委托")
 	for id in q.costs:
 		if I.count(ctx.state,id) < int(q.costs[id]): return ctx.fail("需要绳索2")
-	for id in q.costs: I.consume(ctx.state,id,int(q.costs[id]))
+	for id in q.costs: I.consume(ctx.state,id,int(q.costs[id]),"quest")
 	for id in q.rewards: ctx.give(id,int(q.rewards[id]),false,"quest")
 	quests[q.id].status = "completed"; quests[q.id].claimed = true
 	ctx.log_text("提交备用缆绳，领取一次补给。")
@@ -287,7 +294,7 @@ static func quest(ctx, command: String) -> bool:
 static func exchange(ctx, material: String) -> bool:
 	if ctx.phase() != "nightHub" or ctx.state.campaign.night.stage != "services": return false
 	if ctx.state.campaign.night.exchanged: return ctx.fail("今晚已交换补给")
-	if material not in I.RESOURCES or not I.consume(ctx.state,material,1): return ctx.fail("需要一份基础材料")
+	if material not in I.RESOURCES or not I.consume(ctx.state,material,1,"night_exchange"): return ctx.fail("需要一份基础材料")
 	for id in config(ctx).exchange_reward: ctx.give(id,int(config(ctx).exchange_reward[id]),false,"night-service")
 	ctx.state.campaign.night.exchanged = true; ctx.log_text("交换今晚的有限补给。")
 	return true

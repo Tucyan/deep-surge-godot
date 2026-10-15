@@ -22,7 +22,7 @@ func install_ui(id: String) -> void:
 			await select_option(app.catalog.entry("cards",id).name)
 			await click("安装 · "+app.catalog.entry("cards",id).name)
 			break
-	await click("关闭面板")
+	await click("X")
 
 func fuel_ui() -> void:
 	for cell in app.session.state.cells:
@@ -34,7 +34,7 @@ func fuel_ui() -> void:
 			await click("木筏详情")
 			await click("%d,%d\n灯" % [cell.x+1,cell.y+1])
 			await click("投入 · "+app.catalog.entry("cards",material).name)
-			await click("关闭面板")
+			await click("X")
 
 func supplies_ui() -> void:
 	for card in app.session.state.hand.duplicate(true):
@@ -77,9 +77,9 @@ func run() -> void:
 				await supplies_ui()
 				if v.voyage == 2:
 					await shot("story-teaching")
-					await click("合成"); await click("制造滤水器 · 1 AP"); await click("关闭面板")
+					await click("合成"); await click("制造滤水器 · 1 AP"); await click("X")
 					await install_ui("filter")
-					await click("木筏详情"); await click("1,1\n滤水器"); await click("合并升级 · AP1"); await click("关闭面板")
+					await click("木筏详情"); await click("1,1\n滤水器"); await click("合并升级 · AP1"); await click("X")
 				if v.voyage == 3: await install_ui("crossbow"); await install_ui("lamp")
 				await fuel_ui(); await click("进入节点")
 			"story":
@@ -122,6 +122,6 @@ func run() -> void:
 	check(app.session.phase() == "chapterComplete" and app.session.state.campaign.resolution.get("outcome","") == "A","15站真实GUI到达A章节停点")
 	await shot("story-complete")
 	await click("任务与线索"); await shot("story-journal"); bounds(app.layout)
-	await click("下一条"); await click("关闭面板")
+	await click("下一条"); await click("X")
 	print("STORY UI: %s (实际15站、按钮鼠标输入、下拉选择、3D、无滚动条)" % ("PASS" if failures == 0 else "FAIL"))
 	app.queue_free(); await process_frame; quit(0 if failures == 0 else 1)

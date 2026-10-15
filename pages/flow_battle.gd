@@ -16,6 +16,7 @@ func build() -> void:
 	var cards: Array = context.hand.filter(func(card): return card.definition.kind in ["combat","survival","negative"])
 	var fan = load("res://presentation/hand_fan.gd").new(); hand.add_child(fan)
 	fan.set_meta("presentation_role","battle"); fan.create(assets,cards,context)
+	fan.reordered.connect(func(): request("hand_reordered"))
 	fan.activated.connect(func(card): send("play",{"uid":card.uid}))
 
 func compact_style() -> StyleBoxFlat:

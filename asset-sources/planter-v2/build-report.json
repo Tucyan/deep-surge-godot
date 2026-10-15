@@ -1,0 +1,14 @@
+{
+  "source": "raft-model/raft_v004.blend",
+  "source_parts": 55,
+  "stem_count": 11,
+  "leaf_count": 33,
+  "target_dimensions_y_up": [
+    1.19,
+    0.95,
+    0.89
+  ],
+  "base_y": 0.18,
+  "runtime": "assets/models/raft-modules/planter.glb",
+  "transform_policy": "snapshot evaluated world meshes first; one common scale and offset"
+}

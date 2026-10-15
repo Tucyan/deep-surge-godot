@@ -60,6 +60,16 @@ func entry(table_id: String, id: String) -> Dictionary:
 func fingerprint() -> String:
 	return JSON.stringify(_tables).sha256_text()
 
+## Exact content fingerprint before the 2026-10-14 medkit/spear revision.
+func previous_balance_fingerprint() -> String:
+	var previous:=_tables.duplicate(true)
+	previous.cards.medkit={"name":"包扎包","kind":"equipment","cost":1,"description":"安装后花1 AP与布条×1恢复生命8，高等级治疗更多。"}
+	previous.cards.spear.description="造成4伤害；本场战斗有效。"; previous.cards.spear.damage=4
+	previous.cards.spearRack.description="每战斗回合产生矛击。"
+	previous.equipment.spearRack.description="战斗每回合产矛；升级提高伤害。"
+	previous.equipment.spearRack.erase("battleStartOnly")
+	return JSON.stringify(previous).sha256_text()
+
 func legacy_fingerprint() -> String:
 	var original := _tables.duplicate(true)
 	original.erase("story_nodes"); original.erase("story_config")

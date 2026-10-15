@@ -1,0 +1,39 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+SETTLEMENT: PASS
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+SETTLEMENT INTEGRATION: PASS
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+SETTLEMENT PAGE: PASS
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+FLOW SESSION: PASS
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+MECHANICS: PASS
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+SAVE / RECOVERY: PASS
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+FAILURE ROUTE seed=0 voyage=11 nodes=10 result=mad
+SUCCESS ROUTE seed=22 voyages=12 nodes=12 hp=13 sanity=24 result=survived
+ROUTES: PASS
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+STORY ROUTE scholar/seal: phase=finished, day=15, actions=9, hp=31 SAN=100
+STORY ROUTE scholar/tow: phase=finished, day=15, actions=9, hp=31 SAN=100
+STORY ROUTE scholar/release: phase=finished, day=15, actions=9, hp=27 SAN=100
+STORY ROUTE solo/continue: phase=finished, day=15, actions=9, hp=31 SAN=100
+STORY: PASS (15站学者A/B/C、独航、夜间与存档)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+STORY EDGES: PASS (委托仅一次、夜间原子操作、危机零资源出口、移动死亡)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+CLEAN HUD: PASS
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+CATALOG / ASSET CACHE: PASS

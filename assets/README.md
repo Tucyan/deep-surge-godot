@@ -1,5 +1,17 @@
 # 素材登记
 
+2026-10-15 一级滤水器状态：`model.raft.module.filter` 为本轮产水有水桶，新增 `model.raft.module.filter-waiting` 开口空桶。源 `asset-sources/filter-states-v1/filter_states_v001.blend`，工具 `refine_filter_states.py` / `register_filter_states.py`；两状态共用相同框架与空心接水桶，水位随本轮生产安排切换，不改规则或增加储水库存。此项覆盖下文filter旧源映射，详见 [外观状态](../docs/filter-production-visuals.md) 与 [源记录](../asset-sources/filter-states-v1/README.md)。
+
+2026-10-15 土盆 v3：`model.raft.module.planter` 为成长完高植株，新增 `model.raft.module.planter-seedling` 六株圆子叶小苗；共用10块错落围板和土层，六张512×512木纹/土壤PBR图片已内嵌GLB并逐项登记hash/尺寸/种子。源为 `asset-sources/planter-v3/planter_v003.blend`；工具 `generate_planter_textures.py` / `refine_planter_v3.py` / `register_planter_model.py`。此项覆盖下文v1/v2土盆的历史源映射，详见 [当前外观规则](../docs/planter-growth-visuals.md) 和 [源记录](../asset-sources/planter-v3/README.md)。
+
+2026-10-15 红蓝虚影外观补充：`ui.raft.ghost-fill` 登记 raft_surface.gd 生成的共享填充面（2.20×1.96m，alpha 0.16）和轮廓细轴加粗×1.4；ui.raft.surface 同步版本/hash。仅红色和蓝色启用，黄色选中不变；原 Blender/GLB 文件未变。
+
+2026-10-15 木筏交互：`model.raft.slot-ghost` 使用新 Blender 源与 GLB（20 网格/240 三角面/法线 UV），运行时蓝红贴水、金色选中；`ui.raft.actions`、`ui.raft.surface`、`ui.raft.interaction` 登记报价、射线拾取/预览、小面板/确认。scene.voyage 更新 HUD 区域拟合与0.65秒镜头过渡；toon-config 新增阴影不透明度0.4。手牌和场景/模型工厂 hash 与依赖同步；无外部下载素材。详见 asset-sources/raft-interaction-v1/README.md。
+
+2026-10-15 UI 修订：新增 `ui.controls.close`（widgets.gd 的右上 X）、`ui.settings-panel`（百分比滑条及平台选项）、`ui.display-preferences`（独立显示配置）与 `ui.modal-layout`（flow_app.gd 面板组合）。合成全屏固定八项，`ui.craft.grid` 更新；属性四项始终一行，`ui.hud.status` 新增可配置最小行宽。新局、结算、独立剧情 LOG 关闭入口统一 X，并更新对应脚本资产版本/hash；没有新增图片或视觉随机。实例随页面释放，依赖与运行映射见 manifest。
+
+2026-10-14新增ui.settlement v1：原生Godot两页结算，源pages/settlement_page.gd，依赖pages/flow_base.gd、presentation/widgets.gd；manifest记录脚本SHA256及24px/s、0.35秒/6倍长按和末尾2秒配置。无新外部图片；布局、铜金边框和灰蓝底色属于程序化UI资产，实例随页面释放。运行映射为flow_app终局/章节停点或首页最近报告回看。
+
 当前使用scene.voyage v8：默认风格化冷夜海面，远雾使用低饱和灰青/灰绿，与深蓝海水区分。三层雾原高度保留，近筏透明区随真实筏格范围同步，镜头拉远时过渡宽度跟随缩放。
 
 | AssetId | 源 / 映射 / 依赖 |
@@ -133,6 +145,8 @@ HUD v2为教学超限手牌预留分页行；`ui.voyage-hud`资产仍对应同�
 ## Blender 木筏模块（当前默认）
 
 model.raft.module.deck-intact / deck-damaged / root-decor / lamp / filter / planter / medkit / crossbow / spearRack 分别映射同名 GLB，源为 asset-sources/raft-blender-v1/raft_modules_v001.blend。倒角、UV、法线及 PBR 基色在 Blender 中完成，湿木、发光开关和状态标签归运行时。每个 GLB 的 hash、来源、单位、依赖登记于 manifest，实例共享源网格，状态私有材质按 source+状态缓存。重新建模使用 tools/build_blender_raft.py（本机 Blender），再执行 register_blender_raft.py / register_raft_state.py / register_toon_ocean.py；check_blender_raft.py 检查导出完整性。原文件保持不变，不重新生成或覆盖原木筏源。
+
+2026-10-15 土盆独立修复 v2：`model.raft.module.planter` 当前源为 `asset-sources/planter-v2/planter_v002.blend`，覆盖上段土盆的历史源映射。生成器 `tools/rebuild_planter.py` 修复部件变换错位，原始 55 个部件统一缩放并补底；1508 三角面、4 材质批次。运行路径与设备 ID 不变。`register_planter_model.py` 更新该条 hash/来源，整筏登记器也保留此映射。复建与验证说明见 [土盆源记录](../asset-sources/planter-v2/README.md)。
 
 
 ## HUD Visual Match v2（2026-10-13）

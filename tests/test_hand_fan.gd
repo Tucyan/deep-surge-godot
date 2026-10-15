@@ -5,6 +5,7 @@ func check(ok: bool, message: String):
 	if not ok: failures += 1; printerr(message)
 func run():
 	var app = load("res://scenes/main.tscn").instantiate(); app.persistence = false; root.add_child(app); await process_frame
+	app.hand_layout.stack_resources=false; app.hand_layout.auto_sort=false
 	app.handle_command("new",{"mode":"challenge","origin":"strong","seed":22})
 	var fixture = app.session.snapshot()
 	for i in range(18): app.session.I.give(fixture.state,"wood",1,false,"hand-ui-fixture")
@@ -42,7 +43,8 @@ func run():
 				check(app.get_global_rect().grow(2).encloses(tray.tip.get_global_rect()),"Tooltip in viewport %s %s" % [tray.tip.get_global_rect(),app.get_global_rect()])
 				for tile in tray.tiles: check(app.get_global_rect().grow(2).encloses(tile.get_global_rect()),"All cards within viewport")
 		var sparse = load("res://presentation/hand_fan.gd").new(); root.add_child(sparse)
-		sparse.size = Vector2(800,250); sparse.create(app.assets,tray.cards.slice(0,4),app.session.view())
+		var sparse_view: Dictionary=app.session.view(); sparse_view.hand_layout=app.hand_layout
+		sparse.size = Vector2(800,250); sparse.create(app.assets,tray.cards.slice(0,4),sparse_view)
 		await process_frame; sparse.focus_card(1)
 		for i in range(4): check(is_equal_approx(sparse.target_positions[i].x,sparse.base_x[i]),"Few cards do not shift horizontally")
 		check(sparse.target_positions[1].y<sparse.target_positions[0].y,"Sparse hover only raises selected card")
@@ -55,6 +57,7 @@ func run():
 		check(tray.hovered == tray.cards.size()-1,"Real pointer routes to last card")
 		var click := InputEventMouseButton.new(); click.button_index = MOUSE_BUTTON_LEFT; click.pressed = true; click.position = point; click.global_position = point
 		root.push_input(click,true); await process_frame
+		click.pressed=false; root.push_input(click,true); await process_frame
 		check(app.ui_state.card == expected,"Click selects correct UID after spreading")
 		check(app.session.snapshot() == saved,"Inspect material does not consume it")
 	app.queue_free(); await process_frame

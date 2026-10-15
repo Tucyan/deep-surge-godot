@@ -10,6 +10,11 @@ const BLUE_LIGHT := Color("497bc3")
 const CREAM := Color("f2e6cd")
 const INK := Color("171b22")
 
+@export var two_columns := false:
+    set(v): two_columns = v; minimum_size_changed.emit(); queue_redraw()
+@export var minimum_row_width := 800.0:
+    set(v): minimum_row_width=maxf(0.0,v); minimum_size_changed.emit()
+
 @export_group("Stats")
 @export_range(0,9999,1) var health: float = 30.0:
     set(v): health = maxf(v,0.0); queue_redraw()
@@ -52,7 +57,7 @@ func _ready() -> void:
     queue_redraw()
 
 func _get_minimum_size() -> Vector2:
-    return Vector2(800,54)
+    return Vector2(400,108) if two_columns else Vector2(minimum_row_width,54)
 
 func set_stat(stat: StringName, value: float, maximum: float = -1.0) -> void:
     var key := String(stat)
@@ -68,15 +73,18 @@ func _draw() -> void:
     if size.x <= 0.0 or size.y <= 0.0:
         return
     var texture: Texture2D = art_override if art_override != null else ART
-    var scale_factor := minf(size.x/DESIGN_SIZE.x,size.y/DESIGN_SIZE.y)
+    var design := Vector2(1418.56,380) if two_columns else DESIGN_SIZE
+    var scale_factor := minf(size.x/design.x,size.y/design.y)
+    var origin := (size-design*scale_factor)*0.5 if two_columns else Vector2.ZERO
     var values := [health,satiety,water,sanity]
     var maxima := [max_health,max_satiety,max_water,max_sanity]
     var labels := ["生命","饱食","水分","理智"]
     var colors := [Color("ab6b61"),Color("a68a48"),Color("548da7"),Color("8276a6")]
     var source_rows := [0.0,160.0,321.0,485.0]
     for i in range(4):
-        var cell_x := float(i)
-        draw_set_transform(Vector2(cell_x*709.28*scale_factor,0.0),0.0,Vector2.ONE*scale_factor)
+        var cell_x := float(i%2) if two_columns else float(i)
+        var cell_y := floorf(float(i)/2.0)*190.0 if two_columns else 0.0
+        draw_set_transform(origin+Vector2(cell_x*709.28*scale_factor,cell_y*scale_factor),0.0,Vector2.ONE*scale_factor)
         var source_y: float = source_rows[i]
         # Separate each row's bar and circular medallion; avoid carrying the
         # neighbouring row's decorations into the new horizontal arrangement.

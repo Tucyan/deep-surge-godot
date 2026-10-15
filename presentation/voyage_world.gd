@@ -1,4 +1,4 @@
-extends SubViewportContainer
+extends TextureRect
 ## Visual-only scene. No random draw, AP, production or survival code.
 const TextureOcean = preload("res://presentation/texture_ocean.gd")
 const ModelOcean = preload("res://presentation/model_ocean.gd")
@@ -32,15 +32,46 @@ var _cell_signature := ""
 var _destination_signature := ""
 var _time := 0.0
 var motion := true
+var shadow_opacity := .4
 ## Centre of the unobstructed scene area (left of the action panel, above hand).
 const RAFT_SCREEN_CENTER := Vector2(0.3875,0.46)
 var _framing_pending := true
 var _framed_size := Vector2i.ZERO
+var _render_size_override := Vector2i.ZERO
+var framing_rect := Rect2(.025,.22,.725,.48)
+var _camera_base := Transform3D.IDENTITY
+var _camera_from := Transform3D.IDENTITY
+var _camera_target := Transform3D.IDENTITY
+var _camera_progress := 1.0
+var _has_camera_pose := false
+const CAMERA_MOVE_SECONDS := .65
+
+func set_framing_rect(value: Rect2) -> void:
+	if framing_rect.position.distance_to(value.position)<.001 and framing_rect.size.distance_to(value.size)<.001: return
+	framing_rect=value; _framing_pending=true
+
+func _animate_camera(delta: float) -> void:
+	if _camera_progress>=1.0: return
+	_camera_progress=minf(1.0,_camera_progress+delta/CAMERA_MOVE_SECONDS)
+	var eased:=_camera_progress*_camera_progress*(3.0-2.0*_camera_progress)
+	camera.global_transform=_camera_from.interpolate_with(_camera_target,eased)
+
+
+func set_render_size(value: Vector2i) -> void:
+	_render_size_override=value.max(Vector2i(2,2))
+	viewport.size=_render_size_override
+
+func _resize_render_surface() -> void:
+	if is_instance_valid(viewport):
+		viewport.size=_render_size_override if _render_size_override!=Vector2i.ZERO else Vector2i(size).max(Vector2i(2,2))
 
 func create(assets: RefCounted) -> void:
 	_assets = assets
 	_font = SystemFont.new(); _font.font_names = PackedStringArray(["Microsoft YaHei","Noto Sans CJK SC"])
-	stretch = true
+	# Always map the render texture onto the full logical scene rectangle.
+	# Render pixels may vary with clarity without changing screen coordinates.
+	expand_mode=TextureRect.EXPAND_IGNORE_SIZE
+	stretch_mode=TextureRect.STRETCH_SCALE
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	viewport = SubViewport.new()
@@ -49,6 +80,9 @@ func create(assets: RefCounted) -> void:
 	viewport.msaa_3d = Viewport.MSAA_2X
 	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	add_child(viewport)
+	texture=viewport.get_texture()
+	resized.connect(_resize_render_surface)
+	_resize_render_surface()
 	world = Node3D.new(); world.name = "VoyageWorld"; viewport.add_child(world)
 	var env := Environment.new()
 	env.background_mode = Environment.BG_COLOR
@@ -61,6 +95,7 @@ func create(assets: RefCounted) -> void:
 	var moon := DirectionalLight3D.new()
 	moon.rotation_degrees = Vector3(-48,-28,0)
 	moon.light_color = Color("b5ced6"); moon.light_energy = 1.8; moon.shadow_enabled = true
+	moon.shadow_opacity=shadow_opacity
 	world.add_child(moon)
 	texture_ocean = TextureOcean.new(); texture_ocean.name = "WaterContact"
 	world.add_child(texture_ocean); texture_ocean.create(assets)
@@ -104,6 +139,7 @@ func apply_night(env: Environment, moon: DirectionalLight3D) -> void:
 	env.fog_depth_curve = look.fog_depth_curve
 	_env = env; apply_view_scale(1.0)
 	moon.light_color = Color(look.moon_color); moon.light_energy = look.moon_energy
+	shadow_opacity=float(look.get("shadow_opacity",.4)); moon.shadow_opacity=shadow_opacity
 	moon.rotation_degrees = Vector3(look.moon_rotation[0],look.moon_rotation[1],look.moon_rotation[2])
 	_rock_material = material(Color(look.rock_color))
 	texture_ocean.foam_material.set_shader_parameter("foam_color",Color(look.contact_foam_color))
@@ -200,8 +236,8 @@ func sync(view: Dictionary) -> void:
 				mat.set_shader_parameter("lantern_strength",toon_ocean.settings.lantern.strength if lantern.visible else 0.0)
 		var center := Vector3(((min_x+max_x)*0.5-0.5)*2.35,0,((min_y+max_y)*0.5-0.5)*2.1)
 		var scale_factor: float = maxf(1.0,pow(maxf(max_x-min_x+1.0,max_y-min_y+1.0)/2.0,0.65))
-		camera.position = center + Vector3(5.5,7.6,10.5)*scale_factor
-		camera.look_at(center+Vector3(1.2*scale_factor,0.35,0),Vector3.UP)
+		var position_goal:=center+Vector3(5.5,7.6,10.5)*scale_factor
+		_camera_base=Transform3D(Basis.IDENTITY,position_goal).looking_at(center+Vector3(1.2*scale_factor,0.35,0),Vector3.UP)
 		apply_view_scale(scale_factor)
 		_framing_pending = true
 	var destination_signature := JSON.stringify([view.phase,view.get("node",{}).get("id",""),view.get("candidates",[])])
@@ -232,22 +268,27 @@ func _process(delta: float) -> void:
 				_materials[key].set_shader_parameter("water_height",ocean.plane_height)
 				_materials[key].set_shader_parameter("water_slope",ocean.plane_slope)
 		_frame_raft_if_needed()
+		_animate_camera(delta)
 		return
 	var config: Dictionary = texture_ocean.config
 	raft.position.y = float(config.raft_base_height)+sin(_time*0.85)*float(config.bob_amplitude)
 	raft.rotation.z = sin(_time*0.48)*float(config.tilt_amplitude)
 	raft.rotation.x = cos(_time*0.55)*float(config.tilt_amplitude)
 	_frame_raft_if_needed()
+	_animate_camera(delta)
 
-## Translate the camera in its own screen plane, preserving angle and distance.
-## Recompute only after layout/viewport changes; waves must not move the camera.
+## Fit actual geometry inside the HUD-free rectangle, then interpolate the pose.
+## Recompute only after geometry/layout/viewport changes, never every wave frame.
 func _frame_raft_if_needed() -> void:
 	if viewport.size.x < 2 or viewport.size.y < 2: return
 	if not _framing_pending and _framed_size == viewport.size: return
 	var meshes := raft.find_children("*","MeshInstance3D",true,false)
 	if meshes.is_empty(): return
-	var target := Vector2(viewport.size)*RAFT_SCREEN_CENTER
-	for attempt in range(4):
+	var previous:=camera.global_transform
+	camera.global_transform=_camera_base
+	var safe:=Rect2(framing_rect.position*Vector2(viewport.size),framing_rect.size*Vector2(viewport.size))
+	var target:=safe.get_center()
+	for attempt in range(10):
 		var minimum := Vector2(INF,INF)
 		var maximum := Vector2(-INF,-INF)
 		for node in meshes:
@@ -256,11 +297,20 @@ func _frame_raft_if_needed() -> void:
 			for i in range(8):
 				var pixel := camera.unproject_position(node.global_transform*bounds.get_endpoint(i))
 				minimum = minimum.min(pixel); maximum = maximum.max(pixel)
-		if minimum.x == INF: return
+		if minimum.x == INF: camera.global_transform=previous; return
 		var error := (minimum+maximum)*0.5-target
-		if error.length() < 0.5: break
-		var depth := -camera.to_local(raft.global_position).z
+		var depth := maxf(1.0,-camera.to_local(raft.global_position).z)
+		var ratio:=maxf((maximum.x-minimum.x)/maxf(1,safe.size.x-20),(maximum.y-minimum.y)/maxf(1,safe.size.y-20))
+		if ratio>1.0:
+			camera.position+=camera.basis.z*depth*(ratio-1.0)*1.02
+			continue
+		if error.length() < 0.25: break
 		var units_per_pixel := 2.0*depth*tan(deg_to_rad(camera.fov)*0.5)/float(viewport.size.y)
 		camera.position += (camera.basis.x*error.x-camera.basis.y*error.y)*units_per_pixel
+	_camera_target=camera.global_transform
+	if _has_camera_pose:
+		_camera_from=previous; _camera_progress=0.0; camera.global_transform=previous
+	else:
+		_has_camera_pose=true; _camera_progress=1.0
 	_framing_pending = false
 	_framed_size = viewport.size

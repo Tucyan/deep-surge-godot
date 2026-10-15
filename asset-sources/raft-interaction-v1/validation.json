@@ -1,0 +1,11 @@
+{
+  "source": "C:\\Users\\ALmerb\\Desktop\\MyProgram\\yongxian\\deep-surge-godot\\asset-sources\\raft-interaction-v1\\slot-ghost-v1.blend",
+  "glb": "C:\\Users\\ALmerb\\Desktop\\MyProgram\\yongxian\\deep-surge-godot\\assets\\models\\raft-modules\\slot-ghost.glb",
+  "objects": 20,
+  "triangles": 240,
+  "footprint_godot": [
+    2.24,
+    2.0
+  ],
+  "runtime": "shared GLB meshes, blue/red/gold material override; no rule RNG"
+}

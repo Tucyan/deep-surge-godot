@@ -1,6 +1,9 @@
 extends RefCounted
+const EXPANSION_COST := {"wood":2}
+const EXPANSION_AP := 1
 const I = preload("res://core/inventory.gd")
 const R = preload("res://core/random_streams.gd")
+const Stats = preload("res://core/run_statistics.gd")
 const PHASES := ["navigation","preparation","story","interaction","battle","aftermath","discard","finished","nightHub","chapterComplete"]
 
 static func candidates(ctx) -> void:
@@ -48,6 +51,10 @@ static func weighted_node(ctx, ids: Array) -> String:
 		if roll < 0: return ids[i]
 	return ids[-1]
 
+static func refresh_voyage_ap(ctx) -> void:
+	var s: Dictionary = ctx.state
+	s.ap = s.player.base_ap + (1 if int(s.flags.get("rested_until",0)) >= s.voyage else 0)
+
 static func voyage(ctx, id: String) -> bool:
 	if ctx.phase() != "navigation": return ctx.fail("当前事件和轮末尚未完成")
 	var s: Dictionary = ctx.state
@@ -62,21 +69,22 @@ static func voyage(ctx, id: String) -> bool:
 	ctx.discover("node." + node.id)
 	var reduction: int = 5 if s.flags.get("avoidWave",false) else 0
 	s.flags.avoidWave = false
-	ctx.change("hunger",-(30-reduction)); ctx.change("hydration",-(30-reduction))
+	ctx.change("hunger",-(30-reduction),"movement"); ctx.change("hydration",-(30-reduction),"movement")
 	var burning := false
 	for cell in s.cells:
 		if cell.status == "intact" and cell.equipment.get("id","") == "lamp" and cell.equipment.fuel > 0: burning = true
 	var sanity_cost: int = 10 if s.origin == "fool" and not burning else 15
-	ctx.change("sanity",-sanity_cost)
+	ctx.change("sanity",-sanity_cost,"movement")
 	for cell in s.cells:
 		if cell.status == "intact" and cell.equipment.get("id","") == "lamp" and cell.equipment.fuel > 0:
-			ctx.change("sanity",15+5*(int(cell.equipment.level)-1)); cell.equipment.fuel -= 1
+			ctx.change("sanity",15+5*(int(cell.equipment.level)-1),"lamp"); cell.equipment.fuel -= 1
+			Stats.device_used(s,"lamp",cell.id)
 	var hunger_damage: int = 2 if s.player.hunger == 0 else 0
 	var thirst_damage: int = 3 if s.player.hydration == 0 else 0
-	ctx.change("hp",-mini(4,hunger_damage+thirst_damage))
+	ctx.change("hp",-mini(4,hunger_damage+thirst_damage),"deprivation")
 	ctx.log_text("抵达%s；移动支付食水%d/%d、SAN%d。" % [node.name,30-reduction,30-reduction,sanity_cost])
 	if not ctx.alive(): return true
-	s.ap = s.player.base_ap + (1 if int(s.flags.get("rested_until",0)) >= s.voyage else 0); s.phase = "preparation"
+	s.phase = "preparation"
 	ctx.Campaign.after_move(ctx)
 	return true
 
@@ -117,8 +125,10 @@ static func option(ctx, id: String) -> bool:
 	if chosen.is_empty(): return ctx.fail("选项不属于当前剧情")
 	var reason := option_reason(ctx,chosen)
 	if not reason.is_empty(): return ctx.fail(reason)
+	ctx.log_text("选择："+chosen.name)
+	var crisis_success: bool = id!="leave"
 	s.ap -= int(chosen.get("cost",0))
-	for card_id in chosen.get("cardCosts",{}): I.consume(s,card_id,int(chosen.cardCosts[card_id]))
+	for card_id in chosen.get("cardCosts",{}): I.consume(s,card_id,int(chosen.cardCosts[card_id]),"event")
 	for stat in chosen.get("statCosts",{}): ctx.change(stat,-int(chosen.statCosts[stat]))
 	if not effects(ctx,chosen.get("effects",[])): return false
 	if chosen.has("outcomes") and ctx.active():
@@ -129,7 +139,11 @@ static func option(ctx, id: String) -> bool:
 			roll -= float(outcome.weight)
 			if roll < 0:
 				if not effects(ctx,outcome.effects): return false
+				# The reviewed storm hold failure branch supplies iron but damages a cell.
+				if s.node.id=="storm" and s.node.get("variant_id","")=="hold":
+					crisis_success=outcome.effects.filter(func(effect): return effect.type=="DamageCell").is_empty()
 				break
+	if s.node.id=="storm": Stats.resolve_crisis(s,crisis_success and ctx.phase()!="finished")
 	if ctx.active(): ctx.result_story("%s：%s" % [s.node.name,chosen.description])
 	return true
 
@@ -176,10 +190,22 @@ static func craft(ctx, id: String) -> bool:
 	if ctx.state.ap < int(recipe.cost): return ctx.fail("基地AP不足")
 	for material in recipe.ingredients:
 		if I.count(ctx.state,material) < int(recipe.ingredients[material]): return ctx.fail("材料不足")
-	for material in recipe.ingredients: I.consume(ctx.state,material,int(recipe.ingredients[material]))
+	for material in recipe.ingredients: I.consume(ctx.state,material,int(recipe.ingredients[material]),"craft")
 	ctx.state.ap -= int(recipe.cost); ctx.give(recipe.output,1,false,"craft")
 	ctx.log_text("制造%s；安装需另付AP。" % ctx.catalog.entry("cards",recipe.output).name)
 	return true
+
+static func salvage(ctx) -> bool:
+	if not ctx.base_action(): return ctx.fail("当前阶段不可打捞")
+	var s: Dictionary = ctx.state
+	if s.ap < 1: return ctx.fail("基地AP不足")
+	s.ap -= 1
+	var item: String = R.pick(s.rng, "rewards", I.RESOURCES)
+	ctx.give(item, 1, false, "salvage")
+	Stats.increment(s, "salvages")
+	ctx.log_text("海面打捞：获得%s×1。" % ctx.catalog.entry("cards", item).name)
+	return true
+
 
 static func play(ctx, args: Dictionary) -> bool:
 	var card: Dictionary = I.find(ctx.state,args.get("uid",""))
@@ -188,6 +214,7 @@ static func play(ctx, args: Dictionary) -> bool:
 	if ctx.phase() == "battle": return ctx.Battle.play(ctx,card,definition)
 	if not ctx.base_action() or definition.kind != "survival": return ctx.fail("此牌需要对应设备或阶段入口")
 	if not effects(ctx,definition.effects): return false
+	Stats.card(ctx.state,card.id,"used",1,"play",card.uid)
 	I.remove(ctx.state,card.uid); ctx.log_text("使用"+definition.name)
 	return true
 
@@ -201,7 +228,7 @@ static func buy(ctx, args: Dictionary) -> bool:
 	var payment: String = args.get("payment","coin")
 	if payment not in ["coin","corpse"]: return false
 	var amount: int = price if payment == "coin" else ceili(float(price)/2.0)
-	if not I.consume(ctx.state,payment,amount): return ctx.fail("支付物资不足")
+	if not I.consume(ctx.state,payment,amount,"shop"): return ctx.fail("支付物资不足")
 	ctx.give(item.card,1,false,"shop"); ctx.log_text("购买"+item.name)
 	return true
 
@@ -220,8 +247,8 @@ static func raft_action(ctx, command: String, args: Dictionary) -> bool:
 				if c.status != "detached": return ctx.fail("该位置已有筏格")
 				old = c
 			if c.status != "detached" and absi(c.x-x)+absi(c.y-y) == 1: adjacent = true
-		if not adjacent or ctx.state.ap < 1 or not I.consume(ctx.state,"wood",2): return ctx.fail("邻接位置扩建需要木头2与AP1")
-		ctx.state.ap -= 1
+		if not adjacent or ctx.state.ap < EXPANSION_AP or not I.consume(ctx.state,"wood",EXPANSION_COST.wood,"expand"): return ctx.fail("邻接位置扩建需要木头2与AP1")
+		ctx.state.ap -= EXPANSION_AP
 		if not old.is_empty(): old.status = "intact"; old.equipment = {}; old.damaged_at = 0
 		else: ctx.state.cells.append({"id":"cell-%d-%d" % [x,y],"x":x,"y":y,"status":"intact","damaged_at":0,"equipment":{}})
 		ctx.log_text("扩建筏格%d,%d" % [x,y])
@@ -229,6 +256,10 @@ static func raft_action(ctx, command: String, args: Dictionary) -> bool:
 	var cell := {}
 	for c in ctx.state.cells:
 		if c.id == args.get("cell",""): cell = c
+	if command=="install" and args.get("auto",false):
+		for c in ctx.state.cells:
+			if c.status=="intact" and c.equipment.is_empty(): cell=c; break
+		if cell.is_empty(): return ctx.fail("没有可安装的完好空位")
 	if cell.is_empty(): return false
 	if command == "action_card":
 		var card: Dictionary = I.find(ctx.state,args.get("uid",""))
@@ -246,6 +277,8 @@ static func raft_action(ctx, command: String, args: Dictionary) -> bool:
 			cell.equipment = {}; ctx.give(material,1,false,"dismantle")
 		else: return ctx.fail("未知行动牌操作")
 		ctx.state.ap -= int(definition.cost); I.remove(ctx.state,card.uid)
+		Stats.card(ctx.state,card.id,"used",1,"action",card.uid)
+		if definition.get("targetOperation","")=="dismantle": Stats.increment(ctx.state,"dismantles")
 		ctx.log_text("使用"+definition.name)
 		return true
 	if command == "install":
@@ -255,23 +288,57 @@ static func raft_action(ctx, command: String, args: Dictionary) -> bool:
 		if ctx.state.ap < 1: return ctx.fail("安装需要1 AP")
 		ctx.state.ap -= 1
 		cell.equipment = {"id":card.id,"level":1,"fuel":0,"progress":0}
-		I.remove(ctx.state,card.uid); ctx.log_text("安装" + ctx.catalog.entry("cards",card.id).name)
+		I.remove(ctx.state,card.uid,"deployed"); ctx.log_text("安装" + ctx.catalog.entry("cards",card.id).name)
 		return true
 	if command == "repair_cell":
-		if cell.status != "damaged" or ctx.state.ap < 1 or not I.consume(ctx.state,"wood",1): return ctx.fail("修理需要破损格、木头1与AP1")
+		if cell.status != "damaged" or ctx.state.ap < 1: return ctx.fail("修理需要破损格与AP1")
+		var material: String = args.get("material","")
+		var consumed_mat := "wood"
+		var consumed_amount := 1
+		if material == "rope":
+			consumed_mat = "rope"; consumed_amount = 2
+		elif material == "wood":
+			consumed_mat = "wood"; consumed_amount = 1
+		else:
+			if I.count(ctx.state,"wood") >= 1:
+				consumed_mat = "wood"; consumed_amount = 1
+			elif I.count(ctx.state,"rope") >= 2:
+				consumed_mat = "rope"; consumed_amount = 2
+			else:
+				return ctx.fail("修理需要木头1或绳索2与AP1")
+		if not I.consume(ctx.state,consumed_mat,consumed_amount,"repair"): return ctx.fail("修理材料不足")
 		cell.status = "intact"; cell.damaged_at = 0; ctx.state.ap -= 1
+		ctx.log_text("修补筏格："+cell.id)
 		return true
 	if cell.status != "intact": return ctx.fail("破损/脱落格上的设备不可用")
 	if command == "upgrade":
-		if cell.equipment.is_empty() or cell.equipment.level >= 3 or ctx.state.ap < 1: return ctx.fail("需要未满级设备与AP1")
+		if cell.equipment.is_empty(): return ctx.fail("请选择已安装设备")
+		if cell.equipment.level >= 3: return ctx.fail("已达最高等级（3级）")
+		if args.get("craft",false):
+			if cell.equipment.level!=1: return ctx.fail("一键制作仅支持1→2级；2→3级需要另一件同类2级设备")
+			var recipe: Dictionary=ctx.catalog.entry("recipes",cell.equipment.id)
+			if recipe.is_empty() or recipe.output!=cell.equipment.id: return ctx.fail("没有对应设备制作配方")
+			var required_ap: int=int(recipe.cost)+1
+			var missing: PackedStringArray=[]
+			for material in recipe.ingredients:
+				var shortage: int=int(recipe.ingredients[material])-I.count(ctx.state,material)
+				if shortage>0: missing.append("%s×%d" % [ctx.catalog.entry("cards",material).name,shortage])
+			var reasons: PackedStringArray=[]
+			if not missing.is_empty(): reasons.append("缺少："+"、".join(missing))
+			if ctx.state.ap<required_ap: reasons.append("需要制作%d AP＋升级1 AP，共%d AP（当前%d）" % [recipe.cost,required_ap,ctx.state.ap])
+			if not reasons.is_empty(): return ctx.fail("；".join(reasons))
+			# Complete both steps inside this dispatch, before auto-advance can run.
+			if not craft(ctx,cell.equipment.id): return false
+			return raft_action(ctx,"upgrade",{"cell":cell.id,"uid":ctx.state.hand[-1].uid})
+		if ctx.state.ap<1: return ctx.fail("升级需要1 AP（当前%d）" % ctx.state.ap)
 		var donor: Dictionary = I.find(ctx.state,args.get("uid",""))
 		if not donor.is_empty() and donor.id == cell.equipment.id and cell.equipment.level == 1:
-			I.remove(ctx.state,donor.uid)
+			I.remove(ctx.state,donor.uid,"cost_consumed")
 		else:
 			var donor_cell := {}
 			for c in ctx.state.cells:
 				if c.id == args.get("donor","") and c.id != cell.id and c.status == "intact" and c.equipment.get("id","") == cell.equipment.id and c.equipment.get("level",0) == cell.equipment.level: donor_cell = c
-			if donor_cell.is_empty(): return ctx.fail("需要另一件同类同级设备")
+			if donor_cell.is_empty(): return ctx.fail("缺少同类设备牌或同类1级设备" if cell.equipment.level==1 else "需要另一件同类2级设备；手牌设备为1级")
 			donor_cell.equipment = {}
 		cell.equipment.level += 1; ctx.state.ap -= 1
 		ctx.log_text("升级"+ctx.catalog.entry("equipment",cell.equipment.id).name)
@@ -279,12 +346,17 @@ static func raft_action(ctx, command: String, args: Dictionary) -> bool:
 	if command == "fuel":
 		var material: String = args.get("material","wood")
 		if material not in ["wood","corpse"] or cell.equipment.get("id","") != "lamp": return false
-		if not I.consume(ctx.state,material,1): return ctx.fail("燃料不足")
+		if args.has("uid"):
+			var fuel_card: Dictionary=I.find(ctx.state,args.uid)
+			if fuel_card.is_empty() or fuel_card.id!=material or fuel_card.temporary: return ctx.fail("燃料不足")
+			I.remove(ctx.state,args.uid,"cost_consumed")
+		elif not I.consume(ctx.state,material,1,"fuel"): return ctx.fail("燃料不足")
 		cell.equipment.fuel += 1 if material == "wood" else 3
+		ctx.log_text("投入燃料："+ctx.catalog.entry("cards",material).name)
 		return true
 	if command == "heal":
-		if cell.equipment.get("id","") != "medkit" or ctx.state.ap < 1 or not I.consume(ctx.state,"cloth",1): return ctx.fail("治疗需要包扎包、布条1和AP1")
-		ctx.state.ap -= 1; ctx.change("hp",int(ctx.catalog.entry("equipment","medkit").healing[int(cell.equipment.level)-1]))
+		if cell.equipment.get("id","") != "medkit" or ctx.state.ap < 1 or not I.consume(ctx.state,"cloth",1,"heal"): return ctx.fail("治疗需要包扎包、布条1和AP1")
+		ctx.state.ap -= 1; ctx.change("hp",int(ctx.catalog.entry("equipment","medkit").healing[int(cell.equipment.level)-1]),"medkit")
 		return true
 	return false
 
@@ -302,7 +374,7 @@ static func settle(ctx) -> bool:
 			cell.equipment.progress += 1
 			var level: int = int(cell.equipment.level) - 1
 			if cell.equipment.progress >= int(equipment.intervals[level]):
-				ctx.give(equipment.output,int(equipment.amounts[level]),false,"production")
+				ctx.give(equipment.output,int(equipment.amounts[level]),false,"production",cell.equipment.id,cell.id)
 				cell.equipment.progress = 0
 	ctx.log_text("轮末处理老化与生产，移动航耗不重复。")
 	s.phase = "discard"
@@ -316,17 +388,22 @@ static func next_voyage(ctx) -> void:
 		ctx.finish("survived" if s.boss_defeated else "withdrawn")
 		return
 	s.voyage += 1; s.phase = "navigation"; s.node = {}; s.battle = {}; ctx.panel = ""
+	refresh_voyage_ap(ctx)
 	for i in range(3): ctx.give(R.pick(s.rng,"initial",I.RESOURCES),1,false,"spring")
 	candidates(ctx)
 	ctx.log_text("领取本轮涌泉三张；开放导航。")
 
 static func discard(ctx, uid: String) -> bool:
 	if ctx.phase() != "discard" or I.capacity(ctx.state) <= ctx.state.player.limit: return false
-	if uid == "coins": ctx.state.coins = 0
+	if uid == "coins":
+		Stats.card(ctx.state,"coin","discarded",ctx.state.coins,"discard")
+		ctx.log_text("弃置贝币%d。" % ctx.state.coins)
+		ctx.state.coins = 0
 	else:
 		var card: Dictionary = I.find(ctx.state,uid)
 		if card.is_empty() or card.id == "pollution" or card.id == "punch": return ctx.fail("此牌不能通过弃置腾出容量")
-		I.remove(ctx.state,uid)
+		I.remove(ctx.state,uid,"discarded")
+		ctx.log_text("弃置："+ctx.catalog.entry("cards",card.id).name)
 	if I.capacity(ctx.state) <= ctx.state.player.limit: next_voyage(ctx)
 	return true
 
@@ -360,9 +437,11 @@ static func meta_buy(ctx, command: String, id: String) -> bool:
 	return true
 
 static func valid_save(ctx, data: Dictionary) -> bool:
-	var current: bool = data.get("content_version") == ctx.VERSION and data.get("fingerprint") == ctx.catalog.fingerprint()
+	var current: bool = data.get("content_version") == ctx.VERSION and data.get("fingerprint") in [ctx.catalog.fingerprint(),ctx.catalog.previous_balance_fingerprint()]
+	var previous: bool = data.get("content_version") == "godot-flow-v02-3" and data.get("fingerprint") == ctx.catalog.fingerprint()
 	var legacy: bool = data.get("content_version") == "godot-flow-v02-2" and data.get("fingerprint") == ctx.catalog.legacy_fingerprint() and data.get("state") is Dictionary and data.state.get("mode","challenge") == "challenge"
-	if data.get("schema") != 1 or not (current or legacy) or data.get("random_version") != "xorshift32-godot-v1": return false
+	if (data.get("schema")!=1 and data.get("schema")!=2) or not (current or previous or legacy) or data.get("random_version") != "xorshift32-godot-v1": return false
+	if current and (data.get("schema")!=2 or not ctx.Settlement.valid_report(data.get("last_settlement"))): return false
 	if not data.get("state") is Dictionary or not data.get("profile") is Dictionary or not data.get("revision") is float and not data.get("revision") is int: return false
 	var p: Dictionary = data.profile
 	for key in ["points","purchases","tech","pending","discovered","endings"]:
@@ -378,6 +457,13 @@ static func valid_save(ctx, data: Dictionary) -> bool:
 		if id not in ["supply","blessing"] or not integer(p.pending[id]) or p.pending[id] < 0 or p.pending[id] > int(p.purchases.get(id,0)): return false
 	var s: Dictionary = data.state
 	if s.is_empty(): return true
+	if current or s.has("stats"):
+		if not Stats.valid(s) or not s.get("run_id") is String: return false
+	if s.has("settlement"):
+		if not ctx.Settlement.valid_report(s.settlement) or s.settlement.is_empty() or s.phase not in ["finished","chapterComplete"]: return false
+		if s.settlement.scope!=("run" if s.phase=="finished" else "chapter") or s.settlement.run_id!=s.run_id or s.settlement.completed!=s.completed: return false
+	if s.has("chapter_report"):
+		if not ctx.Settlement.valid_report(s.chapter_report) or s.chapter_report.is_empty() or s.chapter_report.scope!="chapter" or s.chapter_report.run_id!=s.run_id: return false
 	for key in ["phase","mode","origin","seed","voyage","length","player","hand","rng","node","candidates","cells","ap","coins","logs","pool","visits","next_id","completed","awarded","flags","battle","story_step","result_text","buffs","level","xp","boss_defeated"]:
 		if not s.has(key): return false
 	if s.mode not in ["challenge","story"] or s.phase not in PHASES or not ctx.ORIGINS.has(s.origin) or not s.player is Dictionary or not s.hand is Array or not s.rng is Dictionary: return false

@@ -1,6 +1,11 @@
 extends RefCounted
 ## Blender-authored geometry; runtime only instantiates modules and projects state labels.
 const NAMES := {"lamp":"灯","filter":"滤水器","planter":"土盆","medkit":"包扎包","crossbow":"弓弩","spearRack":"矛架"}
+func planter_stage(equipment: Dictionary) -> String:
+	# Visual forecast of this voyage's existing production schedule, no rule changes.
+	return "mature" if int(equipment.get("level",1)) >= 2 or int(equipment.get("progress",0)) >= 1 else "seedling"
+func filter_stage(equipment: Dictionary) -> String:
+	return "ready" if int(equipment.get("level",1)) >= 2 or int(equipment.get("progress",0)) >= 1 else "waiting"
 func module(world,id: String) -> Node3D:
 	var source: PackedScene = world._assets.model("model.raft.module."+id)
 	if source == null: push_error("Missing Blender raft module: "+id); return Node3D.new()
@@ -24,6 +29,9 @@ func style_meshes(world,node: Node,intact: bool,deck: bool,lit: bool=false) -> v
 	for child in node.get_children(): style_meshes(world,child,intact,deck,lit)
 func label(parent: Node3D,font: Font,text: String,pos: Vector3,damaged: bool=false) -> void:
 	var sign := Label3D.new(); sign.name = "StateLabel"; sign.font = font; sign.text = text; sign.font_size = 28; sign.pixel_size = .009
+	# These are gameplay annotations: keep every line and outline readable
+	# through the deck/equipment, while modal UI still renders above the viewport.
+	sign.no_depth_test=true; sign.render_priority=10; sign.outline_render_priority=9
 	sign.position = pos; sign.billboard = BaseMaterial3D.BILLBOARD_ENABLED; sign.modulate = Color("e9b09a") if damaged else Color("dfd2ac"); sign.outline_modulate = Color("10262b"); parent.add_child(sign)
 func build(world,cell: Dictionary,font: Font) -> Node3D:
 	var tile := Node3D.new(); tile.name = cell.id; tile.position = Vector3((cell.x-.5)*2.35,.13,(cell.y-.5)*2.1)
@@ -39,9 +47,17 @@ func build(world,cell: Dictionary,font: Font) -> Node3D:
 	var text: String = prefix+" · "+("破损" if damaged else "空位")
 	if not cell.equipment.is_empty():
 		var eq: Dictionary = cell.equipment; var active: bool = not damaged and (eq.id != "lamp" or int(eq.fuel)>0)
-		var model := module(world,eq.id); model.name = "Equipment"; model.set_meta("equipment_id",eq.id); model.set_meta("active",active)
+		var stage := planter_stage(eq) if eq.id == "planter" else ""
+		var model_id: String = "planter-seedling" if stage == "seedling" else eq.id
+		var water_stage := filter_stage(eq) if eq.id == "filter" else ""
+		if water_stage == "waiting": model_id = "filter-waiting"
+		var model := module(world,model_id); model.name = "Equipment"; model.set_meta("equipment_id",eq.id); model.set_meta("active",active)
+		if eq.id == "planter": model.set_meta("growth_stage",stage)
+		if eq.id == "filter": model.set_meta("production_stage",water_stage)
 		tile.add_child(model); style_meshes(world,model,not damaged,false,active and eq.id=="lamp")
 		text = prefix+" · "+NAMES.get(eq.id,eq.id)+" %d级" % int(eq.level)
+		if eq.id == "planter": text += "\n"+("小苗" if stage == "seedling" else "成长完")
+		if eq.id == "filter": text += "\n"+("过滤暂停" if damaged else "过滤中" if water_stage == "waiting" else "本轮产水")
 		if damaged: text += "\n停用 · 待修补"
 		elif eq.id == "lamp": text += "\n燃料 %d" % int(eq.fuel)
 	elif damaged: text += "\n待修补"
@@ -61,6 +77,7 @@ func decorative_root(world,font: Font,layout: String="123456") -> Node3D:
 	var tent_light := OmniLight3D.new(); tent_light.name = "TentLanternLight"
 	tent_light.position = Vector3(-1.50,.52,.40); tent_light.light_color = light.light_color; tent_light.light_energy = light.light_energy; tent_light.omni_range = 1.75
 	tent_light.shadow_enabled = true; tent_light.omni_shadow_mode = OmniLight3D.SHADOW_CUBE
+	tent_light.shadow_opacity=world.shadow_opacity
 	base.add_child(tent_light)
 	label(base,font,"1 · 2  装饰筏根" if layout == "123456" else "装饰筏根",Vector3(0,.35,.84))
 	return base

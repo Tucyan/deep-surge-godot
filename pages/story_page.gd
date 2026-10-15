@@ -172,7 +172,7 @@ func _build_log() -> void:
 	log_next = _button(log_overlay, "下一页 ▷", Vector2(860, 705), Vector2(212, 60), "toolbar")
 	log_next.pressed.connect(func(): _log_page += 1; _refresh_log())
 	log_counter = _label(log_overlay, "", Vector2(698, 723), Vector2(154, 40), 22)
-	log_close = _button(log_overlay, "返回剧情 ×", Vector2(1280, 42), Vector2(260, 72), "toolbar")
+	log_close = _button(log_overlay, "X", Vector2(1468, 42), Vector2(72, 72), "toolbar")
 	log_close.pressed.connect(close_log)
 	log_overlay.hide()
 

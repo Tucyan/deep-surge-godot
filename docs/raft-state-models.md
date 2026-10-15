@@ -1,5 +1,11 @@
 # 木筏状态模型 v1 · 2026-10-13
 
+一级滤水器现按本航行轮是否达到产出周期区分开口空桶“过滤中”和有水桶“本轮产水”；2/3级保持有水，破损显示暂停。见 [当前滤水器外观](filter-production-visuals.md)。
+
+土盆当前为 v3：新增木纹/土壤PBR贴图、错落围板及独立小苗模型；按本轮是否达到产出周期显示“小苗/成长完”，仅1级出现小苗。此修订取代下文旧土盆单一外观描述；规则未变。见 [当前土盆外观](planter-growth-visuals.md)。
+
+当前土盆模型已于 2026-10-15 单独修复为 v2：修复盆框塌缩及植株悬空，增加盆底，保留原运行 ID/路径与全部规则。其源文件独立于下文历史整筏版本，见 [土盆 v2 源记录](../asset-sources/planter-v2/README.md) 与 [当次验证](../evidence/planter-v2-verification.md)。
+
 本节取代固定 GLB 营地装饰作为游戏页的默认木筏映射。原模型保留在 assets/models 与归档中，不修改原 blend/GLB。没有对应规则的帆、箱、桶、盆栽不再常驻于游戏筏格。
 
 | 实际状态 | 场景表现 |
@@ -75,3 +81,8 @@ model.raft-state v3 / scene.voyage v12；59 个 hash 绑定检查通过。9 个�
 `shader.raft.wet-wood` 升至 v2：在现有 Blender 木板上添加物体空间的弯曲纵向纤维、低对比宽木纹、稀疏椭圆木结、端头细裂及粗糙度变化。保留原有湿水线。纹理跟随模型运动，视觉 hash 不消耗玩法 RNG；细纤维使用屏幕导数衰减以减轻远景闪烁。默认 grain_strength=0.40、knot_strength=0.30，均为 uniform，可独立调节或关闭。
 
 本次是 Godot 材质层细化，Blender v005 几何和 GLB 不变；无新增贴图采样、面数或绘制实例，但增加了片元着色计算。来源 `assets/shaders/wet_wood.gdshader`，登记工具 `tools/register_wood_grain.py`。实际 Compatibility GPU 渲染无错误，检查了 1600×900 与 1280×720、空格/设备/损坏/修复截图；筏格状态测试与 63 项资产 hash 检查通过。前后对照：`evidence/wood-grain-before.png`、`evidence/raft-state-empty.png`。未进行帧耗时基准测试。
+
+
+## 状态文字可读性 · 2026-10-15
+
+StateLabel 的名称、等级、成长和产水描述关闭深度测试，文字/描边渲染优先级为10/9，避免被筏格、设备或透明海面遮挡。仍在场景视口内绘制，设置等二维弹窗继续覆盖场景。字号、内容、锚点及规则判定不变。

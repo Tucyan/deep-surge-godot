@@ -40,6 +40,10 @@ func create(assets: RefCounted) -> bool:
 		material.set_shader_parameter("detail_"+key,detail[key])
 	material.set_shader_parameter("detail_fade_distance",Vector2(detail.fade_distance[0],detail.fade_distance[1]))
 	material.set_shader_parameter("wave_dk",dk); material.set_shader_parameter("wave_aq",aq)
+	var noise: Dictionary=settings.wave_noise
+	for key in ["enabled","seed","scale","phase_strength","amplitude_strength"]:
+		material.set_shader_parameter("wave_noise_"+key,noise[key])
+	material.set_shader_parameter("wave_noise_drift",Vector2(noise.drift[0],noise.drift[1]))
 	material.set_shader_parameter("amplitude_sum",amplitude_sum)
 	material.set_shader_parameter("amplitude_fade",_fade)
 	material.set_shader_parameter("near_half",float(settings.near_size)*0.5)
@@ -141,13 +145,29 @@ func contact_at(g: Vector2) -> float:
 	var q := ((g-Vector2(raft_bounds.x,raft_bounds.y)).abs()-Vector2(raft_bounds.z,raft_bounds.w)).max(Vector2.ZERO)
 	return 1.0-smoothstep(settings.contact_margin,settings.contact_margin+settings.contact_transition,q.length())
 
-## Same Gerstner sum as the vertex shader, scaled by the distance fade.
+func _noise_hash(p: Vector2) -> float:
+	var r := fposmod(p.x*37.0+p.y*73.0+float(settings.wave_noise.seed),251.0)
+	return fposmod(r*r*17.0+r*13.0,251.0)/251.0
+
+## Small integer lattice hash and cubic interpolation match the GPU exactly.
+func _wave_noise(g: Vector2, index: int) -> float:
+	var noise: Dictionary=settings.wave_noise
+	var p := g*float(noise.scale)+Vector2(noise.drift[0],noise.drift[1])*time+Vector2(index*19,index*31)
+	var cell:=p.floor(); var f:=p-cell
+	var u:=f*f*(Vector2(3,3)-2.0*f)
+	return lerpf(lerpf(_noise_hash(cell),_noise_hash(cell+Vector2(1,0)),u.x),lerpf(_noise_hash(cell+Vector2(0,1)),_noise_hash(cell+Vector2(1,1)),u.x),u.y)*2.0-1.0
+
+## Same perturbed Gerstner sum as the vertex shader, scaled by distance fade.
 func displacement(g: Vector2) -> Vector3:
 	var d := Vector3.ZERO
-	for wave in _waves:
-		var theta: float = wave.k*wave.dir.dot(g)-wave.omega*time+wave.phase
-		var horizontal: Vector2 = wave.dir*(wave.s/wave.k)*cos(theta)
-		d.x += horizontal.x; d.z += horizontal.y; d.y += wave.a*sin(theta)
+	for i in range(_waves.size()):
+		var wave: Dictionary=_waves[i]
+		var noise: Dictionary=settings.wave_noise
+		var perturbation:=_wave_noise(g,i) if noise.enabled else 0.0
+		var amplitude:=1.0+float(noise.amplitude_strength)*perturbation
+		var theta: float = wave.k*wave.dir.dot(g)-wave.omega*time+wave.phase+float(noise.phase_strength)*perturbation
+		var horizontal: Vector2 = wave.dir*(wave.s/wave.k)*cos(theta)*amplitude
+		d.x += horizontal.x; d.z += horizontal.y; d.y += wave.a*sin(theta)*amplitude
 	return d*fade_at(g)
 
 ## World position of the displaced vertex whose undisplaced grid point is g.

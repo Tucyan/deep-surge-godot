@@ -19,6 +19,9 @@ func run():
 		check(cell.has_meta("cell_id") and cell.get_meta("cell_id") == fixture.cells[i].id,"格子ID映射")
 		var model = cell.get_node_or_null("Equipment")
 		check(model != null and model.get_meta("equipment_id","") == ids[i],"六种设备按真实ID建立模型")
+		var label: Label3D=cell.get_node("StateLabel")
+		check(label.no_depth_test,"筏格设备描述文字不被木板和设备遮挡")
+		check(label.render_priority>0 and label.outline_render_priority>0,"文字及描边在海面透明物体之后渲染")
 	fixture.cells[0].status = "damaged"; fixture.cells[1].status = "detached"; fixture.cells[2].equipment = {}
 	world.sync(fixture); await process_frame
 	check(world.cells.get_node_or_null("visual-1") == null,"脱落格及设备无残留模型")

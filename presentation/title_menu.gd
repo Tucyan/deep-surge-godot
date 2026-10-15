@@ -12,7 +12,7 @@ var light: Array[Texture2D] = []
 var layout_debug: Control
 var selected := 0
 var _tweens: Dictionary = {}
-func create(view: Dictionary) -> void:
+func create_background() -> void:
 	clip_contents=true
 	poster=TextureRect.new(); poster.texture=load("res://assets/title_ui/ocean_poster.png")
 	poster.expand_mode=TextureRect.EXPAND_IGNORE_SIZE; poster.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_COVERED
@@ -21,6 +21,10 @@ func create(view: Dictionary) -> void:
 	background.stream=load("res://assets/title_ui/ocean_loop.ogv"); background.loop=true
 	background.volume_db=-80; background.mouse_filter=MOUSE_FILTER_IGNORE
 	add_child(background); background.play()
+	resized.connect(_reflow); _reflow()
+func create(view: Dictionary, with_background: bool = true) -> void:
+	clip_contents=true
+	if with_background: create_background()
 	composition=Control.new(); composition.size=REFERENCE; composition.mouse_filter=MOUSE_FILTER_PASS; add_child(composition)
 	var shade:=TextureRect.new()
 	shade.name="MenuBoard"
@@ -49,7 +53,9 @@ func create(view: Dictionary) -> void:
 			"quit": {"x": 1160.0, "y": 770.0, "width": 450.0, "height": 151.363647460938}
 		}[ACTIONS[i]]
 		b.position=Vector2(layout.x,layout.y)
-		b.size=Vector2(layout.width,layout.height)
+		var ui_zoom: float=view.get("ui_scale",1.0)
+		b.size=Vector2(layout.width,layout.height)*ui_zoom
+		b.position-=Vector2(layout.width,layout.height)*(ui_zoom-1.0)*0.5
 		b.material=edge_material
 		b.ignore_texture_size=true; b.stretch_mode=TextureButton.STRETCH_SCALE
 		b.pivot_offset=b.size*Vector2(0.5,0.5); b.focus_mode=FOCUS_ALL
@@ -68,14 +74,17 @@ func create(view: Dictionary) -> void:
 		composition.add_child(b); buttons.append(b)
 	if view.active: selected=1
 	_update_highlight()
-	resized.connect(_reflow); _reflow()
+	if not resized.is_connected(_reflow): resized.connect(_reflow)
+	_reflow()
 func _reflow() -> void:
-	if composition==null or size.x<1 or size.y<1:return
-	var fit:=minf(size.x/REFERENCE.x,size.y/REFERENCE.y)
-	composition.scale=Vector2.ONE*fit; composition.position=(size-REFERENCE*fit)*0.5
-	var cover:=maxf(size.x/1704.0,size.y/960.0)
-	background.size=Vector2(1704,960)*cover; background.position=(size-background.size)*0.5
-	poster.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
+	if size.x<1 or size.y<1:return
+	if composition!=null:
+		var fit:=minf(size.x/REFERENCE.x,size.y/REFERENCE.y)
+		composition.scale=Vector2.ONE*fit; composition.position=(size-REFERENCE*fit)*0.5
+	if background!=null:
+		var cover:=maxf(size.x/1704.0,size.y/960.0)
+		background.size=Vector2(1704,960)*cover; background.position=(size-background.size)*0.5
+		poster.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 func _update_highlight() -> void:
 	for i in range(buttons.size()): buttons[i].texture_normal=light[i] if i==selected and not buttons[i].disabled else dark[i]
 func _hover(index: int, active: bool) -> void:

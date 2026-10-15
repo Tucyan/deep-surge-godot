@@ -1,6 +1,25 @@
 {
   "version": 1,
   "assets": {
+    "ui.settlement": {
+      "path": "res://pages/settlement_page.gd",
+      "source": "project-authored/native-Godot-settlement-v1",
+      "version": 2,
+      "sha256": "ef0b6e880978260012a7f2003f6cf74f9d4c8910c1fad97e2e2c4920ac03a1ea",
+      "dependencies": [
+        "res://pages/flow_base.gd",
+        "res://presentation/widgets.gd"
+      ],
+      "role": "two-page read-only voyage log and score presentation",
+      "runtime_mapping": {
+        "entry": "flow_app.gd terminal phase or latest-report recall",
+        "normal_scroll_pixels_per_second": 24,
+        "hold_seconds": 0.35,
+        "hold_multiplier": 6,
+        "initial_end_delay_seconds": 2
+      },
+      "license": "project-authored procedural UI; no external artwork"
+    },
     "card.wood": {
       "path": "res://assets/images/supplied-20261012/asset-09.png",
       "color": "#284c57",
@@ -577,14 +596,21 @@
         "presentation/supplied_ocean.gd",
         "presentation/texture_ocean.gd"
       ],
-      "version": 13,
+      "version": 14,
       "role": "Blender-authored modular raft; four playable cells at 3,4,5,6; two reserved decorative root cells at 1,2; toon ocean default, original GLB ocean fallback",
       "framing": {
-        "screen_center": [
-          0.3875,
-          0.46
-        ],
-        "method": "project visible raft mesh bounds; translate camera on layout/viewport changes only"
+        "method": "fit projected visible raft mesh bounds in UI-provided safe rect; smooth pose interpolation",
+        "duration_seconds": 0.65,
+        "source": "flow_app._update_world_framing: below top menu, left of operation panel, above capacity badge/hand",
+        "exclude": "preview ghosts; wave animation does not retrigger camera fitting"
+      },
+      "source_hashes": {
+        "presentation/voyage_world.gd": "ac135c4da0bf533a0ae6ecaa0b767ed7fcd4d43da7b9c8aaf52e70aff061c7a7",
+        "presentation/raft_state_models.gd": "5fd7db9fee88b473d4b677cd2176d39f20698b0d52739469cd80c453dfd188e6",
+        "presentation/toon_ocean.gd": "395f91476571f7616ab8126918a9b631c299f5d9f186a63cdf6f03d1ad87324f",
+        "presentation/model_ocean.gd": "173e741d87735558f46fb2e3fbcb72261c07f577c71545ae2a2c65db84e92ba7",
+        "presentation/supplied_ocean.gd": "fe3baadb9224b4c0702f1eaae0cea6508856bdb8af6feef25c11d7d203de1ca2",
+        "presentation/texture_ocean.gd": "4580a8ed85969d118a1789ba70b9dbfc63ed9515ae599c9386fff4c920c97bbe"
       }
     },
     "shader.ocean": {
@@ -605,7 +631,7 @@
         "card.*"
       ],
       "source": "pages/voyage_hud.gd + pages/flow_battle.gd + presentation/item_card.gd + presentation/widgets.gd",
-      "version": 3
+      "version": 5
     },
     "story.ST.L1.T01": {
       "path": "",
@@ -907,13 +933,14 @@
     },
     "ui.item-card": {
       "path": "res://presentation/item_card.gd",
-      "version": 1,
+      "version": 2,
       "source": "presentation/item_card.gd",
       "dependencies": [
         "ui.card.front",
         "ui.card.type.*",
         "card.*"
-      ]
+      ],
+      "sha256": "38da63e1fda379733a7d4cd96c3b42dabd7af56fcc5ccc801d139020fbd4416b"
     },
     "texture.ocean.ripples": {
       "path": "res://assets/textures/ocean-ripples-v1.png",
@@ -1017,25 +1044,37 @@
       "dependencies": [],
       "license": "project-authored shader/config; source Ocean stays user-supplied"
     },
+    "ocean.wave-noise-sampler": {
+      "path": "res://presentation/toon_ocean.gd",
+      "source": "presentation/toon_ocean.gd",
+      "version": 1,
+      "sha256": "395f91476571f7616ab8126918a9b631c299f5d9f186a63cdf6f03d1ad87324f",
+      "dependencies": [
+        "data.ocean.toon-config",
+        "shader.ocean.toon"
+      ],
+      "role": "shared CPU/GPU smooth seeded phase and amplitude perturbations, raft surface sampling",
+      "license": "project-authored procedural asset"
+    },
     "data.ocean.toon-config": {
       "path": "res://assets/data/toon-ocean.json",
-      "version": 3,
+      "version": 5,
       "source": "assets/data/toon-ocean.json",
-      "sha256": "6827fef3fad41460778223cb83d551c135fe3c3ca994a116298f7daa56421f74",
+      "sha256": "c66dfbfa20ae2ecdb45097f5c667064aa9ea719e5c8229824edc14f564f87adc",
       "dependencies": [],
       "license": "project-authored procedural shader/config; no external imagery"
     },
     "shader.ocean.toon": {
       "path": "res://assets/shaders/toon_ocean.gdshader",
-      "version": 2,
+      "version": 3,
       "source": "assets/shaders/toon_ocean.gdshader",
-      "sha256": "418071b30db8f0b124f5f3f70617a8c559ac14706ec90f22644d625ac9ad55f7",
+      "sha256": "db04502e17a101e1aee8dff9c376010ff1c8ff0a47e4fcb5f6e5448405aba7dc",
       "dependencies": [
         "data.ocean.toon-config",
         "texture.ocean.detail"
       ],
       "license": "project-authored procedural shader/config; no external imagery",
-      "role": "procedural Gerstner waves mirrored by presentation/toon_ocean.gd; visual time only"
+      "role": "smooth noise-modulated Gerstner waves mirrored by presentation/toon_ocean.gd; visual time only"
     },
     "shader.voyage.night-grade": {
       "path": "res://assets/shaders/night_grade.gdshader",
@@ -1095,23 +1134,26 @@
     "ui.hand.fan": {
       "path": "res://presentation/hand_fan.gd",
       "source": "presentation/hand_fan.gd",
-      "version": 7,
-      "sha256": "00538f41cf6f645e68e629ded55261eb52e2e76598f87370db8443bd7403ce0e",
+      "version": 14,
+      "sha256": "beba33b0fe63897465e3cb176c9a3b70d7c6e4c7d5990468c806b6e8dd2422de",
       "dependencies": [
         "shader.ui.hand-glass",
         "ui.hand.border",
-        "ui.card.front"
+        "ui.item-card",
+        "ui.hand.layout"
       ],
       "license": "project-authored shader and deterministic procedural ornament; no external artwork"
     },
     "model.raft-state": {
       "path": "res://presentation/raft_state_models.gd",
       "source": [
+        "asset-sources/planter-v3/planter_v003.blend",
         "asset-sources/raft-blender-v1/raft_modules_v005.blend",
-        "presentation/raft_state_models.gd"
+        "presentation/raft_state_models.gd",
+        "asset-sources/filter-states-v1/filter_states_v001.blend"
       ],
-      "version": 5,
-      "sha256": "c880a68c78cac657fceb55caa01343395c467263da92c68973b070efb4963b12",
+      "version": 9,
+      "sha256": "0cab09260f008a8d60c110c9ca6a5c0fb37cbbb2731eae5430a8d6cf17a1a7b0",
       "dependencies": [
         "shader.raft.wet-wood",
         "model.raft.module.deck-intact",
@@ -1126,13 +1168,23 @@
         "model.raft.module.planter",
         "model.raft.module.medkit",
         "model.raft.module.crossbow",
-        "model.raft.module.spearRack"
+        "model.raft.module.spearRack",
+        "model.raft.module.planter-seedling",
+        "model.raft.module.filter-waiting"
       ],
       "license": "project-authored Blender meshes; source raft_v005.blend reuse; runtime instantiation only",
       "coordinates": "Godot metres, Y up; one cell 2.35 x 2.1; geometry owned by VoyageWorld cache",
       "mapping": "cell.id/x/y/status + equipment.id/level/fuel; detached omitted, damaged retained and disabled",
       "visual_random": "Blender local seed 5100; coordinate variant (x+2*y)%3; independent of game RNG",
-      "decorative_root": "new layout x=0,1 y=0; four playable cells at 3,4,5,6; expanded legacy saves retain left-side root"
+      "decorative_root": "new layout x=0,1 y=0; four playable cells at 3,4,5,6; expanded legacy saves retain left-side root",
+      "planter_mapping": "Only level 1 with progress=0 is seedling; level 1 progress>=1 and all level 2/3 are mature (due to produce this voyage). Damaged retains shape, disabled.",
+      "filter_mapping": "level 1 progress=0: waiting empty bucket; level 1 progress>=1 and all level 2/3: ready water, due to produce this voyage. Damaged retained, disabled.",
+      "annotation_rendering": {
+        "no_depth_test": true,
+        "text_priority": 10,
+        "outline_priority": 9,
+        "purpose": "equipment names, levels and production states readable through deck/equipment; 2D modals remain above scene"
+      }
     },
     "model.raft.module.crossbow": {
       "path": "res://assets/models/raft-modules/crossbow.glb",
@@ -1163,12 +1215,14 @@
     },
     "model.raft.module.filter": {
       "path": "res://assets/models/raft-modules/filter.glb",
-      "source": "asset-sources/raft-blender-v1/raft_modules_v005.blend",
-      "version": 1,
-      "sha256": "6cbd00e0ae326d75087ede0dc102c038b0dac5e402c97cff6fa94daef7c0ca36",
+      "source": "asset-sources/filter-states-v1/filter_states_v001.blend",
+      "version": 2,
+      "sha256": "0d673c3407a88e06df3cb271db2b0d3c8ae96d2bb16eef61886607696426da16",
       "dependencies": [],
-      "license": "project-authored Blender meshes; canopy/lamp/planter reused from original raft_v005.blend",
-      "units": "metres, Godot Y-up, module-local origin"
+      "generator": "tools/refine_filter_states.py",
+      "production_stage": "ready",
+      "license": "project-authored; preserved v005 filter frame/tank with open receiving bucket",
+      "units": "metres, Godot Y-up; bucket bottom .325, rim .59; ready water .552"
     },
     "model.raft.module.lamp": {
       "path": "res://assets/models/raft-modules/lamp.glb",
@@ -1190,12 +1244,21 @@
     },
     "model.raft.module.planter": {
       "path": "res://assets/models/raft-modules/planter.glb",
-      "source": "asset-sources/raft-blender-v1/raft_modules_v005.blend",
-      "version": 1,
-      "sha256": "d1fdcfcd483242e7275805f81703b95965efe15de18255ed52ed0b441ba4b506",
-      "dependencies": [],
-      "license": "project-authored Blender meshes; canopy/lamp/planter reused from original raft_v005.blend",
-      "units": "metres, Godot Y-up, module-local origin"
+      "source": "asset-sources/planter-v3/planter_v003.blend",
+      "version": 3,
+      "sha256": "64eeea7df3ea1b5607c50de29ca56e717a0a007e1aa1833c267184022064b281",
+      "dependencies": [
+        "texture.raft.planter.wood-albedo",
+        "texture.raft.planter.wood-roughness",
+        "texture.raft.planter.wood-normal",
+        "texture.raft.planter.soil-albedo",
+        "texture.raft.planter.soil-roughness",
+        "texture.raft.planter.soil-normal"
+      ],
+      "growth_stage": "mature",
+      "generator": "tools/refine_planter_v3.py",
+      "license": "project-authored, original raft_v004 planter with new seedling mesh",
+      "units": "metres, Y up, base y=0.18; box footprint 1.19 x 0.89"
     },
     "model.raft.module.root-decor": {
       "path": "res://assets/models/raft-modules/root-decor.glb",
@@ -1253,8 +1316,8 @@
     },
     "ui.hud.status": {
       "path": "res://addons/deep_surge_status/status_hud.gd",
-      "version": 4,
-      "sha256": "cd662135f02e6b8cb36785f15026e8527abcca1cb97728373a5e7ab1171c9a59",
+      "version": 5,
+      "sha256": "1bb66405e9c2837c26e53bbbc351393838e37deaa893e650df280c0af3cd9e39",
       "source": [
         "asset-sources/hud-visual-v2/deep_surge_hud_godot4_v2_visual_match.zip",
         "addons/deep_surge_status/status_hud.gd"
@@ -1264,7 +1327,12 @@
       ],
       "license": "user-supplied HUD package; no explicit upstream license supplied, project adaptations",
       "visual_random": "none",
-      "role": "presentation-only; draws current read-only session view; native choices dispatch existing commands"
+      "role": "presentation-only; draws current read-only session view; native choices dispatch existing commands",
+      "runtime_mapping": {
+        "game_rows": 1,
+        "minimum_row_width": 400,
+        "source_values": "current read-only GameSession view"
+      }
     },
     "ui.hud.action-points": {
       "path": "res://addons/deep_surge_status/action_points_hud.gd",
@@ -1301,8 +1369,8 @@
     },
     "ui.hud.voyage-adapter": {
       "path": "res://pages/voyage_hud.gd",
-      "version": 4,
-      "sha256": "b62048ee2288937a4a9c68f4a601bf1f525707781477f80c08f4de725e3f7d53",
+      "version": 8,
+      "sha256": "8539da551b778ba0f3de9c73e38bc494b601b6c6ab404cb648cb999a88686ecd",
       "source": [
         "asset-sources/hud-visual-v2/deep_surge_hud_godot4_v2_visual_match.zip",
         "pages/voyage_hud.gd"
@@ -1320,7 +1388,7 @@
     "ui.hud.story-adapter": {
       "path": "res://pages/flow_story.gd",
       "version": 2,
-      "sha256": "b5e319d891777d24da93eee1216163c87dd7ff20fd90c543b212d4ba41eb5183",
+      "sha256": "021373a58ac206cdb7607316eceaf41e1cb7189fed6ac08a033aadd3d7aa763e",
       "source": [
         "asset-sources/hud-visual-v2/deep_surge_hud_godot4_v2_visual_match.zip",
         "pages/flow_story.gd"
@@ -1659,8 +1727,8 @@
     "ui.title.menu": {
       "path": "res://presentation/title_menu.gd",
       "source": "presentation/title_menu.gd",
-      "version": 3,
-      "sha256": "dfaced5385618f5011d4292051d797b3df90f42e2aeee580a2a0d17e0404da5e",
+      "version": 4,
+      "sha256": "91ed6e8b7cc9378775a9092f6f9f7be75b9774956cb5a836c6cc5d769b553f62",
       "dependencies": [
         "texture.title.01-start-game-dark",
         "texture.title.01-start-game-light",
@@ -1754,8 +1822,8 @@
     "ui.title.home": {
       "path": "res://pages/flow_home.gd",
       "source": "pages/flow_home.gd",
-      "version": 1,
-      "sha256": "0131ba00cbcb344b5ee08c712b106d86e96e6fd881b5ba4578c13f47bee48db2",
+      "version": 2,
+      "sha256": "8afb3904d0252f20bd3ca2a94c5525efd8aba27caf891b97e7e1a31a493bdfdf",
       "dependencies": [
         "ui.title.menu"
       ],
@@ -1873,7 +1941,7 @@
     },
     "ui.story.layout": {
       "path": "res://pages/story_page.gd",
-      "version": 1,
+      "version": 2,
       "source": "programmatic layout, font configuration and button states",
       "reference_size": [
         1600,
@@ -1886,15 +1954,417 @@
         "texture.title.ocean-poster"
       ],
       "visual_seed": null,
-      "sha256": "b6e8cfa760f44cb965b22bd0aab8820eadc467f287a75d1392ac0dfc310545d0"
+      "sha256": "2e9d2d0f755ed72f695a5d901887632428458ca6f4e6af4ef228668b2333d0c8"
     },
     "ui.node-event.embedded": {
       "path": "res://pages/flow_story.gd",
       "source": "pages/flow_story.gd",
-      "sha256": "b5e319d891777d24da93eee1216163c87dd7ff20fd90c543b212d4ba41eb5183",
-      "version": 1,
+      "sha256": "109eaf87ae2b3e4064e534aab9e61828ba78421866cf972f6d2f3b6a3446ca85",
+      "version": 3,
       "dependencies": [],
-      "presentation": "native text/button surface above world, below persistent HUD; automatic phase story; no image art"
+      "presentation": "full-screen translucent backdrop below HUD; fixed right-side frame extending to hand area displays intro then choices then result; native text/buttons"
+    },
+    "texture.voyage.topbar-v1": {
+      "path": "res://assets/textures/voyage-topbar-v1.png",
+      "source": "asset-sources/voyage-topbar-v1/original.png",
+      "version": 1,
+      "sha256": "d0703382e340db48eb076f67ee2bbd816539ab9ef3898cd96db2e056aa26be47",
+      "dimensions": [
+        2172,
+        724
+      ],
+      "dependencies": [],
+      "license": "AI generated by imagegen from game HUD reference",
+      "atlas_region": [
+        0,
+        185,
+        2172,
+        360
+      ],
+      "nine_patch": [
+        100,
+        80,
+        100,
+        80
+      ],
+      "runtime_mapping": {
+        "info_plate": [
+          12,
+          8,
+          620,
+          184
+        ],
+        "stats_plate": [
+          632,
+          8,
+          -12,
+          184
+        ],
+        "atlas_region": [
+          0,
+          185,
+          2172,
+          360
+        ],
+        "mode": "TextureRect scalable two-region background"
+      }
+    },
+    "ui.hand.capacity-badge": {
+      "path": "res://pages/voyage_hud.gd",
+      "source": "pages/voyage_hud.gd",
+      "version": 2,
+      "sha256": "8539da551b778ba0f3de9c73e38bc494b601b6c6ab404cb648cb999a88686ecd",
+      "dependencies": [
+        "ui.voyage-hud"
+      ],
+      "role": "rounded numeric capacity badge centered above resized hand tray",
+      "license": "project-authored procedural UI; user screenshot is layout reference"
+    },
+    "ui.craft.circle-entry": {
+      "path": "res://pages/voyage_hud.gd",
+      "source": "pages/voyage_hud.gd",
+      "version": 2,
+      "sha256": "8539da551b778ba0f3de9c73e38bc494b601b6c6ab404cb648cb999a88686ecd",
+      "dependencies": [
+        "ui.voyage-hud"
+      ],
+      "role": "128 pixel circular craft entry below action points at lower left",
+      "license": "project-authored procedural UI; user screenshot is layout reference"
+    },
+    "ui.starting-resources": {
+      "path": "res://pages/new_game_setup.gd",
+      "source": "pages/new_game_setup.gd",
+      "version": 2,
+      "sha256": "cfd80d2252de429efcafe24282c7ffb756dd1f81ebceb54f546c6b7a91aeb229",
+      "dependencies": [
+        "card.wood",
+        "card.iron",
+        "card.plastic",
+        "card.rope",
+        "card.cloth"
+      ],
+      "role": "origin and seed setup followed by five-resource picker, per-type and total limits, random start",
+      "license": "project-authored procedural UI, reuses existing card artwork"
+    },
+    "ui.craft.grid": {
+      "path": "res://pages/craft_page.gd",
+      "source": "pages/craft_page.gd",
+      "version": 3,
+      "sha256": "bbb881bed4fb40a9f6191f0dd1f3a69b5d118125a11b2de0e97876ecc78afd6b",
+      "dependencies": [],
+      "role": "full-screen four-column two-row crafting, eight recipes per page at every UI scale, X close",
+      "license": "project-authored procedural UI; user screenshot is layout reference"
+    },
+    "ui.hand.layout": {
+      "path": "res://presentation/hand_layout.gd",
+      "source": "presentation/hand_layout.gd",
+      "version": 3,
+      "sha256": "438779514305d6d3f02e688df0db1558c76bfb8ffd64cc3743f08173f8ba459f",
+      "dependencies": [],
+      "role": "presentation-only ordering and resource grouping",
+      "license": "project-authored procedural UI; no external artwork"
+    },
+    "ui.hand.stack-quantity": {
+      "path": "res://presentation/item_card.gd",
+      "source": "presentation/item_card.gd",
+      "version": 1,
+      "sha256": "38da63e1fda379733a7d4cd96c3b42dabd7af56fcc5ccc801d139020fbd4416b",
+      "dependencies": [
+        "ui.item-card"
+      ],
+      "role": "StackQuantity Label, copper border and dark blue background",
+      "license": "project-authored procedural UI; no external artwork"
+    },
+    "ui.controls.close": {
+      "path": "res://presentation/widgets.gd",
+      "source": "presentation/widgets.gd",
+      "version": 1,
+      "sha256": "1708b4c8903075051adf533a3156dbbc94da5387702f6b77287f8630b528ff70",
+      "dependencies": [],
+      "role": "shared top-right X overlay, 44px touch target, reused button theme",
+      "license": "project-authored procedural UI; reuses existing artwork and theme",
+      "visual_random": "none"
+    },
+    "ui.settings-panel": {
+      "path": "res://presentation/settings_panel.gd",
+      "source": "presentation/settings_panel.gd",
+      "version": 2,
+      "sha256": "4b768c5dee6e3ae2a898586d492c2c2a1fe8d926b55f96f71d820031524d5ce5",
+      "dependencies": [
+        "ui.controls.close",
+        "ui.display-preferences"
+      ],
+      "role": "UI scale slider, shared 30/60/90/120/unlimited FPS selector, desktop/mobile display and game settings tabs",
+      "license": "project-authored procedural UI; reuses existing artwork and theme",
+      "visual_random": "none"
+    },
+    "ui.display-preferences": {
+      "path": "res://presentation/display_settings.gd",
+      "source": "presentation/display_settings.gd",
+      "version": 2,
+      "sha256": "3f04db56c7632199fc2ee6927ad4148417c6fe1acc7ef7f714de1af3ead69f2c",
+      "dependencies": [],
+      "role": "persistent UI/window/render settings and immediate engine FPS limit, VSync disabled for selected cap",
+      "license": "project-authored procedural UI; reuses existing artwork and theme",
+      "visual_random": "none"
+    },
+    "ui.modal-layout": {
+      "path": "res://flow_app.gd",
+      "source": "flow_app.gd",
+      "version": 2,
+      "sha256": "3af590bd3905b2b1d363caf7689368fc478dd797abded384906e0dd83562fffa",
+      "dependencies": [
+        "ui.controls.close",
+        "ui.settings-panel",
+        "ui.craft.grid"
+      ],
+      "role": "full-screen eight-recipe crafting; modal X close; home navigation only in settings",
+      "license": "project-authored procedural UI; reuses existing artwork and theme",
+      "visual_random": "none"
+    },
+    "model.raft.slot-ghost": {
+      "path": "res://assets/models/raft-modules/slot-ghost.glb",
+      "source": "asset-sources/raft-interaction-v1/slot-ghost-v1.blend",
+      "version": 1,
+      "sha256": "aa413e88a4db59bc0593fba185b6376a2ba2dfc70940364b2b41c2d2632824e0",
+      "dependencies": [],
+      "role": "Blender-authored red/blue slot outline and blueprint; white/green use runtime fill only",
+      "license": "project authored",
+      "visual_random": "none",
+      "source_sha256": "0e04d0a7d7ce82828667ee0b71196e3445a635f31a1703d0566f15bc18a68bf7",
+      "triangles": 240,
+      "meshes": 20,
+      "footprint": [
+        2.24,
+        2.0
+      ],
+      "runtime_mapping": {
+        "expansion_count": 1,
+        "sea_clearance_m": 0.025,
+        "vertical_scale": 0.1,
+        "colors": [
+          "blue:allowed",
+          "red:blocked"
+        ],
+        "water_samples": 9
+      }
+    },
+    "ui.raft.actions": {
+      "path": "res://presentation/raft_actions.gd",
+      "source": "presentation/raft_actions.gd",
+      "version": 2,
+      "sha256": "8c1efde1d96e68231fc28068c286d9853d4e10b48424fd3c3aab23118172955b",
+      "dependencies": [
+        "res://core/game_session.gd",
+        "res://core/run_rules.gd"
+      ],
+      "role": "isolated command quotes, always-visible upgrade denial reasons and atomic craft-upgrade price, install/repair/expansion",
+      "license": "project-authored procedural UI; reuses existing Blender equipment modules",
+      "visual_random": "none"
+    },
+    "ui.raft.surface": {
+      "path": "res://presentation/raft_surface.gd",
+      "source": "presentation/raft_surface.gd",
+      "version": 6,
+      "sha256": "901c7a8e56b9fbb0206016d5511f717885aaa924a77b67524362c00b14510606",
+      "dependencies": [
+        "model.raft.slot-ghost",
+        "scene.voyage",
+        "model.raft.module.deck-intact",
+        "model.raft.module.deck-damaged"
+      ],
+      "role": "mesh/plane picking, deck-conforming white selection and green merge preview, equipment/fuel drop, singleton water-level expansion",
+      "license": "project-authored procedural UI; reuses existing Blender equipment modules",
+      "visual_random": "none",
+      "runtime_mapping": {
+        "expansion_count": 1,
+        "sea_clearance_m": 0.025,
+        "vertical_scale": 0.1,
+        "colors": [
+          "blue:allowed",
+          "red:blocked",
+          "white:selected existing cell",
+          "green:allowed equipment merge"
+        ],
+        "water_samples": 9,
+        "outline_width_scale": 1.4,
+        "fill_opacity": 0.16,
+        "fill_colors": [
+          "red",
+          "blue",
+          "white",
+          "green"
+        ],
+        "selection_color": "white",
+        "highlight_opacity": 0.24,
+        "highlight_outline": false,
+        "highlight_geometry": "upward-facing actual Deck triangles, shared per deck model variant",
+        "highlight_clearance_m": 0.002,
+        "cell_bounds": "projected actual cell deck/equipment mesh bounds for popup placement"
+      }
+    },
+    "ui.raft.interaction": {
+      "path": "res://presentation/raft_interaction.gd",
+      "source": "presentation/raft_interaction.gd",
+      "version": 7,
+      "sha256": "b1680d452e7f6b15b94afe8eb6a4798108e7be1076a9d3d4c5b6471ba3c2dddc",
+      "dependencies": [
+        "ui.raft.actions",
+        "ui.raft.surface",
+        "ui.hand.fan",
+        "ui.controls.close"
+      ],
+      "role": "equipment/fuel drag, deck selection, contextual popup hugging selected cell right edge, visible action reasons and craft-upgrade",
+      "license": "project-authored procedural UI; reuses existing Blender equipment modules",
+      "visual_random": "none",
+      "runtime_mapping": {
+        "popup_anchor": "80% across selected real cell projected width horizontally; fixed at selected projected Y with no vertical HUD/viewport obstruction checks",
+        "popup_overlap_fraction": 0.2
+      }
+    },
+    "ui.raft.ghost-fill": {
+      "path": "res://presentation/raft_surface.gd",
+      "source": "presentation/raft_surface.gd",
+      "version": 5,
+      "sha256": "901c7a8e56b9fbb0206016d5511f717885aaa924a77b67524362c00b14510606",
+      "dependencies": [
+        "model.raft.slot-ghost",
+        "model.raft.module.deck-intact",
+        "model.raft.module.deck-damaged"
+      ],
+      "role": "shared red/blue fill with widened outlines; white/green deck-conforming highlight fill only",
+      "runtime_mapping": {
+        "fill_size_m": [
+          2.2,
+          1.96
+        ],
+        "fill_opacity": 0.16,
+        "line_width_multiplier": 1.4,
+        "cache": "VoyageWorld geometry/material caches; per-ghost node instances",
+        "highlight_opacity": 0.24,
+        "highlight_outline": false,
+        "highlight_colors": [
+          "white",
+          "green"
+        ],
+        "highlight_geometry": "upward-facing actual Deck triangles, shared per deck model variant",
+        "highlight_clearance_m": 0.002
+      },
+      "license": "project-authored procedural mesh/material; original Blender source remains unchanged",
+      "visual_random": "none"
+    },
+    "texture.raft.planter.wood-albedo": {
+      "path": "res://assets/textures/planter-v3/wood-albedo.png",
+      "source": "tools/generate_planter_textures.py",
+      "version": 1,
+      "sha256": "685a54bff1744a417d8090599039c8089286471de2f5522b31c72c0a00a9bc7f",
+      "dimensions": [
+        512,
+        512
+      ],
+      "dependencies": [],
+      "license": "project-authored deterministic procedural bitmap",
+      "visual_seed": 31527,
+      "color_space": "sRGB"
+    },
+    "texture.raft.planter.wood-roughness": {
+      "path": "res://assets/textures/planter-v3/wood-roughness.png",
+      "source": "tools/generate_planter_textures.py",
+      "version": 1,
+      "sha256": "7166242d5eff812361d4225d3547bad548096d193016192ce05530355b2ee0b1",
+      "dimensions": [
+        512,
+        512
+      ],
+      "dependencies": [],
+      "license": "project-authored deterministic procedural bitmap",
+      "visual_seed": 31527,
+      "color_space": "Non-Color"
+    },
+    "texture.raft.planter.wood-normal": {
+      "path": "res://assets/textures/planter-v3/wood-normal.png",
+      "source": "tools/generate_planter_textures.py",
+      "version": 1,
+      "sha256": "fb353aabe2e1781a018bb9f05a835cfc315c3d7f267b6ed781f52d1e9d1aa96e",
+      "dimensions": [
+        512,
+        512
+      ],
+      "dependencies": [],
+      "license": "project-authored deterministic procedural bitmap",
+      "visual_seed": 31527,
+      "color_space": "Non-Color"
+    },
+    "texture.raft.planter.soil-albedo": {
+      "path": "res://assets/textures/planter-v3/soil-albedo.png",
+      "source": "tools/generate_planter_textures.py",
+      "version": 1,
+      "sha256": "774092dbcadcd24797551602a39ca5cc81db2289c577d5c23b25905a715c2557",
+      "dimensions": [
+        512,
+        512
+      ],
+      "dependencies": [],
+      "license": "project-authored deterministic procedural bitmap",
+      "visual_seed": 31527,
+      "color_space": "sRGB"
+    },
+    "texture.raft.planter.soil-roughness": {
+      "path": "res://assets/textures/planter-v3/soil-roughness.png",
+      "source": "tools/generate_planter_textures.py",
+      "version": 1,
+      "sha256": "24896fe37c6d0da4b2fddde93abed1a2bbd3f12e3a7b48cd38b47c3fdcc3fcb8",
+      "dimensions": [
+        512,
+        512
+      ],
+      "dependencies": [],
+      "license": "project-authored deterministic procedural bitmap",
+      "visual_seed": 31527,
+      "color_space": "Non-Color"
+    },
+    "texture.raft.planter.soil-normal": {
+      "path": "res://assets/textures/planter-v3/soil-normal.png",
+      "source": "tools/generate_planter_textures.py",
+      "version": 1,
+      "sha256": "513db250c5e0d44ee8c663ca99438e731f9fa7362cf090cd5b3dac9309df094c",
+      "dimensions": [
+        512,
+        512
+      ],
+      "dependencies": [],
+      "license": "project-authored deterministic procedural bitmap",
+      "visual_seed": 31527,
+      "color_space": "Non-Color"
+    },
+    "model.raft.module.planter-seedling": {
+      "path": "res://assets/models/raft-modules/planter-seedling.glb",
+      "source": "asset-sources/planter-v3/planter_v003.blend",
+      "version": 3,
+      "sha256": "22e42d9cc3b1c005e5226efaef71c709e259e4bb5f3108610f6fb0514faf509a",
+      "dependencies": [
+        "texture.raft.planter.wood-albedo",
+        "texture.raft.planter.wood-roughness",
+        "texture.raft.planter.wood-normal",
+        "texture.raft.planter.soil-albedo",
+        "texture.raft.planter.soil-roughness",
+        "texture.raft.planter.soil-normal"
+      ],
+      "growth_stage": "seedling",
+      "generator": "tools/refine_planter_v3.py",
+      "license": "project-authored, original raft_v004 planter with new seedling mesh",
+      "units": "metres, Y up, base y=0.18; box footprint 1.19 x 0.89"
+    },
+    "model.raft.module.filter-waiting": {
+      "path": "res://assets/models/raft-modules/filter-waiting.glb",
+      "source": "asset-sources/filter-states-v1/filter_states_v001.blend",
+      "version": 2,
+      "sha256": "ca74bdc506d9b75bd510a5e632615ec7926f457b33ea73ca6e4f73e0724b7a83",
+      "dependencies": [],
+      "generator": "tools/refine_filter_states.py",
+      "production_stage": "waiting",
+      "license": "project-authored; preserved v005 filter frame/tank with open receiving bucket",
+      "units": "metres, Godot Y-up; bucket bottom .325, rim .59; ready water .552"
     }
   }
 }

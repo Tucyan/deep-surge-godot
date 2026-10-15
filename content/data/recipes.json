@@ -81,8 +81,8 @@
     "id": "repair",
     "name": "制造修补包",
     "ingredients": {
-      "wood": 1,
-      "iron": 1
+      "iron": 1,
+      "rope": 1
     },
     "output": "repair",
     "cost": 1,

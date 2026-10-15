@@ -1,0 +1,20 @@
+{
+  "source": "asset-sources/planter-v2/planter_v002.blend",
+  "textures": "tools/generate_planter_textures.py",
+  "visual_seed": 31527,
+  "plank_tops_z": [
+    0.6589455251693725,
+    0.6949455251693726,
+    0.7199455251693726,
+    0.6789455251693726,
+    0.7079455251693726,
+    0.6649455251693726,
+    0.6889455251693726,
+    0.7259455251693726,
+    0.6739455251693726,
+    0.7009455251693726
+  ],
+  "seedling_count": 6,
+  "mature_scene": "Planter_Mature_v003",
+  "seedling_scene": "Planter_Seedling_v003"
+}

@@ -53,7 +53,8 @@
   },
   "spearRack": {
     "name": "矛架",
-    "description": "战斗每回合产矛；升级提高伤害。",
-    "battleOutput": "spear"
+    "description": "每场战斗开始产一张矛；基础伤害3，二级起伤害5。",
+    "battleOutput": "spear",
+    "battleStartOnly": true
   }
 }

@@ -1,12 +1,15 @@
 extends "res://pages/flow_base.gd"
 func choice(panel: Node, title: String, command: String, args: Dictionary = {}, reason: String = "", detail: String = "") -> void:
-	var button := W.button(panel,title,func(): send(command,args.duplicate(true)),reason!="",reason if reason!="" else detail)
-	button.custom_minimum_size.y=42
+	var button := W.button(panel,title+("\n"+detail if detail!="" else ""),func(): send(command,args.duplicate(true)),reason!="",reason if reason!="" else detail)
+	button.custom_minimum_size.y=60 if detail!="" else 42
+	button.alignment=HORIZONTAL_ALIGNMENT_LEFT
+	button.add_theme_font_size_override("font_size",15)
 	button.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 func choices_panel(row: Node, title: String, description: String = ""):
 	var panel := VBoxContainer.new(); panel.name="NodeEventChoices"
-	panel.custom_minimum_size.x=360; panel.size_flags_horizontal=Control.SIZE_EXPAND_FILL
-	row.add_child(panel); W.text(panel,title,23,W.GOLD)
+	panel.add_theme_constant_override("separation",6)
+	panel.custom_minimum_size.x=0; panel.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	row.add_child(panel); W.text(panel,title,20,W.GOLD)
 	if description!="": W.text(panel,description,17)
 	return panel
 func costs(option: Dictionary) -> String:
@@ -16,12 +19,12 @@ func costs(option: Dictionary) -> String:
 	for stat in option.get("statCosts",{}): result.append({"hp":"生命","sanity":"SAN"}.get(stat,stat)+"%d" % option.statCosts[stat])
 	return " · ".join(result)
 func build() -> void:
+	add_theme_constant_override("separation",6)
 	if not context.get("scene",{}).is_empty(): campaign_story(); return
-	heading(context.node.name,"当前事件")
-	var row := HBoxContainer.new(); row.size_flags_vertical = Control.SIZE_EXPAND_FILL; add_child(row)
-	var narrative := W.panel(row,Vector2(350,0)); narrative.get_parent().size_flags_horizontal = 0
-	W.text(narrative,context.result_text if context.story_step == "result" else context.node.description,20)
-	var panel = choices_panel(row,{"intro":"海上遭遇","choice":"作出选择","result":"事件结果"}.get(context.story_step,"当前事件"))
+	W.text(self,context.node.name,24,W.GOLD)
+	var panel = choices_panel(self,{"intro":"海上遭遇","choice":"作出选择","result":"事件结果"}.get(context.story_step,"当前事件"))
+	if context.story_step!="choice":
+		W.text(panel,context.result_text if context.story_step=="result" else context.node.description,20)
 	match context.story_step:
 		"intro":
 			choice(panel,"继续","advance"); choice(panel,"跳过文字","skip")
@@ -37,12 +40,10 @@ func build() -> void:
 		"result": choice(panel,"结束节点","advance")
 func campaign_story() -> void:
 	var scene: Dictionary = context.scene
-	heading(scene.name,"测试剧情 · 第一层")
-	var row := HBoxContainer.new(); row.size_flags_vertical = Control.SIZE_EXPAND_FILL; add_child(row)
-	var narrative := W.panel(row); narrative.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	W.text(narrative,context.result_text if context.story_step == "result" else scene.text,21)
-	var panel = choices_panel(row,{"intro":"继续剧情","choice":"作出选择","result":"已记录结果"}.get(context.story_step,"当前事件"))
-	panel.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	W.text(self,scene.name,28,W.GOLD)
+	var panel = choices_panel(self,{"intro":"继续剧情","choice":"作出选择","result":"已记录结果"}.get(context.story_step,"当前事件"))
+	if context.story_step!="choice":
+		W.text(panel,context.result_text if context.story_step=="result" else scene.text,20)
 	match context.story_step:
 		"intro":
 			W.text(panel,"%d / %d" % [scene.index+1,scene.line_count],16,W.MUTED)

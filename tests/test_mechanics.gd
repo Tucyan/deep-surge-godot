@@ -65,9 +65,7 @@ func _init() -> void:
 	check(battle.dispatch("fight"),"迎战")
 	var punch: Dictionary = battle.state.hand.filter(func(c): return c.id == "punch")[0]
 	for i in range(3): check(battle.dispatch("play",{"uid":punch.uid}),"付AP出拳")
-	check(battle.state.battle.ap == 0 and battle.state.battle.hp == 3,"三次出拳付费/伤害")
-	check(not battle.dispatch("play",{"uid":punch.uid}),"AP不足拒绝")
-	check(battle.dispatch("battle_end"),"敌人回合")
+	check(battle.state.battle.turn == 2 and battle.state.battle.hp == 3,"三次出拳后自动敌人回合")
 	check(battle.state.player.hp == 38 and battle.state.battle.ap == 3,"敌伤与AP设值")
 	for i in range(3): battle.dispatch("play",{"uid":punch.uid})
 	check(battle.phase() == "story" and battle.state.story_step == "result","胜利返回剧情")
@@ -82,5 +80,29 @@ func _init() -> void:
 	rest.dispatch("advance"); rest.dispatch("end_voyage")
 	while rest.phase() == "discard": rest.dispatch("discard",{"uid":rest.state.hand[0].uid})
 	check(rest.phase() == "navigation" and rest.state.voyage == 2,"轮末后才新导航")
+	var salvage_session = fixture("camp")
+	var initial_hand_count: int = salvage_session.state.hand.size()
+	var ap_before_salvage: int = salvage_session.state.ap
+	check(salvage_session.dispatch("salvage"),"海面打捞成功执行")
+	check(salvage_session.state.ap == ap_before_salvage - 1,"打捞扣除1点AP")
+	check(salvage_session.state.hand.size() == initial_hand_count + 1,"打捞增加1张手牌")
+	check(salvage_session.state.hand[-1].id in I.RESOURCES,"打捞产物属于基础资源池")
+	salvage_session.state.ap = 0
+	check(not salvage_session.dispatch("salvage"),"零AP拒绝打捞")
+
+	var craft_repair_session = fixture("camp")
+	craft_repair_session.state.hand = []
+	I.give(craft_repair_session.state,"iron",1,false,"fixture")
+	I.give(craft_repair_session.state,"rope",1,false,"fixture")
+	check(craft_repair_session.dispatch("craft",{"id":"repair"}),"使用废铁与绳索合成修补包")
+	check(I.count(craft_repair_session.state,"repair") == 1 and I.count(craft_repair_session.state,"rope") == 0 and I.count(craft_repair_session.state,"iron") == 0,"修补包合成材料消费正确")
+
+	var rope_repair_session = fixture("camp")
+	rope_repair_session.state.hand = []
+	I.give(rope_repair_session.state,"rope",2,false,"fixture")
+	rope_repair_session.state.cells[0].status = "damaged"
+	check(rope_repair_session.dispatch("repair_cell",{"cell":"cell-0"}),"无木头时使用2根绳索修补破损筏格")
+	check(rope_repair_session.state.cells[0].status == "intact" and I.count(rope_repair_session.state,"rope") == 0,"绳索修补消费两份绳索")
+
 	print("MECHANICS: %s" % ("PASS" if failures == 0 else "FAIL"))
 	quit(0 if failures == 0 else 1)

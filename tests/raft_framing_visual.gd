@@ -4,6 +4,7 @@ var failures := 0
 func _init(): call_deferred("run")
 func capture(id):
 	await process_frame; await process_frame; await process_frame
+	await create_timer(.8).timeout
 	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png("res://evidence/raft-framing-"+id+".png")
 	var world = app.world_view
@@ -14,7 +15,7 @@ func capture(id):
 		for i in range(8):
 			var pixel: Vector2 = world.camera.unproject_position(mesh.global_transform*aabb.get_endpoint(i))
 			lo=lo.min(pixel); hi=hi.max(pixel)
-	var wanted: Vector2 = Vector2(world.viewport.size)*world.RAFT_SCREEN_CENTER
+	var wanted: Vector2 = Vector2(world.viewport.size)*world.framing_rect.get_center()
 	var error := ((lo+hi)*0.5-wanted).length()
 	print(id," raft centre=",(lo+hi)*0.5," target=",wanted," error=",error)
 	if error > 2.0: failures+=1

@@ -1,8 +1,14 @@
 # 首页素材 v2（2026-10-14）
 
+2026-10-15：自由布局的首页标题层右上新增“设置”，跟随全局 UI 倍率；原六张图片按钮以各自中心放大，背景、Logo 与挡板仍按原参考画布适配。模式选择及新局各步骤改用右上 X 关闭；弹窗关闭也统一 X。沿用原素材和 Shader，不生成新图片。详见[显示设置](display-settings.md)。
+
 用户13张PNG包接入assets/title_ui；原包和两版MP4保留于asset-sources/title-ui-v2（.gdignore）。2×视频1704×960/约5秒转为Godot原生Theora，quality7、无音轨、循环；4×4K仅归档。poster为2×视频首帧，视频和PNG不写入GameState。
 
 布局控制presentation/title_menu.gd，美术/动画与pages/flow_home.gd的命令路由分离。视频铺满屏幕，UI按1672×941等比缩放；用户挡板图片的深灰区域（Shader颜色遮罩、78%不透明度）位于视频和Logo/按钮之间。dark/light映射原图，开始默认浅色；悬停放大、深浅切换、键盘焦点及透明像素点击遮罩。无存档禁用继续，活动局禁用新局。模态页打开时背景TextureButton统一禁用。
+
+2026-10-14 播放生命周期修复：flow_app 持有独立于 layout 的首页背景，调用 title_menu.create_background；首页按钮层用 create(context,false)。打开/关闭图鉴、商店、回溯和刷新 UI 保留播放器与进度；新局设置期间隐藏背景，离开 home 时释放播放器，返回首页重新创建。素材来源和映射不变。回溯面板交由 local_content 展示。
+
+当次验证：Godot 4.7.2，tests/test_title_playback.gd 在 RTX 4060/OpenGL 实际运行 PASS，覆盖菜单信号、播放器唯一性/实例保留、播放进度不回退、设置返回和离开首页释放；tests/test_clean_ui.gd headless PASS。未用人工鼠标逐项点击验收。
 
 开始→模式选择→现有新局准备；继续→resume；航海笔记→现有图鉴；局外商店→meta_shop；回溯潮涌→读取profile.endings展示已记录结局；退出→现有quit。选择模式或进入准备时只呈现相应界面。
 

@@ -47,19 +47,33 @@ func _init() -> void:
 					if not v.hand.is_empty(): s.dispatch("discard",{"uid":v.hand[0].uid})
 					else: s.dispatch("discard",{"uid":"coins"})
 				"battle":
+					var turn: int=s.state.battle.turn
 					for card in v.hand:
 						if card.id == "pollution" and s.state.battle.ap >= 2: s.dispatch("play",{"uid":card.uid})
 					for card in v.hand:
 						if s.phase() == "battle" and card.id == "arrow": s.dispatch("play",{"uid":card.uid})
 					var punch: Array = s.state.hand.filter(func(c): return c.id == "punch")
-					while s.phase() == "battle" and s.state.battle.ap > 0 and not punch.is_empty():
+					while s.phase() == "battle" and s.state.battle.turn==turn and s.state.battle.ap > 0 and not punch.is_empty():
 						if not s.dispatch("play",{"uid":punch[0].uid}): break
-					if s.phase() == "battle": s.dispatch("battle_end")
+					if s.phase() == "battle" and s.state.battle.turn==turn: s.dispatch("battle_end")
 			if s.snapshot() == previous:
 				printerr("BLOCK seed=%d phase=%s node=%s step=%s error=%s" % [seed,s.phase(),s.state.node.get("id",""),s.state.story_step,s.error])
 				quit(1)
 				return
 		check(operations < 500,"规则循环不应卡死 seed=%d" % seed)
+		if "--settlement-fixtures" in OS.get_cmdline_user_args():
+			var evidence := FileAccess.open("res://evidence/settlement-route-%d.json" % seed,FileAccess.WRITE)
+			evidence.store_string(JSON.stringify(s.snapshot())); evidence.close()
+		var report: Dictionary = s.state.get("settlement",{})
+		check(not report.is_empty() and report.get("complete",false),"完整挑战生成真实统计报告")
+		if not report.is_empty():
+			check(report.completed==s.state.completed and report.points.granted==s.profile.points,"挑战报告节点与发点一致")
+			for row in report.cards:
+				var departures: int = row.use_consumed+row.cost_consumed+row.deployed+row.discarded+row.lost+row.cleared
+				check(row.obtained==row.remaining+departures,"完整路线卡牌收支守恒 "+row.id)
+			check(s.state.stats.completed_ids.size()==s.state.completed,"节点去重账与完成数一致")
+			if s.state.stats.cards.has("punch"): check(s.state.stats.cards.punch.use_consumed==0,"回牌出拳不计消耗")
+			check(s.state.stats.tags.has("device")==not s.state.stats.battles.is_empty(),"实际设备供给才记成果")
 		if s.state.get("result") == "survived" and success_seed == -1:
 			success_seed = seed
 			print("SUCCESS ROUTE seed=%d voyages=%d nodes=%d hp=%d sanity=%d result=survived" % [seed,s.state.length,s.state.completed,s.state.player.hp,s.state.player.sanity])
@@ -67,6 +81,7 @@ func _init() -> void:
 			var saved: Dictionary = s.snapshot()
 			var other = load("res://core/game_session.gd").new(catalog)
 			check(other.restore(saved),"终局恢复")
+			check(other.restore(JSON.parse_string(JSON.stringify(saved))),"完整挑战报告JSON往返")
 			check(other.profile.points == p and not other.dispatch("end_voyage"),"终局恢复不重复结算")
 		if s.state.get("result") in ["mad","dead"] and failure_seed == -1:
 			failure_seed = seed

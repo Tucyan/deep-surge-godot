@@ -20,6 +20,12 @@ uniform vec4 wave_dk[4];
 uniform vec4 wave_aq[4];
 uniform float amplitude_sum = 0.5;
 uniform float visual_time = 0.0;
+uniform bool wave_noise_enabled = true;
+uniform float wave_noise_seed = 73.0;
+uniform float wave_noise_scale = 0.18;
+uniform vec2 wave_noise_drift = vec2(0.027,-0.019);
+uniform float wave_noise_phase_strength = 1.25;
+uniform float wave_noise_amplitude_strength = 0.24;
 uniform vec2 ocean_center = vec2(0.0);
 uniform vec2 amplitude_fade = vec2(20.0, 30.0);
 uniform bool far_mode = false;
@@ -103,14 +109,34 @@ float contact_at(vec2 g) {
 	return 1.0 - smoothstep(contact_margin, contact_margin + contact_transition, length(q));
 }
 
+float wave_noise_hash(vec2 p) {
+	float r = mod(dot(p,vec2(37.0,73.0))+wave_noise_seed,251.0);
+	return mod(r*r*17.0+r*13.0,251.0)/251.0;
+}
+
+// Value and spatial gradient: deterministic, continuously drifting lattice noise.
+vec3 wave_noise_sample(vec2 g, int index) {
+	if (!wave_noise_enabled) return vec3(0.0);
+	vec2 p=g*wave_noise_scale+wave_noise_drift*visual_time+vec2(float(index)*19.0,float(index)*31.0);
+	vec2 cell=floor(p); vec2 f=fract(p);
+	vec2 u=f*f*(3.0-2.0*f); vec2 du=6.0*f*(1.0-f);
+	float a=wave_noise_hash(cell); float b=wave_noise_hash(cell+vec2(1.0,0.0));
+	float c=wave_noise_hash(cell+vec2(0.0,1.0)); float d=wave_noise_hash(cell+vec2(1.0,1.0));
+	float value=mix(mix(a,b,u.x),mix(c,d,u.x),u.y);
+	vec2 gradient=vec2(mix(b-a,d-c,u.y)*du.x,mix(c-a,d-b,u.x)*du.y)*wave_noise_scale;
+	return vec3(value*2.0-1.0,gradient*2.0);
+}
+
 vec3 gerstner(vec2 g) {
 	vec3 d = vec3(0.0);
 	for (int i = 0; i < WAVES; i++) {
 		vec2 dir = wave_dk[i].xy;
 		float k = wave_dk[i].z;
-		float theta = k * dot(dir, g) - wave_dk[i].w * visual_time + wave_aq[i].z;
-		d.xz += dir * (wave_aq[i].y / k) * cos(theta);
-		d.y += wave_aq[i].x * sin(theta);
+		float noise=wave_noise_sample(g,i).x;
+		float amplitude=1.0+wave_noise_amplitude_strength*noise;
+		float theta = k * dot(dir, g) - wave_dk[i].w * visual_time + wave_aq[i].z+wave_noise_phase_strength*noise;
+		d.xz += dir * (wave_aq[i].y / k) * cos(theta)*amplitude;
+		d.y += wave_aq[i].x * sin(theta)*amplitude;
 	}
 	return d;
 }
@@ -118,8 +144,8 @@ vec3 gerstner(vec2 g) {
 // Analytic normal, Jacobian of the horizontal mapping and height at grid point g.
 // crest: sharpened per-wave crest lines; the steepest wave alone reaches 1, so foam follows ridges.
 void wave_frame(vec2 g, float f, out vec3 n, out float jac, out float h, out float crest) {
-	float nx = 0.0; float nz = 0.0; float ny = 0.0;
-	float jxx = 0.0; float jzz = 0.0; float jxz = 0.0;
+	float nx = 0.0; float nz = 0.0;
+	float jxx = 0.0; float jzz = 0.0; float jxz = 0.0; float jzx = 0.0;
 	float weight = 0.0;
 	h = 0.0; crest = 0.0;
 	for (int i = 0; i < WAVES; i++) {
@@ -127,22 +153,27 @@ void wave_frame(vec2 g, float f, out vec3 n, out float jac, out float h, out flo
 		float k = wave_dk[i].z;
 		float a = wave_aq[i].x;
 		float s = wave_aq[i].y;
-		float theta = k * dot(dir, g) - wave_dk[i].w * visual_time + wave_aq[i].z;
+		vec3 noise=wave_noise_sample(g,i);
+		float amplitude=1.0+wave_noise_amplitude_strength*noise.x;
+		vec2 amplitude_gradient=wave_noise_amplitude_strength*noise.yz;
+		vec2 phase_gradient=k*dir+wave_noise_phase_strength*noise.yz;
+		float theta = k * dot(dir, g) - wave_dk[i].w * visual_time + wave_aq[i].z+wave_noise_phase_strength*noise.x;
 		float st = sin(theta);
 		float ct = cos(theta);
-		nx += dir.x * k * a * ct;
-		nz += dir.y * k * a * ct;
-		ny += s * st;
-		jxx += s * dir.x * dir.x * st;
-		jzz += s * dir.y * dir.y * st;
-		jxz += s * dir.x * dir.y * st;
-		h += a * st;
-		crest += s * pow(max(st, 0.0), crest_sharpness);
+		vec2 height_gradient=a*(amplitude_gradient*st+amplitude*ct*phase_gradient);
+		nx += height_gradient.x; nz += height_gradient.y;
+		vec2 fold=(s/k)*(amplitude*st*phase_gradient-amplitude_gradient*ct);
+		jxx += dir.x*fold.x; jxz += dir.x*fold.y;
+		jzx += dir.y*fold.x; jzz += dir.y*fold.y;
+		h += a * st*amplitude;
+		crest += s * amplitude*pow(max(st, 0.0), crest_sharpness);
 		weight = max(weight, s);
 	}
 	crest = crest / max(weight, 0.0001) * f;
-	n = normalize(vec3(-nx * f, 1.0 - ny * f, -nz * f));
-	jac = (1.0 - jxx * f) * (1.0 - jzz * f) - (jxz * f) * (jxz * f);
+	vec3 tangent_x=vec3(1.0-jxx*f,nx*f,-jzx*f);
+	vec3 tangent_z=vec3(-jxz*f,nz*f,1.0-jzz*f);
+	n=normalize(cross(tangent_z,tangent_x));
+	jac = (1.0 - jxx * f) * (1.0 - jzz * f) - (jxz * f) * (jzx * f);
 	h *= f;
 }
 

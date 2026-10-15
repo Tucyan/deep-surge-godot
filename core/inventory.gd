@@ -1,4 +1,5 @@
 extends RefCounted
+const Stats = preload("res://core/run_statistics.gd")
 const RESOURCES := ["wood", "iron", "plastic", "rope", "cloth"]
 
 static func count(state: Dictionary, id: String) -> int:
@@ -13,20 +14,24 @@ static func count(state: Dictionary, id: String) -> int:
 static func give(state: Dictionary, id: String, amount: int = 1, temporary: bool = false, source: String = "reward") -> void:
 	if id == "coin":
 		state.coins += amount
+		Stats.card(state,id,"obtained",amount,source)
 		return
 	for i in range(amount):
 		state.hand.append({"uid": "card-%d" % state.next_id, "id":id, "temporary":temporary, "source":source})
 		state.next_id += 1
+		Stats.card(state,id,"obtained",1,source,state.hand[-1].uid)
 
-static func consume(state: Dictionary, id: String, amount: int) -> bool:
+static func consume(state: Dictionary, id: String, amount: int, reason: String = "cost") -> bool:
 	if count(state, id) < amount:
 		return false
 	if id == "coin":
 		state.coins -= amount
+		Stats.card(state,id,"cost_consumed",amount,reason)
 		return true
 	for i in range(amount):
 		for index in range(state.hand.size()):
 			if state.hand[index].id == id and not state.hand[index].temporary:
+				Stats.card(state,id,"cost_consumed",1,reason,state.hand[index].uid)
 				state.hand.remove_at(index)
 				break
 	return true
@@ -48,8 +53,9 @@ static func find(state: Dictionary, uid: String) -> Dictionary:
 			return card
 	return {}
 
-static func remove(state: Dictionary, uid: String) -> void:
+static func remove(state: Dictionary, uid: String, reason: String = "use_consumed") -> void:
 	for i in range(state.hand.size()):
 		if state.hand[i].uid == uid:
+			Stats.card(state,state.hand[i].id,reason,1,state.get("_stat_command","system"),uid)
 			state.hand.remove_at(i)
 			return

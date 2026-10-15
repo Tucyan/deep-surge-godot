@@ -98,6 +98,17 @@ static func primary(button: Button) -> void:
 	button.add_theme_stylebox_override("normal",style)
 	button.add_theme_color_override("font_color",Color("172c34"))
 
+static func corner_close(parent: Control, callback: Callable) -> Button:
+	# Separate overlay avoids container layout stretching X into a full-width row.
+	var overlay:=Control.new(); overlay.name="CloseOverlay"; overlay.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	parent.add_child(overlay); overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var close:=button(overlay,"X",callback); close.name="CloseX"
+	close.accessibility_name="关闭"; close.tooltip_text="关闭"
+	close.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	close.offset_left=-48; close.offset_right=0; close.offset_top=0; close.offset_bottom=44
+	close.custom_minimum_size=Vector2(44,44); close.add_theme_font_size_override("font_size",24)
+	return close
+
 static func grid(parent: Node, columns: int = 3) -> GridContainer:
 	var result := GridContainer.new()
 	result.columns = columns

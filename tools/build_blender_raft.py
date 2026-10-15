@@ -155,3 +155,9 @@ bpy.ops.wm.save_as_mainfile(filepath=str(SRC/'raft_modules_v001.blend'))
 preview.render.filepath=str(ROOT/'evidence/blender-raft-initial.png');bpy.ops.render.render(write_still=True)
 (SRC/'export-report.json').write_text(json.dumps(report,indent=2))
 print('RAFT MODULES EXPORTED',json.dumps(report))
+# The legacy reuse path collapses planter transforms. Finish with the isolated,
+# validated generator so a full raft rebuild cannot restore the broken runtime GLB.
+import runpy
+runpy.run_path(str(ROOT/'tools/rebuild_planter.py'),run_name='__main__')
+runpy.run_path(str(ROOT/'tools/refine_planter_v3.py'),run_name='__main__')
+runpy.run_path(str(ROOT/'tools/refine_filter_states.py'),run_name='__main__')

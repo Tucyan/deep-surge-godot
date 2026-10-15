@@ -9,6 +9,7 @@ func fan(app):
 	return null
 func run():
 	var app=load("res://scenes/main.tscn").instantiate();app.persistence=false;root.add_child(app);await process_frame
+	app.hand_layout.stack_resources=false;app.hand_layout.auto_sort=false
 	app.handle_command("new",{"mode":"challenge","origin":"strong","seed":22})
 	app.handle_command("voyage",{"id":app.session.state.candidates[0].visit_id})
 	var fixture=app.session.snapshot()

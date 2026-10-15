@@ -1,0 +1,47 @@
+extends SceneTree
+var stage: Node3D
+var camera: Camera3D
+var failures := 0
+func _init(): call_deferred("run")
+func check(ok: bool, message: String):
+	if not ok: failures += 1; printerr("FAIL: "+message)
+func capture(id: String):
+	for i in range(5): await process_frame
+	await RenderingServer.frame_post_draw
+	check(root.get_texture().get_image().save_png("res://evidence/filter-v1-"+id+".png") == OK,"capture "+id)
+func run():
+	root.size = Vector2i(1100,800)
+	stage = Node3D.new(); root.add_child(stage)
+	var environment := WorldEnvironment.new()
+	var env := Environment.new(); env.background_mode = Environment.BG_COLOR; env.background_color = Color("34434e"); env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR; env.ambient_light_color = Color.WHITE; env.ambient_light_energy = .65
+	environment.environment = env; stage.add_child(environment)
+	var light := DirectionalLight3D.new(); light.rotation_degrees = Vector3(-55,-35,0); light.light_energy = 1.8; stage.add_child(light)
+	camera = Camera3D.new(); camera.projection = Camera3D.PROJECTION_ORTHOGONAL; camera.size = 1.9; stage.add_child(camera)
+	for variant in ["ready","waiting"]:
+		var path := "res://assets/models/raft-modules/"+("filter.glb" if variant == "ready" else "filter-waiting.glb")
+		var model: Node3D = load(path).instantiate(); stage.add_child(model)
+		check(model.get_child_count() == (6 if variant == "ready" else 5),"expected filter parts; no extra cube")
+		for item in [["front",Vector3(3,2.5,4)],["back",Vector3(-3,2.5,-4)],["top",Vector3(.01,5,.01)],["bottom",Vector3(2,-3,3)]]:
+			camera.position = item[1]; camera.look_at(Vector3(0,.65,-.13),Vector3.UP)
+			await capture(variant+"-"+item[0])
+		model.queue_free(); await process_frame
+	stage.queue_free(); await process_frame
+	root.size = Vector2i(1600,900)
+	var app = load("res://scenes/main.tscn").instantiate(); app.persistence = false; root.add_child(app); await process_frame
+	app.handle_command("new",{"mode":"challenge","origin":"strong","seed":22})
+	app.handle_command("voyage",{"id":app.session.state.candidates[0].visit_id})
+	app.session.I.give(app.session.state,"filter",1,false,"filter-visual-fixture")
+	var uid: String = app.session.state.hand.back().uid
+	app.handle_command("install",{"uid":uid,"cell":"cell-2"}); await process_frame
+	check(app.world_view.cells.get_node("cell-2").has_node("Equipment"),"actual install command creates filter")
+	check(app.session.state.cells[2].equipment.id == "filter","actual state filter ID")
+	app.world_view.motion = false; app.world_view._time = 3; app.world_view._process(0)
+	await capture("waiting-raft-1600")
+	root.size = Vector2i(1280,720); await capture("waiting-raft-1280")
+	var fixture = app.session.view().duplicate(true); fixture.cells[2].equipment.progress = 1
+	app.world_view.sync(fixture); app.world_view._process(0)
+	await capture("ready-raft-1280")
+	root.size = Vector2i(1600,900); await capture("ready-raft-1600")
+	app.queue_free(); await process_frame
+	print("FILTER GPU AND INSTALL: PASS" if failures == 0 else "FILTER GPU AND INSTALL: FAIL")
+	quit(failures)

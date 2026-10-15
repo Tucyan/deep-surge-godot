@@ -19,7 +19,6 @@ func build() -> void:
 		"raft": raft_page()
 		"encyclopedia": encyclopedia()
 		"meta_shop": meta_page()
-		"logs": logs_page()
 
 func recipe_names() -> Dictionary:
 	var names := {}
@@ -140,17 +139,8 @@ func meta_detail(id: String) -> void:
 		if context.profile.purchases.get(id,0) >= item.maxPurchases: locked = true
 	action(detail,"解锁" if selected_table == "tech" else "购买","tech" if selected_table == "tech" else "meta_buy",{"id":id},locked,"积分/前置不足，或活动航程锁定")
 
-func logs_page() -> void:
-	heading("航行日志","只记录已发生的文字与操作。")
-	var logs: Array = context.get("logs",[])
-	var pages: int = maxi(1,ceili(float(logs.size())/8.0))
-	var index: int = clampi(int(context.ui_state.get("list_page",0)),0,pages-1)
-	for line in logs.slice(index*8,mini(logs.size(),index*8+8)): W.text(self,line,18)
-	var spacer := Control.new(); spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL; add_child(spacer)
-	pager(self,index,pages)
-
 func raft_page() -> void:
-	heading("木筏详情","选择一个筏格查看；只有准备与收尾阶段可以操作。")
+	heading("木筏详情","选择一个筏格查看；导航、准备与收尾阶段可以操作。")
 	body = HBoxContainer.new(); body.size_flags_vertical = Control.SIZE_EXPAND_FILL; add_child(body)
 	var map := W.panel(body,Vector2(440,0)); map.get_parent().size_flags_horizontal = 0
 	W.text(map,"筏格布局",24,W.GOLD)
@@ -161,7 +151,8 @@ func raft_page() -> void:
 	for y in range(side):
 		for x in range(side):
 			if context.flags.get("raft_layout","") == "123456" and y == 0 and x in [0,1]:
-				W.button(grid,"%d · 装饰筏根" % (x+1),func(): pass,true,"固定装饰区，不提供设备槽位")
+				var root_name := "帐篷" if x == 0 else "箱子"
+				W.button(grid,"%d · %s" % [x+1,root_name],func(): pass,true,"固定装饰区，不提供设备槽位")
 				continue
 			var cell := {}
 			var adjacent := false
@@ -191,7 +182,10 @@ func cell_detail(cell: Dictionary) -> void:
 	var teaching: String = context.get("tutorial_operation","")
 	if cell.status == "damaged":
 		W.text(detail,"破损 · 设备停用",22)
-		action(detail,"修理 · 木头1/AP1","repair_cell",{"cell":cell.id},disabled or amount("wood") < 1)
+		var has_wood := amount("wood") >= 1
+		var has_rope := amount("rope") >= 2
+		var rep_text := "修理 · 木头1/AP1" if has_wood else ("修理 · 绳索2/AP1" if has_rope else "修理 · 木头1(或绳索2)/AP1")
+		action(detail,rep_text,"repair_cell",{"cell":cell.id},disabled or (not has_wood and not has_rope))
 		for card in context.hand:
 			if card.id == "repair": action(detail,"使用修补包 · AP1","action_card",{"uid":card.uid,"cell":cell.id},disabled); break
 		return

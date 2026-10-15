@@ -27,6 +27,14 @@ func create(assets: RefCounted, card: Dictionary, action_title: String, callback
 	var name_label := W.text(frame,card.definition.name,14,Color("24333e")); name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	name_label.autowrap_mode = TextServer.AUTOWRAP_OFF; name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	place(name_label,Vector4(0.12,0.735,0.88,0.84))
+	if int(card.get("stack_count",1))>1:
+		var badge := Label.new(); badge.name="StackQuantity"; badge.text="×%d" % card.stack_count
+		badge.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER; badge.vertical_alignment=VERTICAL_ALIGNMENT_CENTER
+		badge.mouse_filter=Control.MOUSE_FILTER_IGNORE; badge.add_theme_font_size_override("font_size",19)
+		badge.add_theme_color_override("font_color",Color("fff0c4"))
+		var badge_style := StyleBoxFlat.new(); badge_style.bg_color=Color("173340"); badge_style.border_color=W.GOLD
+		badge_style.set_border_width_all(1); badge_style.set_corner_radius_all(4); badge.add_theme_stylebox_override("normal",badge_style)
+		frame.add_child(badge); place(badge,Vector4(0.60,0.53,0.94,0.67))
 	var hint: String = "弃置" if action_title.begins_with("弃置") else ("使用" if action_title.begins_with("使用") else "查看")
 	var hint_label := W.text(frame,hint,11,Color("314654")); hint_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	hint_label.mouse_filter = Control.MOUSE_FILTER_IGNORE; place(hint_label,Vector4(0.12,0.66,0.88,0.73))

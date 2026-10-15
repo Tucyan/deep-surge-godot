@@ -1,5 +1,5 @@
 {
-  "version": "toon-ocean-night-v1-fog-v2-detail-v1-raft-motion-v1",
+  "version": "toon-ocean-night-v1-fog-v2-detail-v1-raft-motion-v1-wave-noise-v1",
   "near_size": 64,
   "near_subdivisions": 200,
   "far_size": 600,
@@ -7,6 +7,17 @@
     20,
     30
   ],
+  "wave_noise": {
+    "enabled": true,
+    "seed": 73,
+    "scale": 0.18,
+    "drift": [
+      0.027,
+      -0.019
+    ],
+    "phase_strength": 1.25,
+    "amplitude_strength": 0.24
+  },
   "waves": [
     {
       "direction_deg": 112,
@@ -142,7 +153,8 @@
     "rock_color": "#0e1824",
     "contact_foam_color": "#7f97b8",
     "contact_shadow_color": "#02050b",
-    "contact_foam_opacity": 0.42
+    "contact_foam_opacity": 0.42,
+    "shadow_opacity": 0.4
   },
   "grade": {
     "exposure": 0.96,

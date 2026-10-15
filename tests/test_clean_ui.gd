@@ -55,7 +55,8 @@ func run() -> void:
 	app.handle_command("close")
 	var node: Dictionary = app.session.state.candidates[0]
 	app.handle_command("voyage",{"id":node.visit_id})
-	for id in ["craft","raft","logs"]:
+	check(buttons(app,"航行日志").is_empty(),"航海日志迁入结算页")
+	for id in ["craft","raft"]:
 		app.handle_command("panel",{"id":id})
 		await process_frame
 		await process_frame

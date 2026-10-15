@@ -1,0 +1,11 @@
+{
+  "source": "asset-sources/raft-blender-v1/raft_modules_v005.blend",
+  "bucket_outer_radius": 0.255,
+  "bucket_inner_radius": 0.229,
+  "bucket_bottom_y": 0.325,
+  "bucket_top_y": 0.59,
+  "bucket_inner_bottom_y": 0.35,
+  "ready_water_y": 0.552,
+  "waiting_water": false,
+  "rule_random": false
+}
