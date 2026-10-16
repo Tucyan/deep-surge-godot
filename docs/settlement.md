@@ -33,3 +33,5 @@ chapterComplete保持活动局，只展示章节成绩与待结算节点，实�
 程序化页面资产登记ui.settlement v1；源pages/settlement_page.gd，复用flow_base/widgets的字体与StyleBox，没有新图片、Shader或网络素材。页面私有节点随页面释放，日志内容均来自冻结报告。只有日志页允许ScrollContainer，其余统计页面仍分页。
 
 当次测试与实际截图见[结算验证](../evidence/settlement-verification.md)。未验证独立发行导出、真实移动设备触控、任意极端窗口比例或多层评分聚合。
+
+2026-10-16 v11修复：四舍五入在半分阈值增加1e-9浮点容差，避免HP10/12等比例经JSON后产生1分偏差、导致同版本章节档被校验拒绝；权重、评级阈值和点数规则不变。专项见`tests/test_economy_balance.gd`。

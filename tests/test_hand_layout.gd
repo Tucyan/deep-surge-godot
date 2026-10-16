@@ -17,10 +17,19 @@ func _init():
 	check(layout.build(entries).map(func(c):return c.uid)==entries.map(func(c):return c.uid),"Unsorted unstacked keeps acquisition order")
 	layout.stack_resources=true; groups=layout.build(entries)
 	layout.move_group(groups,0,2)
-	check(not layout.auto_sort,"Manual reorder disables automatic sorting")
+	check(not layout.auto_sort,"Manual reorder when auto_sort=false keeps auto_sort=false")
 	check(layout.build(entries).map(func(c):return c.uid)==["i1","f1","w1","f2","wt"],"Dragged stack moves as one group")
+	
+	# Test that manual reorder with auto_sort=true preserves user order and keeps auto_sort enabled
+	layout.auto_sort=true; layout.order.clear(); groups=layout.build(entries)
+	layout.move_group(groups,0,2)
+	check(layout.auto_sort,"Manual reorder when auto_sort=true keeps auto_sort enabled")
+	check(layout.build(entries).map(func(c):return c.uid)==["f2","i1","f1","w1","wt"],"User custom order is preserved with auto_sort enabled")
+	var with_new: Array = entries + [card("f3","food","survival")]
+	check(layout.build(with_new).map(func(c):return c.uid)==["f2","i1","f1","f3","w1","wt"],"New card auto-sorts next to matching kind while preserving custom order")
+	
 	layout.stack_resources=false
-	check(layout.build(entries).map(func(c):return c.uid)==["i1","f1","w1","w2","w3","w4","f2","wt"],"Unstack restores individual cards at group position")
+	check(layout.build(entries).map(func(c):return c.uid)==["f2","i1","f1","w1","w2","w3","w4","wt"],"Unstack restores individual cards at group position")
 	var reduced := entries.filter(func(c):return c.uid!="w1")
 	layout.stack_resources=true
 	check(layout.build(reduced).filter(func(c):return c.id=="wood" and not c.temporary).size()==3,"Four to three automatically expands remaining instances")
@@ -33,7 +42,7 @@ func _init():
 	check(entries==before,"Presentation leaves source and rule state untouched")
 	layout.path="user://hand-layout-test.cfg"; layout.save_preferences()
 	var restored=load("res://presentation/hand_layout.gd").new(); restored.path=layout.path; restored.load_preferences()
-	check(not restored.auto_sort and restored.stack_resources,"Preferences survive reload")
+	check(restored.auto_sort and restored.stack_resources,"Preferences survive reload")
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(layout.path))
 	print("HAND LAYOUT: PASS" if failures==0 else "HAND LAYOUT: FAIL"); quit(failures)
 func card(uid: String,id: String,kind: String="resource",temporary: bool=false)->Dictionary:

@@ -1,4 +1,5 @@
 extends SceneTree
+const Query = preload("res://core/action_query.gd")
 var failures := 0
 func check(ok: bool, text: String) -> void:
 	if not ok: failures += 1; printerr("FAIL: "+text)
@@ -50,7 +51,12 @@ func preparation(s) -> void:
 func roundtrip(s) -> void:
 	var saved: Dictionary = JSON.parse_string(JSON.stringify(s.snapshot()))
 	var copy = load("res://core/game_session.gd").new(s.catalog)
-	check(copy.restore(saved),"每阶段存档恢复 "+s.phase()+" "+copy.error)
+	var restored_ok: bool=copy.restore(saved)
+	if not restored_ok:
+		var f=FileAccess.open("res://evidence/economy-story-invalid.json",FileAccess.WRITE)
+		f.store_string(JSON.stringify(saved)); f.close()
+		printerr("SAVE DIAGNOSTIC stats=%s report=%s last=%s campaign=%s encounter=%s shop=%s" % [s.Stats.valid(saved.state),s.Settlement.valid_report(saved.state.get("settlement",{})),s.Settlement.valid_report(saved.last_settlement),s.Campaign.valid_save(s,saved.state),s.Encounter.valid_state(s,saved.state),s.Shop.valid_state(s,saved.state,saved.profile)])
+	check(restored_ok,"每阶段存档恢复 "+s.phase()+" "+copy.error)
 	if copy.state.is_empty(): return
 	check(JSON.stringify(copy.state) == JSON.stringify(saved.state),"恢复状态与剧情游标完全相同")
 	var before: Dictionary = s.snapshot()
@@ -59,12 +65,28 @@ func roundtrip(s) -> void:
 	check(s.restore(saved),"实际会话从JSON重新加载后继续操作")
 	command(s,"resume")
 
+# This is a route/contract regression, not a survival policy benchmark.
+# Prepare final costs using legal actions; do not assume free spring draws supply rope.
+func reserve_final(s, plan: String) -> void:
+	if s.state.voyage<5 or plan not in ["seal","tow"]: return
+	var need: Dictionary={"wood":2 if plan=="seal" else 0,"rope":1 if plan=="seal" else 2}
+	for target in ["rope","wood"]:
+		if s.I.count(s.state,target)>=need[target] or s.state.ap<1: continue
+		var keep: Dictionary=need.duplicate(true)
+		var inputs: Array=[]
+		for card in s.state.hand:
+			if card.temporary or card.id not in s.I.RESOURCES: continue
+			if int(keep.get(card.id,0))>0: keep[card.id]-=1
+			else: inputs.append(card.uid)
+		if inputs.size()>=3: command(s,"transmute",{"target":target,"inputs":inputs.slice(0,3)})
+
 func play_route(c, route: String, plan: String) -> void:
 	var s = load("res://core/game_session.gd").new(c)
 	command(s,"new",{"mode":"story","origin":"fool","seed":22})
 	var n := 0
 	var night_actions := 0
 	var visited_public: Array = []
+	var visited_fixed: Array = []
 	var traded: Array = []
 	var abandoned_quest := false
 	while s.phase() not in ["finished","chapterComplete"] and n < 600:
@@ -73,18 +95,28 @@ func play_route(c, route: String, plan: String) -> void:
 		var before: Dictionary = s.snapshot()
 		match s.phase():
 			"navigation":
+				reserve_final(s,plan)
 				var node: Dictionary = s.state.candidates[0]
 				for candidate in s.state.candidates:
 					if candidate.id == "camp": node = candidate; break
-				var pool: int = s.state.pool.size()
 				var day: int = s.state.voyage
+				var fixed: String = {1:"ST.L1.T01",2:"ST.L1.T02",3:"ST.L1.T03",4:"ST.L1.S04",15:"ST.L1.F15" if route == "scholar" else "ST.L1.SOLO15"}.get(day,"")
+				if fixed != "":
+					check(s.state.candidates.size() == 1 and node.id == fixed,"教学与终点固定事件顺序不变")
+					visited_fixed.append(node.id)
+				var visits_before: int = int(s.state.visits.get(node.id,0))
+				var records_before: int = s.state.stats.visits.size()
 				command(s,"voyage",{"id":node.visit_id})
-				check(s.state.pool.size() == pool-(1 if day in range(5,15) else 0),"固定/夜间不消费普通池")
+				check(int(s.state.visits.get(node.id,0)) == visits_before+1,"真实航行记录本节点访问一次")
+				check(s.state.stats.visits.size() == records_before+1,"固定与普通节点均只增加一次真实访问记录")
+				if s.state.stats.visits.size() == records_before+1:
+					var recorded: Dictionary = s.state.stats.visits[-1]
+					check(recorded.id == node.id and recorded.visit_id == node.visit_id and recorded.voyage == day,"访问记录对应实际选择与航次")
 			"preparation":
 				if s.state.voyage == 2:
 					var rejected: Dictionary = s.snapshot(); check(not s.dispatch("enter"),"教学不能用文字跳过制造/安装/升级"); check(s.snapshot() == rejected,"拒绝教学跳过不改变状态")
 					check(not s.dispatch("craft",{"id":"planter"}) and s.snapshot() == rejected,"设备教学保留必要AP，不因误选其他配方锁死")
-				preparation(s); command(s,"enter")
+				preparation(s); reserve_final(s,plan); command(s,"enter")
 			"story":
 				var scene: Dictionary = s.state.campaign.runtime
 				if s.state.story_step == "intro": command(s,"advance")
@@ -105,11 +137,14 @@ func play_route(c, route: String, plan: String) -> void:
 				elif s.state.node.has("monster"): command(s,"leave_encounter")
 				else:
 					var chosen := {}
-					for option in s.state.node.get("options",[]):
-						if s.Rules.option_reason(s,option) == "": chosen = option; break
+					for option in s.Encounter.options(s):
+						for args in s.Encounter.arguments(s,option):
+							if Query.quote(s,"option",args).allowed:
+								chosen = args.duplicate(true); break
+						if not chosen.is_empty(): break
 					check(not chosen.is_empty(),"随机节点有可执行出口")
 					if chosen.is_empty(): break
-					command(s,"option",{"id":chosen.id})
+					command(s,"option",chosen)
 			"battle":
 				if s.state.battle.ap <= 0: command(s,"battle_end")
 				else:
@@ -121,6 +156,7 @@ func play_route(c, route: String, plan: String) -> void:
 			"aftermath":
 				use_survival(s)
 				if s.phase()=="aftermath": fuel(s)
+				if s.phase()=="aftermath": reserve_final(s,plan)
 				if s.phase()=="aftermath": command(s,"end_voyage")
 			"nightHub":
 				var night: Dictionary = s.state.campaign.night
@@ -149,19 +185,28 @@ func play_route(c, route: String, plan: String) -> void:
 					"result": command(s,"night_ack")
 					"complete": command(s,"finish_night")
 			"discard":
-				var chosen: Dictionary = s.state.hand[0]
+				var chosen: Dictionary = {}
+				var keep := {"wood":2,"rope":2}
 				for card in s.state.hand:
-					if card.id in ["iron","plastic","cloth"]: chosen = card; break
+					if int(keep.get(card.id,0))>0:
+						keep[card.id]-=1
+						continue
+					chosen=card
+					if card.id in ["iron","plastic","cloth"]: break
+				if chosen.is_empty(): chosen=s.state.hand[-1]
 				command(s,"discard",{"uid":chosen.uid})
 		if before.state == s.state: check(false,"路线无进展 "+s.phase()); break
 		check(not s.view().has("campaign"),"前端不暴露固定事件账本或未来剧本")
 	check(s.phase() == "chapterComplete","实际15站到达章节停点 "+route+"/"+plan+"，实际"+s.phase()+" 第"+str(s.state.voyage))
+	if s.phase()!="chapterComplete": return
 	check(s.state.completed == 15 and not s.state.awarded and s.profile.points == 0,"章节完成不伪造整局结算")
 	if "--settlement-fixtures" in OS.get_cmdline_user_args() and route=="scholar" and plan=="seal":
 		var evidence := FileAccess.open("res://evidence/settlement-chapter-A.json",FileAccess.WRITE)
 		evidence.store_string(JSON.stringify(s.snapshot())); evidence.close()
 	check(s.state.settlement.scope=="chapter" and s.state.settlement.points.granted==0 and s.state.settlement.points.pending==15,"章节报告展示未入账点数")
 	check(s.state.stats.completed_ids.size()==15,"夜间/尾声不重复增加日间节点统计")
+	check(visited_fixed == ["ST.L1.T01","ST.L1.T02","ST.L1.T03","ST.L1.S04","ST.L1.F15" if route == "scholar" else "ST.L1.SOLO15"],"完整路线固定事件各按顺序访问一次")
+	check(s.state.stats.visits.size() == 15,"完整路线只记录十五次日间真实访问")
 	for row in s.state.settlement.cards:
 		check(row.obtained==row.remaining+row.use_consumed+row.cost_consumed+row.deployed+row.discarded+row.lost+row.cleared,"完整剧情卡牌收支守恒 "+row.id)
 	check(night_actions == 9,"第6到14晚恰好九次行动")

@@ -74,12 +74,15 @@ func observe() -> Dictionary:
 	var observation: Dictionary={}
 	# Explicit player-facing projection; no seed/RNG, future pool, full stats,
 	# profile/debug reports, UI pages or hidden campaign script.
-	for key in ["revision","phase","mode","origin","voyage","length","ap","player","hand","coins","cells","node","candidates","story_step","result_text","battle","completed","level","xp","capacity","can_base","boost_cards","battle_actions","scene","campaign_summary","tutorial_reason","tutorial_operation","known_clues","known_quests","night","night_actions"]:
+	for key in ["revision","phase","mode","origin","voyage","length","ap","player","hand","coins","cells","node","candidates","story_step","result_text","battle","completed","level","xp","capacity","can_base","boost_cards","battle_actions","scene","campaign_summary","tutorial_reason","tutorial_operation","known_clues","known_quests","night","night_actions","shop","encounter","event_options"]:
 		if view.has(key): observation[key]=view[key]
 	for node in observation.get("candidates",[])+[observation.get("node",{})]:
 		for key in ["lines","choices","handler","outcomes","effects"]: node.erase(key)
+		node.erase("stages")
 		for option in node.get("options",[]):
 			for key in ["outcomes","effects"]: option.erase(key)
+	for option in observation.get("event_options",[]):
+		for field in ["effects","outcomes","next_stage"]: option.erase(field)
 	observation.terminal=terminal()
 	if _session.phase()=="battle":
 		observation.enemy=_catalog.entry("enemies",str(_session.state.battle.id))

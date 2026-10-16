@@ -1,86 +1,100 @@
 {
-  "filter": {
-    "id": "filter",
-    "name": "滤水器牌",
-    "price": 3,
-    "card": "filter"
+  "wood": {
+    "id": "wood",
+    "name": "木头",
+    "card": "wood",
+    "kind": "resource",
+    "price": 1
   },
-  "planter": {
-    "id": "planter",
-    "name": "土盆牌",
-    "price": 3,
-    "card": "planter"
+  "iron": {
+    "id": "iron",
+    "name": "废铁",
+    "card": "iron",
+    "kind": "resource",
+    "price": 1
+  },
+  "plastic": {
+    "id": "plastic",
+    "name": "塑料",
+    "card": "plastic",
+    "kind": "resource",
+    "price": 1
+  },
+  "rope": {
+    "id": "rope",
+    "name": "绳索",
+    "card": "rope",
+    "kind": "resource",
+    "price": 1
+  },
+  "cloth": {
+    "id": "cloth",
+    "name": "布条",
+    "card": "cloth",
+    "kind": "resource",
+    "price": 1
   },
   "lamp": {
     "id": "lamp",
     "name": "灯牌",
-    "price": 2,
-    "card": "lamp"
+    "card": "lamp",
+    "kind": "equipment",
+    "price": 3
+  },
+  "filter": {
+    "id": "filter",
+    "name": "滤水器牌",
+    "card": "filter",
+    "kind": "equipment",
+    "price": 4
+  },
+  "planter": {
+    "id": "planter",
+    "name": "土盆牌",
+    "card": "planter",
+    "kind": "equipment",
+    "price": 4
   },
   "crossbow": {
     "id": "crossbow",
     "name": "弓弩牌",
-    "price": 4,
-    "card": "crossbow"
+    "card": "crossbow",
+    "kind": "equipment",
+    "price": 5
   },
-  "guardian": {
-    "id": "guardian",
-    "name": "守潮骨片",
-    "price": 4,
-    "relic": "guardian"
+  "shieldRack": {
+    "id": "shieldRack",
+    "name": "盾架牌",
+    "card": "shieldRack",
+    "kind": "equipment",
+    "price": 5
   },
-  "luckyShell": {
-    "id": "luckyShell",
-    "name": "回声贝壳",
-    "price": 5,
-    "relic": "luckyShell"
+  "spearRack": {
+    "id": "spearRack",
+    "name": "矛架牌",
+    "card": "spearRack",
+    "kind": "equipment",
+    "price": 5
   },
-  "emberWick": {
-    "id": "emberWick",
-    "name": "余烬灯芯",
-    "price": 5,
-    "relic": "emberWick"
+  "fishingNet": {
+    "id": "fishingNet",
+    "name": "渔网牌",
+    "card": "fishingNet",
+    "kind": "equipment",
+    "price": 5
   },
-  "tideLens": {
-    "id": "tideLens",
-    "name": "潮纹镜片",
-    "price": 5,
-    "relic": "tideLens"
+  "crate": {
+    "id": "crate",
+    "name": "储物箱牌",
+    "card": "crate",
+    "kind": "equipment",
+    "price": 5
   },
-  "headingNeedle": {
-    "id": "headingNeedle",
-    "name": "定向骨针",
-    "price": 5,
-    "relic": "headingNeedle"
-  },
-  "mendingNeedle": {
-    "id": "mendingNeedle",
-    "name": "缝潮针",
-    "price": 5,
-    "relic": "mendingNeedle"
-  },
-  "namedKnot": {
-    "id": "namedKnot",
-    "name": "记名绳结",
-    "price": 5,
-    "relic": "namedKnot"
-  },
-  "scavengerRing": {
-    "id": "scavengerRing",
-    "name": "拾荒者指环",
-    "price": 5,
-    "relic": "scavengerRing"
-  },
-  "emptyCompass": {
-    "id": "emptyCompass",
-    "name": "空腹罗盘",
-    "price": 5,
-    "relic": "emptyCompass"
-  },
-  "deepContract": {
-    "id": "deepContract",
-    "name": "深潮契印（代价：基础SAN航耗额外5）",
-    "price": 5,
-    "relic": "deepContract"
+  "generator": {
+    "id": "generator",
+    "name": "发电机牌",
+    "card": "generator",
+    "kind": "equipment",
+    "price": 6
   }
 }

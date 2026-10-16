@@ -6,7 +6,7 @@ const Store = preload("res://adapters/save_store.gd")
 const W = preload("res://presentation/widgets.gd")
 const World = preload("res://presentation/voyage_world.gd")
 const SettlementPage = preload("res://pages/settlement_page.gd")
-const PAGES := {"home":preload("res://pages/flow_home.gd"),"setup":preload("res://pages/new_game_setup.gd"),"game":preload("res://pages/voyage_hud.gd"),"story":preload("res://pages/flow_story.gd"),"battle":preload("res://pages/flow_battle.gd"),"craft":preload("res://pages/craft_page.gd"),"raft":preload("res://pages/paged_reference.gd"),"shop":preload("res://pages/paged_reference.gd"),"encyclopedia":preload("res://pages/paged_reference.gd"),"meta_shop":preload("res://pages/paged_reference.gd"),"night":preload("res://pages/night_page.gd"),"journal":preload("res://pages/story_journal.gd")}
+const PAGES := {"home":preload("res://pages/flow_home.gd"),"setup":preload("res://pages/new_game_setup.gd"),"game":preload("res://pages/voyage_hud.gd"),"story":preload("res://pages/flow_story.gd"),"battle":preload("res://pages/flow_battle.gd"),"craft":preload("res://pages/craft_page.gd"),"build":preload("res://pages/craft_page.gd"),"raft":preload("res://pages/paged_reference.gd"),"shop":preload("res://pages/shop_page.gd"),"encyclopedia":preload("res://pages/paged_reference.gd"),"meta_shop":preload("res://pages/paged_reference.gd"),"night":preload("res://pages/night_page.gd"),"journal":preload("res://pages/story_journal.gd")}
 var catalog := Catalog.new()
 var assets := Assets.new()
 var store := Store.new()
@@ -25,6 +25,7 @@ var world_view: TextureRect
 var local_panel := ""
 var reset_hand_visual := false
 var ui_state := {"hand_page":0,"list_page":0,"selected_id":"","category":"","card":"","battle_selection":"","craft_tab":"craft","transmute_target":"wood","transmute_uids":"","transmute_count":1}
+var event_target_surface: Node3D
 
 func _ready() -> void:
 	theme = W.theme()
@@ -77,6 +78,14 @@ func _restore_scale_focus() -> void:
 	if is_instance_valid(slider): slider.grab_focus()
 
 func handle_ui(action: String, value: String = "") -> void:
+	if action=="event_target":
+		if session.phase()!="story": return
+		var target: Dictionary=session.Rules.find_cell(session.state,value)
+		if target.is_empty(): return
+		if is_instance_valid(event_target_surface): event_target_surface.hide(); event_target_surface.queue_free()
+		event_target_surface=preload("res://presentation/raft_surface.gd").new()
+		event_target_surface.create(world_view,[]); event_target_surface.select(target)
+		return
 	match action:
 		"setup": setup_mode = value
 		"quit": get_tree().quit(); return
@@ -127,6 +136,7 @@ func page(id: String, parent: Node, view: Dictionary) -> Control:
 	return result
 
 func render() -> void:
+	if is_instance_valid(event_target_surface): event_target_surface.hide(); event_target_surface.queue_free()
 	var hand_visual := {}
 	if is_instance_valid(layout) and not reset_hand_visual:
 		for fan in get_tree().get_nodes_in_group("hand_fans"):
@@ -201,7 +211,7 @@ func render() -> void:
 		inset.anchor_left = 0.12; inset.anchor_right = 0.88; inset.anchor_top = 0.10; inset.anchor_bottom = 0.77
 		if panel_id in ["battle","raft"]:
 			inset.anchor_left=0.035; inset.anchor_right=0.965; inset.anchor_top=0.035; inset.anchor_bottom=0.965
-		if panel_id == "craft":
+		if panel_id in ["craft","shop","build"]:
 			inset.anchor_left=0; inset.anchor_right=1; inset.anchor_top=0; inset.anchor_bottom=1
 		if panel_id=="settings":
 			inset.anchor_left=0.5; inset.anchor_right=0.5; inset.anchor_top=0.04; inset.anchor_bottom=0.96

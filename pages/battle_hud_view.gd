@@ -466,7 +466,9 @@ func on_card_clicked(card: Dictionary) -> void:
 			selected_action = "block"
 			selected_card_uid = ""
 	elif kind == "resource" or id in RESOURCES:
-		if selected_resource_uid == uid: selected_resource_uid = ""
+		var stack_uids: Array = card.get("stack_uids", [uid])
+		if selected_resource_uid in stack_uids:
+			selected_resource_uid = ""
 		else:
 			selected_resource_uid = uid
 			selected_card_uid = ""
@@ -661,42 +663,65 @@ func on_action_double_clicked(card: Dictionary) -> void:
 			act_id = "attack"
 		elif str(card.get("uid", "")) == "virtual_action_block" or str(card.get("id", "")) == "action_block":
 			act_id = "block"
-	if act_id != "attack" and act_id != "block":
+	if act_id == "attack" or act_id == "block":
+		selected_action = act_id
+		selected_card_uid = ""
+		sync_selection_to_hud()
+		update_preview(false)
+		
+		var cur_ap: int = int(context.battle.get("ap", 0))
+		if cur_ap < 1:
+			flash_invalid_feedback("战斗AP不足（当前为 0 点），无法迎击！")
+			return
+		
+		var res_name := ""
+		var res_id := ""
+		if selected_resource_uid != "":
+			for c in context.get("hand", []):
+				if str(c.uid) == selected_resource_uid:
+					res_name = catalog.entry("cards", c.id).name
+					res_id = c.id
+					break
+		
+		if res_id != "" and (not Battle.COMBO.has(res_id) or not Battle.COMBO[res_id].has(selected_action)):
+			flash_invalid_feedback("「%s」无法与「%s」组合出招！" % [res_name, "攻击" if selected_action == "attack" else "防御"])
+			return
+		
+		var args: Dictionary = {"action": selected_action}
+		if selected_resource_uid != "": args["resource_uid"] = selected_resource_uid
+		if selected_buff_uid != "": args["buff_uid"] = selected_buff_uid
+		var preview_data: Dictionary = Battle.preview(session, args)
+		if not preview_data.get("valid", false):
+			var err_msg: String = str(preview_data.get("error", "无效组合"))
+			flash_invalid_feedback("无法出招：%s" % err_msg)
+			return
+		
+		confirm_action()
 		return
-	
-	selected_action = act_id
-	selected_card_uid = ""
-	sync_selection_to_hud()
-	update_preview(false)
-	
-	var cur_ap: int = int(context.battle.get("ap", 0))
-	if cur_ap < 1:
-		flash_invalid_feedback("战斗AP不足（当前为 0 点），无法迎击！")
+
+	# Independent playable card (e.g. arrow, spear, survival items)
+	var def: Dictionary = card.get("definition", {})
+	if def.is_empty() and card.has("id") and is_instance_valid(catalog):
+		def = catalog.entry("cards", card.id)
+	var kind: String = str(def.get("kind", ""))
+	if kind in ["combat", "survival", "negative"] and card.get("id", "") not in ["coin", "corpse"]:
+		var cur_ap: int = int(context.battle.get("ap", 0))
+		var cost: int = int(def.get("cost", 1))
+		if cost > cur_ap:
+			flash_invalid_feedback("战斗AP不足（需要 %d 点，当前剩余 %d 点）！" % [cost, cur_ap])
+			return
+		var args: Dictionary = {"uid": card.uid}
+		if selected_buff_uid != "" and kind == "combat":
+			args["buff_uid"] = selected_buff_uid
+		if is_instance_valid(session):
+			var preview_data: Dictionary = Battle.preview(session, args)
+			if not preview_data.get("valid", false):
+				var err_msg: String = str(preview_data.get("error", "无法出牌"))
+				flash_invalid_feedback(err_msg)
+				return
+		clear_selection()
+		hud.send("play", args)
 		return
-	
-	var res_name := ""
-	var res_id := ""
-	if selected_resource_uid != "":
-		for c in context.get("hand", []):
-			if str(c.uid) == selected_resource_uid:
-				res_name = catalog.entry("cards", c.id).name
-				res_id = c.id
-				break
-	
-	if res_id != "" and (not Battle.COMBO.has(res_id) or not Battle.COMBO[res_id].has(selected_action)):
-		flash_invalid_feedback("「%s」无法与「%s」组合出招！" % [res_name, "攻击" if selected_action == "attack" else "防御"])
-		return
-	
-	var args: Dictionary = {"action": selected_action}
-	if selected_resource_uid != "": args["resource_uid"] = selected_resource_uid
-	if selected_buff_uid != "": args["buff_uid"] = selected_buff_uid
-	var preview_data: Dictionary = Battle.preview(session, args)
-	if not preview_data.get("valid", false):
-		var err_msg: String = str(preview_data.get("error", "无效组合"))
-		flash_invalid_feedback("无法出招：%s" % err_msg)
-		return
-	
-	confirm_action()
 
 func flash_invalid_feedback(reason: String) -> void:
 	if is_instance_valid(preview_summary_label):

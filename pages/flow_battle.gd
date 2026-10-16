@@ -97,6 +97,13 @@ func build() -> void:
 	for i in range(fan.cards.size()):
 		if fan.cards[i].definition.kind=="resource": fan.buttons[i].name="BattleFanResource_"+str(fan.cards[i].uid)
 	fan.reordered.connect(func():request("hand_reordered"))
+	fan.battle_action_double_clicked.connect(func(card):
+		if card.get("action_id", "") in ["attack", "block"]:
+			choose_action(card.action_id)
+			confirm_selection()
+		else:
+			send("play", {"uid": card.uid})
+	)
 	fan.activated.connect(func(card):play_card(card))
 
 func selection() -> Dictionary:

@@ -38,14 +38,12 @@ func cell_actions(id: String) -> Array:
 	if not cell.equipment.is_empty():
 		var upgrades: Array=[]
 		if cell.equipment.level==1:
+			var has_hand_card:=false
 			for card in view.hand:
 				if card.id==cell.equipment.id:
-					var upgrade:=quote("upgrade",{"cell":id,"uid":card.uid}); upgrade.label="升级 · 同类牌 / AP1"; upgrades.append(upgrade); break
-		for donor in view.cells:
-			if donor.id!=id and donor.status=="intact" and donor.equipment.get("id","")==cell.equipment.id and donor.equipment.get("level",0)==cell.equipment.level:
-				var upgrade:=quote("upgrade",{"cell":id,"donor":donor.id}); upgrade.label="升级 · 格%d,%d设备 / AP1" % [donor.x+1,donor.y+1]; upgrades.append(upgrade)
-		if upgrades.is_empty():
-			var upgrade:=quote("upgrade",{"cell":id}); upgrade.label="升级 · AP1"; upgrades.append(upgrade)
+					var upgrade:=quote("upgrade",{"cell":id,"uid":card.uid}); upgrade.label="升级 · AP1"; upgrades.append(upgrade); has_hand_card=true; break
+			if not has_hand_card:
+				var upgrade:=quote("upgrade",{"cell":id}); upgrade.label="升级 · AP1"; upgrade.allowed=false; upgrade.reason="手牌中缺少同类设备牌"; upgrades.append(upgrade)
 		result.append_array(upgrades)
 		if cell.equipment.level==1 and cell.status=="intact":
 			var recipe: Dictionary=_catalog.entry("recipes",cell.equipment.id)
@@ -56,6 +54,17 @@ func cell_actions(id: String) -> Array:
 				for material in recipe.ingredients: materials.append("%s×%d" % [_catalog.entry("cards",material).name,recipe.ingredients[material]])
 				shortcut.detail="消耗："+"、".join(materials)+"\n制作%d AP＋升级1 AP" % recipe.cost
 				result.append(shortcut)
+		var dismantle:=quote("dismantle",{"cell":id})
+		dismantle.operation="dismantle"
+		dismantle.label="拆除 · AP1"
+		var recipe: Dictionary=_catalog.entry("recipes",cell.equipment.id)
+		if not recipe.is_empty() and not recipe.ingredients.is_empty():
+			var mat: String = recipe.ingredients.keys()[0]
+			var mat_name: String = _catalog.entry("cards",mat).name
+			dismantle.detail="拆除该设备并回收 %s×1" % mat_name
+		else:
+			dismantle.detail="拆除该设备并腾出格位"
+		result.append(dismantle)
 	return result
 func expansions() -> Array:
 	if not view.get("can_base",false) or view.get("cells",[]).is_empty(): return []

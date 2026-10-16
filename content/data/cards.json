@@ -3,8 +3,8 @@
     "name": "木头",
     "kind": "resource",
     "cost": 0,
-    "description": "制造材料；灯燃料1节点；两张木头可扩建一格。",
-    "fuel": 1
+    "description": "制造材料；灯燃料2轮；两张木头可扩建一格。",
+    "fuel": 2
   },
   "iron": {
     "name": "废铁",

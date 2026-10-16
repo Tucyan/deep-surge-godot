@@ -12,6 +12,7 @@ func _init() -> void:
 	var wood: Array=session.state.hand.filter(func(c):return c.id=="wood")
 	var uid: String=wood[-1].uid
 	check(session.dispatch("fuel",{"cell":cell.id,"material":"wood","uid":uid}),"Fuel accepts an explicitly chosen UID")
+	check(cell.equipment.fuel==2,"一张木头支持灯燃烧两轮")
 	check(session.I.find(session.state,uid).is_empty() and not session.I.find(session.state,wood[0].uid).is_empty(),"Consumes chosen instance rather than first material")
 	for args in [{"cell":cell.id,"material":"wood","uid":uid},{"cell":cell.id,"material":"corpse","uid":wood[0].uid},{"cell":cell.id,"material":"corpse","uid":session.state.hand[-1].uid}]:
 		var before: Dictionary=session.snapshot()

@@ -37,7 +37,7 @@ func run():
 	var motion := InputEventMouseMotion.new(); motion.global_position=tray.global_position+Vector2(tray.size.x+30,point.y); tray._input(motion)
 	pointer(tray,false,Vector2(tray.size.x+30,point.y))
 	check(clicks.is_empty(),"Dragging never uses or discards a card")
-	check(not app.hand_layout.auto_sort,"Manual order turns off auto sort")
+	check(app.hand_layout.auto_sort,"Manual order keeps auto sort enabled")
 	check(app.hand_layout.build(app.session.view().hand).back().uid==moved_uid,"Outside release places group at last slot")
 	check(app.session.snapshot()==state,"Gestures preserve inventory AP and RNG")
 	app.settings_tab="game"

@@ -61,7 +61,7 @@ func select_target(target: Dictionary) -> void:
 		var confirm:=W.button(column,"确认新建",func(): _execute(target)); confirm.name="ConfirmRaftExpansion"; confirm.disabled=not target.allowed
 	else:
 		var actions: Array=policy.cell_actions(target.id)
-		for operation in ["install","upgrade","craft_upgrade","repair"]:
+		for operation in ["install","upgrade","craft_upgrade","dismantle","repair"]:
 			var options: Array=actions.filter(func(a):return a.get("operation",a.command)==operation or (operation=="repair" and a.command in ["repair_cell","action_card"]))
 			if options.is_empty(): continue
 			if options.size()==1:
@@ -75,13 +75,20 @@ func select_target(target: Dictionary) -> void:
 				for item in options: choices.add_item(item.label); choices.set_item_disabled(choices.item_count-1,not item.allowed)
 				var first: int=options.find(options.filter(func(a):return a.allowed)[0]) if options.any(func(a):return a.allowed) else 0
 				choices.select(first)
-				var button:=W.button(column,{"install":"安装","upgrade":"升级 · AP1","repair":"修复 · AP1"}[operation],func(): _execute(options[choices.selected]),not options[first].allowed)
+				var button:=W.button(column,{"install":"安装","upgrade":"升级 · AP1","repair":"修复 · AP1","dismantle":"拆除 · AP1"}[operation],func(): _execute(options[choices.selected]),not options[first].allowed)
 				button.name="RaftAction_"+operation; button.custom_minimum_size.y=38
 				var hint:=W.text(column,_action_hint(options[first]),14,Color("efaaa0")); hint.name="RaftHint_"+operation; hint.visible=not hint.text.is_empty()
 				choices.item_selected.connect(func(index):
 					button.disabled=not options[index].allowed; button.tooltip_text=options[index].reason
 					hint.text=_action_hint(options[index]); hint.visible=not hint.text.is_empty())
-		if actions.is_empty(): W.text(column,"手牌中没有可安装设备，先在合成中制作。" if target.equipment.is_empty() else "暂无可用操作",14,W.MUTED)
+		if target.equipment.is_empty() and target.status == "intact":
+			var build_btn:=W.button(column,"建造设备",func():
+				select_target({})
+				app.handle_command.call_deferred("panel",{"id":"build"}))
+			build_btn.name="RaftBuildDevice"; build_btn.custom_minimum_size.y=38
+			if actions.is_empty(): W.text(column,"手牌中没有设备，可直接建造新设备",14,W.MUTED)
+		elif actions.is_empty():
+			W.text(column,"暂无可用操作",14,W.MUTED)
 	popup.custom_minimum_size.x=250 if target.get("equipment",{}).size()>0 else 210
 	# Freeze the vertical anchor at selection time; do not clamp it against HUD or viewport edges.
 	_popup_anchor_y=surface.screen_point(target).y-global_position.y+12

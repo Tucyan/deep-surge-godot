@@ -136,6 +136,21 @@ func build() -> void:
 	var tray := Control.new(); tray.name="VoyageHandTray"; tray.mouse_filter=Control.MOUSE_FILTER_IGNORE; stage.add_child(tray)
 	rect(tray,Vector4(0,1,1,1),Vector4(64,-238,-292,-18))
 	hand(tray)
+	if context.phase != "battle" and context.phase != "story":
+		var salvage_disabled: bool = not context.can_base or context.ap < 1 or context.get("tutorial_operation","") != ""
+		var salvage := W.button(stage, "海面打捞 · AP1", func(): send("salvage"), salvage_disabled)
+		salvage.name = "SalvageEntry"
+		salvage.tooltip_text = "消耗 1 AP 打捞漂流物资"
+		salvage.add_theme_font_size_override("font_size", 16)
+		rect(salvage, Vector4(1,1,1,1), Vector4(-204, -238, -76, -190))
+		for state in ["normal","hover","pressed","disabled","focus"]:
+			var box_st := StyleBoxFlat.new()
+			box_st.bg_color = Color("18303c") if state=="normal" else (Color("254957") if state in ["hover","pressed"] else Color("14242c"))
+			box_st.border_color = W.GOLD if state in ["hover","pressed","focus"] else Color("41616c")
+			box_st.set_border_width_all(1)
+			box_st.set_corner_radius_all(8)
+			salvage.add_theme_stylebox_override(state, box_st)
+		salvage.add_theme_color_override("font_color", Color("eee3cd") if not salvage_disabled else Color("73848e"))
 	var craft: Button
 	if context.phase == "battle":
 		craft = W.button(stage,"迎击",func():
@@ -190,7 +205,6 @@ func operation_content(box: Node) -> void:
 	match context.phase:
 		"navigation":
 			W.text(box,"可先使用手牌与合成，再选择目的地；出发时支付航耗。",16,W.MUTED)
-			action(box,"海面打捞 · AP1","salvage",{},not context.can_base or context.ap < 1 or context.get("tutorial_operation","") != "","消耗 1 AP 打捞漂流物资")
 			for node in context.candidates:
 				var button := W.button(box,"出发 · "+node.name,func(): send("voyage",{"id":node.visit_id}))
 				button.tooltip_text = node.description
@@ -199,7 +213,6 @@ func operation_content(box: Node) -> void:
 			W.text(box,"可使用物资、制造与管理设备。",16,W.MUTED)
 			var reason: String = context.get("tutorial_reason","")
 			if reason != "": W.text(box,reason,17,W.GOLD)
-			action(box,"海面打捞 · AP1","salvage",{},not context.can_base or context.ap < 1 or context.get("tutorial_operation","") != "","消耗 1 AP 打捞漂流物资")
 			action(box,"进入节点","enter",{},reason != "",reason)
 			W.primary(box.get_child(box.get_child_count()-1))
 		"story","interaction","battle":
@@ -209,7 +222,6 @@ func operation_content(box: Node) -> void:
 			W.primary(box.get_child(box.get_child_count()-1))
 		"aftermath":
 			W.text(box,"节点已完成，可继续使用剩余AP。",17,W.MUTED)
-			action(box,"海面打捞 · AP1","salvage",{},not context.can_base or context.ap < 1 or context.get("tutorial_operation","") != "","消耗 1 AP 打捞漂流物资")
 			action(box,"结束白天" if context.mode == "story" and context.voyage >= 5 and context.voyage < 15 else "结束航行","end_voyage")
 			W.primary(box.get_child(box.get_child_count()-1))
 		"discard": W.text(box,"手牌超限，选择要弃置的物资；达标后自动进入导航。",18)

@@ -1,6 +1,10 @@
 # Deep Surge · Godot V0.2 流程重做
 
-2026-10-16 涌泉抽取池更新：正式采用固定木头1＋五种基础资源等权随机3张，允许随机牌再出木头；每轮共4张，木头1～4份。首轮起手、配方、容量、燃料及AP保持原规则。当前内容版本 `godot-flow-v02-9`，不兼容v8及更旧档。见[当前规则](docs/spring-supply.md)和[v9验证](evidence/spring-v9-adoption.md)；下方v8排除木头说明为历史记录。
+文档入口：[文档索引](docs/README.md) · [当前机制](docs/current-game-mechanics.md) · [正式商店](docs/formal-shop.md) · [验证记录](evidence/economy-v11-verification.md)。以下按日期排列的条目仅作变更历史，不能覆盖当前代码。
+
+2026-10-16 经济试测 v11：涌泉减为木头1＋随机资源1，免费补给事件限访1次，仅挑战前两站保底食水；削减战斗收益。商店资源共享翻倍价格（1/2/4/8/16/32），设备价+1，尸体出售2币、基础材料不可售；木头支持灯燃烧2轮。内容版本`godot-flow-v02-11`拒绝旧档。见[验证记录](evidence/economy-v11-verification.md)。
+
+2026-10-16 已应用 V0.2 节点与正式局内商店：漂浮物、营地、风暴、修复/节奏/目标筏格事件按新候选规则投放；祭坛退出候选池，增加 E11 分支战斗和“零星漂浮物”回退。商店每次生成3种资源＋3种设备，按单店限购并支持确认后的买卖；藏品货架保留为未开放。内容版本为 `godot-flow-v02-10`，旧内容版本拒绝载入。见[当前规则](docs/current-game-mechanics.md)、[正式商店](docs/formal-shop.md)与[验证记录](evidence/node-shop-v10-verification.md)。
 
 2026-10-15 涌泉方案采用：后续每轮固定木头1＋从铁/塑料/绳索/布条中等概率有放回随机3张，共4张；首轮仍无涌泉。配方、容量、燃料和AP不变。内容版本更新为 `godot-flow-v02-8`，拒绝旧档，同版本保存恢复已验证。详见[正式涌泉规则](docs/spring-supply.md)及[采用验证](evidence/spring-supply-adoption.md)。[允许随机三张再出木头的补测](evidence/spring-wood-repeat-allowed.md)已完成，暂不覆盖本条。
 
@@ -69,7 +73,7 @@
 
 收起面板只改变 UI，不改变游戏 phase；主界面提供“处理当前事件”恢复。未完成事件时没有下一节点入口。商店离店/战斗胜退先恢复结果剧情，剧情end才算完成节点，基地AP不刷新。准备/收尾可使用剩余AP；AP0不自动结束。航耗只在移动扣，不在轮末重复扣。
 
-首轮自选1～5张基础资源（每类最多2张），或零选择「随心所欲」随机7张，无涌泉；后续导航前领取固定木头1＋五种基础资源等权随机3张（允许再出木头），共4张。10～15航次、池抽样及最多3种候选、非战斗机会保留；最后站固定Boss。战斗使用原出拳/箭/矛/污染规则的基础实现；原始卡牌、节点含变体的JSON未改。
+首轮自选1～5张基础资源（每类最多2张），或零选择「随心所欲」随机7张，无涌泉；后续导航前领取固定木头1＋五种基础资源等权随机1张（允许再出木头），共2张。10～15航次、按类别权重生成最多3种候选，仅前两站保底食水；最后站固定Boss。战斗使用固定攻击/格挡及箭/矛/污染规则。
 
 上述10～15站与Boss为挑战流程。剧情固定15次移动：1～4及15固定，5～14使用20份普通池；第5晚开启舱门任务，8/11/14晚先公共异变再主行动，6～14晚各一次休息/调查。夜间不重复航耗、不刷新基地AP；服务物资需实际支付且仅一次。第15站处理方案读取独立线索、物资与设备，付费后出结果、尾声、轮末和超限整理，才停在`chapterComplete`。保留本局，第二层未开放；主动放弃本局才按已完成节点发一次积分。
 
@@ -77,7 +81,7 @@
 
 **本次剧情属于test-story-v1试测内容。** 补给、恢复量、调查、最终价格和独航出口为新增测试设定；不冒充世界观完整剧本或已确认平衡。尚无第二层、夜间战斗、专属舱室3D模型和新人物图片；3D航行使用原木筏与轻量纹理海面，剧情仍使用独立AssetId纯色文字占位。
 
-卡/节点先完整导入，不等于所有效果已完成。尚未开放：节点特殊upgrade/enchant/exchange/blood/relicChance/altar/guide、随机失牌/献祭、顺流/迷雾等环境、藏品机制/购买、遗迹额外藏品或日记奖励、留存附魔/真结局、下局祝福。相关操作显示具体禁用原因，保留原免费退出；不扣钱售卖未生效商品。核心只实现当前验证的子集，不宣称完整 V0.2 或冻结基线全部通过。
+卡/节点数据先完整导入，不等于所有效果已完成。尚未开放：节点特殊 upgrade/enchant、随机失牌/献祭、顺流/迷雾等环境、藏品机制/购买、遗迹额外藏品或日记奖励、留存附魔/真结局、下局祝福。祭坛已从普通候选池退役；商店藏品货架仅显示未开放。相关操作显示具体禁用原因，不扣钱售卖未生效商品。
 
 ## 数据、素材和保存
 
@@ -102,7 +106,7 @@ presentation/*.gd         缓存与纯色+文字占位
 
 素材替换：将图片放 `assets/images/`，修改清单中 `card.water` 等条目的path为 `res://assets/images/...png`，更新source/version、登记授权/尺寸/hash后重启。正式图片成功载入默认隐藏占位字；`show_label:true`可保留叠字。缺图回退，无页面路径硬编码。资产源说明见 `assets/README.md`。
 
-自动保存位于 Godot `user://godot-flow-v02.json`，每次成功指令保存状态、Profile、完整随机流及内容指纹。当前格式为schema2/contentVersion=`godot-flow-v02-6`、randomVersion=`xorshift32-godot-v1`，保存护盾层、增益槽/临时期限、设备生产增压、实际统计与冻结结算/最近报告，是可玩子集的独立格式，**不是完整V0.2 schema3契约**。旧`godot-flow-v02-5`档、`godot-flow-v02-4`档、`godot-flow-v02-3`档及`godot-flow-v02-2`挑战档仅按已知精确内容指纹校验后迁移，旧临时出拳清理为固定行动入口，遗迹困难标记补齐，不重建物资/随机；缺历史统计不提供正式评分，旧终局不补发点数。剧情保存对白游标、固定访问、路线、夜间预算/阶段、委托领取、线索与危机支付；恢复后继续当前步骤。旧页面上下文/旧浏览器档不迁移。校验失败保留原文件并提示，明确新局才解除坏档覆盖保护。
+自动保存位于 Godot `user://godot-flow-v02.json`，每次成功指令保存状态、Profile、完整随机流及内容指纹。当前格式为 schema2/contentVersion=`godot-flow-v02-11`、randomVersion=`xorshift32-godot-v1`；v10及更旧内容版本按当前入口拒绝，不提供静默迁移或伪装成功载入。缺历史统计的旧终局不补发正式评分或点数。
 
 `tools/import_lab.mjs` 是一次性迁移工具，再运行会覆盖内容和素材清单，游戏启动不调用。9组等价测试保留零差异依据。
 
@@ -147,4 +151,4 @@ godot --path . --script tests/story_ui_smoke.gd -- --capture
 
 当前木筏按真实筏格与设备生成，取消常驻帆/货箱等固定装饰。空位、设备类型/等级、破损、脱落和灯燃料均同步呈现。映射与验证：docs/raft-state-models.md；截图：evidence/raft-state-*.png。
 
-当前木筏为 Blender 模块版：上排 1、2 装饰，3 可用；下排 4、5、6 可用。几何源 asset-sources/raft-blender-v1/raft_modules_v001.blend，运行 GLB 独立位于 assets/models/raft-modules；通过 AssetCatalog 稳定 ID 加载。完整初始模型：asset-sources/raft-blender-v1/raft_initial_v001.glb。旧四格存档迁移位置，已扩建旧存档保留旧布局。详细映射、边界和验证见 docs/raft-state-models.md。
+当前木筏为 Blender 模块版：上排 1、2 装饰，3 可用；下排 4、5、6 可用。几何源 asset-sources/raft-blender-v1/raft_modules_v001.blend，运行 GLB 独立位于 assets/models/raft-modules；通过 AssetCatalog 稳定 ID 加载。完整初始模型：asset-sources/raft-blender-v1/raft_initial_v001.glb。旧四格存档迁移位置，已扩建旧存档保留旧布局。详细映射、边界和验证见 docs/raft-state-models.md。\n

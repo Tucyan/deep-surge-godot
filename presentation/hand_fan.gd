@@ -49,7 +49,7 @@ func create(assets: RefCounted, entries: Array, view: Dictionary) -> void:
 	add_to_group("hand_fans")
 	context = view; visual_assets = assets
 	hand_layout = view.get("hand_layout",preload("res://presentation/hand_layout.gd").new())
-	cards = hand_layout.build(entries,view.get("phase","")=="battle")
+	cards = hand_layout.build(entries)
 	if view.get("phase","") == "battle":
 		var attack_card: Dictionary = {
 			"uid": "virtual_action_attack",
@@ -220,7 +220,7 @@ func arrange() -> void:
 				var movement := minf(overlap,step*.45)
 				x += movement*(-1.0 if i<hovered else 1.0)
 				x = clampf(x,left+20,size.x-20-card_width)
-		var is_selected := selected_uids.has(cards[i].uid)
+		var is_selected: bool = selected_uids.has(cards[i].uid) or (cards[i].has("stack_uids") and cards[i].stack_uids.any(func(u): return selected_uids.has(u)))
 		var raise_y := 0.0
 		if i == hovered: raise_y += 14.0
 		if is_selected: raise_y += card_height / 3.0
@@ -301,6 +301,11 @@ func _gui_input(event: InputEvent) -> void:
 			if event.double_click and context.get("phase","") == "battle":
 				var c: Dictionary = cards[index]
 				if c.get("is_fixed_action", false) or c.get("uid","") in ["virtual_action_attack", "virtual_action_block"] or c.get("action_id","") in ["attack", "block"]:
+					accept_event()
+					battle_action_double_clicked.emit(c)
+					return
+				var def: Dictionary = c.get("definition", {})
+				if def.get("kind", "") in ["combat", "survival", "negative"] and c.get("id", "") not in ["coin", "corpse"]:
 					accept_event()
 					battle_action_double_clicked.emit(c)
 					return

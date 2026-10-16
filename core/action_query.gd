@@ -162,12 +162,14 @@ static func candidates(ctx) -> Array:
 				for option in node.choices: add(items,"option",{"id":option.id})
 				if node.get("handler","")=="combat": add(items,"fight")
 			else:
-				for option in ctx.state.node.get("options",[]): add(items,"option",{"id":option.id})
+				for option in ctx.Encounter.options(ctx):
+					for args in ctx.Encounter.arguments(ctx,option): add(items,"option",args)
 				if ctx.state.node.has("monster"): add(items,"fight"); add(items,"leave_encounter")
 				if ctx.state.node.get("kind","")=="shop": add(items,"shop_enter")
 		"interaction":
-			for id in ctx.catalog.table("shops"):
+			for id in ctx.state.get("shop",{}).get("stock",[]):
 				for payment in ["coin","corpse"]: add(items,"buy",{"id":id,"payment":payment})
+			for card in ctx.Shop.view(ctx).sellable: add(items,"sell",{"uid":card.uid})
 			add(items,"shop_leave")
 		"discard":
 			for card in ctx.state.hand: add(items,"discard",{"uid":card.uid})

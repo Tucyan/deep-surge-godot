@@ -33,5 +33,11 @@
     "intent": "潮蚀：生命−2；隔回合污染手牌。",
     "buff": "fearful",
     "pollution": true
+  },
+  "crab_elite": {
+    "name": "吊架巨蟹",
+    "hp": 12,
+    "damage": 2,
+    "intent": "重击：生命−2。"
   }
 }

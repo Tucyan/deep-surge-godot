@@ -5,7 +5,8 @@ const REWARD_VERSION := "completed-nodes-v1"
 const OUTCOMES := {"survived":"灯火未熄","true":"回声归航","withdrawn":"离开潮眼","dead":"沉入深潮","mad":"迷失潮声","abandon":"返回岸边","A":"成功封闭","B":"付出代价后处理","C":"紧急撤离","SOLO":"独航出口"}
 
 static func rounded(value: float) -> int:
-	return int(floor(value+0.5))
+	# JSON round trips can move exact half points by a few ULPs (e.g. HP10/12).
+	return int(floor(value+0.5+1e-9))
 
 static func score(input: Dictionary) -> Dictionary:
 	var p: float = clampf(float(input.completed)/maxf(1.0,float(input.length)),0.0,1.0)

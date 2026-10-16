@@ -8,7 +8,9 @@ const Stats = preload("res://core/run_statistics.gd")
 const Settlement = preload("res://core/settlement.gd")
 const AutoProgress = preload("res://core/auto_progress.gd")
 const Health = preload("res://core/health_balance.gd")
-const VERSION := "godot-flow-v02-9"
+const Encounter = preload("res://core/encounter_rules.gd")
+const Shop = preload("res://core/shop_rules.gd")
+const VERSION := "godot-flow-v02-11"
 const ORIGINS := {
 	"strong":{"name":"强壮之人", "description":"生命上限+4，食水上限各+10"},
 	"fool":{"name":"愚者", "description":"非自愿精神损失少5"},
@@ -64,14 +66,16 @@ func dispatch(command: String, args: Dictionary = {}) -> bool:
 					log_text(state.node.name+"："+state.node.description)
 				if ok: Stats.enter_crisis(state)
 		"advance", "skip": ok = Campaign.advance(self,command == "skip") if Campaign.has_scene(self) else Rules.advance(self)
-		"option": ok = Campaign.option(self,args.get("id","")) if Campaign.has_scene(self) else Rules.option(self, args.get("id", ""))
+		"option": ok = Campaign.option(self,args.get("id","")) if Campaign.has_scene(self) else Encounter.option(self,args)
 		"shop_enter":
 			if phase() == "story" and state.story_step == "choice" and state.node.kind == "shop":
-				state.phase = "interaction"; panel = "shop"; ok = true
+				ok = Shop.enter(self)
+				if ok: state.phase = "interaction"; panel = "shop"
 		"shop_leave":
 			if phase() == "interaction":
 				result_story("离开商店，保留未使用的物资。" ); ok = true
-		"buy": ok = Rules.buy(self, args)
+		"buy": ok = Shop.buy(self,args)
+		"sell": ok = Shop.sell(self,args)
 		"fight": ok = Battle.enter(self)
 		"leave_encounter":
 			if phase() == "story" and state.story_step == "choice" and state.node.has("monster") and not Campaign.has_scene(self):
@@ -86,7 +90,7 @@ func dispatch(command: String, args: Dictionary = {}) -> bool:
 		"craft": ok = Rules.craft(self, args.get("id", ""))
 		"salvage": ok = Rules.salvage(self)
 		"transmute": ok = Rules.transmute(self, args.get("target", ""), args.get("uids", []), int(args.get("count", 1)))
-		"install", "fuel", "repair_cell", "heal", "expand", "upgrade", "action_card": ok = Rules.raft_action(self, command, args)
+		"install", "fuel", "repair_cell", "heal", "expand", "upgrade", "action_card", "dismantle": ok = Rules.raft_action(self, command, args)
 		"end_voyage": ok = Campaign.end_day(self) if Campaign.enabled(self) else Rules.settle(self)
 		"night_actions": ok = Campaign.open_actions(self) if Campaign.enabled(self) else false
 		"night_action": ok = Campaign.night_action(self,args.get("id","")) if Campaign.enabled(self) else false
@@ -133,7 +137,7 @@ func open_panel(id: String) -> bool:
 	if not state.is_empty() and screen == "game" and id == "raft": panel = id; return true
 	if not state.is_empty() and screen == "game" and Campaign.enabled(self) and id == "journal": panel = id; return true
 	if not active() or screen != "game": return fail("请先开始或继续航程")
-	if id == "craft" and base_action(): panel = id; return true
+	if id in ["craft", "build"] and base_action(): panel = id; return true
 	if id == event_panel() and not id.is_empty(): panel = id; return true
 	return fail("当前阶段没有这个入口")
 
@@ -157,6 +161,8 @@ func new_game(args: Dictionary) -> bool:
 	if origin == "hoarder": stats.limit += 1
 	Rules.profile_modifiers(self, stats)
 	state = {"mode":"challenge", "origin":origin, "seed":int(seed), "rng":R.create(int(seed)), "phase":"navigation", "voyage":1, "length":0, "ap":0, "player":stats, "hand":[], "coins":0, "cells":[], "next_id":1, "node":{}, "candidates":[], "pool":[], "visits":{}, "story_step":"", "result_text":"", "battle":{}, "completed":0, "boss_defeated":false, "awarded":false, "flags":{}, "logs":[], "buffs":[], "xp":0, "level":1}
+	state.shop = {}; state.encounter = {}
+	state.flags.event_visits = {}; state.flags.event_last = {}
 	state.mode = args.mode
 	if state.mode == "story": Campaign.initialize(self)
 	else: state.length = 10 + int(R.draw(state.rng, "nodes") * 6)
@@ -173,9 +179,6 @@ func new_game(args: Dictionary) -> bool:
 		for id in starting: give(id,1,false,"initial")
 	if int(profile.purchases.get("inheritance",0)) > 0: give("coin",3)
 	if int(profile.pending.get("supply",0)) > 0: give("filter",1,false,"profile"); profile.pending.supply -= 1
-	var ids: Array = catalog.table("nodes").keys().filter(func(id): return not catalog.entry("nodes",id).get("boss",false))
-	ids.sort()
-	for i in range(20 if state.mode == "story" else 2 * (state.length - 1)): state.pool.append(R.pick(state.rng,"nodes",ids))
 	Rules.candidates(self)
 	Rules.refresh_voyage_ap(self)
 	screen = "game"; panel = ""
@@ -272,5 +275,7 @@ func view() -> Dictionary:
 			result.battle_preview=Battle.preview(self,{"action":"attack"})
 		if phase() == "story" and state.story_step == "choice":
 			for option in result.node.get("options",[]): option.disabled_reason = Rules.option_reason(self,option)
+		Encounter.project(self,result)
+		if phase()=="interaction": result.shop=Shop.view(self)
 		Campaign.project(self,result)
 	return result

@@ -1,0 +1,2543 @@
+{
+  "summary": {
+    "policy": "validate_node_shop.decide, public observation, strong origin, no meta upgrades",
+    "challenge_count": 100,
+    "outcomes": {
+      "dead": 96,
+      "survived": 4
+    },
+    "boss_entries": 98,
+    "boss_materials_median": 11.0,
+    "discarded_median": 7.0,
+    "all_replayed": true,
+    "story_phase": "chapterComplete",
+    "surviving_seeds": [
+      39,
+      54,
+      70,
+      99
+    ],
+    "first_device_medians": {
+      "lamp": 1.0,
+      "filter": 3.0,
+      "planter": 4.0,
+      "crossbow": 4
+    },
+    "hunger_zero_runs": 88,
+    "water_zero_runs": 100
+  },
+  "runs": [
+    {
+      "seed": 0,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 114,
+      "replayed": 114,
+      "boss_materials": 10,
+      "first_devices": {
+        "lamp": 1,
+        "planter": 3,
+        "crossbow": 5
+      },
+      "spring_cards": 22,
+      "discarded": 9,
+      "minimum": {
+        "hp": 0,
+        "hunger": 10,
+        "hydration": 0,
+        "sanity": 44
+      },
+      "trace": "economy-v11-challenge-0.trace.json"
+    },
+    {
+      "seed": 1,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 115,
+      "replayed": 115,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 1,
+        "planter": 3,
+        "crossbow": 6
+      },
+      "spring_cards": 22,
+      "discarded": 10,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 44
+      },
+      "trace": "economy-v11-challenge-1.trace.json"
+    },
+    {
+      "seed": 2,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 114,
+      "replayed": 114,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "crossbow": 3,
+        "planter": 7,
+        "filter": 10
+      },
+      "spring_cards": 22,
+      "discarded": 11,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 44
+      },
+      "trace": "economy-v11-challenge-2.trace.json"
+    },
+    {
+      "seed": 3,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 124,
+      "replayed": 124,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 2,
+        "filter": 4,
+        "planter": 5,
+        "crossbow": 6
+      },
+      "spring_cards": 22,
+      "discarded": 9,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 29
+      },
+      "trace": "economy-v11-challenge-3.trace.json"
+    },
+    {
+      "seed": 4,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 126,
+      "replayed": 126,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 2,
+        "crossbow": 4,
+        "planter": 6
+      },
+      "spring_cards": 22,
+      "discarded": 4,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 65
+      },
+      "trace": "economy-v11-challenge-4.trace.json"
+    },
+    {
+      "seed": 5,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 114,
+      "replayed": 114,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 2,
+        "planter": 4,
+        "crossbow": 6,
+        "filter": 9
+      },
+      "spring_cards": 22,
+      "discarded": 7,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 35
+      },
+      "trace": "economy-v11-challenge-5.trace.json"
+    },
+    {
+      "seed": 6,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 112,
+      "replayed": 112,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 3,
+        "crossbow": 5,
+        "planter": 6
+      },
+      "spring_cards": 22,
+      "discarded": 1,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-6.trace.json"
+    },
+    {
+      "seed": 7,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 115,
+      "replayed": 115,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 2,
+        "planter": 4,
+        "crossbow": 5,
+        "filter": 10
+      },
+      "spring_cards": 22,
+      "discarded": 8,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 35
+      },
+      "trace": "economy-v11-challenge-7.trace.json"
+    },
+    {
+      "seed": 8,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 118,
+      "replayed": 118,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 2,
+        "filter": 3,
+        "crossbow": 4,
+        "planter": 7
+      },
+      "spring_cards": 22,
+      "discarded": 10,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 44
+      },
+      "trace": "economy-v11-challenge-8.trace.json"
+    },
+    {
+      "seed": 9,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 128,
+      "replayed": 128,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 2,
+        "filter": 3,
+        "planter": 4,
+        "crossbow": 5
+      },
+      "spring_cards": 22,
+      "discarded": 10,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 29
+      },
+      "trace": "economy-v11-challenge-9.trace.json"
+    },
+    {
+      "seed": 10,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 119,
+      "replayed": 119,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 3,
+        "planter": 4,
+        "crossbow": 5
+      },
+      "spring_cards": 22,
+      "discarded": 6,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-10.trace.json"
+    },
+    {
+      "seed": 11,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 125,
+      "replayed": 125,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 2,
+        "filter": 3,
+        "planter": 4,
+        "crossbow": 4
+      },
+      "spring_cards": 22,
+      "discarded": 10,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 29
+      },
+      "trace": "economy-v11-challenge-11.trace.json"
+    },
+    {
+      "seed": 12,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 106,
+      "replayed": 106,
+      "boss_materials": 4,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 3,
+        "crossbow": 3
+      },
+      "spring_cards": 22,
+      "discarded": 5,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-12.trace.json"
+    },
+    {
+      "seed": 13,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 117,
+      "replayed": 117,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "planter": 3,
+        "crossbow": 5,
+        "filter": 6
+      },
+      "spring_cards": 22,
+      "discarded": 8,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-13.trace.json"
+    },
+    {
+      "seed": 14,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 128,
+      "replayed": 128,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "planter": 2,
+        "crossbow": 3,
+        "filter": 6
+      },
+      "spring_cards": 22,
+      "discarded": 6,
+      "minimum": {
+        "hp": 0,
+        "hunger": 10,
+        "hydration": 0,
+        "sanity": 44
+      },
+      "trace": "economy-v11-challenge-14.trace.json"
+    },
+    {
+      "seed": 15,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 111,
+      "replayed": 111,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 2,
+        "planter": 5,
+        "crossbow": 6,
+        "filter": 9
+      },
+      "spring_cards": 22,
+      "discarded": 3,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-15.trace.json"
+    },
+    {
+      "seed": 16,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 117,
+      "replayed": 117,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 3,
+        "crossbow": 5,
+        "planter": 6
+      },
+      "spring_cards": 22,
+      "discarded": 4,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-16.trace.json"
+    },
+    {
+      "seed": 17,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 117,
+      "replayed": 117,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 1,
+        "planter": 2,
+        "crossbow": 7,
+        "filter": 9
+      },
+      "spring_cards": 22,
+      "discarded": 3,
+      "minimum": {
+        "hp": 0,
+        "hunger": 10,
+        "hydration": 0,
+        "sanity": 65
+      },
+      "trace": "economy-v11-challenge-17.trace.json"
+    },
+    {
+      "seed": 18,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 108,
+      "replayed": 108,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 2,
+        "filter": 4,
+        "crossbow": 6,
+        "planter": 7
+      },
+      "spring_cards": 22,
+      "discarded": 5,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 34
+      },
+      "trace": "economy-v11-challenge-18.trace.json"
+    },
+    {
+      "seed": 19,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 130,
+      "replayed": 130,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 2,
+        "planter": 4,
+        "crossbow": 5
+      },
+      "spring_cards": 22,
+      "discarded": 7,
+      "minimum": {
+        "hp": 0,
+        "hunger": 10,
+        "hydration": 0,
+        "sanity": 59
+      },
+      "trace": "economy-v11-challenge-19.trace.json"
+    },
+    {
+      "seed": 20,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 119,
+      "replayed": 119,
+      "boss_materials": 8,
+      "first_devices": {
+        "lamp": 2,
+        "filter": 4,
+        "planter": 6,
+        "crossbow": 10
+      },
+      "spring_cards": 22,
+      "discarded": 9,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 34
+      },
+      "trace": "economy-v11-challenge-20.trace.json"
+    },
+    {
+      "seed": 21,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 119,
+      "replayed": 119,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 3,
+        "planter": 5,
+        "crossbow": 6
+      },
+      "spring_cards": 22,
+      "discarded": 7,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 44
+      },
+      "trace": "economy-v11-challenge-21.trace.json"
+    },
+    {
+      "seed": 22,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 126,
+      "replayed": 126,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 2,
+        "planter": 3,
+        "filter": 4,
+        "crossbow": 5
+      },
+      "spring_cards": 22,
+      "discarded": 8,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 44
+      },
+      "trace": "economy-v11-challenge-22.trace.json"
+    },
+    {
+      "seed": 23,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 98,
+      "replayed": 98,
+      "boss_materials": null,
+      "first_devices": {
+        "lamp": 2,
+        "crossbow": 3,
+        "planter": 4
+      },
+      "spring_cards": 22,
+      "discarded": 9,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-23.trace.json"
+    },
+    {
+      "seed": 24,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 115,
+      "replayed": 115,
+      "boss_materials": 9,
+      "first_devices": {
+        "lamp": 1,
+        "planter": 3,
+        "crossbow": 5,
+        "filter": 11
+      },
+      "spring_cards": 22,
+      "discarded": 8,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 49
+      },
+      "trace": "economy-v11-challenge-24.trace.json"
+    },
+    {
+      "seed": 25,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 123,
+      "replayed": 123,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 2,
+        "filter": 3,
+        "planter": 3,
+        "crossbow": 7
+      },
+      "spring_cards": 22,
+      "discarded": 8,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 29
+      },
+      "trace": "economy-v11-challenge-25.trace.json"
+    },
+    {
+      "seed": 26,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 117,
+      "replayed": 117,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 2,
+        "planter": 3,
+        "crossbow": 3,
+        "filter": 5
+      },
+      "spring_cards": 22,
+      "discarded": 8,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 34
+      },
+      "trace": "economy-v11-challenge-26.trace.json"
+    },
+    {
+      "seed": 27,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 120,
+      "replayed": 120,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 3,
+        "planter": 3,
+        "crossbow": 5
+      },
+      "spring_cards": 22,
+      "discarded": 5,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 49
+      },
+      "trace": "economy-v11-challenge-27.trace.json"
+    },
+    {
+      "seed": 28,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 127,
+      "replayed": 127,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 2,
+        "filter": 3,
+        "planter": 4,
+        "crossbow": 4
+      },
+      "spring_cards": 22,
+      "discarded": 6,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 34
+      },
+      "trace": "economy-v11-challenge-28.trace.json"
+    },
+    {
+      "seed": 29,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 118,
+      "replayed": 118,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 3,
+        "planter": 4,
+        "crossbow": 5
+      },
+      "spring_cards": 22,
+      "discarded": 6,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-29.trace.json"
+    },
+    {
+      "seed": 30,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 119,
+      "replayed": 119,
+      "boss_materials": 9,
+      "first_devices": {
+        "lamp": 2,
+        "filter": 3,
+        "planter": 4,
+        "crossbow": 6
+      },
+      "spring_cards": 22,
+      "discarded": 0,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 35
+      },
+      "trace": "economy-v11-challenge-30.trace.json"
+    },
+    {
+      "seed": 31,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 117,
+      "replayed": 117,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "crossbow": 4,
+        "filter": 4,
+        "planter": 5
+      },
+      "spring_cards": 22,
+      "discarded": 7,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-31.trace.json"
+    },
+    {
+      "seed": 32,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 104,
+      "replayed": 104,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 2,
+        "filter": 4,
+        "crossbow": 6,
+        "planter": 9
+      },
+      "spring_cards": 22,
+      "discarded": 4,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 35
+      },
+      "trace": "economy-v11-challenge-32.trace.json"
+    },
+    {
+      "seed": 33,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 116,
+      "replayed": 116,
+      "boss_materials": 9,
+      "first_devices": {
+        "lamp": 1,
+        "planter": 3,
+        "crossbow": 7,
+        "filter": 8
+      },
+      "spring_cards": 22,
+      "discarded": 5,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-33.trace.json"
+    },
+    {
+      "seed": 34,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 115,
+      "replayed": 115,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "planter": 3,
+        "crossbow": 3
+      },
+      "spring_cards": 22,
+      "discarded": 9,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-34.trace.json"
+    },
+    {
+      "seed": 35,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 117,
+      "replayed": 117,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 2,
+        "filter": 3,
+        "crossbow": 3,
+        "planter": 6
+      },
+      "spring_cards": 22,
+      "discarded": 9,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 35
+      },
+      "trace": "economy-v11-challenge-35.trace.json"
+    },
+    {
+      "seed": 36,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 112,
+      "replayed": 112,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 3,
+        "crossbow": 4,
+        "planter": 9
+      },
+      "spring_cards": 22,
+      "discarded": 5,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-36.trace.json"
+    },
+    {
+      "seed": 37,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 127,
+      "replayed": 127,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 3,
+        "planter": 4,
+        "crossbow": 5
+      },
+      "spring_cards": 22,
+      "discarded": 6,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 49
+      },
+      "trace": "economy-v11-challenge-37.trace.json"
+    },
+    {
+      "seed": 38,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 120,
+      "replayed": 120,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 2,
+        "filter": 3,
+        "planter": 3,
+        "crossbow": 4
+      },
+      "spring_cards": 22,
+      "discarded": 5,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 35
+      },
+      "trace": "economy-v11-challenge-38.trace.json"
+    },
+    {
+      "seed": 39,
+      "mode": "challenge",
+      "outcome": "survived",
+      "phase": "finished",
+      "completed": 12,
+      "steps": 135,
+      "replayed": 135,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 3,
+        "planter": 3,
+        "crossbow": 8
+      },
+      "spring_cards": 22,
+      "discarded": 10,
+      "minimum": {
+        "hp": 1,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-39.trace.json"
+    },
+    {
+      "seed": 40,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 115,
+      "replayed": 115,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 2,
+        "planter": 4,
+        "crossbow": 6,
+        "filter": 9
+      },
+      "spring_cards": 22,
+      "discarded": 11,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 34
+      },
+      "trace": "economy-v11-challenge-40.trace.json"
+    },
+    {
+      "seed": 41,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 122,
+      "replayed": 122,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 2,
+        "planter": 3,
+        "crossbow": 3,
+        "filter": 5
+      },
+      "spring_cards": 22,
+      "discarded": 3,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-41.trace.json"
+    },
+    {
+      "seed": 42,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 129,
+      "replayed": 129,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 3,
+        "planter": 3,
+        "crossbow": 4
+      },
+      "spring_cards": 22,
+      "discarded": 5,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 49
+      },
+      "trace": "economy-v11-challenge-42.trace.json"
+    },
+    {
+      "seed": 43,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 127,
+      "replayed": 127,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 2,
+        "filter": 3,
+        "planter": 4,
+        "crossbow": 4
+      },
+      "spring_cards": 22,
+      "discarded": 3,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 35
+      },
+      "trace": "economy-v11-challenge-43.trace.json"
+    },
+    {
+      "seed": 44,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 119,
+      "replayed": 119,
+      "boss_materials": 10,
+      "first_devices": {
+        "lamp": 1,
+        "planter": 2,
+        "crossbow": 4
+      },
+      "spring_cards": 22,
+      "discarded": 11,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 59
+      },
+      "trace": "economy-v11-challenge-44.trace.json"
+    },
+    {
+      "seed": 45,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 119,
+      "replayed": 119,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 2,
+        "filter": 4,
+        "planter": 5,
+        "crossbow": 6
+      },
+      "spring_cards": 22,
+      "discarded": 10,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 29
+      },
+      "trace": "economy-v11-challenge-45.trace.json"
+    },
+    {
+      "seed": 46,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 125,
+      "replayed": 125,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "crossbow": 2,
+        "planter": 3,
+        "filter": 7
+      },
+      "spring_cards": 22,
+      "discarded": 10,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 44
+      },
+      "trace": "economy-v11-challenge-46.trace.json"
+    },
+    {
+      "seed": 47,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 127,
+      "replayed": 127,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "planter": 2,
+        "crossbow": 3,
+        "filter": 6
+      },
+      "spring_cards": 22,
+      "discarded": 6,
+      "minimum": {
+        "hp": 0,
+        "hunger": 10,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-47.trace.json"
+    },
+    {
+      "seed": 48,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 123,
+      "replayed": 123,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 1,
+        "planter": 1,
+        "crossbow": 2,
+        "filter": 7
+      },
+      "spring_cards": 22,
+      "discarded": 7,
+      "minimum": {
+        "hp": 0,
+        "hunger": 10,
+        "hydration": 0,
+        "sanity": 59
+      },
+      "trace": "economy-v11-challenge-48.trace.json"
+    },
+    {
+      "seed": 49,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 117,
+      "replayed": 117,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "planter": 2,
+        "crossbow": 3,
+        "filter": 5
+      },
+      "spring_cards": 22,
+      "discarded": 6,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-49.trace.json"
+    },
+    {
+      "seed": 50,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 123,
+      "replayed": 123,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 2,
+        "planter": 4
+      },
+      "spring_cards": 22,
+      "discarded": 7,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 65
+      },
+      "trace": "economy-v11-challenge-50.trace.json"
+    },
+    {
+      "seed": 51,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 120,
+      "replayed": 120,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 1,
+        "planter": 2,
+        "crossbow": 3,
+        "filter": 11
+      },
+      "spring_cards": 22,
+      "discarded": 10,
+      "minimum": {
+        "hp": 0,
+        "hunger": 10,
+        "hydration": 0,
+        "sanity": 59
+      },
+      "trace": "economy-v11-challenge-51.trace.json"
+    },
+    {
+      "seed": 52,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 115,
+      "replayed": 115,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 3,
+        "crossbow": 4,
+        "planter": 6
+      },
+      "spring_cards": 22,
+      "discarded": 3,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-52.trace.json"
+    },
+    {
+      "seed": 53,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 114,
+      "replayed": 114,
+      "boss_materials": 9,
+      "first_devices": {
+        "lamp": 1,
+        "planter": 3,
+        "crossbow": 5,
+        "filter": 6
+      },
+      "spring_cards": 22,
+      "discarded": 2,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-53.trace.json"
+    },
+    {
+      "seed": 54,
+      "mode": "challenge",
+      "outcome": "survived",
+      "phase": "finished",
+      "completed": 12,
+      "steps": 138,
+      "replayed": 138,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 2,
+        "filter": 3,
+        "crossbow": 3,
+        "planter": 4
+      },
+      "spring_cards": 22,
+      "discarded": 12,
+      "minimum": {
+        "hp": 1,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-54.trace.json"
+    },
+    {
+      "seed": 55,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 100,
+      "replayed": 100,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 2,
+        "filter": 3,
+        "crossbow": 4,
+        "planter": 9
+      },
+      "spring_cards": 22,
+      "discarded": 3,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-55.trace.json"
+    },
+    {
+      "seed": 56,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 121,
+      "replayed": 121,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 3,
+        "planter": 4,
+        "crossbow": 4
+      },
+      "spring_cards": 22,
+      "discarded": 8,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 49
+      },
+      "trace": "economy-v11-challenge-56.trace.json"
+    },
+    {
+      "seed": 57,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 117,
+      "replayed": 117,
+      "boss_materials": 8,
+      "first_devices": {
+        "lamp": 1,
+        "crossbow": 2,
+        "planter": 4,
+        "filter": 7
+      },
+      "spring_cards": 22,
+      "discarded": 6,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 65
+      },
+      "trace": "economy-v11-challenge-57.trace.json"
+    },
+    {
+      "seed": 58,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 108,
+      "replayed": 108,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "crossbow": 3,
+        "planter": 7,
+        "filter": 9
+      },
+      "spring_cards": 22,
+      "discarded": 10,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-58.trace.json"
+    },
+    {
+      "seed": 59,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 113,
+      "replayed": 113,
+      "boss_materials": 10,
+      "first_devices": {
+        "lamp": 1,
+        "crossbow": 2,
+        "planter": 6
+      },
+      "spring_cards": 22,
+      "discarded": 11,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 65
+      },
+      "trace": "economy-v11-challenge-59.trace.json"
+    },
+    {
+      "seed": 60,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 128,
+      "replayed": 128,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 3,
+        "planter": 3,
+        "crossbow": 5
+      },
+      "spring_cards": 22,
+      "discarded": 7,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 44
+      },
+      "trace": "economy-v11-challenge-60.trace.json"
+    },
+    {
+      "seed": 61,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 121,
+      "replayed": 121,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 2,
+        "planter": 4,
+        "crossbow": 4
+      },
+      "spring_cards": 22,
+      "discarded": 8,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 64
+      },
+      "trace": "economy-v11-challenge-61.trace.json"
+    },
+    {
+      "seed": 62,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 123,
+      "replayed": 123,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 1,
+        "planter": 2,
+        "crossbow": 4,
+        "filter": 6
+      },
+      "spring_cards": 22,
+      "discarded": 2,
+      "minimum": {
+        "hp": 0,
+        "hunger": 10,
+        "hydration": 0,
+        "sanity": 65
+      },
+      "trace": "economy-v11-challenge-62.trace.json"
+    },
+    {
+      "seed": 63,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 124,
+      "replayed": 124,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 2,
+        "planter": 5,
+        "crossbow": 6
+      },
+      "spring_cards": 22,
+      "discarded": 3,
+      "minimum": {
+        "hp": 0,
+        "hunger": 10,
+        "hydration": 0,
+        "sanity": 65
+      },
+      "trace": "economy-v11-challenge-63.trace.json"
+    },
+    {
+      "seed": 64,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 107,
+      "replayed": 107,
+      "boss_materials": 10,
+      "first_devices": {
+        "lamp": 2,
+        "planter": 3,
+        "crossbow": 4
+      },
+      "spring_cards": 22,
+      "discarded": 8,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-64.trace.json"
+    },
+    {
+      "seed": 65,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 118,
+      "replayed": 118,
+      "boss_materials": 8,
+      "first_devices": {
+        "lamp": 1,
+        "crossbow": 3,
+        "planter": 5,
+        "filter": 9
+      },
+      "spring_cards": 22,
+      "discarded": 7,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 65
+      },
+      "trace": "economy-v11-challenge-65.trace.json"
+    },
+    {
+      "seed": 66,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 117,
+      "replayed": 117,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 2,
+        "filter": 3,
+        "planter": 4,
+        "crossbow": 5
+      },
+      "spring_cards": 22,
+      "discarded": 2,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 35
+      },
+      "trace": "economy-v11-challenge-66.trace.json"
+    },
+    {
+      "seed": 67,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 106,
+      "replayed": 106,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "crossbow": 3,
+        "planter": 4
+      },
+      "spring_cards": 22,
+      "discarded": 11,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 44
+      },
+      "trace": "economy-v11-challenge-67.trace.json"
+    },
+    {
+      "seed": 68,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 115,
+      "replayed": 115,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 3,
+        "planter": 4,
+        "crossbow": 5
+      },
+      "spring_cards": 22,
+      "discarded": 4,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 44
+      },
+      "trace": "economy-v11-challenge-68.trace.json"
+    },
+    {
+      "seed": 69,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 113,
+      "replayed": 113,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 3,
+        "crossbow": 4,
+        "planter": 7
+      },
+      "spring_cards": 22,
+      "discarded": 7,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 44
+      },
+      "trace": "economy-v11-challenge-69.trace.json"
+    },
+    {
+      "seed": 70,
+      "mode": "challenge",
+      "outcome": "survived",
+      "phase": "finished",
+      "completed": 12,
+      "steps": 136,
+      "replayed": 136,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 3,
+        "planter": 4,
+        "crossbow": 5
+      },
+      "spring_cards": 22,
+      "discarded": 9,
+      "minimum": {
+        "hp": 1,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-70.trace.json"
+    },
+    {
+      "seed": 71,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 116,
+      "replayed": 116,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 2,
+        "filter": 3,
+        "planter": 4,
+        "crossbow": 5
+      },
+      "spring_cards": 22,
+      "discarded": 6,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 44
+      },
+      "trace": "economy-v11-challenge-71.trace.json"
+    },
+    {
+      "seed": 72,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 104,
+      "replayed": 104,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 2,
+        "crossbow": 4,
+        "planter": 6,
+        "filter": 8
+      },
+      "spring_cards": 22,
+      "discarded": 1,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 35
+      },
+      "trace": "economy-v11-challenge-72.trace.json"
+    },
+    {
+      "seed": 73,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 126,
+      "replayed": 126,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 2,
+        "filter": 4,
+        "planter": 5,
+        "crossbow": 6
+      },
+      "spring_cards": 22,
+      "discarded": 6,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 35
+      },
+      "trace": "economy-v11-challenge-73.trace.json"
+    },
+    {
+      "seed": 74,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 111,
+      "replayed": 111,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "planter": 3,
+        "crossbow": 6,
+        "filter": 8
+      },
+      "spring_cards": 22,
+      "discarded": 5,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-74.trace.json"
+    },
+    {
+      "seed": 75,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 127,
+      "replayed": 127,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 1,
+        "planter": 2,
+        "crossbow": 3,
+        "filter": 5
+      },
+      "spring_cards": 22,
+      "discarded": 8,
+      "minimum": {
+        "hp": 0,
+        "hunger": 10,
+        "hydration": 0,
+        "sanity": 65
+      },
+      "trace": "economy-v11-challenge-75.trace.json"
+    },
+    {
+      "seed": 76,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 115,
+      "replayed": 115,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 3,
+        "planter": 4,
+        "crossbow": 5
+      },
+      "spring_cards": 22,
+      "discarded": 2,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-76.trace.json"
+    },
+    {
+      "seed": 77,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 123,
+      "replayed": 123,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 1,
+        "crossbow": 5,
+        "planter": 5
+      },
+      "spring_cards": 22,
+      "discarded": 8,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 59
+      },
+      "trace": "economy-v11-challenge-77.trace.json"
+    },
+    {
+      "seed": 78,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 122,
+      "replayed": 122,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 3,
+        "crossbow": 4,
+        "planter": 5
+      },
+      "spring_cards": 22,
+      "discarded": 7,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 44
+      },
+      "trace": "economy-v11-challenge-78.trace.json"
+    },
+    {
+      "seed": 79,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 104,
+      "replayed": 104,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 1,
+        "crossbow": 3,
+        "filter": 7,
+        "planter": 9
+      },
+      "spring_cards": 22,
+      "discarded": 8,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 59
+      },
+      "trace": "economy-v11-challenge-79.trace.json"
+    },
+    {
+      "seed": 80,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 116,
+      "replayed": 116,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 1,
+        "planter": 3,
+        "crossbow": 4,
+        "filter": 11
+      },
+      "spring_cards": 22,
+      "discarded": 8,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-80.trace.json"
+    },
+    {
+      "seed": 81,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 114,
+      "replayed": 114,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 3,
+        "crossbow": 4,
+        "planter": 5
+      },
+      "spring_cards": 22,
+      "discarded": 9,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-81.trace.json"
+    },
+    {
+      "seed": 82,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 107,
+      "replayed": 107,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 1,
+        "crossbow": 2,
+        "planter": 7
+      },
+      "spring_cards": 22,
+      "discarded": 10,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 65
+      },
+      "trace": "economy-v11-challenge-82.trace.json"
+    },
+    {
+      "seed": 83,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 123,
+      "replayed": 123,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 2,
+        "crossbow": 4,
+        "planter": 5
+      },
+      "spring_cards": 22,
+      "discarded": 12,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 59
+      },
+      "trace": "economy-v11-challenge-83.trace.json"
+    },
+    {
+      "seed": 84,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 116,
+      "replayed": 116,
+      "boss_materials": 10,
+      "first_devices": {
+        "lamp": 1,
+        "planter": 2,
+        "crossbow": 4,
+        "filter": 9
+      },
+      "spring_cards": 22,
+      "discarded": 4,
+      "minimum": {
+        "hp": 0,
+        "hunger": 10,
+        "hydration": 0,
+        "sanity": 59
+      },
+      "trace": "economy-v11-challenge-84.trace.json"
+    },
+    {
+      "seed": 85,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 112,
+      "replayed": 112,
+      "boss_materials": 9,
+      "first_devices": {
+        "lamp": 1,
+        "crossbow": 3,
+        "planter": 5,
+        "filter": 12
+      },
+      "spring_cards": 22,
+      "discarded": 11,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-85.trace.json"
+    },
+    {
+      "seed": 86,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 119,
+      "replayed": 119,
+      "boss_materials": 10,
+      "first_devices": {
+        "lamp": 2,
+        "planter": 3,
+        "crossbow": 6,
+        "filter": 9
+      },
+      "spring_cards": 22,
+      "discarded": 5,
+      "minimum": {
+        "hp": 0,
+        "hunger": 10,
+        "hydration": 0,
+        "sanity": 35
+      },
+      "trace": "economy-v11-challenge-86.trace.json"
+    },
+    {
+      "seed": 87,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 121,
+      "replayed": 121,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 2,
+        "filter": 4,
+        "crossbow": 4,
+        "planter": 5
+      },
+      "spring_cards": 22,
+      "discarded": 5,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 35
+      },
+      "trace": "economy-v11-challenge-87.trace.json"
+    },
+    {
+      "seed": 88,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 128,
+      "replayed": 128,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "planter": 2,
+        "crossbow": 3,
+        "filter": 4
+      },
+      "spring_cards": 22,
+      "discarded": 9,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-88.trace.json"
+    },
+    {
+      "seed": 89,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 127,
+      "replayed": 127,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 2,
+        "planter": 3,
+        "crossbow": 5
+      },
+      "spring_cards": 22,
+      "discarded": 6,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 44
+      },
+      "trace": "economy-v11-challenge-89.trace.json"
+    },
+    {
+      "seed": 90,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 122,
+      "replayed": 122,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 2,
+        "planter": 3,
+        "crossbow": 4
+      },
+      "spring_cards": 22,
+      "discarded": 6,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 65
+      },
+      "trace": "economy-v11-challenge-90.trace.json"
+    },
+    {
+      "seed": 91,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 119,
+      "replayed": 119,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 2,
+        "filter": 3,
+        "planter": 4,
+        "crossbow": 5
+      },
+      "spring_cards": 22,
+      "discarded": 7,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 35
+      },
+      "trace": "economy-v11-challenge-91.trace.json"
+    },
+    {
+      "seed": 92,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 121,
+      "replayed": 121,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 3,
+        "planter": 5,
+        "crossbow": 8
+      },
+      "spring_cards": 22,
+      "discarded": 0,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-92.trace.json"
+    },
+    {
+      "seed": 93,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 102,
+      "replayed": 102,
+      "boss_materials": null,
+      "first_devices": {
+        "lamp": 2,
+        "filter": 4,
+        "crossbow": 4
+      },
+      "spring_cards": 22,
+      "discarded": 11,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 35
+      },
+      "trace": "economy-v11-challenge-93.trace.json"
+    },
+    {
+      "seed": 94,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 110,
+      "replayed": 110,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 1,
+        "crossbow": 2,
+        "planter": 5,
+        "filter": 10
+      },
+      "spring_cards": 22,
+      "discarded": 5,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 65
+      },
+      "trace": "economy-v11-challenge-94.trace.json"
+    },
+    {
+      "seed": 95,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 120,
+      "replayed": 120,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "crossbow": 2,
+        "planter": 3,
+        "filter": 8
+      },
+      "spring_cards": 22,
+      "discarded": 8,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-95.trace.json"
+    },
+    {
+      "seed": 96,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 111,
+      "replayed": 111,
+      "boss_materials": 11,
+      "first_devices": {
+        "lamp": 1,
+        "crossbow": 2,
+        "planter": 4
+      },
+      "spring_cards": 22,
+      "discarded": 12,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 44
+      },
+      "trace": "economy-v11-challenge-96.trace.json"
+    },
+    {
+      "seed": 97,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 109,
+      "replayed": 109,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 2,
+        "crossbow": 3,
+        "planter": 8
+      },
+      "spring_cards": 22,
+      "discarded": 3,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 44
+      },
+      "trace": "economy-v11-challenge-97.trace.json"
+    },
+    {
+      "seed": 98,
+      "mode": "challenge",
+      "outcome": "dead",
+      "phase": "finished",
+      "completed": 11,
+      "steps": 121,
+      "replayed": 121,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 3,
+        "planter": 4,
+        "crossbow": 4
+      },
+      "spring_cards": 22,
+      "discarded": 8,
+      "minimum": {
+        "hp": 0,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-98.trace.json"
+    },
+    {
+      "seed": 99,
+      "mode": "challenge",
+      "outcome": "survived",
+      "phase": "finished",
+      "completed": 12,
+      "steps": 138,
+      "replayed": 138,
+      "boss_materials": 12,
+      "first_devices": {
+        "lamp": 1,
+        "filter": 3,
+        "planter": 3,
+        "crossbow": 4
+      },
+      "spring_cards": 22,
+      "discarded": 12,
+      "minimum": {
+        "hp": 2,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 50
+      },
+      "trace": "economy-v11-challenge-99.trace.json"
+    },
+    {
+      "seed": 22,
+      "mode": "story",
+      "outcome": "",
+      "phase": "chapterComplete",
+      "completed": 15,
+      "steps": 245,
+      "replayed": 245,
+      "boss_materials": null,
+      "first_devices": {
+        "lamp": 2,
+        "filter": 2,
+        "crossbow": 2,
+        "planter": 3
+      },
+      "spring_cards": 28,
+      "discarded": 31,
+      "minimum": {
+        "hp": 13,
+        "hunger": 10,
+        "hydration": 10,
+        "sanity": 65
+      },
+      "trace": "economy-v11-story-22.trace.json"
+    }
+  ]
+}

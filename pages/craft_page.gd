@@ -67,8 +67,11 @@ func badge(parent: Node, text: String, color: Color) -> void:
 
 func build() -> void:
 	add_theme_constant_override("separation", 10)
-	var tab: String = context.ui_state.get("craft_tab", "craft")
-	if tab not in ["craft", "transmute"]: tab = "craft"
+	var ui_state: Dictionary = context.get("ui_state", {})
+	var is_build_mode: bool = context.get("panel", "") == "build" or ui_state.get("craft_mode", "") == "build"
+	var tab: String = ui_state.get("craft_tab", "craft")
+	if is_build_mode: tab = "craft"
+	elif tab not in ["craft", "transmute"]: tab = "craft"
 	
 	# Top bar with title and tabs
 	var header := HBoxContainer.new(); header.name = "CraftHeader"; add_child(header)
@@ -76,25 +79,27 @@ func build() -> void:
 	header.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	header.custom_minimum_size.y = 40
 	
-	var title_lbl := W.text(header, "工具台", 27, W.INK)
+	var title_text: String = "建造设备" if is_build_mode else "工具台"
+	var title_lbl := W.text(header, title_text, 27, W.INK)
 	title_lbl.autowrap_mode = TextServer.AUTOWRAP_OFF
 	title_lbl.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	title_lbl.custom_minimum_size.x = 90
+	title_lbl.custom_minimum_size.x = 120 if is_build_mode else 90
 	
-	var tab_row := HBoxContainer.new(); header.add_child(tab_row)
-	tab_row.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	tab_row.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	tab_row.add_theme_constant_override("separation", 8)
-	var craft_tab_btn := W.button(tab_row, "配方合成", func(): request("craft_tab", "craft"))
-	craft_tab_btn.name = "CraftTabButton"
-	craft_tab_btn.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	var transmute_tab_btn := W.button(tab_row, "资源转化", func(): request("craft_tab", "transmute"))
-	transmute_tab_btn.name = "TransmuteTabButton"
-	transmute_tab_btn.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	for btn in [craft_tab_btn, transmute_tab_btn]:
-		btn.custom_minimum_size = Vector2(110, 36)
-	var active_tab_btn: Button = craft_tab_btn if tab == "craft" else transmute_tab_btn
-	active_tab_btn.add_theme_color_override("font_color", W.GOLD)
+	if not is_build_mode:
+		var tab_row := HBoxContainer.new(); header.add_child(tab_row)
+		tab_row.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+		tab_row.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		tab_row.add_theme_constant_override("separation", 8)
+		var craft_tab_btn := W.button(tab_row, "配方合成", func(): request("craft_tab", "craft"))
+		craft_tab_btn.name = "CraftTabButton"
+		craft_tab_btn.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+		var transmute_tab_btn := W.button(tab_row, "资源转化", func(): request("craft_tab", "transmute"))
+		transmute_tab_btn.name = "TransmuteTabButton"
+		transmute_tab_btn.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+		for btn in [craft_tab_btn, transmute_tab_btn]:
+			btn.custom_minimum_size = Vector2(110, 36)
+		var active_tab_btn: Button = craft_tab_btn if tab == "craft" else transmute_tab_btn
+		active_tab_btn.add_theme_color_override("font_color", W.GOLD)
 	
 	# Spacer pushes tabs to the left and prevents header content from reaching the top-right corner
 	var spacer := Control.new()
@@ -125,17 +130,36 @@ func build() -> void:
 		build_transmute_panel()
 
 func build_recipe_grid() -> void:
+	var ui_state: Dictionary = context.get("ui_state", {})
+	var is_build_mode: bool = context.get("panel", "") == "build" or ui_state.get("craft_mode", "") == "build"
 	var page_size: int = PAGE_SIZE
-	var ids: Array = catalog.table("recipes").keys()
+	var all_ids: Array = catalog.table("recipes").keys()
+	var ids: Array = []
+	if is_build_mode:
+		for id in all_ids:
+			var r: Dictionary = catalog.entry("recipes", id)
+			var out_card: Dictionary = catalog.entry("cards", r.output)
+			if out_card.get("kind", "") == "equipment":
+				ids.append(id)
+	else:
+		ids = all_ids
 	var pages := maxi(1, ceili(float(ids.size()) / page_size))
-	var index := clampi(int(context.ui_state.get("list_page", 0)), 0, pages - 1)
+	var index := clampi(int(ui_state.get("list_page", 0)), 0, pages - 1)
 	var grid := GridContainer.new(); grid.name = "RecipeGrid"; grid.columns = 4
 	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL; grid.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	grid.add_theme_constant_override("h_separation", 10); grid.add_theme_constant_override("v_separation", 10)
 	add_child(grid)
-	for id in ids.slice(index * page_size, mini(ids.size(), (index + 1) * page_size)): recipe_tile(grid, id)
+	var page_slice: Array = ids.slice(index * page_size, mini(ids.size(), (index + 1) * page_size))
+	for id in page_slice: recipe_tile(grid, id)
+	# Pad with dummy controls to 8 (4 columns x 2 rows) so card dimensions remain identical across all pages
+	for i in range(page_slice.size(), page_size):
+		var dummy := Control.new()
+		dummy.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		dummy.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		dummy.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		grid.add_child(dummy)
 	var footer := HBoxContainer.new(); add_child(footer)
-	W.text(footer, "合成消耗 AP；设备安装不消耗 AP。", 15, W.MUTED)
+	W.text(footer, "制作设备消耗 AP；制作后可在木筏空格安装。" if is_build_mode else "合成消耗 AP；设备安装不消耗 AP。", 15, W.MUTED)
 	var previous := W.button(footer, "上一页", func(): request("list_page", str(index - 1)), index == 0); previous.name = "CraftRecipePreviousPage"
 	W.counter(footer, "%d / %d" % [index + 1, pages])
 	var next := W.button(footer, "下一页", func(): request("list_page", str(index + 1)), index == pages - 1); next.name = "CraftRecipeNextPage"
@@ -218,7 +242,8 @@ func build_transmute_panel() -> void:
 	add_child(container)
 	
 	# Current target
-	var current_target: String = context.ui_state.get("transmute_target", "wood")
+	var ui_state: Dictionary = context.get("ui_state", {})
+	var current_target: String = ui_state.get("transmute_target", "wood")
 	if current_target not in ["wood", "iron", "plastic", "rope", "cloth"]: current_target = "wood"
 	var target_def: Dictionary = catalog.entry("cards", current_target)
 	
@@ -230,13 +255,13 @@ func build_transmute_panel() -> void:
 	var max_by_res: int = total_resources / 3
 	var max_by_ap: int = context.ap
 	var max_batches: int = maxi(1, mini(max_by_ap, max_by_res))
-	var count: int = maxi(1, int(context.ui_state.get("transmute_count", 1)))
+	var count: int = maxi(1, int(ui_state.get("transmute_count", 1)))
 	if max_batches > 0 and count > max_batches:
 		count = max_batches
 	var needed: int = count * 3
 	
 	# Selected input UIDs
-	var raw_uids: String = context.ui_state.get("transmute_uids", "")
+	var raw_uids: String = ui_state.get("transmute_uids", "")
 	var selected_uids: Array = []
 	if raw_uids == "none":
 		selected_uids = []

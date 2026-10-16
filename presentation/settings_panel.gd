@@ -156,6 +156,8 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 	opt_sort.button_pressed = app.hand_layout.auto_sort
 	opt_sort.toggled.connect(func(enabled):
 		app.hand_layout.auto_sort = enabled
+		if enabled:
+			app.hand_layout.order.clear()
 		if app.persistence and app.hand_layout.save_preferences() != OK:
 			app.message = "手牌设置保存失败"
 		app.render.call_deferred()
@@ -197,7 +199,7 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 	tip_vbox.add_child(tip_title)
 
 	var tip_body := Label.new()
-	tip_body.text = "· 手牌长按 0.2 秒后可自由拖动排序；手动调整顺序后会自动关闭自动理牌。\n· 双击手牌中的装备卡可自动安装到木筏空格，合并升级需 1 AP。\n· 战斗中双击最右侧的「攻击」或「防御」卡牌可直接以当前组合快速迎击。"
+	tip_body.text = "· 手牌长按 0.2 秒后可自由拖动排序；调整后将保存用户排序，新抽卡牌仍按自动理牌归类。\n· 双击手牌中的装备卡可自动安装到木筏空格，合并升级需 1 AP。\n· 战斗中双击最右侧的「攻击」或「防御」卡牌可直接以当前组合快速迎击。"
 	tip_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	tip_body.add_theme_font_size_override("font_size", 12)
 	tip_body.add_theme_color_override("font_color", Color("9ab0be"))

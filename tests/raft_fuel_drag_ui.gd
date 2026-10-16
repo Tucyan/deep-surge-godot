@@ -32,7 +32,7 @@ func run() -> void:
 			await drag(card.uid,interaction().surface.screen_point(app.session.state.cells[1]),scale_value>1.0)
 			check(app.session.I.count(app.session.state,material)==app.session.I.count(before.state,material)-1,"Drop spends exactly one fuel card, including stacks")
 			check(not app.session.state.hand.any(func(c):return c.uid==card.uid),"Drop consumes the dragged UID")
-			check(app.session.state.cells[1].equipment.fuel==before.state.cells[1].equipment.fuel+(1 if material=="wood" else 3),"Existing wood/corpse fuel value preserved")
+			check(app.session.state.cells[1].equipment.fuel==before.state.cells[1].equipment.fuel+(2 if material=="wood" else 3),"Existing wood/corpse fuel value preserved")
 			check(app.session.state.ap==before.state.ap,"Refueling costs no AP")
 		await click(interaction().surface.screen_point(app.session.state.cells[1]))
 		check(is_instance_valid(interaction().surface.selected),"Lamp cell selects")

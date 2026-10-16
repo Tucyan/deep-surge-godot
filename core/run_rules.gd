@@ -8,49 +8,7 @@ const Stats = preload("res://core/run_statistics.gd")
 const PHASES := ["navigation","preparation","story","interaction","battle","aftermath","discard","finished","nightHub","chapterComplete"]
 
 static func candidates(ctx) -> void:
-	if ctx.Campaign.fixed_candidate(ctx): return
-	var s: Dictionary = ctx.state
-	s.candidates = []
-	var ids: Array = []
-	if s.voyage == s.length:
-		ids = ["boss"]
-	else:
-		for id in s.pool:
-			if id not in ids: ids.append(id)
-		ids.sort()
-		var safe: Array = ids.filter(func(id): return ctx.catalog.entry("nodes",id).kind not in ["battle","ruin"])
-		var selected: Array = []
-		if not safe.is_empty():
-			selected.append(weighted_node(ctx,safe))
-			ids.erase(selected[0])
-		while selected.size() < 3 and not ids.is_empty():
-			var id: String = weighted_node(ctx,ids)
-			selected.append(id); ids.erase(id)
-		ids = selected
-	for id in ids:
-		var node: Dictionary = ctx.catalog.entry("nodes",id)
-		if node.has("variants") and not node.variants.is_empty():
-			var variant: Dictionary = R.pick(s.rng,"nodes",node.variants)
-			node.merge(variant,true); node.id = id
-			node.variant_id = variant.id
-		node.erase("variants")
-		node.visit_id = "candidate-%d" % s.next_id
-		s.next_id += 1
-		s.candidates.append(node)
-
-static func weighted_node(ctx, ids: Array) -> String:
-	var weights: Array = []
-	var total := 0.0
-	for id in ids:
-		var copies: int = ctx.state.pool.count(id)
-		var weight: float = float(copies) / (1 + 3 * int(ctx.state.visits.get(id,0)))
-		if ctx.state.get("last_node","") == id: weight *= 0.25
-		weights.append(weight); total += weight
-	var roll: float = R.draw(ctx.state.rng,"nodes") * total
-	for i in range(ids.size()):
-		roll -= weights[i]
-		if roll < 0: return ids[i]
-	return ids[-1]
+	ctx.Encounter.candidates(ctx)
 
 static func refresh_voyage_ap(ctx) -> void:
 	var s: Dictionary = ctx.state
@@ -63,7 +21,9 @@ static func voyage(ctx, id: String) -> bool:
 	for candidate in s.candidates:
 		if candidate.visit_id == id: node = candidate.duplicate(true)
 	if node.is_empty(): return ctx.fail("目标不在本轮候选中")
+	if not ctx.Encounter.eligible(ctx,node): return ctx.fail("此节点尚未开放、已经历或仍在冷却")
 	s.node = node; s.candidates = []
+	ctx.Encounter.arrived(ctx)
 	if not node.get("boss",false) and ctx.catalog.entry("story_nodes",node.id).is_empty(): s.pool.erase(node.id)
 	s.visits[node.id] = int(s.visits.get(node.id,0)) + 1
 	s.last_node = node.id
@@ -102,51 +62,10 @@ static func advance(ctx) -> bool:
 	return ctx.fail("当前必须手动选择，不能跳过")
 
 static func option_reason(ctx, option: Dictionary) -> String:
-	if option.has("special"):
-		return "该特殊机制尚未接入：" + option.special
-	if option.has("randomCardCost") or option.has("detachCell"):
-		return "随机投入/筏格献祭尚未接入"
-	var effect_list: Array = option.get("effects",[]).duplicate(true)
-	for outcome in option.get("outcomes",[]): effect_list.append_array(outcome.get("effects",[]))
-	for effect in effect_list:
-		if effect.type == "AddBuff" and effect.id != "rested": return "此环境效果尚未接入："+effect.id
-	if int(option.get("cost",0)) > ctx.state.ap: return "基地AP不足"
-	for id in option.get("cardCosts",{}):
-		if I.count(ctx.state,id) < int(option.cardCosts[id]): return "材料不足：" + ctx.catalog.entry("cards",id).name
-	for stat in option.get("statCosts",{}):
-		if int(ctx.state.player[stat]) <= int(option.statCosts[stat]): return "支付后属性必须至少保留1"
-	return ""
+	return ctx.Encounter.reason(ctx,option)
 
 static func option(ctx, id: String) -> bool:
-	var s: Dictionary = ctx.state
-	if ctx.phase() != "story" or s.story_step != "choice": return false
-	var chosen := {}
-	for entry in s.node.get("options",[]):
-		if entry.id == id: chosen = entry
-	if chosen.is_empty(): return ctx.fail("选项不属于当前剧情")
-	var reason := option_reason(ctx,chosen)
-	if not reason.is_empty(): return ctx.fail(reason)
-	ctx.log_text("选择："+chosen.name)
-	var crisis_success: bool = id!="leave"
-	s.ap -= int(chosen.get("cost",0))
-	for card_id in chosen.get("cardCosts",{}): I.consume(s,card_id,int(chosen.cardCosts[card_id]),"event")
-	for stat in chosen.get("statCosts",{}): ctx.change(stat,-int(chosen.statCosts[stat]))
-	if not effects(ctx,chosen.get("effects",[])): return false
-	if chosen.has("outcomes") and ctx.active():
-		var total := 0.0
-		for outcome in chosen.outcomes: total += float(outcome.weight)
-		var roll: float = R.draw(s.rng,"rewards") * total
-		for outcome in chosen.outcomes:
-			roll -= float(outcome.weight)
-			if roll < 0:
-				if not effects(ctx,outcome.effects): return false
-				# The reviewed storm hold failure branch supplies iron but damages a cell.
-				if s.node.id=="storm" and s.node.get("variant_id","")=="hold":
-					crisis_success=outcome.effects.filter(func(effect): return effect.type=="DamageCell").is_empty()
-				break
-	if s.node.id=="storm": Stats.resolve_crisis(s,crisis_success and ctx.phase()!="finished")
-	if ctx.active(): ctx.result_story("%s：%s" % [s.node.name,chosen.description])
-	return true
+	return ctx.Encounter.option(ctx,{"id":id})
 
 static func effects(ctx, list: Array) -> bool:
 	for effect in list:
@@ -301,18 +220,7 @@ static func play(ctx, args: Dictionary) -> bool:
 	return true
 
 static func buy(ctx, args: Dictionary) -> bool:
-	if ctx.phase() != "interaction": return false
-	var item: Dictionary = ctx.catalog.entry("shops",args.get("id",""))
-	if item.is_empty(): return ctx.fail("未知商品")
-	if item.has("relic"): return ctx.fail("藏品行为尚未完整接入，暂不出售")
-	var price: int = int(item.price)
-	if int(ctx.profile.purchases.get("coupon",0)) > 0 and price > 1: price -= 1
-	var payment: String = args.get("payment","coin")
-	if payment not in ["coin","corpse"]: return false
-	var amount: int = price if payment == "coin" else ceili(float(price)/2.0)
-	if not I.consume(ctx.state,payment,amount,"shop"): return ctx.fail("支付物资不足")
-	ctx.give(item.card,1,false,"shop"); ctx.log_text("购买"+item.name)
-	return true
+	return ctx.Shop.buy(ctx,args)
 
 static func raft_action(ctx, command: String, args: Dictionary) -> bool:
 	if not ctx.base_action(): return false
@@ -362,6 +270,20 @@ static func raft_action(ctx, command: String, args: Dictionary) -> bool:
 		Stats.card(ctx.state,card.id,"used",1,"action",card.uid)
 		if definition.get("targetOperation","")=="dismantle": Stats.increment(ctx.state,"dismantles")
 		ctx.log_text("使用"+definition.name)
+		return true
+	if command == "dismantle":
+		if cell.equipment.is_empty(): return ctx.fail("没有可拆除的设备")
+		if ctx.state.ap < 1: return ctx.fail("拆除设备需要AP1")
+		var recipe: Dictionary = ctx.catalog.entry("recipes", cell.equipment.id)
+		var material: String = args.get("material", "")
+		if material == "" and not recipe.is_empty() and not recipe.ingredients.is_empty():
+			material = recipe.ingredients.keys()[0]
+		ctx.state.ap -= 1
+		cell.equipment = {}
+		if material != "":
+			ctx.give(material, 1, false, "dismantle")
+		Stats.increment(ctx.state, "dismantles")
+		ctx.log_text("拆除设备" + (("并回收" + ctx.catalog.entry("cards", material).name) if material != "" else ""))
 		return true
 	if command == "install":
 		var card: Dictionary = I.find(ctx.state,args.get("uid",""))
@@ -443,7 +365,7 @@ static func raft_action(ctx, command: String, args: Dictionary) -> bool:
 			if fuel_card.is_empty() or fuel_card.id!=material or fuel_card.temporary: return ctx.fail("燃料不足")
 			I.remove(ctx.state,args.uid,"cost_consumed")
 		elif not I.consume(ctx.state,material,1,"fuel"): return ctx.fail("燃料不足")
-		cell.equipment.fuel += 1 if material == "wood" else 3
+		cell.equipment.fuel += 2 if material == "wood" else 3
 		ctx.log_text("投入燃料："+ctx.catalog.entry("cards",material).name)
 		return true
 	if command == "heal":
@@ -507,13 +429,13 @@ static func next_voyage(ctx) -> void:
 	if s.voyage == s.length:
 		ctx.finish("survived" if s.boss_defeated else "withdrawn")
 		return
-	s.voyage += 1; s.phase = "navigation"; s.node = {}; s.battle = {}; ctx.panel = ""
+	s.voyage += 1; s.phase = "navigation"; s.node = {}; s.battle = {}; s.encounter = {}; ctx.panel = ""
 	refresh_voyage_ap(ctx)
 	produce_at_round_start(ctx)
 	ctx.give("wood",1,false,"spring")
-	for i in range(3): ctx.give(R.pick(s.rng,"initial",I.RESOURCES),1,false,"spring")
+	ctx.give(R.pick(s.rng,"initial",I.RESOURCES),1,false,"spring")
 	candidates(ctx)
-	ctx.log_text("领取本轮涌泉：固定木头1份＋随机基础资源3张（可含木头）；开放导航。")
+	ctx.log_text("领取本轮涌泉：固定木头1份＋随机基础资源1张（可含木头）；开放导航。")
 
 static func discard(ctx, uid: String) -> bool:
 	if ctx.phase() != "discard" or I.capacity(ctx.state) <= I.hand_limit(ctx.state,ctx.catalog): return false
@@ -655,8 +577,9 @@ static func valid_save(ctx, data: Dictionary) -> bool:
 	for node in s.candidates:
 		if not node is Dictionary or not node.has("visit_id"): return false
 		if not valid_node(ctx,node,s.mode,false,false): return false
+		if s.phase=="navigation" and not ctx.Encounter.eligible(ctx,node,s): return false
 	if current and s.phase=="battle" and (not integer(s.battle.get("turn")) or s.battle.turn<1 or not integer(s.battle.get("hp")) or s.battle.hp<0 or not integer(s.battle.get("ap")) or s.battle.ap<0): return false
-	return ctx.Campaign.valid_save(ctx,s)
+	return ctx.Encounter.valid_state(ctx,s) and ctx.Shop.valid_state(ctx,s,p) and ctx.Campaign.valid_save(ctx,s)
 
 static func uid_suffix(uid: String,prefix: String) -> int:
 	if not uid.begins_with(prefix): return 0

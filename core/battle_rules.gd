@@ -5,15 +5,19 @@ const Stats = preload("res://core/run_statistics.gd")
 const R = preload("res://core/random_streams.gd")
 const COMBO := {"wood":{"attack":{"damage":0,"shield":1},"block":{"shield":2}},"iron":{"attack":{"damage":1},"block":{"shield":1,"counter":1}},"rope":{"attack":{"damage":0,"enemy_damage_delta":-1},"block":{"bind":true}},"plastic":{"block":{"shield":1,"extend":true}},"cloth":{"block":{"shield":0,"clean":true}}}
 
-static func enter(ctx) -> bool:
+static func enter(ctx, enemy_id: String = "", rewards: Dictionary = {}) -> bool:
 	var s: Dictionary = ctx.state
-	if ctx.phase() != "story" or s.story_step != "choice" or not s.node.has("monster"): return false
-	var enemy: Dictionary = ctx.catalog.entry("enemies",s.node.monster)
-	var raft_target := biter_target(ctx) if s.node.monster=="biter" else ""
-	s.battle = {"id":s.node.monster, "hp":int(enemy.hp), "turn":1, "ap":s.player.battle_ap, "entry_hp":s.player.hp, "poison_until":0, "fear_until":0, "shields":[],"raft_target_cell":raft_target}
+	if ctx.phase() != "story" or s.story_step != "choice": return false
+	if enemy_id=="": enemy_id=s.node.get("monster","")
+	var enemy: Dictionary = ctx.catalog.entry("enemies",enemy_id)
+	if enemy.is_empty(): return ctx.fail("没有可迎战的敌人")
+	var raft_target := biter_target(ctx) if enemy_id=="biter" else ""
+	s.battle = {"id":enemy_id, "hp":int(enemy.hp), "turn":1, "ap":s.player.battle_ap, "entry_hp":s.player.hp, "poison_until":0, "fear_until":0, "shields":[],"raft_target_cell":raft_target}
+	if not rewards.is_empty(): s.battle.rewards=rewards.duplicate(true)
 	s.phase = "battle"; ctx.panel = "battle"
+	Stats.accept_crisis(s)
 	Stats.battle_start(s)
-	ctx.discover("enemy."+s.node.monster)
+	ctx.discover("enemy."+enemy_id)
 	# Old saves could contain the repeatable punch card. It is now a free action.
 	for card in s.hand.duplicate(true):
 		if card.id == "punch": I.remove(s,card.uid,"cleared")
@@ -96,10 +100,11 @@ static func consume_boost(state: Dictionary, uid: String) -> void:
 static func victory(ctx) -> void:
 	var s: Dictionary = ctx.state
 	Stats.battle_result(s,"won")
-	ctx.give("coin",5 if s.node.get("boss",false) else 2); ctx.give("corpse")
-	var drops := 3 if s.node.get("difficulty", "") in ["hard","boss"] or s.node.get("boss",false) else 2
+	var rewards: Dictionary=s.battle.get("rewards",{})
+	ctx.give("coin",int(rewards.get("coin",5 if s.node.get("boss",false) else (2 if s.node.get("difficulty", "") in ["hard","boss"] else 1)))); ctx.give("corpse",int(rewards.get("corpse",1)))
+	var drops: int = int(rewards.get("resources",2 if s.node.get("difficulty", "") in ["hard","boss"] or s.node.get("boss",false) else 1))
 	for i in range(drops): ctx.give(R.pick(s.rng,"rewards",I.RESOURCES),1,false,"battle_reward")
-	s.xp += 20 if s.node.get("boss",false) else 5
+	s.xp += int(rewards.get("xp",20 if s.node.get("boss",false) else 5))
 	while s.xp >= 5:
 		s.xp -= 5; s.level += 1
 		if (int(s.level)-1) % Health.LEVEL_INTERVAL == 0: s.player.hp_max += 1
@@ -174,7 +179,7 @@ static func end_turn(ctx) -> bool:
 		elif s.battle.id == "jelly": s.battle.bound_poison = true
 		else: direct_damage = maxi(0,direct_damage-2)
 	direct_damage=maxi(0,direct_damage+int(s.battle.get("enemy_damage_delta",0)))
-	var counter_hit: bool=s.battle.get("counter_ready",false) and s.battle.id in ["biter","crab"]
+	var counter_hit: bool=s.battle.get("counter_ready",false) and s.battle.id in ["biter","crab","crab_elite"]
 	s.battle.counter_ready=false
 	if s.battle.id == "biter" and not s.battle.get("bound_biter",false): damage_raft_cell(s)
 	var soaked: int = absorb_shields(s,direct_damage)

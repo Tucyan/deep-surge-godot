@@ -5,7 +5,7 @@
       "path": "res://pages/settlement_page.gd",
       "source": "project-authored/native-Godot-settlement-v1",
       "version": 3,
-      "sha256": "e53ca5c765d18b04c9afc39d4243aa5fbff3719e2c75aac173fe35d70181d388",
+      "sha256": "b537227d2a79921f2e508bfe447609469302451c5dc261cbcabfdaa5903bb6b2",
       "dependencies": [
         "res://pages/flow_base.gd",
         "res://presentation/widgets.gd"
@@ -1135,8 +1135,8 @@
     "ui.hand.fan": {
       "path": "res://presentation/hand_fan.gd",
       "source": "presentation/hand_fan.gd",
-      "version": 16,
-      "sha256": "c8f0098c41e90ae0431d162a69f89276ca268f14b458e46ad29cede6a63eb2f1",
+      "version": 17,
+      "sha256": "49a3060dc38db4bd38d92e5b31f0838463b2efbff4aeb074a77c3f97a2bf2d82",
       "dependencies": [
         "shader.ui.hand-glass",
         "ui.hand.border",
@@ -1398,7 +1398,7 @@
     "ui.hud.story-adapter": {
       "path": "res://pages/flow_story.gd",
       "version": 2,
-      "sha256": "109eaf87ae2b3e4064e534aab9e61828ba78421866cf972f6d2f3b6a3446ca85",
+      "sha256": "d8804f73a794e57d15e6916568e3b0d92d61b57bdce0f06eb6c8d59b3cb4a471",
       "source": [
         "asset-sources/hud-visual-v2/deep_surge_hud_godot4_v2_visual_match.zip",
         "pages/flow_story.gd"
@@ -1969,7 +1969,7 @@
     "ui.node-event.embedded": {
       "path": "res://pages/flow_story.gd",
       "source": "pages/flow_story.gd",
-      "sha256": "109eaf87ae2b3e4064e534aab9e61828ba78421866cf972f6d2f3b6a3446ca85",
+      "sha256": "d8804f73a794e57d15e6916568e3b0d92d61b57bdce0f06eb6c8d59b3cb4a471",
       "version": 3,
       "dependencies": [],
       "presentation": "full-screen translucent backdrop below HUD; fixed right-side frame extending to hand area displays intro then choices then result; native text/buttons"
@@ -2949,6 +2949,24 @@
       "dependencies": [],
       "status": "offline-asset-pipeline",
       "license": "project-authored"
+    },
+    "ui.formal-shop": {
+      "path": "res://pages/shop_page.gd",
+      "source": "project-authored/native-Godot-formal-shop-v11",
+      "version": 1,
+      "sha256": "53fb4d3a77e68c981653c9ab23a316f8a60570123399d34af299b02d25e1a6c8",
+      "dependencies": [
+        "res://pages/flow_base.gd",
+        "res://presentation/widgets.gd",
+        "res://core/shop_rules.gd"
+      ],
+      "runtime_mapping": {
+        "entry": "flow_app.gd interaction shop route",
+        "resources": "shared 2^N base price, independent stock limits",
+        "sell": "corpse 2 coins; other eligible cards 1; basic materials excluded"
+      },
+      "license": "project-authored native UI; no external artwork",
+      "source_hash_verified_on": "2026-10-16"
     }
   }
 }

@@ -13,7 +13,7 @@ const LABELS := {
 	"device_uses":"设备生效次数","produced":"设备产出份数","repairs":"修补次数","salvages":"打捞次数","transmutes":"转化次数","expansions":"新增筏格","installations":"安装设备","upgrades":"升级设备","equipment_removed":"设备移除","dismantles":"拆除设备次数","base_ap_spent":"基地行动点支出","battle_ap_spent":"战斗行动点支出","damage":"有效伤害","damage_dealt":"造成有效伤害","damage_taken":"受到实际伤害","battle_turns":"战斗回合","battle_rounds":"结束战斗回合数","pollution_cleared":"清除负面",
 	"won":"胜利","victory":"胜利","unfinished":"未结束","protected":"保护败退","retreated":"战斗撤退","lost":"损失","dead":"沉入深潮","mad":"迷失潮声","withdrawn":"离开潮眼","survived":"灯火未熄","true":"回声归航","A":"成功封闭","B":"付出代价后处理","C":"紧急撤离","SOLO":"独航出口",
 	"granted":"实际入账","pending":"尚未入账","bonus":"评分奖励","completed":"完成节点","length":"目标节点","goal":"达成目标","events_entered":"进入事件危机","events_won":"解决事件危机","battles_entered":"实际入战","battles_won":"战斗胜利","tags":"成果标签","cells":"初始筏格保全比例","p":"推进比例","h":"生命比例","s":"精神比例","c":"筏格保全比例",
-	"success":"达成目标","resolved":"已处理","turns":"实际战斗回合","outcome":"结果","name":"名称","kind":"类型","obtained":"获得","used":"使用","use_consumed":"使用消耗","cost_consumed":"费用消耗","deployed":"部署转出","cleared":"临时清理","remaining":"留存"
+	"success":"达成目标","resolved":"已处理","turns":"实际战斗回合","outcome":"结果","name":"名称","kind":"类型","obtained":"获得","used":"使用","use_consumed":"使用消耗","cost_consumed":"费用消耗","deployed":"部署转出","cleared":"临时清理","remaining":"留存","sold":"出售","stopped":"主动收手","fallback_visits":"补给回退次数"
 }
 const EXTRA_LABELS := {"equipment_merge":"设备合并","equipment_dismantle":"主动拆除设备","equipment_loss":"设备非自愿损失","recovery_overflow":"恢复溢出","night":"夜间行动","system":"航次结算","final_plan":"章节方案投入","seal":"封闭潮眼","tow":"拖离装置","evacuate":"紧急撤离","flee":"紧急撤离","exit":"继续独航","solo_exit":"继续独航","solo":"独航路线","scholar":"学者分队路线","active":"进行中","completed":"已完成","restored":"实际恢复","overflow":"溢出","outputs":"实际产物","lamp":"灯","water":"淡水","wood":"木头","rope":"绳索","cloth":"布条","plastic":"塑料","iron":"废铁"}
 var report: Dictionary = {}
@@ -164,7 +164,7 @@ func _detail_lines() -> Array[String]:
 			if cards is Array:
 				for card in cards:
 					if not card is Dictionary: continue
-					result.append("%s [%s]  获得 %s · 使用 %s · 使用消耗 %s · 费用 %s\n部署 %s · 弃置 %s · 损失 %s · 清理 %s · 留存 %s" % [_value(card,"name"),_label(_value(card,"kind")),_value(card,"obtained"),_value(card,"used"),_value(card,"use_consumed"),_value(card,"cost_consumed"),_value(card,"deployed"),_value(card,"discarded"),_value(card,"lost"),_value(card,"cleared"),_value(card,"remaining")])
+					result.append("%s [%s]  获得 %s · 使用 %s · 使用消耗 %s · 费用 %s\n部署 %s · 弃置 %s · 损失 %s · 清理 %s · 出售 %s · 留存 %s" % [_value(card,"name"),_label(_value(card,"kind")),_value(card,"obtained"),_value(card,"used"),_value(card,"use_consumed"),_value(card,"cost_consumed"),_value(card,"deployed"),_value(card,"discarded"),_value(card,"lost"),_value(card,"cleared"),_value(card,"sold"),_value(card,"remaining")])
 					if card.has("remaining_permanent") or card.has("remaining_temporary"): result.append("永久留存 %s · 临时留存 %s" % [_value(card,"remaining_permanent"),_value(card,"remaining_temporary")])
 					result.append("来源：%s  ｜  去向原因：%s" % [_display(card.get("sources",null)),_display(card.get("reasons",null))])
 		2:

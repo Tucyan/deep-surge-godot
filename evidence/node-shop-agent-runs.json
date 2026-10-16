@@ -1,0 +1,38 @@
+[
+  {
+    "completed": 12,
+    "outcome": "survived",
+    "phase": "finished",
+    "terminal": true,
+    "seed": 22,
+    "mode": "challenge",
+    "steps": 166,
+    "replayed": 166,
+    "errors": [],
+    "trace": "node-shop-challenge-22.trace.json"
+  },
+  {
+    "completed": 11,
+    "outcome": "dead",
+    "phase": "finished",
+    "terminal": true,
+    "seed": 0,
+    "mode": "challenge",
+    "steps": 150,
+    "replayed": 150,
+    "errors": [],
+    "trace": "node-shop-challenge-0.trace.json"
+  },
+  {
+    "completed": 15,
+    "outcome": "",
+    "phase": "chapterComplete",
+    "terminal": true,
+    "seed": 22,
+    "mode": "story",
+    "steps": 278,
+    "replayed": 278,
+    "errors": [],
+    "trace": "node-shop-story-22.trace.json"
+  }
+]

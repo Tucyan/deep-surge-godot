@@ -17,7 +17,7 @@ func _init() -> void:
 	s.state.player.hp=11; s.give("medkit")
 	check(s.dispatch("play",{"uid":s.state.hand[-1].uid}) and s.state.player.hp==12,"healing cannot exceed cap")
 	s=session(); s.state.phase="story"; s.state.story_step="choice"; s.state.node=catalog.entry("nodes","camp"); s.state.player.hp=1
-	check(s.dispatch("option",{"id":"rest"}) and s.state.player.hp==7,"camp heals six")
+	check(s.dispatch("option",{"id":"rest"}) and s.state.player.hp==5,"camp heals four (v10 node revision)")
 	s=load("res://core/game_session.gd").new(catalog); s.profile.purchases.body=3
 	check(s.dispatch("new",{"mode":"challenge","origin":"fool","seed":22}) and s.state.player.hp_max==18,"three permanent body ranks add six HP")
 	s=session(); s.state.phase="battle"; s.state.node=catalog.entry("nodes","battle"); s.state.player.hp=2; s.state.level=3

@@ -1,8 +1,8 @@
 extends RefCounted
 ## Serializable facts written inside the same transaction as their effects.
 const VERSION := "run-stats-v1"
-const CARD_FIELDS := ["obtained","used","use_consumed","cost_consumed","deployed","discarded","lost","cleared"]
-const GAME_COMMANDS := ["voyage","enter","advance","skip","option","shop_enter","shop_leave","buy","fight","leave_encounter","play","battle_action","claim_boost","boost_device","battle_end","retreat","craft","salvage","transmute","install","fuel","repair_cell","heal","expand","upgrade","action_card","end_voyage","night_actions","night_action","night_ack","finish_night","accept_quest","submit_quest","night_exchange","discard","abandon"]
+const CARD_FIELDS := ["obtained","used","use_consumed","cost_consumed","deployed","discarded","lost","cleared","sold"]
+const GAME_COMMANDS := ["voyage","enter","advance","skip","option","shop_enter","shop_leave","buy","sell","fight","leave_encounter","play","battle_action","claim_boost","boost_device","battle_end","retreat","craft","salvage","transmute","install","fuel","repair_cell","heal","expand","upgrade","action_card","dismantle","end_voyage","night_actions","night_action","night_ack","finish_night","accept_quest","submit_quest","night_exchange","discard","abandon"]
 
 static func initialize(state: Dictionary, complete: bool = true) -> void:
 	var initial: Array = []
@@ -65,14 +65,20 @@ static func enter_crisis(state: Dictionary) -> void:
 	var id: String = state.node.get("visit_id","")
 	# Explicit mapping: trade/rest/supply are not crises. Combat nodes and storm
 	# have reviewed success/leave exits; final story's three paid plans are handled below.
-	if state.node.has("monster") or state.node.get("id","") in ["storm","ST.L1.F15"]:
+	if state.node.has("monster") or state.node.get("id","")=="ST.L1.F15":
 		if not state.stats.crises.has(id): state.stats.crises[id]={"success":false,"resolved":false,"id":state.node.id}
 
-static func resolve_crisis(state: Dictionary, success: bool) -> void:
+static func accept_crisis(state: Dictionary) -> void:
+	if not state.has("stats"): return
+	var id: String=state.node.get("visit_id","")
+	if not state.stats.crises.has(id): state.stats.crises[id]={"success":false,"resolved":false,"id":state.node.id,"outcome":"active"}
+
+static func resolve_crisis(state: Dictionary, success: bool, outcome: String = "") -> void:
 	if not state.has("stats"): return
 	var id: String = state.node.get("visit_id","")
 	if state.stats.crises.has(id):
 		state.stats.crises[id].success=success; state.stats.crises[id].resolved=true
+		state.stats.crises[id].outcome=outcome if outcome!="" else ("success" if success else "failed")
 		record(state,"crisis",{"success":success})
 
 static func battle_start(state: Dictionary) -> void:
@@ -115,7 +121,7 @@ static func commit(state: Dictionary, before: Dictionary, command: String, args:
 	if command=="heal": device_used(state,"medkit",args.get("cell",""))
 	if command=="submit_quest": tag(state,"quest")
 	if command=="night_action" and args.get("id","")!="rest": tag(state,"investigation")
-	if command=="action_card":
+	if command in ["action_card","option"]:
 		for old in before.get("cells",[]):
 			for cell in state.cells:
 				if old.id==cell.id and old.status=="damaged" and cell.status=="intact": increment(state,"repairs")
