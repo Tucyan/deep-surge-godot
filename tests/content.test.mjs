@@ -95,7 +95,7 @@ test('卡牌费用与效果仅允许已列明的修订', () => {
     if (expected.kind === 'equipment') expected.cost = 0; // prior free-install revision
     if (id === 'spear') expected.damage = 3; // prior spear revision
     if (id === 'medkit') Object.assign(expected, {kind:'survival',cost:0,effects:[{type:'ChangeCurrent',stat:'hp',delta:3}]});
-    if (id === 'pollution') expected.heldEffects[0].delta=-1;
+    if (id === 'pollution') { expected.heldEffects[0].delta = -1; expected.cost = 1; }
     assert.ok(cards[id], `缺少既有卡牌 ${id}`);
     const actual = withoutText(cards[id]);
     // Punch's old return trait no longer represents an ordinary hand card.

@@ -4,10 +4,10 @@
     "mode": "challenge",
     "seed": 22,
     "phase": "finished",
-    "outcome": "dead",
-    "completed": 11,
-    "steps": 128,
-    "replayed": 128,
+    "outcome": "survived",
+    "completed": 12,
+    "steps": 137,
+    "replayed": 137,
     "environments": [
       "fog2"
     ],
@@ -24,8 +24,8 @@
     "phase": "finished",
     "outcome": "survived",
     "completed": 12,
-    "steps": 135,
-    "replayed": 135,
+    "steps": 134,
+    "replayed": 134,
     "environments": [
       "bloodMoon",
       "current"
@@ -39,10 +39,10 @@
     "mode": "challenge",
     "seed": 9,
     "phase": "finished",
-    "outcome": "dead",
-    "completed": 11,
-    "steps": 128,
-    "replayed": 128,
+    "outcome": "survived",
+    "completed": 12,
+    "steps": 135,
+    "replayed": 135,
     "environments": [
       "bloodMoon"
     ],
@@ -55,10 +55,10 @@
     "mode": "challenge",
     "seed": 73,
     "phase": "finished",
-    "outcome": "dead",
-    "completed": 11,
-    "steps": 127,
-    "replayed": 127,
+    "outcome": "survived",
+    "completed": 12,
+    "steps": 135,
+    "replayed": 135,
     "environments": [
       "bloodMoon",
       "current",
@@ -76,10 +76,10 @@
     "mode": "challenge",
     "seed": 1000,
     "phase": "finished",
-    "outcome": "dead",
-    "completed": 11,
-    "steps": 132,
-    "replayed": 132,
+    "outcome": "survived",
+    "completed": 12,
+    "steps": 141,
+    "replayed": 141,
     "environments": [
       "bloodMoon",
       "fog1"
@@ -95,10 +95,10 @@
     "mode": "challenge",
     "seed": 7919,
     "phase": "finished",
-    "outcome": "dead",
-    "completed": 9,
-    "steps": 107,
-    "replayed": 107,
+    "outcome": "survived",
+    "completed": 10,
+    "steps": 115,
+    "replayed": 115,
     "environments": [
       "fog1"
     ],
@@ -115,8 +115,8 @@
     "phase": "finished",
     "outcome": "dead",
     "completed": 10,
-    "steps": 114,
-    "replayed": 114,
+    "steps": 116,
+    "replayed": 116,
     "environments": [
       "fog1"
     ],
@@ -169,8 +169,8 @@
     "phase": "finished",
     "outcome": "dead",
     "completed": 11,
-    "steps": 118,
-    "replayed": 118,
+    "steps": 119,
+    "replayed": 119,
     "environments": [
       "fog2"
     ],

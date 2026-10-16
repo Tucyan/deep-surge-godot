@@ -1,5 +1,5 @@
 {
-  "standard": {"name":"标准","hp":12,"hunger":40,"hydration":40,"sanity":80,"starting_cards":5,"negative_chance":0.1875,"positive_chance":0.0625,"enemy_bonus":0.0,"boss_bonus":0.0},
-  "hard": {"name":"困难","hp":10,"hunger":35,"hydration":35,"sanity":65,"starting_cards":4,"negative_chance":0.30,"positive_chance":0.0625,"enemy_bonus":0.25,"boss_bonus":0.40},
-  "nightmare": {"name":"噩梦","hp":8,"hunger":30,"hydration":30,"sanity":50,"starting_cards":3,"negative_chance":0.45,"positive_chance":0.0625,"enemy_bonus":0.50,"boss_bonus":0.80}
+  "standard": {"name":"标准","hp":12,"hunger":40,"hydration":40,"sanity":80,"starting_cards":5,"negative_chance":0.1875,"positive_chance":0.0625,"enemy_bonus":0.0,"boss_bonus":0.0,"boss_damage_bonus":0.0},
+  "hard": {"name":"困难","hp":10,"hunger":35,"hydration":35,"sanity":65,"starting_cards":4,"negative_chance":0.30,"positive_chance":0.0625,"enemy_bonus":0.25,"boss_bonus":0.40,"boss_damage_bonus":0.40},
+  "nightmare": {"name":"噩梦","hp":8,"hunger":30,"hydration":30,"sanity":50,"starting_cards":3,"negative_chance":0.45,"positive_chance":0.0625,"enemy_bonus":0.50,"boss_bonus":0.80,"boss_damage_bonus":0.50}
 }

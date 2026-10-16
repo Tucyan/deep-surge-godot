@@ -1,0 +1,1269 @@
+[
+  {
+    "seed": 73552680,
+    "difficulty": "nightmare",
+    "origin": "restless",
+    "mode": "challenge",
+    "outcome": "dead",
+    "completed_voyages": 14,
+    "total_steps": 198,
+    "trace_len": 198,
+    "trace_file": "agent-restless-nightmare-73552680.trace.json",
+    "final_stats": {
+      "base_ap": 4,
+      "battle_ap": 4,
+      "damage": 0,
+      "hp": 0,
+      "hp_max": 8,
+      "hunger": 40,
+      "hunger_max": 100,
+      "hydration": 90,
+      "hydration_max": 100,
+      "limit": 10,
+      "sanity": 52,
+      "sanity_max": 100
+    },
+    "devices": [
+      "lamp(Lv1)",
+      "filter(Lv2)",
+      "crossbow(Lv1)",
+      "fishingNet(Lv2)",
+      "planter(Lv2)"
+    ],
+    "voyage_history": [
+      {
+        "voyage": 1,
+        "hp": 8,
+        "hp_max": 8,
+        "hunger": 30,
+        "hydration": 30,
+        "sanity": 50,
+        "coins": 0,
+        "cells": 4,
+        "devices": [],
+        "environments": [],
+        "hand_count": 5
+      },
+      {
+        "voyage": 2,
+        "hp": 8,
+        "hp_max": 8,
+        "hunger": 20,
+        "hydration": 20,
+        "sanity": 55,
+        "coins": 0,
+        "cells": 4,
+        "devices": [],
+        "environments": [
+          "fog1"
+        ],
+        "hand_count": 11
+      },
+      {
+        "voyage": 3,
+        "hp": 7,
+        "hp_max": 8,
+        "hunger": 30,
+        "hydration": 0,
+        "sanity": 40,
+        "coins": 0,
+        "cells": 4,
+        "devices": [
+          "lamp(Lv1)"
+        ],
+        "environments": [
+          "fog1"
+        ],
+        "hand_count": 12
+      },
+      {
+        "voyage": 4,
+        "hp": 5,
+        "hp_max": 8,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 40,
+        "coins": 0,
+        "cells": 4,
+        "devices": [
+          "lamp(Lv1)"
+        ],
+        "environments": [
+          "fog1",
+          "confusion"
+        ],
+        "hand_count": 12
+      },
+      {
+        "voyage": 5,
+        "hp": 3,
+        "hp_max": 8,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 40,
+        "coins": 0,
+        "cells": 4,
+        "devices": [
+          "lamp(Lv1)",
+          "filter(Lv1)",
+          "crossbow(Lv1)"
+        ],
+        "environments": [
+          "confusion"
+        ],
+        "hand_count": 11
+      },
+      {
+        "voyage": 6,
+        "hp": 1,
+        "hp_max": 8,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 40,
+        "coins": 0,
+        "cells": 4,
+        "devices": [
+          "lamp(Lv1)",
+          "filter(Lv1)",
+          "crossbow(Lv1)",
+          "fishingNet(Lv1)"
+        ],
+        "environments": [
+          "fog1"
+        ],
+        "hand_count": 14
+      },
+      {
+        "voyage": 7,
+        "hp": 6,
+        "hp_max": 8,
+        "hunger": 0,
+        "hydration": 10,
+        "sanity": 40,
+        "coins": 0,
+        "cells": 4,
+        "devices": [
+          "lamp(Lv1)",
+          "filter(Lv2)",
+          "crossbow(Lv1)",
+          "fishingNet(Lv1)"
+        ],
+        "environments": [
+          "fog1",
+          "bloodMoon"
+        ],
+        "hand_count": 10
+      },
+      {
+        "voyage": 8,
+        "hp": 6,
+        "hp_max": 8,
+        "hunger": 10,
+        "hydration": 20,
+        "sanity": 40,
+        "coins": 0,
+        "cells": 4,
+        "devices": [
+          "lamp(Lv1)",
+          "filter(Lv2)",
+          "crossbow(Lv1)",
+          "fishingNet(Lv1)"
+        ],
+        "environments": [
+          "bloodMoon"
+        ],
+        "hand_count": 14
+      },
+      {
+        "voyage": 9,
+        "hp": 5,
+        "hp_max": 8,
+        "hunger": 0,
+        "hydration": 30,
+        "sanity": 45,
+        "coins": 0,
+        "cells": 4,
+        "devices": [
+          "lamp(Lv1)",
+          "filter(Lv2)",
+          "crossbow(Lv1)",
+          "fishingNet(Lv1)"
+        ],
+        "environments": [],
+        "hand_count": 14
+      },
+      {
+        "voyage": 10,
+        "hp": 7,
+        "hp_max": 8,
+        "hunger": 0,
+        "hydration": 40,
+        "sanity": 45,
+        "coins": 0,
+        "cells": 4,
+        "devices": [
+          "lamp(Lv1)",
+          "filter(Lv2)",
+          "crossbow(Lv1)",
+          "fishingNet(Lv2)"
+        ],
+        "environments": [
+          "fog2"
+        ],
+        "hand_count": 14
+      },
+      {
+        "voyage": 11,
+        "hp": 6,
+        "hp_max": 8,
+        "hunger": 0,
+        "hydration": 50,
+        "sanity": 55,
+        "coins": 0,
+        "cells": 4,
+        "devices": [
+          "lamp(Lv1)",
+          "filter(Lv2)",
+          "crossbow(Lv1)",
+          "fishingNet(Lv2)"
+        ],
+        "environments": [
+          "fog2",
+          "confusion"
+        ],
+        "hand_count": 14
+      },
+      {
+        "voyage": 12,
+        "hp": 5,
+        "hp_max": 8,
+        "hunger": 0,
+        "hydration": 60,
+        "sanity": 60,
+        "coins": 0,
+        "cells": 4,
+        "devices": [
+          "lamp(Lv1)",
+          "filter(Lv2)",
+          "crossbow(Lv1)",
+          "fishingNet(Lv2)"
+        ],
+        "environments": [
+          "confusion",
+          "bloodMoon"
+        ],
+        "hand_count": 14
+      },
+      {
+        "voyage": 13,
+        "hp": 7,
+        "hp_max": 8,
+        "hunger": 0,
+        "hydration": 70,
+        "sanity": 60,
+        "coins": 0,
+        "cells": 4,
+        "devices": [
+          "lamp(Lv1)",
+          "filter(Lv2)",
+          "crossbow(Lv1)",
+          "fishingNet(Lv2)"
+        ],
+        "environments": [
+          "bloodMoon",
+          "fog1"
+        ],
+        "hand_count": 14
+      },
+      {
+        "voyage": 14,
+        "hp": 6,
+        "hp_max": 8,
+        "hunger": 0,
+        "hydration": 40,
+        "sanity": 60,
+        "coins": 0,
+        "cells": 5,
+        "devices": [
+          "lamp(Lv1)",
+          "filter(Lv2)",
+          "crossbow(Lv1)",
+          "fishingNet(Lv2)",
+          "planter(Lv1)"
+        ],
+        "environments": [
+          "fog1",
+          "bloodMoon"
+        ],
+        "hand_count": 14
+      },
+      {
+        "voyage": 15,
+        "hp": 5,
+        "hp_max": 8,
+        "hunger": 0,
+        "hydration": 50,
+        "sanity": 52,
+        "coins": 0,
+        "cells": 5,
+        "devices": [
+          "lamp(Lv1)",
+          "filter(Lv2)",
+          "crossbow(Lv1)",
+          "fishingNet(Lv2)",
+          "planter(Lv1)"
+        ],
+        "environments": [
+          "bloodMoon"
+        ],
+        "hand_count": 15
+      }
+    ],
+    "battles": [
+      {
+        "voyage": 15,
+        "enemy": "boss",
+        "turns": 7,
+        "initial_hp": 5,
+        "final_hp": 1,
+        "actions": [
+          {
+            "turn": 1,
+            "cmd": "play",
+            "args": {
+              "uid": "card-138"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 1,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block",
+              "resource_uid": "card-125"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 1,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block",
+              "resource_uid": "card-88"
+            },
+            "enemy_hp": 32,
+            "ap": 3
+          },
+          {
+            "turn": 1,
+            "cmd": "battle_action",
+            "args": {
+              "action": "attack",
+              "resource_uid": "card-90"
+            },
+            "enemy_hp": 32,
+            "ap": 2
+          },
+          {
+            "turn": 1,
+            "cmd": "battle_action",
+            "args": {
+              "action": "attack",
+              "resource_uid": "card-107"
+            },
+            "enemy_hp": 32,
+            "ap": 1
+          },
+          {
+            "turn": 2,
+            "cmd": "play",
+            "args": {
+              "uid": "card-140"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 2,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block",
+              "resource_uid": "card-127"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 2,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block",
+              "resource_uid": "card-113"
+            },
+            "enemy_hp": 32,
+            "ap": 3
+          },
+          {
+            "turn": 2,
+            "cmd": "play",
+            "args": {
+              "uid": "card-139"
+            },
+            "enemy_hp": 32,
+            "ap": 2
+          },
+          {
+            "turn": 2,
+            "cmd": "battle_action",
+            "args": {
+              "action": "attack",
+              "resource_uid": "card-114"
+            },
+            "enemy_hp": 32,
+            "ap": 1
+          },
+          {
+            "turn": 3,
+            "cmd": "play",
+            "args": {
+              "uid": "card-141"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 3,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 3,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block"
+            },
+            "enemy_hp": 32,
+            "ap": 3
+          },
+          {
+            "turn": 3,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block"
+            },
+            "enemy_hp": 32,
+            "ap": 2
+          },
+          {
+            "turn": 3,
+            "cmd": "battle_action",
+            "args": {
+              "action": "attack"
+            },
+            "enemy_hp": 32,
+            "ap": 1
+          },
+          {
+            "turn": 4,
+            "cmd": "play",
+            "args": {
+              "uid": "card-143"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 4,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 4,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block"
+            },
+            "enemy_hp": 32,
+            "ap": 3
+          },
+          {
+            "turn": 4,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block"
+            },
+            "enemy_hp": 32,
+            "ap": 2
+          },
+          {
+            "turn": 4,
+            "cmd": "play",
+            "args": {
+              "uid": "card-142"
+            },
+            "enemy_hp": 32,
+            "ap": 1
+          },
+          {
+            "turn": 5,
+            "cmd": "play",
+            "args": {
+              "uid": "card-144"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 5,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 5,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block"
+            },
+            "enemy_hp": 32,
+            "ap": 3
+          },
+          {
+            "turn": 5,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block"
+            },
+            "enemy_hp": 32,
+            "ap": 2
+          },
+          {
+            "turn": 5,
+            "cmd": "battle_action",
+            "args": {
+              "action": "attack"
+            },
+            "enemy_hp": 32,
+            "ap": 1
+          },
+          {
+            "turn": 6,
+            "cmd": "play",
+            "args": {
+              "uid": "card-146"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 6,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 6,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block"
+            },
+            "enemy_hp": 32,
+            "ap": 3
+          },
+          {
+            "turn": 6,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block"
+            },
+            "enemy_hp": 32,
+            "ap": 2
+          },
+          {
+            "turn": 6,
+            "cmd": "play",
+            "args": {
+              "uid": "card-145"
+            },
+            "enemy_hp": 32,
+            "ap": 1
+          },
+          {
+            "turn": 7,
+            "cmd": "play",
+            "args": {
+              "uid": "card-147"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 7,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 7,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block"
+            },
+            "enemy_hp": 32,
+            "ap": 3
+          },
+          {
+            "turn": 7,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block"
+            },
+            "enemy_hp": 32,
+            "ap": 2
+          },
+          {
+            "turn": 7,
+            "cmd": "battle_action",
+            "args": {
+              "action": "attack"
+            },
+            "enemy_hp": 32,
+            "ap": 1
+          }
+        ]
+      }
+    ],
+    "death_phase": "finished"
+  },
+  {
+    "seed": 39338087,
+    "difficulty": "nightmare",
+    "origin": "restless",
+    "mode": "challenge",
+    "outcome": "survived",
+    "completed_voyages": 10,
+    "total_steps": 158,
+    "trace_len": 158,
+    "trace_file": "agent-restless-nightmare-39338087.trace.json",
+    "final_stats": {
+      "base_ap": 5,
+      "battle_ap": 5,
+      "damage": 0,
+      "hp": 8,
+      "hp_max": 9,
+      "hunger": 0,
+      "hunger_max": 100,
+      "hydration": 40,
+      "hydration_max": 100,
+      "limit": 10,
+      "sanity": 48,
+      "sanity_max": 100
+    },
+    "devices": [
+      "filter(Lv2)",
+      "lamp(Lv1)",
+      "crossbow(Lv1)",
+      "crossbow(Lv1)",
+      "fishingNet(Lv2)",
+      "shieldRack(Lv1)",
+      "fishingNet(Lv1)"
+    ],
+    "voyage_history": [
+      {
+        "voyage": 1,
+        "hp": 8,
+        "hp_max": 8,
+        "hunger": 30,
+        "hydration": 30,
+        "sanity": 50,
+        "coins": 0,
+        "cells": 4,
+        "devices": [],
+        "environments": [],
+        "hand_count": 5
+      },
+      {
+        "voyage": 2,
+        "hp": 7,
+        "hp_max": 8,
+        "hunger": 40,
+        "hydration": 0,
+        "sanity": 35,
+        "coins": 0,
+        "cells": 4,
+        "devices": [
+          "filter(Lv1)"
+        ],
+        "environments": [],
+        "hand_count": 7
+      },
+      {
+        "voyage": 3,
+        "hp": 6,
+        "hp_max": 8,
+        "hunger": 50,
+        "hydration": 0,
+        "sanity": 20,
+        "coins": 0,
+        "cells": 4,
+        "devices": [
+          "filter(Lv1)",
+          "lamp(Lv1)"
+        ],
+        "environments": [
+          "confusion"
+        ],
+        "hand_count": 10
+      },
+      {
+        "voyage": 4,
+        "hp": 6,
+        "hp_max": 8,
+        "hunger": 20,
+        "hydration": 10,
+        "sanity": 20,
+        "coins": 0,
+        "cells": 4,
+        "devices": [
+          "filter(Lv1)",
+          "lamp(Lv1)",
+          "crossbow(Lv1)",
+          "crossbow(Lv1)"
+        ],
+        "environments": [
+          "confusion"
+        ],
+        "hand_count": 8
+      },
+      {
+        "voyage": 5,
+        "hp": 4,
+        "hp_max": 8,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 20,
+        "coins": 0,
+        "cells": 4,
+        "devices": [
+          "filter(Lv2)",
+          "lamp(Lv1)",
+          "crossbow(Lv1)",
+          "crossbow(Lv1)"
+        ],
+        "environments": [],
+        "hand_count": 9
+      },
+      {
+        "voyage": 6,
+        "hp": 6,
+        "hp_max": 8,
+        "hunger": 0,
+        "hydration": 10,
+        "sanity": 28,
+        "coins": 0,
+        "cells": 5,
+        "devices": [
+          "filter(Lv2)",
+          "lamp(Lv1)",
+          "crossbow(Lv1)",
+          "crossbow(Lv1)"
+        ],
+        "environments": [],
+        "hand_count": 11
+      },
+      {
+        "voyage": 7,
+        "hp": 5,
+        "hp_max": 8,
+        "hunger": 0,
+        "hydration": 20,
+        "sanity": 28,
+        "coins": 0,
+        "cells": 5,
+        "devices": [
+          "filter(Lv2)",
+          "lamp(Lv1)",
+          "crossbow(Lv1)",
+          "crossbow(Lv1)",
+          "fishingNet(Lv1)"
+        ],
+        "environments": [],
+        "hand_count": 10
+      },
+      {
+        "voyage": 8,
+        "hp": 7,
+        "hp_max": 8,
+        "hunger": 0,
+        "hydration": 30,
+        "sanity": 28,
+        "coins": 0,
+        "cells": 5,
+        "devices": [
+          "filter(Lv2)",
+          "lamp(Lv1)",
+          "crossbow(Lv1)",
+          "crossbow(Lv1)",
+          "fishingNet(Lv2)"
+        ],
+        "environments": [
+          "bloodMoon"
+        ],
+        "hand_count": 14
+      },
+      {
+        "voyage": 9,
+        "hp": 7,
+        "hp_max": 8,
+        "hunger": 0,
+        "hydration": 60,
+        "sanity": 48,
+        "coins": 0,
+        "cells": 6,
+        "devices": [
+          "filter(Lv2)",
+          "lamp(Lv1)",
+          "crossbow(Lv1)",
+          "crossbow(Lv1)",
+          "fishingNet(Lv2)",
+          "shieldRack(Lv1)"
+        ],
+        "environments": [
+          "bloodMoon",
+          "fog1"
+        ],
+        "hand_count": 14
+      },
+      {
+        "voyage": 10,
+        "hp": 6,
+        "hp_max": 8,
+        "hunger": 0,
+        "hydration": 70,
+        "sanity": 48,
+        "coins": 0,
+        "cells": 7,
+        "devices": [
+          "filter(Lv2)",
+          "lamp(Lv1)",
+          "crossbow(Lv1)",
+          "crossbow(Lv1)",
+          "fishingNet(Lv2)",
+          "shieldRack(Lv1)"
+        ],
+        "environments": [
+          "fog1"
+        ],
+        "hand_count": 14
+      }
+    ],
+    "battles": [
+      {
+        "voyage": 10,
+        "enemy": "boss",
+        "turns": 7,
+        "initial_hp": 6,
+        "final_hp": 6,
+        "actions": [
+          {
+            "turn": 1,
+            "cmd": "play",
+            "args": {
+              "uid": "card-106"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 1,
+            "cmd": "play",
+            "args": {
+              "uid": "card-107"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 1,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block",
+              "resource_uid": "card-103"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 1,
+            "cmd": "battle_action",
+            "args": {
+              "action": "attack",
+              "resource_uid": "card-48"
+            },
+            "enemy_hp": 32,
+            "ap": 3
+          },
+          {
+            "turn": 1,
+            "cmd": "battle_action",
+            "args": {
+              "action": "attack",
+              "resource_uid": "card-54"
+            },
+            "enemy_hp": 32,
+            "ap": 2
+          },
+          {
+            "turn": 1,
+            "cmd": "battle_action",
+            "args": {
+              "action": "attack",
+              "resource_uid": "card-68"
+            },
+            "enemy_hp": 32,
+            "ap": 1
+          },
+          {
+            "turn": 2,
+            "cmd": "play",
+            "args": {
+              "uid": "card-109"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 2,
+            "cmd": "play",
+            "args": {
+              "uid": "card-110"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 2,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block",
+              "resource_uid": "card-80"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 2,
+            "cmd": "play",
+            "args": {
+              "uid": "card-108"
+            },
+            "enemy_hp": 32,
+            "ap": 3
+          },
+          {
+            "turn": 2,
+            "cmd": "battle_action",
+            "args": {
+              "action": "attack",
+              "resource_uid": "card-84"
+            },
+            "enemy_hp": 32,
+            "ap": 2
+          },
+          {
+            "turn": 2,
+            "cmd": "battle_action",
+            "args": {
+              "action": "attack",
+              "resource_uid": "card-90"
+            },
+            "enemy_hp": 32,
+            "ap": 1
+          },
+          {
+            "turn": 3,
+            "cmd": "play",
+            "args": {
+              "uid": "card-111"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 3,
+            "cmd": "play",
+            "args": {
+              "uid": "card-112"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 3,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block",
+              "resource_uid": "card-94"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 3,
+            "cmd": "battle_action",
+            "args": {
+              "action": "attack"
+            },
+            "enemy_hp": 32,
+            "ap": 3
+          },
+          {
+            "turn": 3,
+            "cmd": "battle_action",
+            "args": {
+              "action": "attack"
+            },
+            "enemy_hp": 32,
+            "ap": 2
+          },
+          {
+            "turn": 3,
+            "cmd": "battle_action",
+            "args": {
+              "action": "attack"
+            },
+            "enemy_hp": 32,
+            "ap": 1
+          },
+          {
+            "turn": 4,
+            "cmd": "play",
+            "args": {
+              "uid": "card-114"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 4,
+            "cmd": "play",
+            "args": {
+              "uid": "card-115"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 4,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 4,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block"
+            },
+            "enemy_hp": 32,
+            "ap": 3
+          },
+          {
+            "turn": 4,
+            "cmd": "play",
+            "args": {
+              "uid": "card-113"
+            },
+            "enemy_hp": 32,
+            "ap": 2
+          },
+          {
+            "turn": 4,
+            "cmd": "battle_action",
+            "args": {
+              "action": "attack"
+            },
+            "enemy_hp": 32,
+            "ap": 1
+          },
+          {
+            "turn": 5,
+            "cmd": "play",
+            "args": {
+              "uid": "card-116"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 5,
+            "cmd": "play",
+            "args": {
+              "uid": "card-117"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 5,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 5,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block"
+            },
+            "enemy_hp": 32,
+            "ap": 3
+          },
+          {
+            "turn": 5,
+            "cmd": "battle_action",
+            "args": {
+              "action": "attack"
+            },
+            "enemy_hp": 32,
+            "ap": 2
+          },
+          {
+            "turn": 5,
+            "cmd": "battle_action",
+            "args": {
+              "action": "attack"
+            },
+            "enemy_hp": 32,
+            "ap": 1
+          },
+          {
+            "turn": 6,
+            "cmd": "play",
+            "args": {
+              "uid": "card-119"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 6,
+            "cmd": "play",
+            "args": {
+              "uid": "card-120"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 6,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 6,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block"
+            },
+            "enemy_hp": 32,
+            "ap": 3
+          },
+          {
+            "turn": 6,
+            "cmd": "play",
+            "args": {
+              "uid": "card-118"
+            },
+            "enemy_hp": 32,
+            "ap": 2
+          },
+          {
+            "turn": 6,
+            "cmd": "battle_action",
+            "args": {
+              "action": "attack"
+            },
+            "enemy_hp": 32,
+            "ap": 1
+          },
+          {
+            "turn": 7,
+            "cmd": "play",
+            "args": {
+              "uid": "card-121"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 7,
+            "cmd": "play",
+            "args": {
+              "uid": "card-122"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 7,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block"
+            },
+            "enemy_hp": 32,
+            "ap": 4
+          },
+          {
+            "turn": 7,
+            "cmd": "battle_action",
+            "args": {
+              "action": "block"
+            },
+            "enemy_hp": 32,
+            "ap": 3
+          },
+          {
+            "turn": 7,
+            "cmd": "battle_action",
+            "args": {
+              "action": "attack"
+            },
+            "enemy_hp": 32,
+            "ap": 2
+          }
+        ]
+      }
+    ],
+    "death_phase": null
+  }
+]

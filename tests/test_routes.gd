@@ -24,7 +24,7 @@ func _init() -> void:
 		var loaded=load("res://core/game_session.gd").new(catalog)
 		check(loaded.restore(JSON.parse_string(JSON.stringify(snapshot))),"terminal snapshot restores "+name)
 		if name=="standard-challenge-39": check(result.outcome=="survived" and result.completed==12,"recorded surviving challenge")
-		if name=="standard-challenge-9": check(result.outcome=="dead","recorded failed challenge")
+		if name=="standard-challenge-20261016": check(result.outcome=="dead","recorded failed challenge")
 		if name=="standard-story-22": check(result.phase=="chapterComplete" and result.completed==15,"all fifteen story nodes")
 		print("ROUTE "+name+": "+result.phase+" / "+result.outcome)
 	print("ROUTES: %s" % ("PASS" if failures==0 else "FAIL")); quit(failures)

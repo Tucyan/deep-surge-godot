@@ -13,7 +13,7 @@ func fresh(id: String, origin: String = "fool"):
 func _init() -> void:
 	catalog=load("res://content/catalog.gd").new()
 	check(catalog.load_catalog(),"catalogue")
-	for row in [["standard",12,40,80,7,11,2,18,2],["hard",10,35,65,6,14,3,25,3],["nightmare",8,30,50,5,17,3,32,4]]:
+	for row in [["standard",12,40,80,7,11,2,18,2],["hard",10,35,65,6,14,3,25,3],["nightmare",8,30,50,5,17,3,32,3]]:
 		var s=fresh(row[0])
 		check(s.state.difficulty==row[0] and s.state.player.hp==row[1] and s.state.player.hp_max==row[1],"HP baseline")
 		check(s.state.player.hunger==row[2] and s.state.player.hydration==row[2] and s.state.player.sanity==row[3] and s.state.hand.size()==row[4],"survival and random hand")

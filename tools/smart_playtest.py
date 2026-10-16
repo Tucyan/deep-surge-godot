@@ -130,7 +130,7 @@ class SmartPlayer:
 
             # 6. Upgrade production equipment (filter/planter) to Lv 2
             if obs["ap"] >= 1:
-                for target_dev in ("filter", "planter"):
+                for target_dev in ("filter", "planter", "fishingNet"):
                     if target_dev in devices and devices[target_dev].get("level", 1) < 2:
                         upg = find("upgrade", lambda a: any(c["id"] == a["args"].get("cell") and c["equipment"].get("id") == target_dev for c in cells))
                         if upg:
@@ -405,10 +405,10 @@ class SmartPlayer:
                     if block_basic:
                         return block_basic
 
-            # 6. Clear pollution if Boss combat and hand has pollution and b_ap >= 2
+            # 6. Clear pollution if Boss combat and hand has pollution and b_ap >= 1
             # Only clear pollution if incoming damage is already blocked or we have sufficient shields/HP
-            if counts["pollution"] > 0 and b_ap >= 2:
-                if (shields >= e_dmg or b_ap > 2 or counts["pollution"] >= 2 or b_hp > e_dmg + 3) and e_hp > 3 and turn < 8:
+            if counts["pollution"] > 0 and b_ap >= 1:
+                if (shields >= e_dmg or b_ap > 1 or counts["pollution"] >= 2 or b_hp > e_dmg + 3) and e_hp > 3 and turn < 8:
                     poll = find("play", lambda a: hand.get(a["args"].get("uid"), {}).get("id") == "pollution")
                     if poll:
                         return poll
@@ -492,11 +492,11 @@ class SmartPlayer:
         return non_abandon[0] if non_abandon else (actions[0] if actions else None)
 
 
-def play_run(game, difficulty="standard", seed=22, mode="challenge", raft_4x4=False, max_steps=800, verbose=True):
+def play_run(game, difficulty="standard", seed=22, mode="challenge", raft_4x4=False, origin="strong", max_steps=800, verbose=True):
     player = SmartPlayer(verbose=verbose)
-    player.log(f"=== Starting Run: Mode={mode}, Difficulty={difficulty}, Seed={seed}, Raft4x4={raft_4x4} ===")
+    player.log(f"=== Starting Run: Mode={mode}, Difficulty={difficulty}, Seed={seed}, Origin={origin}, Raft4x4={raft_4x4} ===")
     
-    reset_params = {"seed": seed, "mode": mode, "difficulty": difficulty, "origin": "strong"}
+    reset_params = {"seed": seed, "mode": mode, "difficulty": difficulty, "origin": origin}
     if raft_4x4:
         reset_params["purchases"] = {"raft": 1}
     obs = data(game.request("reset", reset_params))["observation"]
@@ -576,6 +576,7 @@ def play_run(game, difficulty="standard", seed=22, mode="challenge", raft_4x4=Fa
         "difficulty": difficulty,
         "mode": mode,
         "seed": seed,
+        "origin": origin,
         "raft_4x4": raft_4x4,
         "outcome": result.get("outcome"),
         "phase": result.get("phase"),
@@ -595,10 +596,11 @@ if __name__ == "__main__":
     parser.add_argument("--difficulty", default="standard", choices=("standard", "hard", "nightmare"))
     parser.add_argument("--seed", type=int, default=22)
     parser.add_argument("--mode", default="challenge", choices=("challenge", "story"))
+    parser.add_argument("--origin", default="strong", choices=("strong", "fool", "restless", "hoarder", "zealot", "skeptic"))
     parser.add_argument("--raft-4x4", action="store_true", default=False, help="Allow raft expansion up to 4x4")
     args = parser.parse_args()
     
     with AgentClient() as game:
-        res = play_run(game, difficulty=args.difficulty, seed=args.seed, mode=args.mode, raft_4x4=args.raft_4x4)
+        res = play_run(game, difficulty=args.difficulty, seed=args.seed, mode=args.mode, raft_4x4=args.raft_4x4, origin=args.origin)
         print("\nSummary JSON:")
         print(json.dumps({k: v for k, v in res.items() if k != "report"}, ensure_ascii=False, indent=2))

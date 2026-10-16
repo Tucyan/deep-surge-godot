@@ -88,7 +88,7 @@ def run_single(game, seed, difficulty, mode="challenge"):
     trace = data(game.request("trace"))
     
     # Save trace
-    trace_path = ROOT / "evidence" / f"agent-run-{seed}-{difficulty}.trace.json"
+    trace_path = ROOT / "evidence" / f"agent-v20-run-{seed}-{difficulty}.trace.json"
     trace_path.write_text(json.dumps(trace, ensure_ascii=False), encoding="utf-8")
     
     final_p = obs.get("player", {})
@@ -127,7 +127,7 @@ def main():
     ]
     
     results = []
-    print(f"Starting execution of 6 agent games across seeds [22, 1000] and difficulties [standard, hard, nightmare]...\n")
+    print(f"Starting execution of 6 v20 agent games across seeds [22, 1000] and difficulties [standard, hard, nightmare]...\n")
     
     with AgentClient() as game:
         for seed, diff in runs:
@@ -138,9 +138,9 @@ def main():
             print(f"    Final HP: {summary['final_stats']['hp']}/{summary['final_stats']['hp_max']} | Food: {summary['final_stats']['hunger']} | Water: {summary['final_stats']['hydration']} | SAN: {summary['final_stats']['sanity']}")
             print(f"    Battles: {[b['enemy'] for b in summary['battles']]} | Devices: {summary['devices']}\n")
             
-    summary_path = ROOT / "evidence" / "six_agent_runs_summary.json"
+    summary_path = ROOT / "evidence" / "v20_six_agent_runs_summary.json"
     summary_path.write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"All 6 runs completed! Master summary written to {summary_path}")
+    print(f"All 6 v20 runs completed! Master summary written to {summary_path}")
 
 if __name__ == "__main__":
     main()

@@ -109,8 +109,8 @@
   "pollution": {
     "name": "潮蚀污染",
     "kind": "negative",
-    "cost": 2,
-    "description": "留手每战斗回合损失1生命；花2 AP清除。不能附魔或直接弃掉。",
+    "cost": 1,
+    "description": "留手每战斗回合损失1生命；花1 AP清除。不能附魔或直接弃掉。",
     "heldEffects": [
       {
         "type": "ChangeCurrent",
