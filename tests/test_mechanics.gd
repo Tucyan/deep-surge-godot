@@ -30,7 +30,7 @@ func _init() -> void:
 		check(false,"筏格损伤需要外围筛选")
 	else:
 		check(s.Rules.outer_cells(square).size() == 8,"3×3木筏中心不能被外围损伤选中")
-	check(not s.Rules.option_reason(s,{"effects":[{"type":"AddBuff","id":"current"}]}).is_empty(),"未接环境选项必须显示禁用原因")
+	check(s.Rules.option_reason(s,{"effects":[{"type":"AddBuff","id":"current"}]}).is_empty(),"环境效果已接入节点选项")
 	check(s.dispatch("craft",{"id":"filter"}),"制作滤水器")
 	check(s.state.ap == 2 and I.count(s.state,"plastic") == 0,"制造付材料与AP")
 	var filter_card: Dictionary = s.state.hand.filter(func(c): return c.id == "filter")[0]
@@ -39,8 +39,8 @@ func _init() -> void:
 	var before: Dictionary = s.snapshot()
 	check(not s.dispatch("install",{"uid":"gone","cell":"cell-0"}),"拒绝失效实例")
 	check(s.snapshot() == before,"拒绝完全回滚")
-	check(s.dispatch("expand",{"x":0,"y":2}),"邻接扩建")
-	check(s.state.cells.size() == 5 and I.count(s.state,"wood") == 0,"扩建花两木一AP")
+	check(s.dispatch("expand",{"x":0,"y":0}),"邻接扩建")
+	check(s.state.cells.size() == 5 and I.count(s.state,"wood") == 1,"前三次扩建花一木一AP")
 	var action_session = fixture("camp")
 	var action_data: Dictionary = action_session.snapshot()
 	action_data.state.cells[0].status = "damaged"
@@ -82,11 +82,12 @@ func _init() -> void:
 	while rest.phase() == "discard": rest.dispatch("discard",{"uid":rest.state.hand[0].uid})
 	check(rest.phase() == "navigation" and rest.state.voyage == 2,"轮末后才新导航")
 	var salvage_session = fixture("camp")
+	salvage_session.state.cells[0].equipment={"id":"fishingNet","level":1,"fuel":0,"progress":0,"boost_cards":[],"production_bonus":0}
 	var initial_hand_count: int = salvage_session.state.hand.size()
 	var ap_before_salvage: int = salvage_session.state.ap
-	check(salvage_session.dispatch("salvage"),"海面打捞成功执行")
+	check(salvage_session.dispatch("salvage"),"打捞成功执行")
 	check(salvage_session.state.ap == ap_before_salvage - 1,"打捞扣除1点AP")
-	check(salvage_session.state.hand.size() == initial_hand_count + 1,"打捞增加1张手牌")
+	check(salvage_session.state.hand.size() == initial_hand_count + 2,"打捞增加1张手牌")
 	check(salvage_session.state.hand[-1].id in I.RESOURCES,"打捞产物属于基础资源池")
 	salvage_session.state.ap = 0
 	check(not salvage_session.dispatch("salvage"),"零AP拒绝打捞")

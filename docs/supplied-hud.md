@@ -106,3 +106,7 @@
 
 实机 GPU 测试全通过（CLEAN HUD、SUPPLIED HUD INTEGRATION、FLOW、STORY、MECHANICS、HAND FAN 等），多阶段及 1600×900 / 1280×720 截图见 `evidence/ui-adjust-*`。
 
+
+## 2026-10-16 环境与顶栏修订
+
+顶部两块装饰底板已移除；环境名称在数值条下方，悬停显示效果及剩余次数。导航新增侦察与定向按钮，隐藏候选不泄漏内容；详细规则见[环境 Buff](environment-buffs.md)。普通安装仍为0 AP，逆流生效时每轮首次制造或安装额外1 AP，失败不消耗首次标记。

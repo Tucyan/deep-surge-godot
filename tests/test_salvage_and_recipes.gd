@@ -54,28 +54,29 @@ func _init() -> void:
 	# 5. Test Sea Salvage in Navigation, Preparation, and Aftermath
 	s = load("res://core/game_session.gd").new(catalog)
 	s.dispatch("new", {"mode": "challenge", "origin": "strong", "seed": 99})
+	s.state.cells[0].equipment={"id":"fishingNet","level":1,"fuel":0,"progress":0,"boost_cards":[],"production_bonus":0}
 	s.state.hand = []
 	s.state.ap = 3
 	check(s.phase() == "navigation", "当前为导航阶段")
-	check(s.dispatch("salvage"), "导航阶段可执行海面打捞")
+	check(s.dispatch("salvage"), "导航阶段可执行打捞")
 	check(s.state.ap == 2, "打捞扣减1点AP")
-	check(s.state.hand.size() == 1, "打捞产物进入手牌")
+	check(s.state.hand.size() == 2, "打捞产物进入手牌")
 	check(s.state.hand[0].id in I.RESOURCES, "打捞产物属于基础资源")
 
 	s.state.phase = "preparation"
 	s.state.ap = 2
-	check(s.dispatch("salvage"), "准备阶段可执行海面打捞")
+	check(s.dispatch("salvage"), "准备阶段可执行打捞")
 	check(s.state.ap == 1, "打捞扣减1点AP")
-	check(s.state.hand.size() == 2, "打捞再次产出一张手牌")
+	check(s.state.hand.size() == 4, "保底与捕捞网再次产出两张手牌")
 
 	s.state.phase = "aftermath"
 	s.state.ap = 1
 	var pre_hand_count: int = s.state.hand.size()
-	check(s.dispatch("salvage"), "收尾阶段可执行海面打捞")
+	check(s.dispatch("salvage"), "收尾阶段可执行打捞")
 	check(s.phase() == "navigation", "收尾耗尽最后AP自动完成轮末老化/生产并进入新一轮导航")
 	check(s.state.voyage == 2, "进入第2航次")
 	check(s.state.ap == s.state.player.base_ap, "新航次刷新基地AP")
-	check(s.state.hand.size() == pre_hand_count + 1 + 3, "获得打捞物资1张与新一轮涌泉3张")
+	check(s.state.hand.size() == pre_hand_count + 2 + 2 + 1, "获得打捞2张、涌泉2张和航行轮初捕捞网1张")
 
 	s.state.ap = 0
 	check(not s.dispatch("salvage"), "AP为0时无法打捞")

@@ -1,0 +1,27 @@
+[
+  {
+    "command": [
+      "node",
+      "--test",
+      "tests/content.test.mjs",
+      "tests/node_content.test.mjs"
+    ],
+    "exit": 0,
+    "output": "✔ meta_shop: 历史内容与health-12-v1修订 (1.3492ms)\n✔ tech: 历史内容与health-12-v1修订 (0.7035ms)\n✔ relics: 历史内容与health-12-v1修订 (0.3563ms)\n✔ v11正式商店商品集合、提高设备报价与卡牌类型明确 (0.7036ms)\n✔ v10整合旧节点身份，普通战斗与遗迹数值契约保持不变 (0.6721ms)\n✔ v10节点选项效果、敌人和卡牌引用完整，不再保留未开放机制 (1.7117ms)\n✔ 卡牌费用与效果仅允许已列明的修订 (0.6251ms)\n✔ 敌人生命与异常不变，直接伤害使用低生命试测值 (0.2731ms)\n✔ 既有设备生产与旧配方保持已批准修订 (0.5215ms)\n✔ 四种新设备可制造且内容引用有效 (0.5225ms)\n✔ 十二事件整合旧节点，旧入口保留而祭坛明确退池 (1.2511ms)\n✔ 类别、轮次、次数和冷却均显式定义 (0.453ms)\n✔ 免费收益与付费加码遵守确认数值 (0.3015ms)\n✔ 概率、目标格代价和事件战斗奖励明示并且不引入藏品 (0.7475ms)\n✔ 主动风险及概率成败显式声明，安全选项不登记风险 (0.2065ms)\nℹ tests 15\nℹ suites 0\nℹ pass 15\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 141.1974\n"
+  },
+  {
+    "command": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_agent_stdio.py",
+      "-v"
+    ],
+    "exit": 0,
+    "output": "test_automatic_game_and_full_trace (test_agent_stdio.AgentStdioTests.test_automatic_game_and_full_trace) ... ok\ntest_persistent_process_and_replay (test_agent_stdio.AgentStdioTests.test_persistent_process_and_replay) ... ok\ntest_story_policy_reaches_terminal (test_agent_stdio.AgentStdioTests.test_story_policy_reaches_terminal) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 26.666s\n\nOK\n"
+  }
+]

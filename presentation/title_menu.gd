@@ -14,43 +14,58 @@ var selected := 0
 var _tweens: Dictionary = {}
 func create_background() -> void:
 	clip_contents=true
-	poster=TextureRect.new(); poster.texture=load("res://assets/title_ui/ocean_poster.png")
+	poster=TextureRect.new(); poster.texture=load("res://assets/title_ui/lighthouse_poster.png")
 	poster.expand_mode=TextureRect.EXPAND_IGNORE_SIZE; poster.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	poster.mouse_filter=MOUSE_FILTER_IGNORE; add_child(poster)
 	background=VideoStreamPlayer.new(); background.expand=true
-	background.stream=load("res://assets/title_ui/ocean_loop.ogv"); background.loop=true
+	background.stream=load("res://assets/title_ui/lighthouse_loop.ogv"); background.loop=true
 	background.volume_db=-80; background.mouse_filter=MOUSE_FILTER_IGNORE
+	background.modulate.a=1.0
 	add_child(background); background.play()
 	resized.connect(_reflow); _reflow()
 func create(view: Dictionary, with_background: bool = true) -> void:
 	clip_contents=true
-	if with_background: create_background()
+	if with_background:
+		create_background()
+	else:
+		if is_inside_tree():
+			for p in get_tree().root.find_children("*","VideoStreamPlayer",true,false): background=p; break
+		else:
+			tree_entered.connect(func():
+				if background==null:
+					for p in get_tree().root.find_children("*","VideoStreamPlayer",true,false): background=p; break
+			, CONNECT_ONE_SHOT)
 	composition=Control.new(); composition.size=REFERENCE; composition.mouse_filter=MOUSE_FILTER_PASS; add_child(composition)
 	var shade:=TextureRect.new()
 	shade.name="MenuBoard"
 	shade.texture=load("res://assets/title_ui/menu_board_source.png")
 	shade.expand_mode=TextureRect.EXPAND_IGNORE_SIZE
 	shade.size=REFERENCE; shade.mouse_filter=MOUSE_FILTER_IGNORE
-	var board_material:=ShaderMaterial.new()
-	board_material.shader=load("res://assets/shaders/title_board.gdshader")
-	shade.material=board_material; composition.add_child(shade)
-	var logo:=TextureRect.new(); logo.texture=load("res://assets/title_ui/07_deep_surge_logo.png")
+	shade.visible=false
+	composition.add_child(shade)
+	var logo:=TextureRect.new(); logo.name="TitleLogo"; logo.texture=load("res://assets/title_ui/deep_surge_logo_v3.png")
 	logo.expand_mode=TextureRect.EXPAND_IGNORE_SIZE; logo.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	logo.position=Vector2(850,-85); logo.size=Vector2(750,474.811828613281)
-	logo.mouse_filter=MOUSE_FILTER_IGNORE; composition.add_child(logo)
+	logo.position=Vector2(140,80); logo.size=Vector2(650,487.5)
+	logo.mouse_filter=MOUSE_FILTER_IGNORE; logo.visible=true
+	composition.add_child(logo)
+	var logo_backdrop:=preload("res://presentation/title_logo_backdrop.gd").new()
+	logo_backdrop.name="TitleLogoBackdrop"; logo_backdrop.show_behind_parent=true
+	logo.add_child(logo_backdrop); logo_backdrop.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
+	var frame:=preload("res://presentation/title_frame.gd").new(); frame.name="TitleFrame"
+	add_child(frame); frame.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	var edge_material:=ShaderMaterial.new()
 	edge_material.shader=load("res://assets/shaders/title_button_edge.gdshader")
 	for i in range(6):
 		dark.append(load("res://assets/title_ui/"+FILES[i]+"_dark.png"))
-		light.append(load("res://assets/title_ui/05_rewind_light_v4.png" if i==4 else "res://assets/title_ui/"+FILES[i]+"_light.png"))
+		light.append(load("res://assets/title_ui/"+FILES[i]+"_light.png"))
 		var b:=TextureButton.new(); b.name="Title_"+ACTIONS[i]
 		var layout: Dictionary = {
-			"start": {"x": 1050.0, "y": 280.0, "width": 450.0, "height": 151.363647460938},
-			"continue": {"x": 1040.0, "y": 378.0, "width": 450.0, "height": 151.363647460938},
-			"journal": {"x": 1038.0, "y": 476.0, "width": 450.0, "height": 151.363647460938},
-			"shop": {"x": 1066.09997558594, "y": 580.0, "width": 450.0, "height": 151.363647460938},
-			"recall": {"x": 1100.30004882813, "y": 678.0, "width": 450.0, "height": 151.363647460938},
-			"quit": {"x": 1160.0, "y": 770.0, "width": 450.0, "height": 151.363647460938}
+			"start": {"x": 1125.0, "y": 161.5, "width": 435.0, "height": 145.0},
+			"continue": {"x": 1141.0, "y": 281.0, "width": 405.0, "height": 135.0},
+			"journal": {"x": 1141.0, "y": 374.0, "width": 405.0, "height": 135.0},
+			"shop": {"x": 1141.0, "y": 467.0, "width": 405.0, "height": 135.0},
+			"recall": {"x": 1141.0, "y": 560.0, "width": 405.0, "height": 135.0},
+			"quit": {"x": 1141.0, "y": 653.0, "width": 405.0, "height": 135.0}
 		}[ACTIONS[i]]
 		b.position=Vector2(layout.x,layout.y)
 		var ui_zoom: float=view.get("ui_scale",1.0)
@@ -80,11 +95,14 @@ func _reflow() -> void:
 	if size.x<1 or size.y<1:return
 	if composition!=null:
 		var fit:=minf(size.x/REFERENCE.x,size.y/REFERENCE.y)
-		composition.scale=Vector2.ONE*fit; composition.position=(size-REFERENCE*fit)*0.5
+		composition.scale=Vector2.ONE*fit; composition.position=Vector2.ZERO
+		composition.size=size/fit
+		for b in buttons:
+			b.position.x=composition.size.x-REFERENCE.x+(1125.0 if b==buttons[0] else 1141.0)-(b.size.x-(435.0 if b==buttons[0] else 405.0))*0.5
 	if background!=null:
-		var cover:=maxf(size.x/1704.0,size.y/960.0)
-		background.size=Vector2(1704,960)*cover; background.position=(size-background.size)*0.5
-		poster.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
+		var cover:=maxf(size.x/2240.0,size.y/960.0)
+		background.size=Vector2(2240,960)*cover; background.position=(size-background.size)*0.5
+		if poster!=null: poster.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 func _update_highlight() -> void:
 	for i in range(buttons.size()): buttons[i].texture_normal=light[i] if i==selected and not buttons[i].disabled else dark[i]
 func _hover(index: int, active: bool) -> void:

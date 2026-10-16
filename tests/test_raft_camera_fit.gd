@@ -24,7 +24,7 @@ func run() -> void:
 		app.session.give("wood",8,false,"camera-fixture"); app.render(); app.world_view.motion=false
 		await create_timer(.9).timeout
 		var world=app.world_view; var old: Transform3D=world.camera.global_transform
-		app.handle_command("expand",{"x":0,"y":2}); await process_frame; await process_frame
+		app.handle_command("expand",{"x":0,"y":0}); await process_frame; await process_frame
 		var intermediate: Transform3D=world.camera.global_transform
 		await create_timer(.9).timeout
 		var final: Transform3D=world.camera.global_transform

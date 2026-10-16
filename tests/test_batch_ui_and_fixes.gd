@@ -131,7 +131,7 @@ func run() -> void:
 
 	var salvage_btn = hud.find_child("SalvageEntry", true, false)
 	check(salvage_btn != null, "存在SalvageEntry独立打捞按钮")
-	check(salvage_btn.text == "海面打捞 · AP1", "打捞按钮文案为'海面打捞 · AP1'")
+	check(salvage_btn.text == "打捞 · AP1", "打捞按钮文案为'打捞 · AP1'")
 	check(salvage_btn.offset_top == -238 and salvage_btn.offset_bottom == -190, "打捞按钮位于合成按钮上方(y: -238至-190)")
 	var sb_style = salvage_btn.get_theme_stylebox("normal")
 	check(sb_style is StyleBoxFlat and sb_style.corner_radius_top_left == 8, "打捞按钮使用圆角矩形样式(corner_radius=8)")

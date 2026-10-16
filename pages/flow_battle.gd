@@ -4,7 +4,7 @@ const Battle = preload("res://core/battle_rules.gd")
 const RESOURCES := ["wood","iron","rope","plastic","cloth"]
 
 func build() -> void:
-	var enemy: Dictionary = catalog.entry("enemies",context.battle.id)
+	var enemy: Dictionary = preload("res://core/difficulty_rules.gd").enemy(catalog,context,context.battle.id)
 	heading("战斗 · 第%d回合" % context.battle.turn,"生命 %d/%d · 战斗AP %d/%d" % [context.player.hp,context.player.hp_max,context.battle.ap,context.player.battle_ap])
 	var status := HBoxContainer.new(); status.name="BattleStatus"; add_child(status)
 	var target := W.panel(status,Vector2(300,0)); target.size_flags_horizontal=Control.SIZE_EXPAND_FILL
@@ -43,6 +43,9 @@ func build() -> void:
 	var attack:=W.button(action_row,"攻击 · 1 AP",func(): choose_action("attack")); attack.name="BattleAttack"
 	var block:=W.button(action_row,"格挡 · 1 AP",func(): choose_action("block")); block.name="BattleBlock"
 	attack.disabled=int(context.battle.get("ap",0))<1; block.disabled=attack.disabled
+	var salvage:=W.button(action_row,"打捞 · 1 AP",func():send("salvage"),attack.disabled)
+	salvage.name="SalvageEntry"
+	salvage.tooltip_text=catalog.entry("equipment","fishingNet").description
 	var action_reason:=W.text(control_panel,"基础行动可重复使用，不占手牌。",15,W.MUTED)
 	action_reason.name="BattleActionHelp"
 	var material_row:=HBoxContainer.new(); control_panel.add_child(material_row)

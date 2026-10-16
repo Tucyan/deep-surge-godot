@@ -69,7 +69,7 @@ func build() -> void:
 			var previous: String=context.get("encounter",{}).get("last_result","")
 			if previous!="": W.text(panel,previous,15,W.GOLD)
 			if context.node.has("monster"):
-				var enemy: Dictionary = catalog.entry("enemies",context.node.monster)
+				var enemy: Dictionary = preload("res://core/difficulty_rules.gd").enemy(catalog,context,context.node.monster)
 				W.text(panel,"%s · 生命%d\n%s" % [enemy.name,enemy.hp,enemy.intent],17)
 				choice(panel,"迎战","fight"); choice(panel,"离开遭遇","leave_encounter")
 			if context.node.kind == "shop": choice(panel,"进入商店","shop_enter")

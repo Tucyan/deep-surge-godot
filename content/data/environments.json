@@ -1,0 +1,10 @@
+{
+  "fog1":{"id":"fog1","name":"迷雾Ⅰ","negative":true,"weight":4,"duration":2,"description":"每个候选有35%概率隐藏详情，保留名字与类型；持续2次航行。可花8 SAN侦察。"},
+  "fog2":{"id":"fog2","name":"迷雾Ⅱ","negative":true,"weight":1,"duration":2,"description":"候选仅显示类型；持续2次航行。可花8 SAN侦察。"},
+  "fog3":{"id":"fog3","name":"迷雾Ⅲ","negative":true,"weight":0,"duration":1,"description":"隐藏候选名字、类型及详情；有非战斗候选时保留一条可辨认路径。持续1次航行，仅明确风险事件施加。"},
+  "bloodMoon":{"id":"bloodMoon","name":"血月","negative":true,"weight":3,"duration":2,"description":"敌人直接生命攻击+1，普通战斗胜利额外获得1贝币；不增加中毒或污染伤害。持续2次航行。"},
+  "confusion":{"id":"confusion","name":"混乱","negative":true,"weight":2,"duration":2,"description":"启航时有25%概率偏航至另一个候选。可花1木头、0 AP固定本次航向；固定剧情站与层末Boss不会偏航。持续2次航行。"},
+  "headwind":{"id":"headwind","name":"逆流","negative":true,"weight":0,"duration":2,"description":"每轮首次制造或安装额外消耗1 AP，两阶段共用一次。持续2次航行；默认不随机抽取。"},
+  "current":{"id":"current","name":"顺流","negative":false,"weight":3,"duration":2,"description":"移动时饱食与水分消耗各减少5；持续2次航行。"},
+  "spring":{"id":"spring","name":"漂流丰收","negative":false,"weight":1,"duration":1,"description":"下一次实际领取涌泉时额外获得1张随机基础资源，领取后移除；不增加初始手牌。"}
+}

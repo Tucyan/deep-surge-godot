@@ -28,8 +28,8 @@ func run() -> void:
 	parent.add_child(hud)
 	hud.setup(view, catalog, assets)
 
-	var salvage_btn = parent.find_children("*", "Button", true, false).filter(func(b): return b.text == "海面打捞 · AP1")
-	check(salvage_btn.size() == 1, "导航阶段存在海面打捞按钮")
+	var salvage_btn = parent.find_children("*", "Button", true, false).filter(func(b): return b.text == "打捞 · AP1")
+	check(salvage_btn.size() == 1, "导航阶段存在打捞按钮")
 	check(not salvage_btn[0].disabled, "有AP时打捞按钮可用")
 
 	# Test in aftermath phase
@@ -44,8 +44,8 @@ func run() -> void:
 	parent.add_child(hud)
 	hud.setup(view, catalog, assets)
 
-	salvage_btn = parent.find_children("*", "Button", true, false).filter(func(b): return b.text == "海面打捞 · AP1")
-	check(salvage_btn.size() == 1, "收尾阶段存在海面打捞按钮")
+	salvage_btn = parent.find_children("*", "Button", true, false).filter(func(b): return b.text == "打捞 · AP1")
+	check(salvage_btn.size() == 1, "收尾阶段存在打捞按钮")
 	check(not salvage_btn[0].disabled, "收尾阶段有AP时打捞按钮可用")
 
 	# Test disabled when AP is 0
@@ -59,7 +59,7 @@ func run() -> void:
 	parent.add_child(hud)
 	hud.setup(view, catalog, assets)
 
-	salvage_btn = parent.find_children("*", "Button", true, false).filter(func(b): return b.text == "海面打捞 · AP1")
+	salvage_btn = parent.find_children("*", "Button", true, false).filter(func(b): return b.text == "打捞 · AP1")
 	check(salvage_btn.size() == 1, "0 AP时打捞按钮仍可见")
 	check(salvage_btn[0].disabled, "0 AP时打捞按钮处于禁用状态")
 

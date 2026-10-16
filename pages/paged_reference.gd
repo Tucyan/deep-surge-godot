@@ -150,9 +150,10 @@ func raft_page() -> void:
 	if selected == "": selected = context.cells[0].id
 	for y in range(side):
 		for x in range(side):
-			if context.flags.get("raft_layout","") == "123456" and y == 0 and x in [0,1]:
-				var root_name := "帐篷" if x == 0 else "箱子"
-				W.button(grid,"%d · %s" % [x+1,root_name],func(): pass,true,"固定装饰区，不提供设备槽位")
+			if preload("res://core/raft_layout.gd").is_root(x,y):
+				var root_number: int=preload("res://core/raft_layout.gd").number_at(x,y)
+				var root_name := "帐篷" if root_number == 1 else "箱子"
+				W.button(grid,"%d · %s" % [root_number,root_name],func(): pass,true,"固定装饰区，不提供设备槽位")
 				continue
 			var cell := {}
 			var adjacent := false
@@ -171,8 +172,9 @@ func raft_page() -> void:
 	if selected.begins_with("pos:"):
 		var parts := selected.split(":")
 		W.text(detail,"扩建筏格",27,W.GOLD)
-		W.text(detail,"木头2 · 基地AP1",22)
-		action(detail,"扩建 (%d,%d)" % [int(parts[1]),int(parts[2])],"expand",{"x":int(parts[1]),"y":int(parts[2])},not context.can_base or context.ap < 1 or amount("wood") < 2)
+		var wood_cost: int=int(context.expansion_cost.wood)
+		W.text(detail,"木头%d · 基地AP1" % wood_cost,22)
+		action(detail,"扩建 (%d,%d)" % [int(parts[1]),int(parts[2])],"expand",{"x":int(parts[1]),"y":int(parts[2])},not context.can_base or context.ap < 1 or amount("wood") < wood_cost)
 		return
 	for cell in context.cells:
 		if cell.id == selected: cell_detail(cell)

@@ -36,6 +36,8 @@ func _press(local_point: Vector2) -> void:
 	_press_point=app.world_view.get_global_transform()*local_point
 	_pressed=surface.pick(_press_point,policy.targets())
 func _release(local_point: Vector2) -> void:
+	if app.world_view.camera_controls.dragged:
+		_pressed={}; return
 	var point: Vector2=app.world_view.get_global_transform()*local_point
 	var target: Dictionary=surface.pick(point,policy.targets())
 	if point.distance_to(_press_point)<18 and target.get("id","")==_pressed.get("id",""):
@@ -54,7 +56,7 @@ func select_target(target: Dictionary) -> void:
 	style.content_margin_left=10; style.content_margin_right=10; style.content_margin_top=8; style.content_margin_bottom=8
 	popup.add_theme_stylebox_override("panel",style); column.add_theme_constant_override("separation",5)
 	var header:=HBoxContainer.new(); column.add_child(header)
-	W.text(header,"新建筏格" if target.kind=="expand" else "筏格 %d,%d" % [target.x+1,target.y+1],16,W.GOLD)
+	W.text(header,"新建筏格 %d" % int(target.get("number",0)) if target.kind=="expand" else "筏格 %d" % preload("res://core/raft_layout.gd").number_at(int(target.x),int(target.y)),16,W.GOLD)
 	if target.kind=="expand":
 		W.text(column,"消耗：木头 %d · AP %d" % [target.cost.wood,target.ap],15)
 		if not target.allowed: W.text(column,target.reason,14,Color("efaaa0"))

@@ -1,0 +1,242 @@
+[
+  {
+    "difficulty": "standard",
+    "mode": "challenge",
+    "seed": 22,
+    "phase": "finished",
+    "outcome": "dead",
+    "completed": 11,
+    "steps": 128,
+    "replayed": 128,
+    "environments": [
+      "fog2"
+    ],
+    "hidden_observations": 14,
+    "navigation_actions": [
+      "scout"
+    ],
+    "trace": "survival-v17-standard-challenge-22.trace.json"
+  },
+  {
+    "difficulty": "standard",
+    "mode": "challenge",
+    "seed": 39,
+    "phase": "finished",
+    "outcome": "survived",
+    "completed": 12,
+    "steps": 135,
+    "replayed": 135,
+    "environments": [
+      "bloodMoon",
+      "current"
+    ],
+    "hidden_observations": 0,
+    "navigation_actions": [],
+    "trace": "survival-v17-standard-challenge-39.trace.json"
+  },
+  {
+    "difficulty": "standard",
+    "mode": "challenge",
+    "seed": 9,
+    "phase": "finished",
+    "outcome": "dead",
+    "completed": 11,
+    "steps": 128,
+    "replayed": 128,
+    "environments": [
+      "bloodMoon"
+    ],
+    "hidden_observations": 0,
+    "navigation_actions": [],
+    "trace": "survival-v17-standard-challenge-9.trace.json"
+  },
+  {
+    "difficulty": "standard",
+    "mode": "challenge",
+    "seed": 73,
+    "phase": "finished",
+    "outcome": "dead",
+    "completed": 11,
+    "steps": 127,
+    "replayed": 127,
+    "environments": [
+      "bloodMoon",
+      "current",
+      "fog1",
+      "fog2"
+    ],
+    "hidden_observations": 31,
+    "navigation_actions": [
+      "scout"
+    ],
+    "trace": "survival-v17-standard-challenge-73.trace.json"
+  },
+  {
+    "difficulty": "standard",
+    "mode": "challenge",
+    "seed": 1000,
+    "phase": "finished",
+    "outcome": "dead",
+    "completed": 11,
+    "steps": 132,
+    "replayed": 132,
+    "environments": [
+      "bloodMoon",
+      "fog1"
+    ],
+    "hidden_observations": 4,
+    "navigation_actions": [
+      "scout"
+    ],
+    "trace": "survival-v17-standard-challenge-1000.trace.json"
+  },
+  {
+    "difficulty": "standard",
+    "mode": "challenge",
+    "seed": 7919,
+    "phase": "finished",
+    "outcome": "dead",
+    "completed": 9,
+    "steps": 107,
+    "replayed": 107,
+    "environments": [
+      "fog1"
+    ],
+    "hidden_observations": 2,
+    "navigation_actions": [
+      "scout"
+    ],
+    "trace": "survival-v17-standard-challenge-7919.trace.json"
+  },
+  {
+    "difficulty": "standard",
+    "mode": "challenge",
+    "seed": 20261016,
+    "phase": "finished",
+    "outcome": "dead",
+    "completed": 10,
+    "steps": 114,
+    "replayed": 114,
+    "environments": [
+      "fog1"
+    ],
+    "hidden_observations": 2,
+    "navigation_actions": [
+      "scout"
+    ],
+    "trace": "survival-v17-standard-challenge-20261016.trace.json"
+  },
+  {
+    "difficulty": "standard",
+    "mode": "challenge",
+    "seed": 4294967295,
+    "phase": "finished",
+    "outcome": "dead",
+    "completed": 11,
+    "steps": 101,
+    "replayed": 101,
+    "environments": [
+      "confusion"
+    ],
+    "hidden_observations": 0,
+    "navigation_actions": [
+      "fix_heading"
+    ],
+    "trace": "survival-v17-standard-challenge-4294967295.trace.json"
+  },
+  {
+    "difficulty": "standard",
+    "mode": "story",
+    "seed": 22,
+    "phase": "chapterComplete",
+    "outcome": "",
+    "completed": 15,
+    "steps": 249,
+    "replayed": 249,
+    "environments": [
+      "fog2"
+    ],
+    "hidden_observations": 12,
+    "navigation_actions": [
+      "scout"
+    ],
+    "trace": "survival-v17-standard-story-22.trace.json"
+  },
+  {
+    "difficulty": "hard",
+    "mode": "challenge",
+    "seed": 22,
+    "phase": "finished",
+    "outcome": "dead",
+    "completed": 11,
+    "steps": 118,
+    "replayed": 118,
+    "environments": [
+      "fog2"
+    ],
+    "hidden_observations": 15,
+    "navigation_actions": [],
+    "trace": "survival-v17-hard-challenge-22.trace.json"
+  },
+  {
+    "difficulty": "hard",
+    "mode": "story",
+    "seed": 22,
+    "phase": "chapterComplete",
+    "outcome": "",
+    "completed": 15,
+    "steps": 249,
+    "replayed": 249,
+    "environments": [
+      "fog2"
+    ],
+    "hidden_observations": 12,
+    "navigation_actions": [
+      "scout"
+    ],
+    "trace": "survival-v17-hard-story-22.trace.json"
+  },
+  {
+    "difficulty": "nightmare",
+    "mode": "challenge",
+    "seed": 22,
+    "phase": "finished",
+    "outcome": "dead",
+    "completed": 11,
+    "steps": 105,
+    "replayed": 105,
+    "environments": [
+      "bloodMoon",
+      "confusion",
+      "fog2"
+    ],
+    "hidden_observations": 18,
+    "navigation_actions": [
+      "fix_heading"
+    ],
+    "trace": "survival-v17-nightmare-challenge-22.trace.json"
+  },
+  {
+    "difficulty": "nightmare",
+    "mode": "story",
+    "seed": 22,
+    "phase": "chapterComplete",
+    "outcome": "",
+    "completed": 15,
+    "steps": 256,
+    "replayed": 256,
+    "environments": [
+      "bloodMoon",
+      "confusion",
+      "current",
+      "fog1",
+      "fog2"
+    ],
+    "hidden_observations": 25,
+    "navigation_actions": [
+      "fix_heading",
+      "scout"
+    ],
+    "trace": "survival-v17-nightmare-story-22.trace.json"
+  }
+]

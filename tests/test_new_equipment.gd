@@ -23,8 +23,10 @@ func _init() -> void:
 	var net=base_session()
 	check(equip(net,"fishingNet"),"fishing net installs")
 	net.state.phase="aftermath"
-	check(net.dispatch("end_voyage"),"fishing net produces when the next voyage starts")
-	check(net.state.hand.filter(func(c):return c.source=="production").size()==1,"fishing net produces one base resource each voyage")
+	check(net.dispatch("end_voyage"),"next voyage starts with installed net")
+	check(net.state.hand.filter(func(c):return c.source=="production").size()==1,"fishing net automatically produces each voyage")
+	check(net.dispatch("salvage"),"installed fishing net catches resources through active salvage")
+	check(net.state.hand.filter(func(c):return c.source=="salvage").size()==2,"level one net adds one resource to base salvage")
 	var generator=base_session()
 	check(equip(generator,"generator"),"generator installs")
 	generator.give("corpse")

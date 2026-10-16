@@ -4,8 +4,8 @@
     "ui.settlement": {
       "path": "res://pages/settlement_page.gd",
       "source": "project-authored/native-Godot-settlement-v1",
-      "version": 3,
-      "sha256": "b537227d2a79921f2e508bfe447609469302451c5dc261cbcabfdaa5903bb6b2",
+      "version": 4,
+      "sha256": "617b3cf4ad01ab68042f9cf85957ac11c5b756eec1d38565cc35031f8104b261",
       "dependencies": [
         "res://pages/flow_base.gd",
         "res://presentation/widgets.gd"
@@ -19,7 +19,7 @@
         "initial_end_delay_seconds": 2
       },
       "license": "project-authored procedural UI; no external artwork",
-      "source_hash_verified_on": "2026-10-15"
+      "source_hash_verified_on": "2026-10-16"
     },
     "card.wood": {
       "path": "res://assets/images/supplied-20261012/asset-09.png",
@@ -632,7 +632,7 @@
         "card.*"
       ],
       "source": "pages/voyage_hud.gd + pages/flow_battle.gd + presentation/item_card.gd + presentation/widgets.gd",
-      "version": 5
+      "version": 6
     },
     "story.ST.L1.T01": {
       "path": "",
@@ -897,20 +897,15 @@
       "dependencies": []
     },
     "ui.card.front": {
-      "path": "res://assets/images/supplied-ui-20261012/ui-04.png",
-      "version": 1,
-      "source": "user-supplied/card-ui-original.zip/卡牌ui/星海秘仪双卡设计.png",
-      "sha256": "480dc8b07a739796a83015ccbcbe87abc129de81dc0d144ba3f508ba4b523b2e",
+      "path": "res://assets/images/supplied-ui-20261012/tarot_card_frame.png",
+      "version": 2,
+      "source": "user-supplied/media_1792149428434_0e1346ff.zip/星月罗盘秘境塔罗卡框.png",
+      "sha256": "19d05b88d05758d7aaa030db1de90ddde509bc7bc2845cbb154591de04bb626f",
       "dimensions": [
-        1448,
-        1086
+        1024,
+        1536
       ],
-      "region": [
-        90,
-        28,
-        654,
-        1004
-      ],
+      "region": null,
       "show_label": false,
       "dependencies": []
     },
@@ -1157,8 +1152,8 @@
         "presentation/raft_state_models.gd",
         "asset-sources/filter-states-v1/filter_states_v001.blend"
       ],
-      "version": 11,
-      "sha256": "3c5bd82308af8274fee78b496f5e41445104646420022e900abcf612a5d22f20",
+      "version": 14,
+      "sha256": "ed3db3ea980d3af09fb8f5827fcb1b7d2eb6508fe863bd865dab4a82306797ff",
       "dependencies": [
         "shader.raft.wet-wood",
         "model.raft.module.deck-intact",
@@ -1181,7 +1176,7 @@
       "coordinates": "Godot metres, Y up; one cell 2.35 x 2.1; geometry owned by VoyageWorld cache",
       "mapping": "cell.id/x/y/status + equipment.id/level/fuel; detached omitted, damaged retained and disabled",
       "visual_random": "Blender local seed 5100; coordinate variant (x+2*y)%3; independent of game RNG",
-      "decorative_root": "new layout x=0,1 y=0; four playable cells at 3,4,5,6; expanded legacy saves retain left-side root",
+      "decorative_root": "spiral-v1: roots 1/2 at (1,1)/(2,1), runtime shift +2.35m X / +2.1m Z; initial playable 3/4/5/6",
       "planter_mapping": "Only level 1 with progress=0 is seedling; level 1 progress>=1 and all level 2/3 are mature (due to produce this voyage). Damaged retains shape, disabled.",
       "filter_mapping": "level 1 progress=0: waiting empty bucket; level 1 progress>=1 and all level 2/3: ready water, due to produce this voyage. Damaged retained, disabled.",
       "annotation_rendering": {
@@ -1192,7 +1187,7 @@
       },
       "wood_style": "shared imagegen hand-painted wood; planter geometry and production mapping unchanged",
       "wood_texture_version": 3,
-      "source_hash_verified_on": "2026-10-16"
+      "source_hash_verified_on": "2026-10-17"
     },
     "model.raft.module.crossbow": {
       "path": "res://assets/models/raft-modules/crossbow.glb",
@@ -1378,8 +1373,8 @@
     },
     "ui.hud.voyage-adapter": {
       "path": "res://pages/voyage_hud.gd",
-      "version": 10,
-      "sha256": "4355a1136eaa512d706e5092108aefc7119571052129990383fc39e6d29fe954",
+      "version": 17,
+      "sha256": "d7e6f43f1bba20b517970db51174e32e72d0fc412477df9d5c2011a48ac8a3de",
       "source": [
         "asset-sources/hud-visual-v2/deep_surge_hud_godot4_v2_visual_match.zip",
         "pages/voyage_hud.gd"
@@ -1392,23 +1387,25 @@
       ],
       "license": "user-supplied HUD package; no explicit upstream license supplied, project adaptations",
       "visual_random": "none",
-      "role": "presentation-only; draws current read-only session view; native choices dispatch existing commands",
-      "source_hash_verified_on": "2026-10-16"
+      "role": "read-only environment names and native hover tooltips; no top decoration plates; navigation dispatch buttons",
+      "source_hash_verified_on": "2026-10-17"
     },
     "ui.hud.story-adapter": {
       "path": "res://pages/flow_story.gd",
-      "version": 2,
-      "sha256": "d8804f73a794e57d15e6916568e3b0d92d61b57bdce0f06eb6c8d59b3cb4a471",
+      "version": 3,
+      "sha256": "a39677dde3c6bc0a52e40375879086ec0aa604730f698dfc96ce92457133c243",
       "source": [
         "asset-sources/hud-visual-v2/deep_surge_hud_godot4_v2_visual_match.zip",
         "pages/flow_story.gd"
       ],
       "dependencies": [
-        "ui.hud.event-choices"
+        "ui.hud.event-choices",
+        "res://core/difficulty_rules.gd"
       ],
       "license": "user-supplied HUD package; no explicit upstream license supplied, project adaptations",
       "visual_random": "none",
-      "role": "presentation-only; draws current read-only session view; native choices dispatch existing commands"
+      "role": "presentation-only; draws current read-only session view; native choices dispatch existing commands",
+      "source_hash_verified_on": "2026-10-16"
     },
     "texture.hud.status-art": {
       "path": "res://addons/deep_surge_status/textures/status_art.png",
@@ -1559,186 +1556,186 @@
     },
     "texture.title.01-start-game-dark": {
       "path": "res://assets/title_ui/01_start_game_dark.png",
-      "source": "asset-sources/title-ui-v2/deep_surge_title_ui_13_assets.zip",
-      "version": 1,
-      "sha256": "e06b86293099b2126499f76b00b1a263c242393b726d89d413a69c2d0ec6148e",
+      "source": "user-supplied/media_1792149500191_7ef06e72.zip",
+      "version": 5,
+      "sha256": "3bda59b026f20d11d27a74e8b433138d737e1a96a315f9e429d0b6abb98e3910",
       "dimensions": [
-        1100,
-        370
+        2172,
+        724
       ],
       "dependencies": [],
-      "license": "user supplied title artwork/video"
+      "license": "user supplied title artwork"
     },
     "texture.title.01-start-game-light": {
       "path": "res://assets/title_ui/01_start_game_light.png",
-      "source": "asset-sources/title-buttons-light-v3/original.zip",
-      "version": 3,
-      "sha256": "6343404336a68aa26482e3bb2d77a13726f414425800b9994ffd2f4f301c76ee",
+      "source": "user-supplied/media_1792149500191_7ef06e72.zip",
+      "version": 5,
+      "sha256": "5d54325ccea476f4b155b1aa4bcbd172d945643760a620a3e1ec5941c5f1dcaa",
       "dimensions": [
-        2162,
-        727
+        2172,
+        724
       ],
       "dependencies": [],
-      "license": "user supplied title artwork/video"
+      "license": "user supplied title artwork"
     },
     "texture.title.02-continue-dark": {
       "path": "res://assets/title_ui/02_continue_dark.png",
-      "source": "asset-sources/title-ui-v2/deep_surge_title_ui_13_assets.zip",
-      "version": 1,
-      "sha256": "89187b247180bead5e5b943a5a7a4565270fac2ce6711cde4ae141a40a1ad62f",
+      "source": "user-supplied/media_1792149500191_7ef06e72.zip",
+      "version": 5,
+      "sha256": "44845922b5c6c807c99971094717b9a123422c63fac6bab6fa35c21a52962228",
       "dimensions": [
-        1100,
-        370
+        2172,
+        724
       ],
       "dependencies": [],
-      "license": "user supplied title artwork/video"
+      "license": "user supplied title artwork"
     },
     "texture.title.02-continue-light": {
       "path": "res://assets/title_ui/02_continue_light.png",
-      "source": "asset-sources/title-buttons-light-v3/original.zip",
-      "version": 3,
-      "sha256": "e6a3dad05c4f6b0244533f7ce6c44ecb35c6b3ea6c54c181974f1b1a068c8fec",
+      "source": "user-supplied/media_1792149500191_7ef06e72.zip",
+      "version": 5,
+      "sha256": "e2c3f5f2311fb67528b2628811e942aecf0a0728d300b36b17f8dbac7075d2a8",
       "dimensions": [
-        2162,
-        727
+        2172,
+        724
       ],
       "dependencies": [],
-      "license": "user supplied title artwork/video"
+      "license": "user supplied title artwork"
     },
     "texture.title.03-journal-dark": {
       "path": "res://assets/title_ui/03_journal_dark.png",
-      "source": "asset-sources/title-ui-v2/deep_surge_title_ui_13_assets.zip",
-      "version": 1,
-      "sha256": "ab8cc40eae3aa4c57d33741e5711470f506dbbe1e48407ca7cbd824b6d5695fa",
+      "source": "user-supplied/media_1792149500191_7ef06e72.zip",
+      "version": 5,
+      "sha256": "836a192e79cc1e5e4016db388a32cf5c8e01fbf0b4be0f65ff8e0d4af154ff56",
       "dimensions": [
-        1100,
-        370
+        2172,
+        724
       ],
       "dependencies": [],
-      "license": "user supplied title artwork/video"
+      "license": "user supplied title artwork"
     },
     "texture.title.03-journal-light": {
       "path": "res://assets/title_ui/03_journal_light.png",
-      "source": "asset-sources/title-buttons-light-v3/original.zip",
-      "version": 3,
-      "sha256": "3a76ccbf1d445255718fc4ed9095e2df6b58b41e750de88834f6d3e663b041ef",
+      "source": "user-supplied/media_1792149500191_7ef06e72.zip",
+      "version": 5,
+      "sha256": "3b0fa5d95b163add87a8cb92a020b88031f95f4fcd8468b23224061d7d334259",
       "dimensions": [
-        2162,
-        727
+        2172,
+        724
       ],
       "dependencies": [],
-      "license": "user supplied title artwork/video"
+      "license": "user supplied title artwork"
     },
     "texture.title.04-shop-dark": {
       "path": "res://assets/title_ui/04_shop_dark.png",
-      "source": "asset-sources/title-ui-v2/deep_surge_title_ui_13_assets.zip",
-      "version": 1,
-      "sha256": "1a61e262a590f3d43a4e2fbb4ede087f958f9ba12d906067482aeb2304e53c41",
+      "source": "user-supplied/media_1792149500191_7ef06e72.zip",
+      "version": 5,
+      "sha256": "0c061e4ab21ff0b4f946cd50b6d95c9454abfcc40bd3acdc88d2d1495709c3c2",
       "dimensions": [
-        1100,
-        370
+        2172,
+        724
       ],
       "dependencies": [],
-      "license": "user supplied title artwork/video"
+      "license": "user supplied title artwork"
     },
     "texture.title.04-shop-light": {
       "path": "res://assets/title_ui/04_shop_light.png",
-      "source": "asset-sources/title-buttons-light-v3/original.zip",
-      "version": 3,
-      "sha256": "dfdbe31b9ccf382d76439ba42f6fcb4c0cf14eb9c53b370ad4398b204809347e",
+      "source": "user-supplied/media_1792149500191_7ef06e72.zip",
+      "version": 5,
+      "sha256": "7d08e55b836a1121e14b8f88082629cb8f4ae980c7e669f72a7e843adee4da5d",
       "dimensions": [
-        2162,
-        727
+        2172,
+        724
       ],
       "dependencies": [],
-      "license": "user supplied title artwork/video"
+      "license": "user supplied title artwork"
     },
     "texture.title.05-rewind-dark": {
       "path": "res://assets/title_ui/05_rewind_dark.png",
-      "source": "asset-sources/title-ui-v2/deep_surge_title_ui_13_assets.zip",
-      "version": 1,
-      "sha256": "70788a26da0629e2cb400e737aed37a177bd37aab4fcf215e97360fc3683605b",
+      "source": "user-supplied/media_1792149500191_7ef06e72.zip",
+      "version": 5,
+      "sha256": "ea23e098c9948c624f43f413c4c49a008c152281242bf8b7025c04899818a0f7",
       "dimensions": [
-        1100,
-        370
+        2172,
+        724
       ],
       "dependencies": [],
-      "license": "user supplied title artwork/video"
+      "license": "user supplied title artwork"
     },
     "texture.title.05-rewind-light": {
       "path": "res://assets/title_ui/05_rewind_light.png",
-      "source": "asset-sources/title-ui-v2/deep_surge_title_ui_13_assets.zip",
-      "version": 1,
-      "sha256": "543b2772c3691233a2c8224f555f26ae53102eb023b2c4f4208134fac8c6c78e",
+      "source": "user-supplied/media_1792149500191_7ef06e72.zip",
+      "version": 5,
+      "sha256": "4717dffe1afe07ad2925fc9ef4b8485bdbde454a8ac01ac6df099bfabf739e0b",
       "dimensions": [
-        1100,
-        370
+        2172,
+        724
       ],
       "dependencies": [],
-      "license": "user supplied title artwork/video"
+      "license": "user supplied title artwork"
     },
     "texture.title.06-exit-dark": {
       "path": "res://assets/title_ui/06_exit_dark.png",
-      "source": "asset-sources/title-ui-v2/deep_surge_title_ui_13_assets.zip",
-      "version": 1,
-      "sha256": "2dafcea28ca3e5f0b3949708c9b5e996c635b61ae066d6cbd06cb6fc56b6a047",
+      "source": "user-supplied/media_1792149500191_7ef06e72.zip",
+      "version": 5,
+      "sha256": "258c45022ffb2a42a515014f02fa198e4654de272f51fd1abb6a527511112e4f",
       "dimensions": [
-        1100,
-        370
+        2172,
+        724
       ],
       "dependencies": [],
-      "license": "user supplied title artwork/video"
+      "license": "user supplied title artwork"
     },
     "texture.title.06-exit-light": {
       "path": "res://assets/title_ui/06_exit_light.png",
-      "source": "asset-sources/title-buttons-light-v3/original.zip",
-      "version": 3,
-      "sha256": "2ab74bdce1232470da5b390eb5f66a321639e0a5551bfffd2da5f11141fb6411",
+      "source": "user-supplied/media_1792149500191_7ef06e72.zip",
+      "version": 5,
+      "sha256": "232bed801f858ca6050518caeaf7758b82d6cd1e36063818b92c8808f51f63cc",
       "dimensions": [
-        2162,
-        727
+        2172,
+        724
       ],
       "dependencies": [],
-      "license": "user supplied title artwork/video"
+      "license": "user supplied title artwork"
     },
     "texture.title.07-deep-surge-logo": {
       "path": "res://assets/title_ui/07_deep_surge_logo.png",
-      "source": "asset-sources/title-ui-v2/deep_surge_title_ui_13_assets.zip",
-      "version": 1,
+      "source": "user-supplied/media_1792149500191_7ef06e72.zip",
+      "version": 5,
       "sha256": "55f2cf4cc438254b8418b217bea9c5a82607be847434612f6105d4600f8d7156",
       "dimensions": [
         1448,
         1009
       ],
       "dependencies": [],
-      "license": "user supplied title artwork/video"
+      "license": "user supplied title artwork"
     },
     "texture.title.ocean-poster": {
-      "path": "res://assets/title_ui/ocean_poster.png",
-      "source": "asset-sources/title-ui-v2/海浪和远方的云动态流动_无水印_2x超分辨率.mp4",
-      "version": 1,
-      "sha256": "9432a476e0d6ee7860c40fd7b3ae678a6b94ef6997c93442519c7036a1fcb2e5",
-      "dimensions": [
-        1704,
-        960
-      ],
+      "path": "res://assets/title_ui/lighthouse_poster.png",
+      "source": "user-supplied/月下灯塔与星海航行_无水印_2x超分辨率.mp4#first-frame",
+      "version": 3,
+      "sha256": "7a2a8b599565ccecae4414dea9647c0928d44adb447a3fcf66c724953982d88a",
       "dependencies": [],
-      "license": "user supplied title artwork/video"
+      "license": "user supplied; no additional license assertion",
+      "dimensions": [
+        2940,
+        1260
+      ]
     },
     "video.title.ocean": {
-      "path": "res://assets/title_ui/ocean_loop.ogv",
-      "version": 1,
-      "source": "asset-sources/title-ui-v2/海浪和远方的云动态流动_无水印_2x超分辨率.mp4",
-      "sha256": "c34bf15917f8c1bfac0ff7402ab873627b086fbf729c022098d783f5525276b3",
+      "path": "res://assets/title_ui/lighthouse_loop.ogv",
+      "source": "user-supplied/月下灯塔与星海航行_无水印_2x超分辨率.mp4",
+      "version": 3,
+      "sha256": "80729b652a2da84eb2d53c8aebfb4023436f4ba948a0ef7b2f50f0d8ea0122e0",
       "dependencies": [],
-      "license": "user supplied video",
-      "encoding": "FFmpeg 7.1 libtheora quality 7, 1704x960, yuv420p, silent; native Godot Theora loop"
+      "license": "user supplied; no additional license assertion",
+      "encoding": "FFmpeg 7.1 libtheora q7, 2240x960, yuv420p, silent, native Godot loop; preserves source 21:9"
     },
     "ui.title.menu": {
       "path": "res://presentation/title_menu.gd",
       "source": "presentation/title_menu.gd",
-      "version": 4,
-      "sha256": "91ed6e8b7cc9378775a9092f6f9f7be75b9774956cb5a836c6cc5d769b553f62",
+      "version": 7,
+      "sha256": "51c85d0f5ead4e6853ad1a67382db395669bcde1519497c365938b19f5c14568",
       "dependencies": [
         "texture.title.01-start-game-dark",
         "texture.title.01-start-game-light",
@@ -1757,8 +1754,10 @@
         "texture.title.menu-board-source",
         "texture.title.ocean-poster",
         "video.title.ocean",
-        "shader.title.board",
-        "shader.title.button-edge"
+        "shader.title.button-edge",
+        "ui.title.frame-v3",
+        "texture.title.logo-v3",
+        "ui.title.logo-backdrop"
       ],
       "license": "project authored layout and existing-command routing; supplied title art",
       "visual_random": "none",
@@ -1767,72 +1766,32 @@
           1672,
           941
         ],
-        "buttons": {
-          "start": [
-            1050.0,
-            280.0,
-            450.0,
-            151.363647460938
-          ],
-          "continue": [
-            1040.0,
-            378.0,
-            450.0,
-            151.363647460938
-          ],
-          "journal": [
-            1038.0,
-            476.0,
-            450.0,
-            151.363647460938
-          ],
-          "shop": [
-            1066.09997558594,
-            580.0,
-            450.0,
-            151.363647460938
-          ],
-          "recall": [
-            1100.30004882813,
-            678.0,
-            450.0,
-            151.363647460938
-          ],
-          "quit": [
-            1160.0,
-            770.0,
-            450.0,
-            151.363647460938
-          ]
-        },
         "logo": [
-          850.0,
-          -85.0,
-          750.0,
-          474.811828613281
+          140,
+          80,
+          650,
+          487.5
+        ],
+        "buttons": "Right anchored; original aspect and UI scale retained",
+        "landscape_aspects": [
+          "3:2",
+          "21:9"
         ]
       },
       "shade": {
-        "texture": "texture.title.menu-board-source",
-        "opacity": 0.78,
-        "mask": "retain supplied grey region only",
-        "reference_size": [
-          1672,
-          941
-        ],
+        "opacity": 0,
         "layer_order": [
           "poster",
           "video",
-          "shade",
-          "logo",
-          "buttons"
+          "logo/buttons",
+          "continuous-frame"
         ]
       }
     },
     "ui.title.home": {
       "path": "res://pages/flow_home.gd",
       "source": "pages/flow_home.gd",
-      "version": 2,
+      "version": 4,
       "sha256": "8afb3904d0252f20bd3ca2a94c5525efd8aba27caf891b97e7e1a31a493bdfdf",
       "dependencies": [
         "ui.title.menu"
@@ -1842,15 +1801,15 @@
     },
     "texture.title.menu-board-source": {
       "path": "res://assets/title_ui/menu_board_source.png",
-      "source": "asset-sources/title-ui-v2/menu_board_source.png",
-      "version": 1,
+      "source": "user-supplied/media_1792149500191_7ef06e72.zip",
+      "version": 5,
       "sha256": "4d8d97bd737e17df798da2212160861e81eab89399055046ba7a673d169bcea2",
       "dimensions": [
         1672,
         941
       ],
       "dependencies": [],
-      "license": "user supplied title artwork/video"
+      "license": "user supplied title artwork"
     },
     "shader.title.board": {
       "path": "res://assets/shaders/title_board.gdshader",
@@ -1879,15 +1838,15 @@
     },
     "texture.title.05-rewind-light-v4": {
       "path": "res://assets/title_ui/05_rewind_light_v4.png",
-      "source": "asset-sources/title-rewind-v4/05_rewind_light_v4.png",
-      "version": 4,
+      "source": "user-supplied/media_1792149500191_7ef06e72.zip",
+      "version": 5,
       "sha256": "b60978a3162beaa94168c28fdf7393e233892ca2c70d030f69970ed647169b1e",
       "dimensions": [
         2162,
         727
       ],
       "dependencies": [],
-      "license": "AI-generated from user supplied rewind button; imagegen"
+      "license": "user supplied title artwork"
     },
     "ui.story.dialogue": {
       "path": "res://assets/story_ui/dialogue-v1.png",
@@ -1969,10 +1928,13 @@
     "ui.node-event.embedded": {
       "path": "res://pages/flow_story.gd",
       "source": "pages/flow_story.gd",
-      "sha256": "d8804f73a794e57d15e6916568e3b0d92d61b57bdce0f06eb6c8d59b3cb4a471",
-      "version": 3,
-      "dependencies": [],
-      "presentation": "full-screen translucent backdrop below HUD; fixed right-side frame extending to hand area displays intro then choices then result; native text/buttons"
+      "sha256": "a39677dde3c6bc0a52e40375879086ec0aa604730f698dfc96ce92457133c243",
+      "version": 4,
+      "dependencies": [
+        "res://core/difficulty_rules.gd"
+      ],
+      "presentation": "full-screen translucent backdrop below HUD; fixed right-side frame extending to hand area displays intro then choices then result; native text/buttons",
+      "source_hash_verified_on": "2026-10-16"
     },
     "texture.voyage.topbar-v1": {
       "path": "res://assets/textures/voyage-topbar-v1.png",
@@ -1998,65 +1960,50 @@
         80
       ],
       "runtime_mapping": {
-        "info_plate": [
-          12,
-          8,
-          620,
-          184
-        ],
-        "stats_plate": [
-          632,
-          8,
-          -12,
-          184
-        ],
-        "atlas_region": [
-          0,
-          185,
-          2172,
-          360
-        ],
-        "mode": "TextureRect scalable two-region background"
+        "status": "archived",
+        "reason": "top decoration plates removed at user request 2026-10-16"
       }
     },
     "ui.hand.capacity-badge": {
       "path": "res://pages/voyage_hud.gd",
       "source": "pages/voyage_hud.gd",
-      "version": 4,
-      "sha256": "4355a1136eaa512d706e5092108aefc7119571052129990383fc39e6d29fe954",
+      "version": 10,
+      "sha256": "d7e6f43f1bba20b517970db51174e32e72d0fc412477df9d5c2011a48ac8a3de",
       "dependencies": [
         "ui.voyage-hud"
       ],
       "role": "rounded numeric capacity badge centered above resized hand tray",
       "license": "project-authored procedural UI; user screenshot is layout reference",
-      "source_hash_verified_on": "2026-10-16"
+      "source_hash_verified_on": "2026-10-17"
     },
     "ui.craft.circle-entry": {
       "path": "res://pages/voyage_hud.gd",
       "source": "pages/voyage_hud.gd",
-      "version": 4,
-      "sha256": "4355a1136eaa512d706e5092108aefc7119571052129990383fc39e6d29fe954",
+      "version": 10,
+      "sha256": "d7e6f43f1bba20b517970db51174e32e72d0fc412477df9d5c2011a48ac8a3de",
       "dependencies": [
         "ui.voyage-hud"
       ],
       "role": "128 pixel circular craft entry below action points at lower left",
       "license": "project-authored procedural UI; user screenshot is layout reference",
-      "source_hash_verified_on": "2026-10-16"
+      "source_hash_verified_on": "2026-10-17"
     },
     "ui.starting-resources": {
       "path": "res://pages/new_game_setup.gd",
       "source": "pages/new_game_setup.gd",
-      "version": 2,
-      "sha256": "cfd80d2252de429efcafe24282c7ffb756dd1f81ebceb54f546c6b7a91aeb229",
+      "version": 3,
+      "sha256": "d521aee9ffbdb352eae4b539b89c7ffdcfc015f8ffe80b1fae2ff2d23ea460bb",
       "dependencies": [
         "card.wood",
         "card.iron",
         "card.plastic",
         "card.rope",
-        "card.cloth"
+        "card.cloth",
+        "res://core/difficulty_rules.gd"
       ],
-      "role": "origin and seed setup followed by five-resource picker, per-type and total limits, random start",
-      "license": "project-authored procedural UI, reuses existing card artwork"
+      "role": "explicit difficulty selection with relative descriptions, origin and seed, tier-specific resource limits and random start",
+      "license": "project-authored procedural UI, reuses existing card artwork",
+      "source_hash_verified_on": "2026-10-16"
     },
     "ui.craft.grid": {
       "path": "res://pages/craft_page.gd",
@@ -2102,8 +2049,8 @@
     "ui.settings-panel": {
       "path": "res://presentation/settings_panel.gd",
       "source": "presentation/settings_panel.gd",
-      "version": 3,
-      "sha256": "5ac3a29a4153ddc1cea25ffab2cbaba8092120525e87c3efc34bace72439bfb2",
+      "version": 6,
+      "sha256": "d04905bde2edcfbf8f09154472d4b198cd7226b129ab459df2598f37729331c2",
       "dependencies": [
         "ui.controls.close",
         "ui.display-preferences"
@@ -2116,18 +2063,19 @@
     "ui.display-preferences": {
       "path": "res://presentation/display_settings.gd",
       "source": "presentation/display_settings.gd",
-      "version": 2,
-      "sha256": "3f04db56c7632199fc2ee6927ad4148417c6fe1acc7ef7f714de1af3ead69f2c",
+      "version": 4,
+      "sha256": "7bc4ba647511a3d10b9ca283a0a1c5dfc13aadff73f9c93308371893d0f9f1be",
       "dependencies": [],
       "role": "persistent UI/window/render settings and immediate engine FPS limit, VSync disabled for selected cap",
       "license": "project-authored procedural UI; reuses existing artwork and theme",
-      "visual_random": "none"
+      "visual_random": "none",
+      "source_hash_verified_on": "2026-10-16"
     },
     "ui.modal-layout": {
       "path": "res://flow_app.gd",
       "source": "flow_app.gd",
-      "version": 4,
-      "sha256": "5d6b130d659c5ccfbd4875e29f1d0115b79a2a4b8460f7ee1c568e5177082ade",
+      "version": 6,
+      "sha256": "6d7fce288560150e41ad77480f989558837739b95f682d9790b57ddf6fd0c495",
       "dependencies": [
         "ui.controls.close",
         "ui.settings-panel",
@@ -2141,8 +2089,8 @@
     "ui.battle.equipment": {
       "path": "res://pages/flow_battle.gd",
       "source": "pages/flow_battle.gd",
-      "version": 2,
-      "sha256": "f11877c85163d15d8b8cde704006815cc9050b448be8a91396a6dc6a4cd56dc5",
+      "version": 6,
+      "sha256": "d367a1449bccefe430aee63d113bca7b3e9aa71a7fe3fbb8d8f1312bad737f6d",
       "dependencies": [
         "ui.hand.fan",
         "ui.modal-layout",
@@ -2151,7 +2099,8 @@
         "model.raft.module.generator",
         "model.raft.module.shieldRack",
         "model.raft.module.fishingNet",
-        "model.raft.module.crate"
+        "model.raft.module.crate",
+        "res://core/difficulty_rules.gd"
       ],
       "role": "fixed attack/block actions, preview-confirm combat combos, shields and enemy intent, generator controls and effective hand capacity",
       "license": "project-authored procedural UI; reuses existing registered equipment models",
@@ -2161,7 +2110,7 @@
         "equipment_models": "AssetCatalog stable model.raft.module.* IDs with temporary labelled fallback on load failure",
         "modal_insets": "battle and raft panels 0.035..0.965 anchors"
       },
-      "source_hash_verified_on": "2026-10-16"
+      "source_hash_verified_on": "2026-10-17"
     },
     "model.raft.slot-ghost": {
       "path": "res://assets/models/raft-modules/slot-ghost.glb",
@@ -2193,8 +2142,8 @@
     "ui.raft.actions": {
       "path": "res://presentation/raft_actions.gd",
       "source": "presentation/raft_actions.gd",
-      "version": 4,
-      "sha256": "726ae4cdc54d35d5e506f9feb2383a71613be1c426cfeea10ad1a2f703e57bdc",
+      "version": 6,
+      "sha256": "b32c84c9e9869974bcf4a3a19f460bf833f6df3b3d2c80f93363ed61aec39fa7",
       "dependencies": [
         "res://core/game_session.gd",
         "res://core/run_rules.gd"
@@ -2248,8 +2197,8 @@
     "ui.raft.interaction": {
       "path": "res://presentation/raft_interaction.gd",
       "source": "presentation/raft_interaction.gd",
-      "version": 8,
-      "sha256": "1f23bbdfe42634c1587f95146d66d9bbc57b72eb78eac366343e4e736810f932",
+      "version": 9,
+      "sha256": "62a7a0442693e1b82d2725f3b8a3966f51848d1ee06fc83e5bbea4402f275606",
       "dependencies": [
         "ui.raft.actions",
         "ui.raft.surface",
@@ -2263,7 +2212,7 @@
         "popup_anchor": "80% across selected real cell projected width horizontally; fixed at selected projected Y with no vertical HUD/viewport obstruction checks",
         "popup_overlap_fraction": 0.2
       },
-      "source_hash_verified_on": "2026-10-15"
+      "source_hash_verified_on": "2026-10-16"
     },
     "ui.raft.ghost-fill": {
       "path": "res://presentation/raft_surface.gd",
@@ -2967,6 +2916,502 @@
       },
       "license": "project-authored native UI; no external artwork",
       "source_hash_verified_on": "2026-10-16"
+    },
+    "data.environment-buffs": {
+      "path": "res://content/data/environments.json",
+      "source": "V0.2/环境与移动结果.md + project-authored-v12",
+      "version": 1,
+      "sha256": "77ae53ae7c171c09e98472d2911ff6ea413d657077a3d6a37ea7d3d0b72a26de",
+      "dependencies": [
+        "res://core/environment_rules.gd"
+      ],
+      "runtime_mapping": "GameSession environment rules and read-only HUD/Agent projection",
+      "license": "project-authored rules data"
+    },
+    "data.difficulties": {
+      "path": "res://content/data/difficulties.json",
+      "source": "project-authored/content/data/difficulties.json",
+      "version": 1,
+      "sha256": "1fc65ab0802bed05e4dbceec1b35dba2760811da71ae408fb164026db46ab3d9",
+      "dependencies": [],
+      "role": "v13 trial difficulty baselines, environment probabilities and normal/boss multipliers",
+      "license": "project-authored",
+      "runtime_mapping": {
+        "entry": "GameSession dispatch(new), environment round generation, battle enter and read-only projections"
+      },
+      "source_hash_verified_on": "2026-10-16"
+    },
+    "rules.difficulty": {
+      "path": "res://core/difficulty_rules.gd",
+      "source": "project-authored/core/difficulty_rules.gd",
+      "version": 1,
+      "sha256": "ed26bce26c6bf4e0f0fdf716acb9474bffc385b0587501acb55a288d278cbfea",
+      "dependencies": [
+        "res://content/data/difficulties.json"
+      ],
+      "role": "pure shared difficulty projections and rounded enemy stats",
+      "license": "project-authored",
+      "runtime_mapping": {
+        "entry": "GameSession dispatch(new), environment round generation, battle enter and read-only projections"
+      },
+      "source_hash_verified_on": "2026-10-16"
+    },
+    "ui.battle.salvage": {
+      "path": "res://pages/voyage_hud.gd",
+      "source": "project-authored/native-Godot-battle-salvage-v14",
+      "version": 6,
+      "sha256": "d7e6f43f1bba20b517970db51174e32e72d0fc412477df9d5c2011a48ac8a3de",
+      "dependencies": [
+        "res://core/run_rules.gd",
+        "res://core/action_query.gd"
+      ],
+      "role": "battle salvage button; costs one battle AP for one permanent base resource",
+      "runtime_mapping": {
+        "command": "salvage",
+        "phase": "battle"
+      },
+      "source_hash_verified_on": "2026-10-17"
+    },
+    "ui.raft.expansion-cost": {
+      "path": "res://presentation/raft_actions.gd",
+      "source": "project-authored/native-Godot-expansion-cost-v15",
+      "version": 2,
+      "sha256": "b32c84c9e9869974bcf4a3a19f460bf833f6df3b3d2c80f93363ed61aec39fa7",
+      "dependencies": [
+        "res://core/run_rules.gd",
+        "res://pages/paged_reference.gd"
+      ],
+      "role": "shared dynamic expansion quote: first three successful expansions cost one wood, later two; always one AP",
+      "runtime_mapping": {
+        "command": "expand",
+        "counter": "expansion_count",
+        "cost_projection": "expansion_cost"
+      },
+      "source_hash_verified_on": "2026-10-16"
+    },
+    "layout.raft.spiral": {
+      "path": "res://core/raft_layout.gd",
+      "source": "project-authored/native-Godot-v16",
+      "version": 1,
+      "sha256": "97fadb9ac17d250d80b97dbd3e158f5ef9e256d90a493405fa69a62cf445e11f",
+      "dependencies": [
+        "res://presentation/raft_actions.gd",
+        "res://presentation/raft_state_models.gd"
+      ],
+      "role": "shared clockwise numbering and runtime grid positions",
+      "runtime_mapping": {
+        "layout": "spiral-v1",
+        "initial": "612/543",
+        "default_total_cells": 9,
+        "unlocked_total_cells": 16
+      },
+      "source_hash_verified_on": "2026-10-16"
+    },
+    "ui.raft.camera-controls": {
+      "path": "res://presentation/raft_camera_controls.gd",
+      "source": "project-authored/native-Godot-v16",
+      "version": 3,
+      "sha256": "9fc3af95b50388a466b370e22d1a48e2ef3c6b7acf6b9aeff788a9c22a18e0ab",
+      "dependencies": [
+        "res://presentation/voyage_world.gd",
+        "res://presentation/display_settings.gd",
+        "res://presentation/settings_panel.gd"
+      ],
+      "role": "local camera orbit/pan/zoom with configurable mouse bindings and smooth reset hotkey",
+      "runtime_mapping": {
+        "reset_button": "ResetRaftView",
+        "lock_toggle": "ViewLockToggle",
+        "preference": "view_locked",
+        "rules_mutation": false,
+        "pan_button": "configurable; default mouse-left",
+        "reset_key": "configurable; default R",
+        "reset_seconds": 0.45,
+        "pan_plane": "world XZ",
+        "orbit_button": "configurable; default mouse-right",
+        "binding_settings": [
+          "camera_orbit_button",
+          "camera_pan_button",
+          "camera_reset_key"
+        ],
+        "pan_limit_metres": 3.0,
+        "pan_limit_shape": "XZ radius around default automatic framing"
+      },
+      "source_hash_verified_on": "2026-10-16"
+    },
+    "texture.title.logo-v3": {
+      "path": "res://assets/title_ui/deep_surge_logo_v3.png",
+      "source": "user-supplied/codex-clipboard-1a3fb0cf-cad3-4cca-9f6f-47f243db5f95.png",
+      "version": 3,
+      "sha256": "b11560af7f4f1f0f5933b76c303476eab19f2ad90ef131a38fbeab5d30ce5354",
+      "dependencies": [],
+      "license": "user supplied; no additional license assertion",
+      "dimensions": [
+        1448,
+        1086
+      ]
+    },
+    "reference.title.home-v3": {
+      "path": "res://assets/title_ui/home_reference_v3.png",
+      "source": "user-supplied/codex-clipboard-9025ac56-b4bf-4858-946f-0ba88d58115d.png",
+      "version": 3,
+      "sha256": "9af2ed87439c94f4cebca536246d66f0935c1369f5f32af4b6816193cd37e414",
+      "dependencies": [],
+      "license": "user supplied; no additional license assertion",
+      "dimensions": [
+        1024,
+        576
+      ],
+      "runtime": false
+    },
+    "texture.title.frame-v3.bottom-center-medallion": {
+      "path": "res://assets/title_ui/frame_v3/bottom_center_medallion.png",
+      "source": "user-supplied/深潮_矩形框_无缝修复版.zip/bottom_center_medallion.png",
+      "version": 3,
+      "sha256": "2c8c18767647e45817822958b668ed4de21e5613f879463c5766ffc26d03cf6d",
+      "dependencies": [],
+      "license": "user supplied; no additional license assertion",
+      "dimensions": [
+        192,
+        124
+      ]
+    },
+    "texture.title.frame-v3.bottom-continuous-rail": {
+      "path": "res://assets/title_ui/frame_v3/bottom_continuous_rail.png",
+      "source": "user-supplied/深潮_矩形框_无缝修复版.zip/bottom_continuous_rail.png",
+      "version": 3,
+      "sha256": "0ad33c5bacb5583c6d02d86a01e73aa20c92607f3c1cc4cbb14640153cde85e9",
+      "dependencies": [],
+      "license": "user supplied; no additional license assertion",
+      "dimensions": [
+        1,
+        124
+      ]
+    },
+    "texture.title.frame-v3.bottom-left-corner": {
+      "path": "res://assets/title_ui/frame_v3/bottom_left_corner.png",
+      "source": "user-supplied/深潮_矩形框_无缝修复版.zip/bottom_left_corner.png",
+      "version": 3,
+      "sha256": "0e83fadb4ef980ff6416c073b5125688e8bebf488136c8d71b44ce282007a59c",
+      "dependencies": [],
+      "license": "user supplied; no additional license assertion",
+      "dimensions": [
+        280,
+        124
+      ]
+    },
+    "texture.title.frame-v3.bottom-left-quarter-dot": {
+      "path": "res://assets/title_ui/frame_v3/bottom_left_quarter_dot.png",
+      "source": "user-supplied/深潮_矩形框_无缝修复版.zip/bottom_left_quarter_dot.png",
+      "version": 3,
+      "sha256": "daa81cc9f5017dd861857e09a68654e1a103f5406798d47fcb10e844f1dcbc2f",
+      "dependencies": [],
+      "license": "user supplied; no additional license assertion",
+      "dimensions": [
+        76,
+        124
+      ]
+    },
+    "texture.title.frame-v3.bottom-right-corner": {
+      "path": "res://assets/title_ui/frame_v3/bottom_right_corner.png",
+      "source": "user-supplied/深潮_矩形框_无缝修复版.zip/bottom_right_corner.png",
+      "version": 3,
+      "sha256": "336c0879c314eb57d3ccf698fdc8bfe49a1c38aa5de8d813158e7b4eaf680957",
+      "dependencies": [],
+      "license": "user supplied; no additional license assertion",
+      "dimensions": [
+        280,
+        124
+      ]
+    },
+    "texture.title.frame-v3.bottom-right-quarter-dot": {
+      "path": "res://assets/title_ui/frame_v3/bottom_right_quarter_dot.png",
+      "source": "user-supplied/深潮_矩形框_无缝修复版.zip/bottom_right_quarter_dot.png",
+      "version": 3,
+      "sha256": "8a623e9dceda20d33dacd36da107c41e9247f3f38c20dee1b2ddd4ddaef0cc0d",
+      "dependencies": [],
+      "license": "user supplied; no additional license assertion",
+      "dimensions": [
+        76,
+        124
+      ]
+    },
+    "texture.title.frame-v3.left-continuous-rail": {
+      "path": "res://assets/title_ui/frame_v3/left_continuous_rail.png",
+      "source": "user-supplied/深潮_矩形框_无缝修复版.zip/left_continuous_rail.png",
+      "version": 3,
+      "sha256": "eacf711901ccc5d7b23494da5eaa45eb3d1073dd42c5c1da89b355d5e735f627",
+      "dependencies": [],
+      "license": "user supplied; no additional license assertion",
+      "dimensions": [
+        170,
+        1
+      ]
+    },
+    "texture.title.frame-v3.left-diamond": {
+      "path": "res://assets/title_ui/frame_v3/left_diamond.png",
+      "source": "user-supplied/深潮_矩形框_无缝修复版.zip/left_diamond.png",
+      "version": 3,
+      "sha256": "993ad13572e6d2242f3a57dae23b86b5c4fa0835ad823dcc8198a1cc4bd61904",
+      "dependencies": [],
+      "license": "user supplied; no additional license assertion",
+      "dimensions": [
+        170,
+        48
+      ]
+    },
+    "texture.title.frame-v3.left-moon": {
+      "path": "res://assets/title_ui/frame_v3/left_moon.png",
+      "source": "user-supplied/深潮_矩形框_无缝修复版.zip/left_moon.png",
+      "version": 3,
+      "sha256": "b564e01968438ada5a7492f3fb90241959d577440cad875d621f7c7db34a1255",
+      "dependencies": [],
+      "license": "user supplied; no additional license assertion",
+      "dimensions": [
+        170,
+        130
+      ]
+    },
+    "texture.title.frame-v3.left-ring": {
+      "path": "res://assets/title_ui/frame_v3/left_ring.png",
+      "source": "user-supplied/深潮_矩形框_无缝修复版.zip/left_ring.png",
+      "version": 3,
+      "sha256": "386fdf5a7a512976cf1340875e7eb17d6370fa84484f6ff48caca6a4d8946558",
+      "dependencies": [],
+      "license": "user supplied; no additional license assertion",
+      "dimensions": [
+        170,
+        69
+      ]
+    },
+    "texture.title.frame-v3.right-continuous-rail": {
+      "path": "res://assets/title_ui/frame_v3/right_continuous_rail.png",
+      "source": "user-supplied/深潮_矩形框_无缝修复版.zip/right_continuous_rail.png",
+      "version": 3,
+      "sha256": "4f91a670255531286cae5256564760d8981b3f08f087ec8b5c126efdc9299d55",
+      "dependencies": [],
+      "license": "user supplied; no additional license assertion",
+      "dimensions": [
+        170,
+        1
+      ]
+    },
+    "texture.title.frame-v3.right-diamond": {
+      "path": "res://assets/title_ui/frame_v3/right_diamond.png",
+      "source": "user-supplied/深潮_矩形框_无缝修复版.zip/right_diamond.png",
+      "version": 3,
+      "sha256": "40e865bb9ebcf8414dc14a0f960932cf5bf9d26d609d4ca793ea6a78db5a1f27",
+      "dependencies": [],
+      "license": "user supplied; no additional license assertion",
+      "dimensions": [
+        170,
+        48
+      ]
+    },
+    "texture.title.frame-v3.right-moon": {
+      "path": "res://assets/title_ui/frame_v3/right_moon.png",
+      "source": "user-supplied/深潮_矩形框_无缝修复版.zip/right_moon.png",
+      "version": 3,
+      "sha256": "2264710bf216981178888ff6827d86ebf4f084883c7f768b3b0bd8e70b9c7852",
+      "dependencies": [],
+      "license": "user supplied; no additional license assertion",
+      "dimensions": [
+        170,
+        130
+      ]
+    },
+    "texture.title.frame-v3.right-ring": {
+      "path": "res://assets/title_ui/frame_v3/right_ring.png",
+      "source": "user-supplied/深潮_矩形框_无缝修复版.zip/right_ring.png",
+      "version": 3,
+      "sha256": "03123523f5f0f1962d81c7175b7849d07dcff22c1e947795db571d73dc44c576",
+      "dependencies": [],
+      "license": "user supplied; no additional license assertion",
+      "dimensions": [
+        170,
+        69
+      ]
+    },
+    "texture.title.frame-v3.top-center-medallion": {
+      "path": "res://assets/title_ui/frame_v3/top_center_medallion.png",
+      "source": "user-supplied/深潮_矩形框_无缝修复版.zip/top_center_medallion.png",
+      "version": 3,
+      "sha256": "60dab7634764fdae3dd88ea8da239eae50b895a96f134e29f7ae77723f594196",
+      "dependencies": [],
+      "license": "user supplied; no additional license assertion",
+      "dimensions": [
+        192,
+        550
+      ]
+    },
+    "texture.title.frame-v3.top-continuous-rail": {
+      "path": "res://assets/title_ui/frame_v3/top_continuous_rail.png",
+      "source": "user-supplied/深潮_矩形框_无缝修复版.zip/top_continuous_rail.png",
+      "version": 3,
+      "sha256": "d421017c4b96dbf88a8c833c79cf20c4af7058cca0612b01a62be9d1799936c3",
+      "dependencies": [],
+      "license": "user supplied; no additional license assertion",
+      "dimensions": [
+        1,
+        100
+      ]
+    },
+    "texture.title.frame-v3.top-left-corner": {
+      "path": "res://assets/title_ui/frame_v3/top_left_corner.png",
+      "source": "user-supplied/深潮_矩形框_无缝修复版.zip/top_left_corner.png",
+      "version": 3,
+      "sha256": "163504edab52097b1f50a775ccffb1ca8ca33ff3638aafded1d7c7bfa3625b69",
+      "dependencies": [],
+      "license": "user supplied; no additional license assertion",
+      "dimensions": [
+        280,
+        405
+      ]
+    },
+    "texture.title.frame-v3.top-left-quarter-dot": {
+      "path": "res://assets/title_ui/frame_v3/top_left_quarter_dot.png",
+      "source": "user-supplied/深潮_矩形框_无缝修复版.zip/top_left_quarter_dot.png",
+      "version": 3,
+      "sha256": "db398b3101c5792a5bd3dfa24fad7e96a87efda2e7a05cdd81b53c2a4d269c47",
+      "dependencies": [],
+      "license": "user supplied; no additional license assertion",
+      "dimensions": [
+        76,
+        80
+      ]
+    },
+    "texture.title.frame-v3.top-right-corner": {
+      "path": "res://assets/title_ui/frame_v3/top_right_corner.png",
+      "source": "user-supplied/深潮_矩形框_无缝修复版.zip/top_right_corner.png",
+      "version": 3,
+      "sha256": "fc1897a606c47892193db2cd7d07cbaa9aa56655f7b324147f94d096675f6f9b",
+      "dependencies": [],
+      "license": "user supplied; no additional license assertion",
+      "dimensions": [
+        280,
+        405
+      ]
+    },
+    "texture.title.frame-v3.top-right-quarter-dot": {
+      "path": "res://assets/title_ui/frame_v3/top_right_quarter_dot.png",
+      "source": "user-supplied/深潮_矩形框_无缝修复版.zip/top_right_quarter_dot.png",
+      "version": 3,
+      "sha256": "bfe48794027348af409cd3fcb67836ab86cf4250ef6cf8f2ea5addcfb5976c27",
+      "dependencies": [],
+      "license": "user supplied; no additional license assertion",
+      "dimensions": [
+        76,
+        80
+      ]
+    },
+    "ui.title.frame-v3": {
+      "path": "res://presentation/title_frame.gd",
+      "source": "project-authored",
+      "version": 3,
+      "sha256": "c1a2f88c545028142ccc1fc33b29b221f78f52487fcba971325babdcb9587f03",
+      "dependencies": [
+        "texture.title.frame-v3.bottom-center-medallion",
+        "texture.title.frame-v3.bottom-continuous-rail",
+        "texture.title.frame-v3.bottom-left-corner",
+        "texture.title.frame-v3.bottom-left-quarter-dot",
+        "texture.title.frame-v3.bottom-right-corner",
+        "texture.title.frame-v3.bottom-right-quarter-dot",
+        "texture.title.frame-v3.left-continuous-rail",
+        "texture.title.frame-v3.left-diamond",
+        "texture.title.frame-v3.left-moon",
+        "texture.title.frame-v3.left-ring",
+        "texture.title.frame-v3.right-continuous-rail",
+        "texture.title.frame-v3.right-diamond",
+        "texture.title.frame-v3.right-moon",
+        "texture.title.frame-v3.right-ring",
+        "texture.title.frame-v3.top-center-medallion",
+        "texture.title.frame-v3.top-continuous-rail",
+        "texture.title.frame-v3.top-left-corner",
+        "texture.title.frame-v3.top-left-quarter-dot",
+        "texture.title.frame-v3.top-right-corner",
+        "texture.title.frame-v3.top-right-quarter-dot"
+      ],
+      "license": "user supplied; no additional license assertion",
+      "visual_random": "none",
+      "runtime_mapping": "Four continuous rails below 16 uniformly scaled motifs; quarter points at 25%/75%"
+    },
+    "ui.title.logo-backdrop": {
+      "path": "res://presentation/title_logo_backdrop.gd",
+      "source": "project-authored",
+      "version": 3,
+      "sha256": "78f20331688c2e1917a8cb94b81ce0ab402ad0d06bffab9f3850069eaa16e2c8",
+      "dependencies": [],
+      "license": "user supplied; no additional license assertion",
+      "runtime_mapping": "Circular black 70% opacity; child behind TitleLogo; inherits movement, scale and visibility",
+      "visual_random": "none"
+    },
+    "texture.battle.panel.monster": {
+      "path": "res://assets/battle_ui/panels_v1/01_left_circle_panel.png",
+      "source": "asset-sources/battle-ui-panels-v1/01_left_circle_panel.png",
+      "source_archive": "deep_surge_ui_panels (1).zip",
+      "version": 1,
+      "sha256": "ec50159348b9040a924d22b082d8139623bc156d005e4274ad75a8d5b26c3f59",
+      "dimensions": [
+        415,
+        511
+      ],
+      "dependencies": [],
+      "license": "user-supplied artwork; original pixels preserved",
+      "runtime_mapping": "BattleHUDView monster; proportional fit; decoration ignores mouse"
+    },
+    "texture.battle.panel.intent": {
+      "path": "res://assets/battle_ui/panels_v1/02_top_center_panel.png",
+      "source": "asset-sources/battle-ui-panels-v1/02_top_center_panel.png",
+      "source_archive": "deep_surge_ui_panels (1).zip",
+      "version": 1,
+      "sha256": "eb16f6c79fd60af34d216141ebee24ffe52015e44c5ce7a2150b368ab5f5ec95",
+      "dimensions": [
+        686,
+        255
+      ],
+      "dependencies": [],
+      "license": "user-supplied artwork; original pixels preserved",
+      "runtime_mapping": "BattleHUDView intent; proportional fit; decoration ignores mouse"
+    },
+    "texture.battle.panel.preview": {
+      "path": "res://assets/battle_ui/panels_v1/03_bottom_center_panel.png",
+      "source": "asset-sources/battle-ui-panels-v1/03_bottom_center_panel.png",
+      "source_archive": "deep_surge_ui_panels (1).zip",
+      "version": 1,
+      "sha256": "8d1ff6b104fa92a3ca5cc365f57fe731442318afa29ea9947d724dcdbb7b8401",
+      "dimensions": [
+        687,
+        217
+      ],
+      "dependencies": [],
+      "license": "user-supplied artwork; original pixels preserved",
+      "runtime_mapping": "BattleHUDView preview; proportional fit; decoration ignores mouse"
+    },
+    "texture.battle.panel.log": {
+      "path": "res://assets/battle_ui/panels_v1/04_right_side_panel.png",
+      "source": "asset-sources/battle-ui-panels-v1/04_right_side_panel.png",
+      "source_archive": "deep_surge_ui_panels (1).zip",
+      "version": 1,
+      "sha256": "08fc304190c20e764de69491bf4a1faf245d393448c710c54a4fd67f684fcde5",
+      "dimensions": [
+        400,
+        505
+      ],
+      "dependencies": [],
+      "license": "user-supplied artwork; original pixels preserved",
+      "runtime_mapping": "BattleHUDView log; proportional fit; decoration ignores mouse"
+    },
+    "ui.battle.panels": {
+      "path": "res://pages/battle_hud_view.gd",
+      "source": "project-authored supplied-panel adapter",
+      "version": 1,
+      "sha256": "56285af3917f0991822d516bf212b62d07b83a0db8856ee4bd348376b0c86b2a",
+      "dependencies": [
+        "texture.battle.panel.monster",
+        "texture.battle.panel.intent",
+        "texture.battle.panel.preview",
+        "texture.battle.panel.log"
+      ],
+      "runtime_mapping": "monster / intent / preview / combat log; original battle actions and hand retained"
     }
   }
 }

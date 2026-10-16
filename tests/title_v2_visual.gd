@@ -13,7 +13,7 @@ func run():
 	await create_timer(0.7).timeout
 	var title=app.layout.find_child("Title_start",true,false).get_parent().get_parent()
 	for button in title.buttons:
-		check(absf(button.size.x/button.size.y-1100.0/370.0)<0.001,"button preserves source aspect ratio")
+		check(absf(button.size.x/button.size.y - 3.0) < 0.001, "button preserves source aspect ratio")
 		check(button.position.y+button.size.y<=title.REFERENCE.y,"button within composition")
 	check(title.layout_debug==null,"debug layout panel is hidden from homepage")
 	check(title.background.is_playing(),"background video playing")

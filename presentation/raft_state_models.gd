@@ -1,4 +1,5 @@
 extends RefCounted
+const Layout = preload("res://core/raft_layout.gd")
 ## Blender-authored geometry; runtime only instantiates modules and projects state labels.
 const NAMES := {"lamp":"灯","filter":"滤水器","planter":"土盆","medkit":"包扎包","crossbow":"弓弩","spearRack":"矛架","shieldRack":"护盾架","generator":"发电机","fishingNet":"捕捞网","crate":"储物箱"}
 func planter_stage(equipment: Dictionary) -> String:
@@ -49,6 +50,7 @@ func build(world,cell: Dictionary,font: Font) -> Node3D:
 	if damaged:
 		var marker := Node3D.new(); marker.name = "Damage"; tile.add_child(marker)
 	var prefix: String = "%d,%d" % [cell.x+1,cell.y+1]
+	if world._raft_layout == Layout.ID: prefix = str(Layout.number_at(int(cell.x),int(cell.y)))
 	if world._raft_layout == "123456" and int(cell.x) < 3 and int(cell.y) < 2: prefix = str(int(cell.y)*3+int(cell.x)+1)
 	var text: String = prefix+" · "+("破损" if damaged else "空位")
 	if not cell.equipment.is_empty():
@@ -67,19 +69,21 @@ func build(world,cell: Dictionary,font: Font) -> Node3D:
 		if eq.id == "generator":
 			var ready_count: int=eq.get("boost_cards",[]).filter(func(boost):return boost.get("id","")=="ready").size()
 			text += "\n燃料 %d · 进度 %d · 待领取 %d" % [int(eq.get("fuel",0)),int(eq.get("progress",0)),ready_count]
-		if eq.id == "fishingNet": text += "\n生产中 · 下轮开始获得资源"
+		if eq.id == "fishingNet": text += "\n下轮自动产资源 · 打捞1AP保底1张，网按等级额外产出"
 		if damaged: text += "\n停用 · 待修补"
 		elif eq.id == "lamp": text += "\n燃料 %d" % int(eq.fuel)
 	elif damaged: text += "\n待修补"
 	label(tile,font,text,Vector3(0,.36,.84),damaged)
 	return tile
-func root_cells(layout: String="123456") -> Array:
+func root_cells(layout: String=Layout.ID) -> Array:
+	if layout == Layout.ID: return [{"id":"root-a","x":1,"y":1,"status":"intact","equipment":{}},{"id":"root-b","x":2,"y":1,"status":"intact","equipment":{}}]
 	if layout != "123456": return [{"id":"root-a","x":-1,"y":0,"status":"intact","equipment":{}},{"id":"root-b","x":-1,"y":1,"status":"intact","equipment":{}}]
 	return [{"id":"root-a","x":0,"y":0,"status":"intact","equipment":{}},{"id":"root-b","x":1,"y":0,"status":"intact","equipment":{}}]
-func decorative_root(world,font: Font,layout: String="123456") -> Node3D:
+func decorative_root(world,font: Font,layout: String=Layout.ID) -> Node3D:
 	var base := module(world,"root-decor"); base.name = "DecorativeRoot"
 	base.position = Vector3(0,.13,-1.05)
-	if layout != "123456": base.position = Vector3(-3.525,.13,0); base.rotation.y = PI/2
+	if layout == Layout.ID: base.position += Vector3(2.35,0,2.1)
+	elif layout != "123456": base.position = Vector3(-3.525,.13,0); base.rotation.y = PI/2
 	style_meshes(world,base,true,true,true)
 	var light := OmniLight3D.new(); light.name = "DecorativeLanternLight"
 	light.position = Vector3(1.38,1.18,.32); light.light_color = Color("efbb79"); light.light_energy = .65; light.omni_range = 2.7
@@ -89,5 +93,5 @@ func decorative_root(world,font: Font,layout: String="123456") -> Node3D:
 	tent_light.shadow_enabled = true; tent_light.omni_shadow_mode = OmniLight3D.SHADOW_CUBE
 	tent_light.shadow_opacity=world.shadow_opacity
 	base.add_child(tent_light)
-	label(base,font,"1 · 2  装饰筏根" if layout == "123456" else "装饰筏根",Vector3(0,.35,.84))
+	label(base,font,"1 · 2  装饰筏根" if layout in ["123456",Layout.ID] else "装饰筏根",Vector3(0,.35,.84))
 	return base

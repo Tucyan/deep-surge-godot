@@ -1,8 +1,6 @@
 extends Control
-## BattleHUDView: Inlined 3-column combat layout over darkened ocean backdrop.
-## Left: Yellow monster panel (name, hp, portrait)
-## Center: Red action panel (top: monster intent, bottom: card combo preview & validity)
-## Right: Blue combat log & turn control panel (turn, player shields, logs, skip/retreat)
+## Four supplied panels: monster, enemy intent, action preview, combat log.
+## Presentation only; legal actions continue through the existing HUD dispatcher.
 
 const Battle = preload("res://core/battle_rules.gd")
 const W = preload("res://presentation/widgets.gd")
@@ -41,159 +39,115 @@ func setup(parent_hud: Control, view: Dictionary, cat: RefCounted, art: RefCount
 	set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	build_ui()
 
+var panel_layout: Control
+
 func build_ui() -> void:
-	# 1. Full-screen translucent backdrop covering ONLY the raft and ocean
-	# Vertically between top plates (y=186) and hand tray topbar (y=616)
-	var backdrop := Panel.new()
+	# Art is fitted as one composition; each texture keeps its original aspect.
+	var backdrop := Control.new()
 	backdrop.name = "BattleBackdrop"
 	backdrop.mouse_filter = MOUSE_FILTER_IGNORE
+	backdrop.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	add_child(backdrop)
-	backdrop.anchor_left = 0.0; backdrop.anchor_top = 0.0
-	backdrop.anchor_right = 1.0; backdrop.anchor_bottom = 0.0
-	backdrop.offset_left = 24.0; backdrop.offset_top = 188.0
-	backdrop.offset_right = -24.0; backdrop.offset_bottom = 612.0
-	
-	var bg_style := StyleBoxFlat.new()
-	bg_style.bg_color = Color(0.015, 0.038, 0.065, 0.86)
-	bg_style.border_color = Color(0.65, 0.57, 0.36, 0.45)
-	bg_style.set_border_width_all(1)
-	bg_style.set_corner_radius_all(6)
-	backdrop.add_theme_stylebox_override("panel", bg_style)
-
-	var layout_margin := MarginContainer.new()
-	layout_margin.name = "ModalSurface"
-	layout_margin.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
-	layout_margin.add_theme_constant_override("margin_left", 14)
-	layout_margin.add_theme_constant_override("margin_right", 14)
-	layout_margin.add_theme_constant_override("margin_top", 12)
-	layout_margin.add_theme_constant_override("margin_bottom", 12)
-	backdrop.add_child(layout_margin)
-
-	var columns := HBoxContainer.new()
-	columns.add_theme_constant_override("separation", 16)
-	layout_margin.add_child(columns)
-
-	# --- COLUMN 1: Yellow Monster Panel (Left, 370px wide) ---
-	var yellow_panel := PanelContainer.new()
-	yellow_panel.name = "MonsterPanel"
-	yellow_panel.custom_minimum_size = Vector2(370, 0)
-	yellow_panel.size_flags_horizontal = SIZE_SHRINK_BEGIN
-	yellow_panel.size_flags_vertical = SIZE_EXPAND_FILL
-	var yellow_style := create_card_box_style(Color("c4a24d"), Color(0.02, 0.04, 0.07, 0.94))
-	yellow_panel.add_theme_stylebox_override("panel", yellow_style)
-	columns.add_child(yellow_panel)
-	build_monster_panel(yellow_panel)
-
-	# --- COLUMN 2: Red Action & Preview Panel (Center, Flex width) ---
-	var red_panel := PanelContainer.new()
-	red_panel.name = "ActionPreviewPanel"
-	red_panel.size_flags_horizontal = SIZE_EXPAND_FILL
-	red_panel.size_flags_vertical = SIZE_EXPAND_FILL
-	var red_style := create_card_box_style(Color("a25c48"), Color(0.02, 0.04, 0.07, 0.94))
-	red_panel.add_theme_stylebox_override("panel", red_style)
-	columns.add_child(red_panel)
-	build_action_preview_panel(red_panel)
-
-	# --- COLUMN 3: Blue Turn & Log Panel (Right, 380px wide) ---
-	var blue_panel := PanelContainer.new()
-	blue_panel.name = "CombatLogPanel"
-	blue_panel.custom_minimum_size = Vector2(380, 0)
-	blue_panel.size_flags_horizontal = SIZE_SHRINK_BEGIN
-	blue_panel.size_flags_vertical = SIZE_EXPAND_FILL
-	var blue_style := create_card_box_style(Color("48758e"), Color(0.02, 0.04, 0.07, 0.94))
-	blue_panel.add_theme_stylebox_override("panel", blue_style)
-	columns.add_child(blue_panel)
-	build_combat_log_panel(blue_panel)
-
-	# Restore previous selection if present in ui_state
+	panel_layout = Control.new()
+	panel_layout.name = "ModalSurface"
+	panel_layout.mouse_filter = MOUSE_FILTER_IGNORE
+	backdrop.add_child(panel_layout)
+	var monster := art_panel("MonsterPanel", "texture.battle.panel.monster")
+	var intent := art_panel("EnemyIntentPanel", "texture.battle.panel.intent")
+	var preview := art_panel("ActionPreviewPanel", "texture.battle.panel.preview")
+	var log_panel := art_panel("CombatLogPanel", "texture.battle.panel.log")
+	build_monster_panel(monster)
+	build_action_preview_panel(content_area(intent, Vector4(0.06,0.08,0.94,0.87)), content_area(preview, Vector4(0.06,0.08,0.94,0.88)))
+	build_combat_log_panel(content_area(log_panel, Vector4(0.15,0.07,0.91,0.91)))
+	resized.connect(layout_panels)
+	layout_panels()
 	restore_saved_selection()
 	update_preview()
 
-func create_card_box_style(border_col: Color, bg_col: Color) -> StyleBoxFlat:
-	var style := StyleBoxFlat.new()
-	style.bg_color = bg_col
-	style.border_color = border_col
-	style.set_border_width_all(1)
-	style.set_corner_radius_all(4)
-	style.content_margin_left = 12
-	style.content_margin_right = 12
-	style.content_margin_top = 10
-	style.content_margin_bottom = 10
-	return style
+func art_panel(id: String, asset_id: String) -> Control:
+	var panel := Control.new()
+	panel.name = id
+	panel.mouse_filter = MOUSE_FILTER_IGNORE
+	panel_layout.add_child(panel)
+	var art := TextureRect.new()
+	art.name = "PanelArt"
+	art.texture = assets.texture(asset_id)
+	art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	art.mouse_filter = MOUSE_FILTER_IGNORE
+	art.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
+	panel.add_child(art)
+	return panel
+
+func content_area(parent: Control, bounds: Vector4) -> MarginContainer:
+	var area := MarginContainer.new()
+	area.name = "PanelContent"
+	area.mouse_filter = MOUSE_FILTER_IGNORE
+	parent.add_child(area)
+	area.anchor_left = bounds.x; area.anchor_top = bounds.y
+	area.anchor_right = bounds.z; area.anchor_bottom = bounds.w
+	return area
+
+func layout_panels() -> void:
+	var available := Vector2(maxf(1.0,size.x-64.0), maxf(1.0,size.y-486.0))
+	# Enlarged HUD preferences leave less vertical room between status and hand.
+	# Scale the content with the art below its readable design height.
+	var content_scale := minf(1.0, available.y/414.0)
+	panel_layout.scale = Vector2.ONE*content_scale
+	var fit := minf(available.x/(1534.0*content_scale), available.y/(511.0*content_scale))
+	panel_layout.position = Vector2((size.x-1534.0*fit*content_scale)*0.5, 190.0)
+	panel_layout.size = Vector2(1534,511)*fit
+	var rects := [Rect2(0,0,415,511), Rect2(431,0,686,255), Rect2(431,294,687,217), Rect2(1134,0,400,505)]
+	for i in range(rects.size()):
+		var panel: Control = panel_layout.get_child(i)
+		panel.position = rects[i].position*fit
+		panel.size = rects[i].size*fit
 
 func build_monster_panel(parent: Control) -> void:
 	var enemy_id: String = str(context.battle.get("id", "biter"))
-	var enemy: Dictionary = catalog.entry("enemies", enemy_id)
-	var vbox := VBoxContainer.new()
-	vbox.add_theme_constant_override("separation", 8)
-	parent.add_child(vbox)
-
-	# 1. Top bar: Monster name, HP, Shield
-	var header := PanelContainer.new()
-	var h_style := StyleBoxFlat.new()
-	h_style.bg_color = Color(0.04, 0.08, 0.12, 0.88)
-	h_style.border_color = Color("c4a24d")
-	h_style.set_border_width_all(1)
-	h_style.set_corner_radius_all(3)
-	h_style.content_margin_left = 12; h_style.content_margin_right = 12
-	h_style.content_margin_top = 6; h_style.content_margin_bottom = 6
-	header.add_theme_stylebox_override("panel", h_style)
-	vbox.add_child(header)
-
-	var h_vbox := VBoxContainer.new()
-	h_vbox.add_theme_constant_override("separation", 4)
-	header.add_child(h_vbox)
-
-	var title_row := HBoxContainer.new()
-	h_vbox.add_child(title_row)
-
-	var name_lbl := W.text(title_row, enemy.name, 21, W.GOLD)
-	name_lbl.size_flags_horizontal = SIZE_EXPAND_FILL
-
-	monster_shield_label = W.text(title_row, "", 16, Color("79b7dd"))
-
+	var enemy: Dictionary = preload("res://core/difficulty_rules.gd").enemy(catalog,context,enemy_id)
+	var header := content_area(parent, Vector4(0.15,0.12,0.85,0.20))
+	var title := VBoxContainer.new()
+	title.add_theme_constant_override("separation", 0)
+	header.add_child(title)
 	var cur_hp: int = int(context.battle.get("hp", enemy.hp))
 	var max_hp: int = int(enemy.get("hp", cur_hp))
-	monster_hp_label = W.text(title_row, "HP %d/%d" % [cur_hp, max_hp], 17, Color("eee3cd"))
-
+	monster_hp_label = W.text(title, "%s  ·  %d/%d" % [enemy.name,cur_hp,max_hp], 17, W.GOLD)
+	monster_hp_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	monster_hp_bar = ProgressBar.new()
-	monster_hp_bar.custom_minimum_size.y = 8
+	monster_hp_bar.custom_minimum_size.y = 5
 	monster_hp_bar.show_percentage = false
-	monster_hp_bar.min_value = 0.0
-	monster_hp_bar.max_value = float(maxi(1, max_hp))
+	monster_hp_bar.max_value = float(maxi(1,max_hp))
 	monster_hp_bar.value = float(cur_hp)
-	var bar_fill := StyleBoxFlat.new()
-	bar_fill.bg_color = Color("9c3832"); bar_fill.set_corner_radius_all(2)
-	var bar_bg := StyleBoxFlat.new()
-	bar_bg.bg_color = Color("142026"); bar_bg.set_corner_radius_all(2)
-	monster_hp_bar.add_theme_stylebox_override("fill", bar_fill)
-	monster_hp_bar.add_theme_stylebox_override("background", bar_bg)
-	h_vbox.add_child(monster_hp_bar)
+	var fill := StyleBoxFlat.new(); fill.bg_color = Color("ac514c")
+	var bg := StyleBoxFlat.new(); bg.bg_color = Color("142026")
+	monster_hp_bar.add_theme_stylebox_override("fill",fill)
+	monster_hp_bar.add_theme_stylebox_override("background",bg)
+	title.add_child(monster_hp_bar)
+	# The source has a transparent round opening; keep raft labels behind it.
+	var round_backing := Panel.new()
+	round_backing.mouse_filter = MOUSE_FILTER_IGNORE
+	parent.add_child(round_backing)
+	round_backing.anchor_left = 0.14; round_backing.anchor_right = 0.86
+	round_backing.anchor_top = 0.285; round_backing.anchor_bottom = 0.87
+	var round_style := StyleBoxFlat.new()
+	round_style.bg_color = Color("081725")
+	round_style.set_corner_radius_all(256)
+	round_backing.add_theme_stylebox_override("panel", round_style)
+	var portrait := content_area(parent, Vector4(0.16,0.31,0.84,0.79))
+	var image := TextureRect.new()
+	image.name = "MonsterPortrait"
+	image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	image.texture = assets.texture("enemy." + enemy_id)
+	image.mouse_filter = MOUSE_FILTER_IGNORE
+	portrait.add_child(image)
+	var shield_area := content_area(parent, Vector4(0.28,0.80,0.72,0.86))
+	monster_shield_label = W.text(shield_area, "", 15, Color("79b7dd"))
+	monster_shield_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	parent.tooltip_text = str(enemy.get("description", ""))
 
-	# 2. Main Body: Monster Portrait
-	var portrait_container := PanelContainer.new()
-	portrait_container.size_flags_vertical = SIZE_EXPAND_FILL
-	var p_style := StyleBoxFlat.new()
-	p_style.bg_color = Color(0.015, 0.03, 0.045, 0.75)
-	p_style.set_corner_radius_all(3)
-	portrait_container.add_theme_stylebox_override("panel", p_style)
-	vbox.add_child(portrait_container)
-
-	var tex_rect := TextureRect.new()
-	tex_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	tex_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	tex_rect.texture = assets.texture("enemy." + enemy_id)
-	portrait_container.add_child(tex_rect)
-
-	# Subtle enemy description or tags at bottom
-	var tag_row := HBoxContainer.new()
-	vbox.add_child(tag_row)
-	var desc: String = str(enemy.get("description", ""))
-	if desc != "":
-		var desc_lbl := W.text(tag_row, desc, 13, W.MUTED)
-		desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-
-func build_action_preview_panel(parent: Control) -> void:
+func build_action_preview_panel(parent: Control, preview_parent: Control) -> void:
 	var vbox := VBoxContainer.new()
 	vbox.add_theme_constant_override("separation", 8)
 	parent.add_child(vbox)
@@ -205,23 +159,26 @@ func build_action_preview_panel(parent: Control) -> void:
 	vbox.add_child(top_box)
 
 	var top_header := HBoxContainer.new()
+	top_header.add_theme_constant_override("separation", 8)
+	var top_spacer := Control.new(); top_spacer.custom_minimum_size.x = 52
+	top_header.add_child(top_spacer)
 	top_box.add_child(top_header)
-	W.text(top_header, "◆ 敌方当前行动与威胁预告 ◆", 16, Color("e0a58a"))
+	W.text(top_header, "敌方行动 · 威胁预告", 16, Color("e0a58a"))
 
 	var intent_frame := PanelContainer.new()
 	intent_frame.size_flags_vertical = SIZE_EXPAND_FILL
 	var if_style := StyleBoxFlat.new()
-	if_style.bg_color = Color(0.02, 0.04, 0.06, 0.8)
+	if_style.bg_color = Color.TRANSPARENT
 	if_style.border_color = Color("5a322c")
-	if_style.set_border_width_all(1)
+	if_style.set_border_width_all(0)
 	if_style.set_corner_radius_all(3)
-	if_style.content_margin_left = 12; if_style.content_margin_right = 12
+	if_style.content_margin_left = 0; if_style.content_margin_right = 0
 	if_style.content_margin_top = 8; if_style.content_margin_bottom = 8
 	intent_frame.add_theme_stylebox_override("panel", if_style)
 	top_box.add_child(intent_frame)
 
 	var enemy_id: String = str(context.battle.get("id", "biter"))
-	var enemy: Dictionary = catalog.entry("enemies", enemy_id)
+	var enemy: Dictionary = preload("res://core/difficulty_rules.gd").enemy(catalog,context,enemy_id)
 	var intent: Dictionary = context.battle.get("intent", {})
 	var intent_lines: PackedStringArray = []
 	
@@ -232,9 +189,8 @@ func build_action_preview_panel(parent: Control) -> void:
 			if c.id == cell_id: cell = c; break
 		var loc_str := "无可攻击的外围筏格" if cell.is_empty() else "筏格 %d,%d" % [int(cell.x)+1, int(cell.y)+1]
 		intent_lines.append("【破坏预告】啃咬锁定：%s（将造成 1 点结构损耗）" % loc_str)
-	else:
-		var direct_dmg: int = int(enemy.get("damage", 3))
-		intent_lines.append("【直接攻击】意图对玩家造成 %d 点伤害（可通过护盾格挡）" % direct_dmg)
+	var direct_dmg: int = int(context.battle.get("enemy_direct_damage",enemy.get("damage", 3)))
+	intent_lines.append("【直接攻击】意图对玩家造成 %d 点伤害（可通过护盾格挡）" % direct_dmg)
 	
 	if enemy.get("buff","") == "poisoned":
 		intent_lines.append("【毒刺特性】攻击附带剧毒污染，持续造成伤害")
@@ -247,27 +203,27 @@ func build_action_preview_panel(parent: Control) -> void:
 	intent_label.name = "BattleIntentTarget"
 	intent_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 
-	# Divider line
-	var div := HSeparator.new()
-	var sep_style := StyleBoxLine.new()
-	sep_style.color = Color("7a5d3f")
-	sep_style.thickness = 1
-	div.add_theme_stylebox_override("separator", sep_style)
-	vbox.add_child(div)
+	var preview_vbox_root := VBoxContainer.new()
+	preview_vbox_root.add_theme_constant_override("separation", 6)
+	preview_parent.add_child(preview_vbox_root)
 
 	# --- BOTTOM HALF: Hand Card Combo Preview & Validity ---
 	var bot_box := VBoxContainer.new()
 	bot_box.size_flags_vertical = SIZE_EXPAND_FILL
 	bot_box.add_theme_constant_override("separation", 6)
-	vbox.add_child(bot_box)
+	preview_vbox_root.add_child(bot_box)
 
 	var bot_header := HBoxContainer.new()
+	var bot_spacer := Control.new(); bot_spacer.custom_minimum_size.x = 52
+	bot_header.add_child(bot_spacer)
 	bot_box.add_child(bot_header)
-	W.text(bot_header, "◆ 选择手牌出招 · 效果预测 ◆", 16, W.GOLD)
+	var preview_title := W.text(bot_header, "出招 · 效果预览", 16, W.GOLD)
+	preview_title.size_flags_horizontal = SIZE_EXPAND_FILL
 
 	var cancel_btn := W.button(bot_header, "重置已选", func(): clear_selection())
 	cancel_btn.name = "CancelBattleSelection"
 	cancel_btn.custom_minimum_size = Vector2(80, 26)
+	cancel_btn.size_flags_horizontal = SIZE_SHRINK_END
 	cancel_btn.add_theme_font_size_override("font_size", 13)
 
 	var battle_buffs: Array = context.get("boost_cards", []).filter(func(buff): return buff.get("id","") in ["power","barrier"])
@@ -293,11 +249,11 @@ func build_action_preview_panel(parent: Control) -> void:
 	preview_frame.name = "BattlePreview"
 	preview_frame.size_flags_vertical = SIZE_EXPAND_FILL
 	var pf_style := StyleBoxFlat.new()
-	pf_style.bg_color = Color(0.02, 0.04, 0.06, 0.8)
+	pf_style.bg_color = Color.TRANSPARENT
 	pf_style.border_color = Color("4b5c46")
-	pf_style.set_border_width_all(1)
+	pf_style.set_border_width_all(0)
 	pf_style.set_corner_radius_all(3)
-	pf_style.content_margin_left = 12; pf_style.content_margin_right = 12
+	pf_style.content_margin_left = 0; pf_style.content_margin_right = 0
 	pf_style.content_margin_top = 8; pf_style.content_margin_bottom = 8
 	preview_frame.add_theme_stylebox_override("panel", pf_style)
 	bot_box.add_child(preview_frame)
@@ -321,9 +277,9 @@ func build_combat_log_panel(parent: Control) -> void:
 	# 1. Top bar: Turn number & Player shields
 	var header := PanelContainer.new()
 	var h_style := StyleBoxFlat.new()
-	h_style.bg_color = Color(0.04, 0.08, 0.12, 0.88)
+	h_style.bg_color = Color.TRANSPARENT
 	h_style.border_color = Color("48758e")
-	h_style.set_border_width_all(1)
+	h_style.set_border_width_all(0)
 	h_style.set_corner_radius_all(3)
 	h_style.content_margin_left = 12; h_style.content_margin_right = 12
 	h_style.content_margin_top = 6; h_style.content_margin_bottom = 6
@@ -333,6 +289,8 @@ func build_combat_log_panel(parent: Control) -> void:
 	var h_row := HBoxContainer.new()
 	header.add_child(h_row)
 
+	var hourglass_spacer := Control.new(); hourglass_spacer.custom_minimum_size.x = 32
+	h_row.add_child(hourglass_spacer)
 	turn_label = W.text(h_row, "第 %d 回合" % int(context.battle.get("turn", 1)), 21, W.GOLD)
 	turn_label.size_flags_horizontal = SIZE_EXPAND_FILL
 
@@ -344,9 +302,9 @@ func build_combat_log_panel(parent: Control) -> void:
 	var log_panel := PanelContainer.new()
 	log_panel.size_flags_vertical = SIZE_EXPAND_FILL
 	var lp_style := StyleBoxFlat.new()
-	lp_style.bg_color = Color(0.015, 0.03, 0.045, 0.85)
+	lp_style.bg_color = Color(0.015,0.03,0.045,0.35)
 	lp_style.border_color = Color("2d4857")
-	lp_style.set_border_width_all(1)
+	lp_style.set_border_width_all(0)
 	lp_style.set_corner_radius_all(3)
 	lp_style.content_margin_left = 8; lp_style.content_margin_right = 8
 	lp_style.content_margin_top = 6; lp_style.content_margin_bottom = 6
@@ -372,14 +330,16 @@ func build_combat_log_panel(parent: Control) -> void:
 
 	var skip_btn := W.button(btn_row, "跳过当前回合", func(): hud.send("battle_end"))
 	skip_btn.size_flags_horizontal = SIZE_EXPAND_FILL
-	skip_btn.custom_minimum_size.y = 40
+	skip_btn.custom_minimum_size.y = 34
+	skip_btn.add_theme_font_size_override("font_size", 14)
 	skip_btn.name = "BattleSkipTurn"
 	W.primary(skip_btn)
 
 	var can_retreat: bool = int(context.battle.get("turn", 1)) >= 2 and not context.get("scene", {}).get("combat", false)
 	var retreat_btn := W.button(btn_row, "放弃战斗", func(): hud.send("retreat"), not can_retreat, "第二回合起可撤退" if not can_retreat else "")
 	retreat_btn.size_flags_horizontal = SIZE_EXPAND_FILL
-	retreat_btn.custom_minimum_size.y = 40
+	retreat_btn.custom_minimum_size.y = 34
+	retreat_btn.add_theme_font_size_override("font_size", 14)
 	retreat_btn.name = "BattleRetreat"
 
 func populate_combat_logs() -> void:
@@ -388,7 +348,7 @@ func populate_combat_logs() -> void:
 	
 	var raw_logs: Array = context.get("logs", [])
 	var enemy_id: String = str(context.battle.get("id", "biter"))
-	var enemy_name: String = str(catalog.entry("enemies", enemy_id).get("name", "敌人"))
+	var enemy_name: String = str(preload("res://core/difficulty_rules.gd").enemy(catalog,context,enemy_id).get("name", "敌人"))
 	
 	# Find start index of current combat encounter
 	var start_idx := -1
@@ -569,8 +529,8 @@ func update_preview(dispatch_to_app: bool = false) -> void:
 		detail_text = "请继续点击右侧最下方的「攻击」或「防御」卡牌组合出招！"
 		is_valid = false
 	else:
-		title_text = "请从下方手牌中点击选择「攻击」或「防御」卡牌出招。"
-		detail_text = "可额外选择木头、废铁、绳索等材料卡组合增强攻击力、护盾或施加异常。"
+		title_text = "从下方手牌选择「攻击」或「防御」。"
+		detail_text = "可附加材料卡，增强攻击、护盾或施加异常。"
 		is_valid = false
 
 	# Update UI text

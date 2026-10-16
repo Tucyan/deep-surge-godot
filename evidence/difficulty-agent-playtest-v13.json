@@ -1,0 +1,496 @@
+[
+  {
+    "difficulty": "standard",
+    "seed": 22,
+    "mode": "challenge",
+    "phase": "finished",
+    "outcome": "dead",
+    "completed": 11,
+    "steps": 127,
+    "moves": 12,
+    "shops_entered": 0,
+    "environments": [
+      "fog2"
+    ],
+    "battles": [
+      {
+        "voyage": 12,
+        "enemy": "涌潮之眼",
+        "max_hp": 18,
+        "entry_hp": 18
+      }
+    ],
+    "milestones": [
+      {
+        "voyage": 1,
+        "phase_after": "navigation",
+        "hp": 16,
+        "hunger": 50,
+        "hydration": 10,
+        "sanity": 65,
+        "hand": 9,
+        "coins": 0,
+        "action": "end_voyage"
+      },
+      {
+        "voyage": 2,
+        "phase_after": "navigation",
+        "hp": 15,
+        "hunger": 60,
+        "hydration": 40,
+        "sanity": 65,
+        "hand": 8,
+        "coins": 0,
+        "action": "end_voyage"
+      },
+      {
+        "voyage": 3,
+        "phase_after": "navigation",
+        "hp": 15,
+        "hunger": 30,
+        "hydration": 10,
+        "sanity": 65,
+        "hand": 10,
+        "coins": 0,
+        "action": "end_voyage"
+      },
+      {
+        "voyage": 4,
+        "phase_after": "navigation",
+        "hp": 13,
+        "hunger": 40,
+        "hydration": 0,
+        "sanity": 65,
+        "hand": 10,
+        "coins": 0,
+        "action": "end_voyage"
+      },
+      {
+        "voyage": 5,
+        "phase_after": "navigation",
+        "hp": 12,
+        "hunger": 50,
+        "hydration": 0,
+        "sanity": 59,
+        "hand": 11,
+        "coins": 0,
+        "action": "end_voyage"
+      },
+      {
+        "voyage": 6,
+        "phase_after": "navigation",
+        "hp": 12,
+        "hunger": 20,
+        "hydration": 10,
+        "sanity": 59,
+        "hand": 12,
+        "coins": 0,
+        "action": "end_voyage"
+      },
+      {
+        "voyage": 7,
+        "phase_after": "navigation",
+        "hp": 11,
+        "hunger": 30,
+        "hydration": 0,
+        "sanity": 59,
+        "hand": 13,
+        "coins": 0,
+        "action": "end_voyage"
+      },
+      {
+        "voyage": 8,
+        "phase_after": "navigation",
+        "hp": 11,
+        "hunger": 40,
+        "hydration": 10,
+        "sanity": 59,
+        "hand": 13,
+        "coins": 0,
+        "action": "discard"
+      },
+      {
+        "voyage": 9,
+        "phase_after": "navigation",
+        "hp": 10,
+        "hunger": 50,
+        "hydration": 0,
+        "sanity": 59,
+        "hand": 14,
+        "coins": 0,
+        "action": "discard"
+      },
+      {
+        "voyage": 10,
+        "phase_after": "navigation",
+        "hp": 10,
+        "hunger": 60,
+        "hydration": 10,
+        "sanity": 59,
+        "hand": 13,
+        "coins": 0,
+        "action": "discard"
+      },
+      {
+        "voyage": 11,
+        "phase_after": "navigation",
+        "hp": 9,
+        "hunger": 70,
+        "hydration": 0,
+        "sanity": 59,
+        "hand": 14,
+        "coins": 0,
+        "action": "discard"
+      },
+      {
+        "voyage": 12,
+        "phase_after": "finished",
+        "hp": 0,
+        "hunger": 80,
+        "hydration": 10,
+        "sanity": 59,
+        "hand": 12,
+        "coins": 0,
+        "action": "battle_action"
+      }
+    ],
+    "final_stats": {
+      "hp": 0,
+      "hp_max": 16,
+      "hunger": 80,
+      "hydration": 10,
+      "sanity": 59
+    },
+    "agent_errors": []
+  },
+  {
+    "difficulty": "hard",
+    "seed": 22,
+    "mode": "challenge",
+    "phase": "finished",
+    "outcome": "dead",
+    "completed": 11,
+    "steps": 115,
+    "moves": 12,
+    "shops_entered": 0,
+    "environments": [
+      "fog2"
+    ],
+    "battles": [
+      {
+        "voyage": 12,
+        "enemy": "涌潮之眼",
+        "max_hp": 25,
+        "entry_hp": 25
+      }
+    ],
+    "milestones": [
+      {
+        "voyage": 1,
+        "phase_after": "navigation",
+        "hp": 14,
+        "hunger": 45,
+        "hydration": 5,
+        "sanity": 50,
+        "hand": 8,
+        "coins": 0,
+        "action": "end_voyage"
+      },
+      {
+        "voyage": 2,
+        "phase_after": "navigation",
+        "hp": 13,
+        "hunger": 55,
+        "hydration": 40,
+        "sanity": 35,
+        "hand": 8,
+        "coins": 0,
+        "action": "end_voyage"
+      },
+      {
+        "voyage": 3,
+        "phase_after": "navigation",
+        "hp": 13,
+        "hunger": 25,
+        "hydration": 10,
+        "sanity": 35,
+        "hand": 7,
+        "coins": 0,
+        "action": "install"
+      },
+      {
+        "voyage": 4,
+        "phase_after": "navigation",
+        "hp": 11,
+        "hunger": 40,
+        "hydration": 0,
+        "sanity": 35,
+        "hand": 8,
+        "coins": 0,
+        "action": "end_voyage"
+      },
+      {
+        "voyage": 5,
+        "phase_after": "navigation",
+        "hp": 10,
+        "hunger": 50,
+        "hydration": 0,
+        "sanity": 29,
+        "hand": 11,
+        "coins": 0,
+        "action": "end_voyage"
+      },
+      {
+        "voyage": 6,
+        "phase_after": "navigation",
+        "hp": 9,
+        "hunger": 60,
+        "hydration": 0,
+        "sanity": 29,
+        "hand": 10,
+        "coins": 0,
+        "action": "end_voyage"
+      },
+      {
+        "voyage": 7,
+        "phase_after": "navigation",
+        "hp": 8,
+        "hunger": 70,
+        "hydration": 0,
+        "sanity": 29,
+        "hand": 13,
+        "coins": 0,
+        "action": "end_voyage"
+      },
+      {
+        "voyage": 8,
+        "phase_after": "navigation",
+        "hp": 8,
+        "hunger": 80,
+        "hydration": 10,
+        "sanity": 29,
+        "hand": 13,
+        "coins": 0,
+        "action": "discard"
+      },
+      {
+        "voyage": 9,
+        "phase_after": "navigation",
+        "hp": 7,
+        "hunger": 80,
+        "hydration": 0,
+        "sanity": 29,
+        "hand": 14,
+        "coins": 0,
+        "action": "discard"
+      },
+      {
+        "voyage": 10,
+        "phase_after": "navigation",
+        "hp": 7,
+        "hunger": 80,
+        "hydration": 10,
+        "sanity": 29,
+        "hand": 13,
+        "coins": 0,
+        "action": "discard"
+      },
+      {
+        "voyage": 11,
+        "phase_after": "navigation",
+        "hp": 6,
+        "hunger": 80,
+        "hydration": 0,
+        "sanity": 29,
+        "hand": 14,
+        "coins": 0,
+        "action": "discard"
+      },
+      {
+        "voyage": 12,
+        "phase_after": "finished",
+        "hp": 0,
+        "hunger": 80,
+        "hydration": 10,
+        "sanity": 29,
+        "hand": 11,
+        "coins": 0,
+        "action": "battle_action"
+      }
+    ],
+    "final_stats": {
+      "hp": 0,
+      "hp_max": 14,
+      "hunger": 80,
+      "hydration": 10,
+      "sanity": 29
+    },
+    "agent_errors": []
+  },
+  {
+    "difficulty": "nightmare",
+    "seed": 22,
+    "mode": "challenge",
+    "phase": "finished",
+    "outcome": "dead",
+    "completed": 11,
+    "steps": 110,
+    "moves": 12,
+    "shops_entered": 0,
+    "environments": [
+      "bloodMoon",
+      "confusion",
+      "fog2"
+    ],
+    "battles": [
+      {
+        "voyage": 12,
+        "enemy": "涌潮之眼",
+        "max_hp": 32,
+        "entry_hp": 32
+      }
+    ],
+    "milestones": [
+      {
+        "voyage": 1,
+        "phase_after": "navigation",
+        "hp": 10,
+        "hunger": 40,
+        "hydration": 0,
+        "sanity": 35,
+        "hand": 7,
+        "coins": 0,
+        "action": "end_voyage"
+      },
+      {
+        "voyage": 2,
+        "phase_after": "navigation",
+        "hp": 9,
+        "hunger": 50,
+        "hydration": 40,
+        "sanity": 20,
+        "hand": 7,
+        "coins": 0,
+        "action": "end_voyage"
+      },
+      {
+        "voyage": 3,
+        "phase_after": "navigation",
+        "hp": 9,
+        "hunger": 20,
+        "hydration": 10,
+        "sanity": 20,
+        "hand": 8,
+        "coins": 0,
+        "action": "end_voyage"
+      },
+      {
+        "voyage": 4,
+        "phase_after": "navigation",
+        "hp": 7,
+        "hunger": 40,
+        "hydration": 0,
+        "sanity": 20,
+        "hand": 7,
+        "coins": 0,
+        "action": "end_voyage"
+      },
+      {
+        "voyage": 5,
+        "phase_after": "navigation",
+        "hp": 7,
+        "hunger": 10,
+        "hydration": 10,
+        "sanity": 14,
+        "hand": 10,
+        "coins": 0,
+        "action": "end_voyage"
+      },
+      {
+        "voyage": 6,
+        "phase_after": "navigation",
+        "hp": 5,
+        "hunger": 0,
+        "hydration": 0,
+        "sanity": 15,
+        "hand": 10,
+        "coins": 0,
+        "action": "end_voyage"
+      },
+      {
+        "voyage": 7,
+        "phase_after": "navigation",
+        "hp": 4,
+        "hunger": 0,
+        "hydration": 10,
+        "sanity": 15,
+        "hand": 11,
+        "coins": 0,
+        "action": "end_voyage"
+      },
+      {
+        "voyage": 8,
+        "phase_after": "navigation",
+        "hp": 3,
+        "hunger": 10,
+        "hydration": 0,
+        "sanity": 15,
+        "hand": 14,
+        "coins": 0,
+        "action": "discard"
+      },
+      {
+        "voyage": 9,
+        "phase_after": "navigation",
+        "hp": 3,
+        "hunger": 20,
+        "hydration": 10,
+        "sanity": 15,
+        "hand": 13,
+        "coins": 0,
+        "action": "discard"
+      },
+      {
+        "voyage": 10,
+        "phase_after": "navigation",
+        "hp": 2,
+        "hunger": 30,
+        "hydration": 0,
+        "sanity": 15,
+        "hand": 14,
+        "coins": 0,
+        "action": "discard"
+      },
+      {
+        "voyage": 11,
+        "phase_after": "navigation",
+        "hp": 2,
+        "hunger": 40,
+        "hydration": 10,
+        "sanity": 15,
+        "hand": 13,
+        "coins": 0,
+        "action": "discard"
+      },
+      {
+        "voyage": 12,
+        "phase_after": "finished",
+        "hp": 0,
+        "hunger": 50,
+        "hydration": 0,
+        "sanity": 15,
+        "hand": 11,
+        "coins": 0,
+        "action": "battle_action"
+      }
+    ],
+    "final_stats": {
+      "hp": 0,
+      "hp_max": 12,
+      "hunger": 50,
+      "hydration": 0,
+      "sanity": 15
+    },
+    "agent_errors": []
+  }
+]

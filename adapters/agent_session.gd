@@ -34,13 +34,15 @@ func handle(request: Variant) -> Dictionary:
 
 func reset(id: Variant, params: Dictionary) -> Dictionary:
 	for key in params:
-		if key not in ["seed","mode","origin","starting_resources"]: return failure(id,"invalid_params","未知开局字段："+str(key))
+		if key not in ["seed","mode","origin","starting_resources","difficulty","purchases"]: return failure(id,"invalid_params","未知开局字段："+str(key))
 	if not integer(params.get("seed")) or params.seed<0 or params.seed>4294967295:
 		return failure(id,"invalid_params","seed必须是0～4294967295整数")
 	if not params.get("mode","challenge") is String or not params.get("origin","strong") is String:
 		return failure(id,"invalid_params","mode/origin必须是字符串")
-	var args: Dictionary={"seed":int(params.seed),"mode":params.get("mode","challenge"),"origin":params.get("origin","strong"),"starting_resources":params.get("starting_resources",[])}
+	var args: Dictionary={"difficulty":params.get("difficulty","standard"),"seed":int(params.seed),"mode":params.get("mode","challenge"),"origin":params.get("origin","strong"),"starting_resources":params.get("starting_resources",[])}
 	var next=Session.new(_catalog)
+	if params.has("purchases") and params.purchases is Dictionary:
+		next.profile.purchases = params.purchases.duplicate(true)
 	if not next.dispatch("new",args): return failure(id,"rejected",next.error)
 	_session=next; _action_revision=-1; _actions=[]
 	_trace={"version":TRACE_VERSION,"protocol":PROTOCOL,"initial":_session.snapshot(),"steps":[]}
@@ -74,7 +76,7 @@ func observe() -> Dictionary:
 	var observation: Dictionary={}
 	# Explicit player-facing projection; no seed/RNG, future pool, full stats,
 	# profile/debug reports, UI pages or hidden campaign script.
-	for key in ["revision","phase","mode","origin","voyage","length","ap","player","hand","coins","cells","node","candidates","story_step","result_text","battle","completed","level","xp","capacity","can_base","boost_cards","battle_actions","scene","campaign_summary","tutorial_reason","tutorial_operation","known_clues","known_quests","night","night_actions","shop","encounter","event_options"]:
+	for key in ["survival_settlement","expansion_count","expansion_cost","difficulty","environments","navigation","revision","phase","mode","origin","voyage","length","ap","player","hand","coins","cells","node","candidates","story_step","result_text","battle","completed","level","xp","capacity","can_base","boost_cards","battle_actions","scene","campaign_summary","tutorial_reason","tutorial_operation","known_clues","known_quests","night","night_actions","shop","encounter","event_options"]:
 		if view.has(key): observation[key]=view[key]
 	for node in observation.get("candidates",[])+[observation.get("node",{})]:
 		for key in ["lines","choices","handler","outcomes","effects"]: node.erase(key)
@@ -85,7 +87,7 @@ func observe() -> Dictionary:
 		for field in ["effects","outcomes","next_stage"]: option.erase(field)
 	observation.terminal=terminal()
 	if _session.phase()=="battle":
-		observation.enemy=_catalog.entry("enemies",str(_session.state.battle.id))
+		observation.enemy=_session.Difficulty.enemy(_catalog,_session.state,str(_session.state.battle.id))
 		observation.battle_combinations=_session.Battle.COMBO.duplicate(true)
 	return observation
 
@@ -115,7 +117,9 @@ func replay(id: Variant, trace: Variant) -> Dictionary:
 				extra.erase(key)
 			if not fixed_match: continue
 			var resolved: Dictionary=Query.resolve_args(item,extra)
-			if resolved.valid and resolved.args==step.args: found=true; break
+			# JSON parses integer coordinates as floats. Normalize both objects
+			# before dictionary comparison, as state_hash already does.
+			if resolved.valid and JSON.parse_string(JSON.stringify(resolved.args))==JSON.parse_string(JSON.stringify(step.args)): found=true; break
 		if not found or not probe.dispatch(step.command,step.args) or state_hash(probe)!=step.hash:
 			return failure(id,"replay_mismatch","重放不一致，步骤：%d" % index)
 	_session=probe; _trace=trace.duplicate(true); _action_revision=-1; _actions=[]

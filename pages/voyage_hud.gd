@@ -12,13 +12,6 @@ func build() -> void:
 	mouse_filter=Control.MOUSE_FILTER_IGNORE
 	var stage := Control.new(); stage.mouse_filter=Control.MOUSE_FILTER_IGNORE; stage.size_flags_vertical = Control.SIZE_EXPAND_FILL; add_child(stage)
 	var enlarged: bool=context.get("ui_scale",1.0)>1.0
-	for region in [0,1]:
-		var topbar:=TextureRect.new(); topbar.name="VoyageInfoPlate" if region==0 else "VoyageStatsPlate"; topbar.mouse_filter=Control.MOUSE_FILTER_IGNORE
-		var topbar_atlas:=AtlasTexture.new(); topbar_atlas.atlas=load("res://assets/textures/voyage-topbar-v1.png")
-		topbar_atlas.region=Rect2(0,185,2172,360); topbar.texture=topbar_atlas
-		topbar.expand_mode=TextureRect.EXPAND_IGNORE_SIZE; topbar.stretch_mode=TextureRect.STRETCH_SCALE
-		topbar.modulate=Color(1,1,1,0.72); stage.add_child(topbar)
-		rect(topbar,Vector4.ZERO,Vector4(12,8,620,184)) if region==0 else rect(topbar,Vector4(0,0,1,0),Vector4(540 if enlarged else 632,8,-12,184))
 	var title := VBoxContainer.new(); title.mouse_filter=Control.MOUSE_FILTER_IGNORE; stage.add_child(title); rect(title,Vector4.ZERO,Vector4(58,22,576,172))
 	W.text(title,"深 潮",32,W.INK)
 	W.text(title,"D E E P   S U R G E  ·  第一层"+("  /  测试剧情" if context.mode == "story" else "  /  挑战"),14,W.MUTED)
@@ -27,12 +20,15 @@ func build() -> void:
 	W.button(menu,"玩法",func(): request("local_panel","help"))
 	W.button(menu,"设置",func(): request("local_panel","settings"))
 	action(menu,"返回首页","home")
+	var reset_view:=W.button(menu,"视角复位",func():request("camera_reset"))
+	reset_view.name="ResetRaftView"; reset_view.tooltip_text=str(context.get("camera_help","平滑恢复默认视角、缩放与位置"))
 	for child in menu.get_children(): child.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	W.text(title,"第 %d / %d 次航行    %s" % [context.voyage,context.length,PHASES[context.phase]],17,W.GOLD)
 	var status = preload("res://addons/deep_surge_status/status_hud.gd").new(); status.name = "SurgeStatusHUD"; status.two_columns=false; status.minimum_row_width=400; stage.add_child(status)
 	rect(status,Vector4(0,0,1,0),Vector4(560,56,-32,138)) if enlarged else rect(status,Vector4(0,0,1,0),Vector4(660,56,-32,138))
 	for key in {"hp":"health","hunger":"satiety","hydration":"water","sanity":"sanity"}:
 		status.set_stat({"hp":"health","hunger":"satiety","hydration":"water","sanity":"sanity"}[key],context.player[key],context.player[key+"_max"])
+	build_environment_names(stage,enlarged)
 	# Calculate current shields & layers
 	var shields: Array = []
 	if context.phase == "battle" and context.has("battle") and context.battle is Dictionary:
@@ -80,7 +76,7 @@ func build() -> void:
 	shield_badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	shield_badge.z_index = 2
 	topbar.add_child(shield_badge)
-	
+
 	var sb_style := compact_style(); sb_style.set_corner_radius_all(10)
 	sb_style.content_margin_left = 8; sb_style.content_margin_right = 8
 	sb_style.content_margin_top = 2; sb_style.content_margin_bottom = 2
@@ -136,11 +132,11 @@ func build() -> void:
 	var tray := Control.new(); tray.name="VoyageHandTray"; tray.mouse_filter=Control.MOUSE_FILTER_IGNORE; stage.add_child(tray)
 	rect(tray,Vector4(0,1,1,1),Vector4(64,-238,-292,-18))
 	hand(tray)
-	if context.phase != "battle" and context.phase != "story":
-		var salvage_disabled: bool = not context.can_base or context.ap < 1 or context.get("tutorial_operation","") != ""
-		var salvage := W.button(stage, "海面打捞 · AP1", func(): send("salvage"), salvage_disabled)
+	if context.phase != "story":
+		var salvage_disabled: bool = int(context.battle.get("ap",0)) < 1 if context.phase == "battle" else not context.can_base or context.ap < 1 or context.get("tutorial_operation","") != ""
+		var salvage := W.button(stage, "打捞 · AP1", func(): send("salvage"), salvage_disabled)
 		salvage.name = "SalvageEntry"
-		salvage.tooltip_text = "消耗 1 AP 打捞漂流物资"
+		salvage.tooltip_text = catalog.entry("equipment","fishingNet").description
 		salvage.add_theme_font_size_override("font_size", 16)
 		rect(salvage, Vector4(1,1,1,1), Vector4(-204, -238, -76, -190))
 		for state in ["normal","hover","pressed","disabled","focus"]:
@@ -198,16 +194,46 @@ func style_operation_buttons(box: Node) -> void:
 		child.add_theme_color_override("font_hover_color",Color("fff8e9"))
 		child.add_theme_color_override("font_pressed_color",Color("fff8e9"))
 
+func build_environment_names(stage: Control, enlarged: bool) -> void:
+	var row := HBoxContainer.new(); row.name="EnvironmentBuffs"; stage.add_child(row)
+	row.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	row.add_theme_constant_override("separation",16)
+	rect(row,Vector4(0,0,1,0),Vector4(560 if enlarged else 660,144,-32,178))
+	var items: Array=context.get("environments",[]).duplicate(true)
+	# Include the existing non-environment voyage buff in the same status strip.
+	if int(context.get("flags",{}).get("rested_until",0))>=int(context.voyage):
+		items.append({"name":"休整余裕","description":"基地AP上限+1。","negative":false,"pending":false,"remaining":int(context.flags.rested_until)-int(context.voyage)+1,"pending_refresh":0})
+	for item in items:
+		var label := Label.new(); row.add_child(label)
+		label.text=str(item.name)+( " · 待生效" if item.pending else "")
+		label.add_theme_font_size_override("font_size",15)
+		label.add_theme_color_override("font_color",Color("ef9c8b") if item.negative else Color("b9d9c5"))
+		label.add_theme_color_override("font_shadow_color",Color(0,0,0,0.95)); label.add_theme_constant_override("shadow_offset_x",1); label.add_theme_constant_override("shadow_offset_y",2)
+		label.mouse_filter=Control.MOUSE_FILTER_STOP
+		label.tooltip_text=str(item.description)+"\n"+("下一航次生效；" if item.pending else "当前生效；")+"剩余%d次航行。" % int(item.remaining)
+		if int(item.pending_refresh)>0: label.tooltip_text+="\n本轮结束后刷新为%d次航行。" % int(item.pending_refresh)
+
 func operation_content(box: Node) -> void:
 	if context.phase=="story": return
 	W.text(box,PHASES[context.phase],25,W.GOLD)
 	if context.mode=="story" and (not context.known_quests.is_empty() or not context.known_clues.is_empty()): action(box,"任务与线索","panel",{"id":"journal"})
 	match context.phase:
 		"navigation":
-			W.text(box,"可先使用手牌与合成，再选择目的地；出发时支付航耗。",16,W.MUTED)
+			W.text(box,"选择目的地；出发扣精神，结束航行扣食水。",16,W.MUTED)
+			var chance: float=float(context.get("navigation",{}).get("wrong_direction_chance",0))
+			if chance>0:
+				var heading := HBoxContainer.new(); box.add_child(heading)
+				W.text(heading,"偏航 %d%%" % roundi(chance*100),15,W.GOLD)
+				action(heading,"定向 · 木头1","fix_heading",{},amount("wood")<1,"花木头1、0 AP，防止本次启航偏航")
+			elif context.get("navigation",{}).get("heading_locked",false): W.text(box,"本次航向已固定",15,W.MUTED)
 			for node in context.candidates:
-				var button := W.button(box,"出发 · "+node.name,func(): send("voyage",{"id":node.visit_id}))
-				button.tooltip_text = node.description
+				var route := HBoxContainer.new(); box.add_child(route)
+				var button := W.button(route,"出发 · "+node.name,func(): send("voyage",{"id":node.visit_id}))
+				button.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART; button.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+				button.custom_minimum_size.y=40
+				button.tooltip_text = node.get("description","")
+				if node.get("visibility","full")!="full":
+					action(route,"侦察 · SAN8","scout",{"id":node.visit_id},int(context.player.sanity)<=8,"揭示此候选，不改变其内容")
 		"preparation":
 			W.text(box,"已抵达："+context.node.name,18)
 			W.text(box,"可使用物资、制造与管理设备。",16,W.MUTED)
@@ -222,6 +248,7 @@ func operation_content(box: Node) -> void:
 			W.primary(box.get_child(box.get_child_count()-1))
 		"aftermath":
 			W.text(box,"节点已完成，可继续使用剩余AP。",17,W.MUTED)
+			W.text(box,"结束时食水各扣%d，归零各扣1生命。" % int(context.get("survival_settlement",{}).get("food_water_cost",30)),16,W.MUTED)
 			action(box,"结束白天" if context.mode == "story" and context.voyage >= 5 and context.voyage < 15 else "结束航行","end_voyage")
 			W.primary(box.get_child(box.get_child_count()-1))
 		"discard": W.text(box,"手牌超限，选择要弃置的物资；达标后自动进入导航。",18)

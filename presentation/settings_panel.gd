@@ -101,12 +101,22 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 	)
 	display_box.add_child(make_row("帧率限制 (FPS Cap)", "限制游戏最大渲染帧率，降低功耗与发热", fps, 160))
 
+	# 比例和清晰度分别控制画布与渲染精度。
+	var aspect := OptionButton.new()
+	aspect.name="AspectRatio"
+	aspect.add_item("16:9")
+	aspect.add_item("自由比例")
+	aspect.select(1 if prefs.free_aspect else 0)
+	aspect.item_selected.connect(func(idx):
+		prefs.free_aspect=idx==1
+		app.apply_display_settings.call_deferred(false))
+	display_box.add_child(make_row("画面比例", "自由比例跟随横屏窗口或屏幕（3:2～21:9）", aspect, 160))
 	# Row 3: 分辨率 (桌面) / 画面质量 (移动端)
 	if prefs.mobile:
 		var quality := OptionButton.new()
 		quality.name = "MobileQuality"
 		quality.custom_minimum_size = Vector2(160, 32)
-		for label in ["流畅 · 较模糊", "均衡", "清晰"]: quality.add_item(label)
+		for label in Display.CLARITY_NAMES: quality.add_item(label)
 		quality.select(prefs.quality)
 		quality.item_selected.connect(func(idx):
 			prefs.quality = idx
@@ -117,14 +127,14 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 		var resolution := OptionButton.new()
 		resolution.name = "DesktopResolution"
 		resolution.custom_minimum_size = Vector2(160, 32)
-		for val in Display.RESOLUTIONS:
-			resolution.add_item("%d × %d" % [val.x, val.y])
+		for label in Display.CLARITY_NAMES:
+			resolution.add_item(label)
 		resolution.select(Display.RESOLUTIONS.find(prefs.resolution))
 		resolution.item_selected.connect(func(idx):
 			prefs.resolution = Display.RESOLUTIONS[idx]
 			app.apply_display_settings.call_deferred()
 		)
-		display_box.add_child(make_row("桌面分辨率 (Resolution)", "窗口模式调整窗口大小，全屏时调整渲染精度", resolution, 160))
+		display_box.add_child(make_row("分辨率 (Resolution)", "固定比例调整窗口大小；自由比例与全屏调整场景精度", resolution, 160))
 
 		# Row 4: 全屏显示 (桌面)
 		var fullscreen := CheckButton.new()
@@ -147,6 +157,35 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 		app.apply_display_settings.call_deferred(false)
 	)
 	display_box.add_child(make_row("海面与木筏动效 (Motion)", "开启后海面波浪与木筏随潮晃动；关闭可提升性能", toggle, 130))
+	var camera_row:=HBoxContainer.new()
+	var view_lock:=CheckButton.new(); view_lock.name="ViewLockToggle"; view_lock.text="锁定视角"
+	view_lock.button_pressed=prefs.view_locked; camera_row.add_child(view_lock)
+	view_lock.toggled.connect(func(enabled):
+		prefs.view_locked=enabled; app.apply_display_settings.call_deferred(false))
+	var camera_reset:=W.button(camera_row,"复位",func():app.world_view.reset_camera_view())
+	camera_reset.name="SettingsResetRaftView"
+	game_box.add_child(make_row("视角锁定",prefs.camera_help(),camera_row,210))
+	var mouse_bindings:=HBoxContainer.new()
+	for action in ["orbit","pan"]:
+		var column:=VBoxContainer.new(); mouse_bindings.add_child(column)
+		W.text(column,"旋转" if action=="orbit" else "平移",12,W.MUTED)
+		var picker:=OptionButton.new(); column.add_child(picker)
+		picker.name="CameraOrbitBinding" if action=="orbit" else "CameraPanBinding"
+		for button in Display.CAMERA_MOUSE_BUTTONS: picker.add_item(Display.mouse_button_name(button),button)
+		picker.select(Display.CAMERA_MOUSE_BUTTONS.find(prefs.camera_orbit_button if action=="orbit" else prefs.camera_pan_button))
+		picker.item_selected.connect(func(index):
+			prefs.set_camera_mouse_binding(action,Display.CAMERA_MOUSE_BUTTONS[index]); app.apply_display_settings.call_deferred(false))
+	game_box.add_child(make_row("视角鼠标按键","同键自动互换；左键单击仍可操作筏格",mouse_bindings,210))
+	var reset_keys:=HBoxContainer.new()
+	var reset_key:=W.button(reset_keys,OS.get_keycode_string(prefs.camera_reset_key),func():
+		app.camera_binding_capture=true
+		var button=app.find_child("CameraResetBinding",true,false)
+		if button!=null: button.text="按下新键…")
+	reset_key.name="CameraResetBinding"; reset_key.custom_minimum_size.x=110
+	var defaults:=W.button(reset_keys,"恢复默认",func():
+		prefs.reset_camera_bindings(); app.apply_display_settings.call_deferred(false))
+	defaults.name="CameraBindingDefaults"
+	game_box.add_child(make_row("视角复位快捷键","点击后按字母、数字或F键；Esc取消",reset_keys,210))
 
 	# --- TAB 2: 游戏偏好 ---
 	# Row 1: 自动理牌
@@ -224,7 +263,7 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 		app.settings_tab = target
 		display_box.visible = (target == "display")
 		game_box.visible = (target == "game")
-		
+
 		for state in ["normal", "hover", "pressed", "focus"]:
 			tab_display.add_theme_stylebox_override(state, active_tab_style if target == "display" else inactive_tab_style)
 			tab_game.add_theme_stylebox_override(state, active_tab_style if target == "game" else inactive_tab_style)

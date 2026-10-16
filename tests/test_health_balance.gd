@@ -27,6 +27,8 @@ func _init() -> void:
 		for water in [0,100]:
 			s=session(); s.state.player.hp=12; s.state.player.hunger=hunger; s.state.player.hydration=water
 			check(s.dispatch("voyage",{"id":s.state.candidates[0].visit_id}),"movement")
+			check(s.state.player.hp==12,"no deprivation on departure")
+			s.state.phase="aftermath"; check(s.dispatch("end_voyage"),"settle survival")
 			check(s.state.player.hp==12-int(hunger==0)-int(water==0),"deprivation is one each, capped at two")
 	s=session(); s.state.phase="battle"; s.state.node=catalog.entry("nodes","battle")
 	s.state.battle={"id":"crab","hp":30,"ap":3,"turn":7,"entry_hp":12,"poison_until":0,"fear_until":0,"shields":[{"amount":20,"expires_turn":9,"uid":"test"}]}

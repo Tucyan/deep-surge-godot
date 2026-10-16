@@ -1,4 +1,5 @@
 extends RefCounted
+const Difficulty = preload("res://core/difficulty_rules.gd")
 const I = preload("res://core/inventory.gd")
 const R = preload("res://core/random_streams.gd")
 const Rules = preload("res://core/run_rules.gd")
@@ -10,7 +11,8 @@ const AutoProgress = preload("res://core/auto_progress.gd")
 const Health = preload("res://core/health_balance.gd")
 const Encounter = preload("res://core/encounter_rules.gd")
 const Shop = preload("res://core/shop_rules.gd")
-const VERSION := "godot-flow-v02-11"
+const EnvironmentRules = preload("res://core/environment_rules.gd")
+const VERSION := "godot-flow-v02-19"
 const ORIGINS := {
 	"strong":{"name":"强壮之人", "description":"生命上限+4，食水上限各+10"},
 	"fool":{"name":"愚者", "description":"非自愿精神损失少5"},
@@ -58,6 +60,7 @@ func dispatch(command: String, args: Dictionary = {}) -> bool:
 		"close": panel = ""; ok = true
 		"event": panel = event_panel(); ok = not panel.is_empty()
 		"voyage": ok = Rules.voyage(self, args.get("id", ""))
+		"scout", "fix_heading": ok = EnvironmentRules.navigate(self,command,args)
 		"enter":
 			if phase() == "preparation":
 				if Campaign.enabled(self) and not catalog.entry("story_nodes",state.node.id).is_empty(): ok = Campaign.enter(self)
@@ -148,41 +151,47 @@ func new_game(args: Dictionary) -> bool:
 	var seed = args.get("seed", -1)
 	if not ORIGINS.has(origin) or not (seed is int or seed is float) or seed < 0 or seed > 4294967295 or float(seed) != floor(float(seed)):
 		return fail("请选择出身，并输入0～4294967295整数种子")
+	var difficulty: Variant=args.get("difficulty","standard")
+	if not difficulty is String or difficulty not in Difficulty.IDS: return fail("请选择有效难度")
+	var baseline: Dictionary=Difficulty.profile(catalog,difficulty)
 	var starting = args.get("starting_resources",[])
-	if not starting is Array or starting.size()>5: return fail("起手资源最多选择5张")
+	if not starting is Array or starting.size()>int(baseline.starting_cards): return fail("起手资源最多选择%d张" % int(baseline.starting_cards))
 	var counts := {}
 	for id in starting:
 		if not id is String or id not in I.RESOURCES: return fail("只能选择基础资源牌")
 		counts[id]=int(counts.get(id,0))+1
 		if counts[id]>2: return fail("每类起手资源最多2张")
-	var stats := {"hp":Health.BASE_HP, "hunger":40, "hydration":40, "sanity":80, "hp_max":Health.BASE_HP, "hunger_max":100, "hydration_max":100, "sanity_max":100, "base_ap":3, "battle_ap":3, "limit":10, "damage":0}
+	var stats := {"hp":int(baseline.hp), "hunger":int(baseline.hunger), "hydration":int(baseline.hydration), "sanity":int(baseline.sanity), "hp_max":int(baseline.hp), "hunger_max":100, "hydration_max":100, "sanity_max":100, "base_ap":3, "battle_ap":3, "limit":10, "damage":0}
 	if origin == "strong": stats.hp += Health.STRONG_BONUS; stats.hp_max += Health.STRONG_BONUS; stats.hunger_max += 10; stats.hydration_max += 10
 	if origin == "restless": stats.base_ap += 1; stats.battle_ap += 1
 	if origin == "hoarder": stats.limit += 1
 	Rules.profile_modifiers(self, stats)
-	state = {"mode":"challenge", "origin":origin, "seed":int(seed), "rng":R.create(int(seed)), "phase":"navigation", "voyage":1, "length":0, "ap":0, "player":stats, "hand":[], "coins":0, "cells":[], "next_id":1, "node":{}, "candidates":[], "pool":[], "visits":{}, "story_step":"", "result_text":"", "battle":{}, "completed":0, "boss_defeated":false, "awarded":false, "flags":{}, "logs":[], "buffs":[], "xp":0, "level":1}
+	state = {"difficulty":difficulty, "mode":"challenge", "origin":origin, "seed":int(seed), "rng":R.create(int(seed)), "phase":"navigation", "voyage":1, "length":0, "ap":0, "player":stats, "hand":[], "coins":0, "cells":[], "next_id":1, "node":{}, "candidates":[], "pool":[], "visits":{}, "story_step":"", "result_text":"", "battle":{}, "completed":0, "boss_defeated":false, "awarded":false, "flags":{}, "logs":[], "buffs":[], "xp":0, "level":1}
 	state.shop = {}; state.encounter = {}
+	EnvironmentRules.initialize(state)
 	state.flags.event_visits = {}; state.flags.event_last = {}
 	state.mode = args.mode
 	if state.mode == "story": Campaign.initialize(self)
 	else: state.length = 10 + int(R.draw(state.rng, "nodes") * 6)
-	state.flags.raft_layout = "123456"
-	var initial_cells := [Vector2i(2,0),Vector2i(0,1),Vector2i(1,1),Vector2i(2,1)]
+	state.flags.raft_layout = Rules.Layout.ID
+	state.expansion_count = 0
+	var initial_cells: Array = Rules.Layout.POSITIONS.slice(2,6)
 	for i in range(4): state.cells.append({"id":"cell-%d" % i, "x":initial_cells[i].x, "y":initial_cells[i].y, "status":"intact", "damaged_at":0, "equipment":{}})
 	state.next_boost_id=1; state.next_shield_id=1
 	state.run_id=Crypto.new().generate_random_bytes(16).hex_encode()
 	state._stat_command="new"; state._stat_revision=revision+1; state._stat_subsequence=0
 	Stats.initialize(state)
 	if starting.is_empty():
-		for i in range(7): give(R.pick(state.rng,"initial",I.RESOURCES),1,false,"initial")
+		for i in range(int(baseline.starting_cards)+2): give(R.pick(state.rng,"initial",I.RESOURCES),1,false,"initial")
 	else:
 		for id in starting: give(id,1,false,"initial")
 	if int(profile.purchases.get("inheritance",0)) > 0: give("coin",3)
 	if int(profile.pending.get("supply",0)) > 0: give("filter",1,false,"profile"); profile.pending.supply -= 1
+	EnvironmentRules.start_round(self)
 	Rules.candidates(self)
 	Rules.refresh_voyage_ap(self)
 	screen = "game"; panel = ""
-	log_text(("随心所欲：随机获得7张资源。" if starting.is_empty() else "自选起手%d张资源。" % starting.size())+"首次不领取涌泉，选择本轮目的地。")
+	log_text(("随心所欲：随机获得%d张资源。" % (int(baseline.starting_cards)+2) if starting.is_empty() else "自选起手%d张资源。" % starting.size())+"首次不领取涌泉，选择本轮目的地。")
 	return true
 
 func give(id: String, amount: int = 1, temporary: bool = false, source: String = "reward", producer: String = "", cell_id: String = "") -> void:
@@ -243,23 +252,19 @@ func restore(data: Dictionary) -> bool:
 	if not state.is_empty() and phase() in ["finished","chapterComplete"] and not state.has("settlement"):
 		state.settlement=Settlement.create(state,catalog,"run" if phase()=="finished" else "chapter")
 		last_settlement=state.settlement.duplicate(true)
-	# Migrate only old four-cell layouts; expanded legacy saves retain their coordinates.
-	if not state.is_empty() and not state.flags.has("raft_layout") and state.cells.size() == 4 and state.cells.all(func(c): return c.x < 2 and c.y < 2):
-		var positions := [Vector2i(2,0),Vector2i(0,1),Vector2i(1,1),Vector2i(2,1)]
-		for c in state.cells:
-			var old_index: int = int(c.y)*2+int(c.x); c.x = positions[old_index].x; c.y = positions[old_index].y
-		state.flags.raft_layout = "123456"
 	screen = "home"; panel = ""
 	return true
 func view() -> Dictionary:
 	var result := state.duplicate(true)
-	result.merge({"page":panel if panel != "" else screen, "screen":screen, "panel":panel, "active":active(), "has_run":not state.is_empty(), "phase":phase(), "error":error, "profile":profile.duplicate(true), "origins":ORIGINS.duplicate(true), "revision":revision},true)
+	result.merge({"page":panel if panel != "" else screen, "screen":screen, "panel":panel, "active":active(), "has_run":not state.is_empty(), "phase":phase(), "error":error, "profile":profile.duplicate(true), "origins":ORIGINS.duplicate(true), "difficulties":Difficulty.choices(catalog), "revision":revision},true)
 	result.last_settlement=last_settlement.duplicate(true)
 	result.erase("rng"); result.erase("pool")
 	if not state.is_empty():
 		result.capacity = I.capacity(state)
 		result.player.limit = I.hand_limit(state,catalog)
 		result.can_base = base_action()
+		result.expansion_cost = Rules.expansion_cost(state)
+		result.survival_settlement = {"pending":state.flags.has("voyage_survival_cost"),"food_water_cost":int(state.flags.get("voyage_survival_cost",0))}
 		if int(state.flags.get("rested_until",0)) >= state.voyage:
 			result.player.base_ap += 1
 		for card in result.hand: card.definition = catalog.entry("cards",card.id)
@@ -278,4 +283,5 @@ func view() -> Dictionary:
 		Encounter.project(self,result)
 		if phase()=="interaction": result.shop=Shop.view(self)
 		Campaign.project(self,result)
+		EnvironmentRules.project(self,result)
 	return result

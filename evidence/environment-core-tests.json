@@ -1,0 +1,107 @@
+[
+  {
+    "test": "test_environment",
+    "exit": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nENVIRONMENT: PASS\n"
+  },
+  {
+    "test": "test_action_query",
+    "exit": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nACTION QUERY: PASS\n"
+  },
+  {
+    "test": "test_agent_session",
+    "exit": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nAGENT SESSION: PASS\n"
+  },
+  {
+    "test": "test_save",
+    "exit": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSAVE / RECOVERY: PASS\n"
+  },
+  {
+    "test": "test_formal_shop",
+    "exit": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nFORMAL SHOP: PASS (79 checks)\n"
+  },
+  {
+    "test": "test_economy_balance",
+    "exit": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nECONOMY BALANCE: PASS\n"
+  },
+  {
+    "test": "test_node_shop_integration",
+    "exit": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nNODE SHOP INTEGRATION: PASS (87 checks, 0 failures)\n"
+  },
+  {
+    "test": "test_spring_supply",
+    "exit": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSPRING SUPPLY: PASS\n"
+  },
+  {
+    "test": "test_round_start_production",
+    "exit": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCONTENT FINGERPRINT: 6996d517e3a2baf969be891336f9625ced2dfbf9b6e2472c84a872de017d4b93\nROUND START PRODUCTION: PASS\n"
+  },
+  {
+    "test": "test_fuel_uid",
+    "exit": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nFUEL UID: PASS\n"
+  },
+  {
+    "test": "test_combat_integration",
+    "exit": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCOMBAT INTEGRATION: PASS\n"
+  },
+  {
+    "test": "test_mechanics",
+    "exit": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nMECHANICS: PASS\n"
+  },
+  {
+    "test": "test_node_redesign",
+    "exit": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nNODE REDESIGN: PASS (0 failures)\n"
+  },
+  {
+    "test": "test_health_balance",
+    "exit": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nHEALTH BALANCE: PASS\n"
+  },
+  {
+    "test": "test_new_equipment",
+    "exit": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nNEW EQUIPMENT: PASS\n"
+  },
+  {
+    "test": "test_battle_actions",
+    "exit": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBATTLE ACTIONS: PASS\n"
+  },
+  {
+    "test": "test_auto_progress",
+    "exit": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nAUTO PROGRESS: PASS\n"
+  },
+  {
+    "test": "test_navigation_actions",
+    "exit": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nNAVIGATION ACTIONS: PASS\n"
+  },
+  {
+    "test": "test_settlement",
+    "exit": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSETTLEMENT: PASS\n"
+  },
+  {
+    "test": "test_story",
+    "exit": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSTORY ROUTE scholar/seal: phase=finished, day=15, actions=9, hp=12 SAN=100\nSTORY ROUTE scholar/tow: phase=finished, day=15, actions=9, hp=12 SAN=100\nSTORY ROUTE scholar/release: phase=finished, day=15, actions=9, hp=10 SAN=100\nSTORY ROUTE solo/continue: phase=finished, day=15, actions=9, hp=12 SAN=100\nSTORY: PASS (15站学者A/B/C、独航、夜间与存档)\n"
+  },
+  {
+    "test": "test_routes",
+    "exit": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nROUTE challenge-22: finished / dead\nROUTE challenge-39: finished / survived\nROUTE challenge-9: finished / dead\nROUTE challenge-73: finished / dead\nROUTE challenge-1000: finished / survived\nROUTE challenge-7919: finished / dead\nROUTE challenge-20261016: finished / dead\nROUTE challenge-4294967295: finished / dead\nROUTE story-22: chapterComplete / \nROUTES: PASS\n"
+  }
+]

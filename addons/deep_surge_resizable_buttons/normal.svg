@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="104" viewBox="0 0 640 104">
+<path d="M23 6H617L634 23V81L617 98H23L6 81V23Z" fill="#0b1729" stroke="#eff0e7" stroke-width="2"/>
+<path d="M31 15H609L625 30V74L609 89H31L15 74V30Z" fill="none" stroke="#405d87" stroke-width="1.3"/>
+<path d="M37 12H603 M37 92H603" fill="none" stroke="#eff0e7" stroke-width="1.2"/>
+<path d="M22 34V70 M618 34V70" stroke="#405d87" stroke-width="1.1"/>
+<path d="M8 21H26V7 M632 21H614V7 M8 83H26V97 M632 83H614V97" fill="none" stroke="#eff0e7" stroke-width="1.5"/>
+<path d="M34 20l3 6 6 3-6 3-3 6-3-6-6-3 6-3Z M606 20l3 6 6 3-6 3-3 6-3-6-6-3 6-3Z" fill="#eff0e7" transform="translate(0,-8)" />
+<path d="M34 20l3 6 6 3-6 3-3 6-3-6-6-3 6-3Z M606 20l3 6 6 3-6 3-3 6-3-6-6-3 6-3Z" fill="#eff0e7" transform="translate(0,57)"/>
+<!-- sparse geometric end cap bands, no textured/grunge centers -->
+<path d="M47 23L65 40V64L47 81 M593 23L575 40V64L593 81" fill="none" stroke="#263a59" stroke-width="2"/>
+</svg>

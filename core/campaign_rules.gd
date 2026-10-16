@@ -215,6 +215,7 @@ static func end_day(ctx) -> bool:
 	var c: Dictionary = ctx.state.campaign
 	if ctx.state.voyage < 5 or ctx.state.voyage == 15: return ctx.Rules.settle(ctx)
 	if c.day_closed >= ctx.state.voyage: return ctx.fail("今天的夜间已完成")
+	if not ctx.Rules.settle_survival(ctx): return true
 	ctx.state.ap = 0
 	c.night = {"voyage":ctx.state.voyage,"stage":"services","budget":0 if ctx.state.voyage == 5 else 1,"selected":"","exchanged":false,"result":""}
 	ctx.state.phase = "nightHub"; ctx.panel = "night"

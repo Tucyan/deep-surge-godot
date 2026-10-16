@@ -1,0 +1,38 @@
+[
+  {
+    "test": "test_display_settings",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nOpenGL API 3.3.0 NVIDIA 591.74 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 4060 Laptop GPU\n\nDISPLAY SETTINGS: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_raft_camera_fit",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nOpenGL API 3.3.0 NVIDIA 591.74 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 4060 Laptop GPU\n\nRAFT CAMERA FIT: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_raft_root",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nOpenGL API 3.3.0 NVIDIA 591.74 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 4060 Laptop GPU\n\nRAFT ROOT: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_blender_raft",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nOpenGL API 3.3.0 NVIDIA 591.74 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 4060 Laptop GPU\n\nBLENDER RAFT LAYOUT: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "raft_interaction_ui",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nOpenGL API 3.3.0 NVIDIA 591.74 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 4060 Laptop GPU\n\nRAFT INTERACTION UI: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "spiral_camera_ui",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nOpenGL API 3.3.0 NVIDIA 591.74 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 4060 Laptop GPU\n\nSPIRAL CAMERA UI: PASS\n",
+    "stderr": ""
+  }
+]

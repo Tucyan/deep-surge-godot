@@ -1,0 +1,102 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="Texture2D" path="res://addons/deep_surge_resizable_buttons/normal.png" id="1_n"]
+[ext_resource type="Texture2D" path="res://addons/deep_surge_resizable_buttons/hover.png" id="2_h"]
+[ext_resource type="Texture2D" path="res://addons/deep_surge_resizable_buttons/pressed.png" id="3_p"]
+[ext_resource type="Texture2D" path="res://addons/deep_surge_resizable_buttons/disabled.png" id="4_d"]
+[ext_resource type="Texture2D" path="res://addons/deep_surge_resizable_buttons/compass.png" id="5_c"]
+
+[sub_resource type="StyleBoxTexture" id="StyleNormal"]
+texture=ExtResource("1_n")
+texture_margin_left=82.0
+texture_margin_top=27.0
+texture_margin_right=82.0
+texture_margin_bottom=27.0
+content_margin_left=75.0
+content_margin_right=75.0
+content_margin_top=12.0
+content_margin_bottom=12.0
+
+[sub_resource type="StyleBoxTexture" id="StyleHover"]
+texture=ExtResource("2_h")
+texture_margin_left=82.0
+texture_margin_top=27.0
+texture_margin_right=82.0
+texture_margin_bottom=27.0
+content_margin_left=75.0
+content_margin_right=75.0
+content_margin_top=12.0
+content_margin_bottom=12.0
+
+[sub_resource type="StyleBoxTexture" id="StylePressed"]
+texture=ExtResource("3_p")
+texture_margin_left=82.0
+texture_margin_top=27.0
+texture_margin_right=82.0
+texture_margin_bottom=27.0
+content_margin_left=75.0
+content_margin_right=75.0
+content_margin_top=12.0
+content_margin_bottom=12.0
+
+[sub_resource type="StyleBoxTexture" id="StyleDisabled"]
+texture=ExtResource("4_d")
+texture_margin_left=82.0
+texture_margin_top=27.0
+texture_margin_right=82.0
+texture_margin_bottom=27.0
+content_margin_left=75.0
+content_margin_right=75.0
+content_margin_top=12.0
+content_margin_bottom=12.0
+
+[sub_resource type="StyleBoxEmpty" id="NoFocusOutline"]
+
+[node name="TarotButton" type="Button"]
+custom_minimum_size=Vector2(220,70)
+offset_right=450.0
+offset_bottom=84.0
+focus_mode=2
+mouse_default_cursor_shape=2
+theme_override_colors/font_color=Color(0.96,0.93,0.87,1)
+theme_override_colors/font_hover_color=Color(1,0.98,0.91,1)
+theme_override_colors/font_pressed_color=Color(0.07,0.13,0.22,1)
+theme_override_colors/font_disabled_color=Color(0.47,0.52,0.59,1)
+theme_override_font_sizes/font_size=24
+theme_override_styles/normal=SubResource("StyleNormal")
+theme_override_styles/hover=SubResource("StyleHover")
+theme_override_styles/pressed=SubResource("StylePressed")
+theme_override_styles/hover_pressed=SubResource("StylePressed")
+theme_override_styles/disabled=SubResource("StyleDisabled")
+theme_override_styles/focus=SubResource("NoFocusOutline")
+text="开始游戏"
+
+[node name="LeftCompass" type="TextureRect" parent="."]
+layout_mode=1
+anchors_preset=4
+anchor_top=0.5
+anchor_bottom=0.5
+offset_left=19.0
+offset_top=-22.0
+offset_right=63.0
+offset_bottom=22.0
+mouse_filter=2
+texture=ExtResource("5_c")
+expand_mode=1
+stretch_mode=5
+
+[node name="RightCompass" type="TextureRect" parent="."]
+layout_mode=1
+anchors_preset=6
+anchor_left=1.0
+anchor_top=0.5
+anchor_right=1.0
+anchor_bottom=0.5
+offset_left=-63.0
+offset_top=-22.0
+offset_right=-19.0
+offset_bottom=22.0
+mouse_filter=2
+texture=ExtResource("5_c")
+expand_mode=1
+stretch_mode=5

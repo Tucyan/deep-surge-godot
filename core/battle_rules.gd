@@ -9,7 +9,7 @@ static func enter(ctx, enemy_id: String = "", rewards: Dictionary = {}) -> bool:
 	var s: Dictionary = ctx.state
 	if ctx.phase() != "story" or s.story_step != "choice": return false
 	if enemy_id=="": enemy_id=s.node.get("monster","")
-	var enemy: Dictionary = ctx.catalog.entry("enemies",enemy_id)
+	var enemy: Dictionary = ctx.Difficulty.enemy(ctx.catalog,s,enemy_id)
 	if enemy.is_empty(): return ctx.fail("没有可迎战的敌人")
 	var raft_target := biter_target(ctx) if enemy_id=="biter" else ""
 	s.battle = {"id":enemy_id, "hp":int(enemy.hp), "turn":1, "ap":s.player.battle_ap, "entry_hp":s.player.hp, "poison_until":0, "fear_until":0, "shields":[],"raft_target_cell":raft_target}
@@ -102,6 +102,7 @@ static func victory(ctx) -> void:
 	Stats.battle_result(s,"won")
 	var rewards: Dictionary=s.battle.get("rewards",{})
 	ctx.give("coin",int(rewards.get("coin",5 if s.node.get("boss",false) else (2 if s.node.get("difficulty", "") in ["hard","boss"] else 1)))); ctx.give("corpse",int(rewards.get("corpse",1)))
+	if ctx.EnvironmentRules.active(s,"bloodMoon") and not s.node.get("boss",false): ctx.give("coin",1,false,"bloodMoon")
 	var drops: int = int(rewards.get("resources",2 if s.node.get("difficulty", "") in ["hard","boss"] or s.node.get("boss",false) else 1))
 	for i in range(drops): ctx.give(R.pick(s.rng,"rewards",I.RESOURCES),1,false,"battle_reward")
 	s.xp += int(rewards.get("xp",20 if s.node.get("boss",false) else 5))
@@ -173,12 +174,10 @@ static func end_turn(ctx) -> bool:
 		ctx.change("hp",-1,"poison")
 		if not battle_alive(ctx): return true
 	var enemy: Dictionary = ctx.catalog.entry("enemies",s.battle.id)
-	var direct_damage: int = int(enemy.damage)
+	var direct_damage: int = incoming_damage(ctx)
 	if s.battle.get("bound_effect",false):
 		if s.battle.id == "biter": s.battle.bound_biter = true
 		elif s.battle.id == "jelly": s.battle.bound_poison = true
-		else: direct_damage = maxi(0,direct_damage-2)
-	direct_damage=maxi(0,direct_damage+int(s.battle.get("enemy_damage_delta",0)))
 	var counter_hit: bool=s.battle.get("counter_ready",false) and s.battle.id in ["biter","crab","crab_elite"]
 	s.battle.counter_ready=false
 	if s.battle.id == "biter" and not s.battle.get("bound_biter",false): damage_raft_cell(s)
@@ -205,6 +204,12 @@ static func end_turn(ctx) -> bool:
 	supply(ctx)
 	s.battle.bound_effect=false; s.battle.bound_poison=false; s.battle.bound_biter=false; s.battle.bind_used=false; s.battle.enemy_damage_delta=0
 	return true
+
+static func incoming_damage(ctx) -> int:
+	var s: Dictionary=ctx.state
+	var damage: int=int(ctx.Difficulty.enemy(ctx.catalog,s,s.battle.id).damage)+(1 if ctx.EnvironmentRules.active(s,"bloodMoon") else 0)
+	if s.battle.get("bound_effect",false) and s.battle.id not in ["biter","jelly"]: damage=maxi(0,damage-2)
+	return maxi(0,damage+int(s.battle.get("enemy_damage_delta",0)))
 
 static func absorb_shields(state: Dictionary, damage: int) -> int:
 	var remaining: int=damage; var absorbed := 0

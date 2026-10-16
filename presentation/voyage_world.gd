@@ -8,7 +8,18 @@ const NIGHT_GRADE = preload("res://assets/shaders/night_grade.gdshader")
 static var ocean_style_override := ""
 const RaftModels = preload("res://presentation/raft_state_models.gd")
 var raft_models := RaftModels.new()
-var _raft_layout := "123456"
+var _raft_layout := "spiral-v1"
+var camera_controls = preload("res://presentation/raft_camera_controls.gd").new()
+var camera_input_enabled := false
+var camera_orbit_button := MOUSE_BUTTON_RIGHT
+var camera_pan_button := MOUSE_BUTTON_LEFT
+var _camera_drag_button := 0
+var _camera_pivot := Vector3.ZERO
+var _automatic_camera_pose := Transform3D.IDENTITY
+var _camera_touches: Dictionary={}
+var _reset_from := Transform3D.IDENTITY
+var _reset_progress := 1.0
+const CAMERA_RESET_SECONDS := .45
 const WET_WOOD = preload("res://assets/shaders/wet_wood.gdshader")
 var viewport: SubViewport
 var world: Node3D
@@ -51,10 +62,68 @@ func set_framing_rect(value: Rect2) -> void:
 	framing_rect=value; _framing_pending=true
 
 func _animate_camera(delta: float) -> void:
-	if _camera_progress>=1.0: return
-	_camera_progress=minf(1.0,_camera_progress+delta/CAMERA_MOVE_SECONDS)
-	var eased:=_camera_progress*_camera_progress*(3.0-2.0*_camera_progress)
-	camera.global_transform=_camera_from.interpolate_with(_camera_target,eased)
+	if not _has_camera_pose: return
+	if _camera_progress<1.0:
+		_camera_progress=minf(1.0,_camera_progress+delta/CAMERA_MOVE_SECONDS)
+		var eased:=_camera_progress*_camera_progress*(3.0-2.0*_camera_progress)
+		_automatic_camera_pose=_camera_from.interpolate_with(_camera_target,eased)
+	else: _automatic_camera_pose=_camera_target
+	var desired: Transform3D=camera_controls.apply_pose(_automatic_camera_pose,_camera_pivot)
+	if _reset_progress<1.0:
+		_reset_progress=minf(1.0,_reset_progress+delta/CAMERA_RESET_SECONDS)
+		var reset_eased: float=_reset_progress*_reset_progress*(3.0-2.0*_reset_progress)
+		camera.global_transform=_reset_from.interpolate_with(desired,reset_eased)
+	else: camera.global_transform=desired
+
+func set_camera_input_enabled(enabled: bool) -> void:
+	camera_input_enabled=enabled
+	mouse_filter=Control.MOUSE_FILTER_STOP if enabled else Control.MOUSE_FILTER_IGNORE
+	if not enabled: camera_controls.cancel_drag(); _camera_touches.clear(); _camera_drag_button=0
+
+func reset_camera_view() -> void:
+	if _has_camera_pose:
+		_reset_from=camera.global_transform; _reset_progress=0.0
+	camera_controls.reset(); _camera_touches.clear(); _camera_drag_button=0; _animate_camera(0)
+
+func camera_input(event: InputEvent) -> void:
+	if not camera_input_enabled or _reset_progress<1.0: return
+	if event is InputEventMouseButton:
+		if event.button_index in [camera_orbit_button,camera_pan_button]:
+			if event.pressed:
+				_camera_drag_button=event.button_index
+				camera_controls.begin_drag(event.position,"orbit" if event.button_index==camera_orbit_button else "pan")
+			elif event.button_index==_camera_drag_button:
+				camera_controls.end_drag(); _camera_drag_button=0
+		elif event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
+			camera_controls.zoom_by(event.factor*(1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else -1))
+	elif event is InputEventMouseMotion:
+		if _camera_drag_button>0 and event.button_mask & (1 << (_camera_drag_button-1)):
+			var depth: float=maxf(1.0,-camera.to_local(_camera_pivot+camera_controls.pan_offset).z)
+			var units_per_pixel: float=2.0*depth*tan(deg_to_rad(camera.fov)*.5)/maxf(size.y,1.0)
+			camera_controls.drag_to(event.position,camera.global_basis,units_per_pixel)
+		else: camera_controls.end_drag(); _camera_drag_button=0
+	elif event is InputEventScreenTouch:
+		if event.pressed and not event.canceled:
+			_camera_touches[event.index]=event.position
+			if _camera_touches.size()==1: camera_controls.begin_drag(event.position)
+		else:
+			_camera_touches.erase(event.index); camera_controls.end_drag()
+			if event.canceled: camera_controls.cancel_drag()
+	elif event is InputEventScreenDrag and _camera_touches.has(event.index):
+		if _camera_touches.size()==2:
+			var points: Array=_camera_touches.values(); var old_distance: float=points[0].distance_to(points[1])
+			_camera_touches[event.index]=event.position; points=_camera_touches.values()
+			var new_distance: float=points[0].distance_to(points[1])
+			if old_distance>1 and new_distance>1:
+				camera_controls.zoom_by(log(new_distance/old_distance)/log(1.0/.88))
+			camera_controls.dragged=true; camera_controls.end_drag()
+		else:
+			_camera_touches[event.index]=event.position; camera_controls.drag_to(event.position)
+	_animate_camera(0)
+
+func _notification(what: int) -> void:
+	if what==NOTIFICATION_WM_WINDOW_FOCUS_OUT:
+		camera_controls.cancel_drag(); _camera_touches.clear(); _camera_drag_button=0
 
 
 func set_render_size(value: Vector2i) -> void:
@@ -73,6 +142,7 @@ func create(assets: RefCounted) -> void:
 	expand_mode=TextureRect.EXPAND_IGNORE_SIZE
 	stretch_mode=TextureRect.STRETCH_SCALE
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	gui_input.connect(camera_input)
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	viewport = SubViewport.new()
 	viewport.own_world_3d = true
@@ -216,7 +286,10 @@ func sync(view: Dictionary) -> void:
 		var hull_cells: Array = view.cells.duplicate(true)+raft_models.root_cells(_raft_layout)
 		texture_ocean.sync_cells(hull_cells)
 		if ocean != null: ocean.sync_cells(hull_cells)
-		var min_x: float = 0.0 if _raft_layout == "123456" else -1.0; var min_y := 0.0; var max_x: float = 1.0 if _raft_layout == "123456" else -1.0; var max_y: float = 0.0 if _raft_layout == "123456" else 1.0
+		var min_x: float=INF; var min_y: float=INF; var max_x: float=-INF; var max_y: float=-INF
+		for root_cell in raft_models.root_cells(_raft_layout):
+			min_x=minf(min_x,root_cell.x); max_x=maxf(max_x,root_cell.x)
+			min_y=minf(min_y,root_cell.y); max_y=maxf(max_y,root_cell.y)
 		lantern.visible = false
 		for cell in view.cells:
 			if cell.status == "detached": continue
@@ -235,6 +308,7 @@ func sync(view: Dictionary) -> void:
 				mat.set_shader_parameter("lantern_enabled",lantern.visible)
 				mat.set_shader_parameter("lantern_strength",toon_ocean.settings.lantern.strength if lantern.visible else 0.0)
 		var center := Vector3(((min_x+max_x)*0.5-0.5)*2.35,0,((min_y+max_y)*0.5-0.5)*2.1)
+		_camera_pivot=center+Vector3(0,.35,0)
 		var scale_factor: float = maxf(1.0,pow(maxf(max_x-min_x+1.0,max_y-min_y+1.0)/2.0,0.65))
 		var position_goal:=center+Vector3(5.5,7.6,10.5)*scale_factor
 		_camera_base=Transform3D(Basis.IDENTITY,position_goal).looking_at(center+Vector3(1.2*scale_factor,0.35,0),Vector3.UP)
@@ -284,7 +358,7 @@ func _frame_raft_if_needed() -> void:
 	if not _framing_pending and _framed_size == viewport.size: return
 	var meshes := raft.find_children("*","MeshInstance3D",true,false)
 	if meshes.is_empty(): return
-	var previous:=camera.global_transform
+	var previous: Transform3D=_automatic_camera_pose if _has_camera_pose else camera.global_transform
 	camera.global_transform=_camera_base
 	var safe:=Rect2(framing_rect.position*Vector2(viewport.size),framing_rect.size*Vector2(viewport.size))
 	var target:=safe.get_center()
@@ -309,8 +383,9 @@ func _frame_raft_if_needed() -> void:
 		camera.position += (camera.basis.x*error.x-camera.basis.y*error.y)*units_per_pixel
 	_camera_target=camera.global_transform
 	if _has_camera_pose:
-		_camera_from=previous; _camera_progress=0.0; camera.global_transform=previous
+		_camera_from=previous; _camera_progress=0.0; _automatic_camera_pose=previous
 	else:
-		_has_camera_pose=true; _camera_progress=1.0
+		_has_camera_pose=true; _camera_progress=1.0; _automatic_camera_pose=_camera_target
+	camera.global_transform=camera_controls.apply_pose(_automatic_camera_pose,_camera_pivot)
 	_framing_pending = false
 	_framed_size = viewport.size

@@ -71,14 +71,14 @@ func expansions() -> Array:
 	if view.cells.any(func(c):return c.status=="intact" and c.equipment.is_empty()): return []
 	var result: Array=[]
 	var side: int=4 if int(view.profile.purchases.get("raft",0))>0 else 3
-	for y in range(side):
-		for x in range(side):
-			if view.get("flags",{}).get("raft_layout","")=="123456" and y==0 and x in [0,1]: continue
-			if view.cells.any(func(c):return c.x==x and c.y==y and c.status!="detached"): continue
-			if not view.cells.any(func(c):return c.status!="detached" and absi(c.x-x)+absi(c.y-y)==1): continue
-			var item:=quote("expand",{"x":x,"y":y})
-			item.x=x; item.y=y; item.id="expand:%d:%d" % [x,y]; item.kind="expand"
-			item.cost=Rules.EXPANSION_COST.duplicate(); item.ap=Rules.EXPANSION_AP; result.append(item)
+	for point in Rules.Layout.positions(side):
+		var x: int=point.x; var y: int=point.y
+		if Rules.Layout.is_root(x,y): continue
+		if view.cells.any(func(c):return c.x==x and c.y==y and c.status!="detached"): continue
+		if not view.cells.any(func(c):return c.status!="detached" and absi(c.x-x)+absi(c.y-y)==1): continue
+		var item:=quote("expand",{"x":x,"y":y})
+		item.x=x; item.y=y; item.number=Rules.Layout.number_at(x,y); item.id="expand:%d:%d" % [x,y]; item.kind="expand"
+		item.cost=Rules.expansion_cost(view); item.ap=Rules.EXPANSION_AP; result.append(item)
 	return result.slice(0,1)
 func targets() -> Array:
 	var result: Array=[]

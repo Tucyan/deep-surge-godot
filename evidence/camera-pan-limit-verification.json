@@ -1,0 +1,40 @@
+[
+  {
+    "test": "test_camera_pan",
+    "args": [],
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCAMERA PAN: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_camera_controls",
+    "args": [],
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCAMERA CONTROLS: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "camera_pan_ui",
+    "args": [],
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nOpenGL API 3.3.0 NVIDIA 591.74 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 4060 Laptop GPU\n\nCAMERA PAN UI: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "camera_pan_ui",
+    "args": [
+      "--",
+      "--large"
+    ],
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nOpenGL API 3.3.0 NVIDIA 591.74 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 4060 Laptop GPU\n\nCAMERA PAN UI: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "camera_bindings_ui",
+    "args": [],
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nOpenGL API 3.3.0 NVIDIA 591.74 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 4060 Laptop GPU\n\nCAMERA BINDINGS UI: PASS\n",
+    "stderr": ""
+  }
+]

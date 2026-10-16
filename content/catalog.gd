@@ -10,7 +10,7 @@ func load_catalog() -> bool:
 		error = "内容清单格式错误"
 		return false
 	var pending := {}
-	for table in ["cards", "nodes", "enemies", "equipment", "boosts", "recipes", "shops", "meta_shop", "tech", "relics", "story_nodes", "story_config"]:
+	for table in ["cards", "nodes", "enemies", "equipment", "boosts", "recipes", "shops", "meta_shop", "tech", "relics", "story_nodes", "story_config", "environments", "difficulties"]:
 		var path: String = manifest.tables.get(table, "")
 		if not path.begins_with("res://content/data/") or ".." in path:
 			error = "内容路径非法：" + table
@@ -49,6 +49,15 @@ func load_catalog() -> bool:
 		if not pack is Dictionary: error = "测试剧情补给包格式错误"; return false
 		for id in pack:
 			if not pending.cards.has(id) or not (pack[id] is float or pack[id] is int) or pack[id] < 1 or floor(float(pack[id])) != float(pack[id]): error = "剧情补给引用/数量非法"; return false
+	for id in pending.environments:
+		var d: Variant=pending.environments[id]
+		if not d is Dictionary or d.get("id")!=id or not d.get("name") is String or not d.get("description") is String or not d.get("negative") is bool:
+			error="环境定义格式错误："+str(id); return false
+		for key in ["weight","duration"]:
+			if not (d.get(key) is float or d.get(key) is int) or floor(float(d[key]))!=float(d[key]) or d[key]<(1 if key=="duration" else 0):
+				error="环境参数无效："+str(id); return false
+	if not preload("res://core/difficulty_rules.gd").valid(pending.difficulties):
+		error="难度定义无效"; return false
 	_tables = pending
 	_fingerprint = JSON.stringify(_tables).sha256_text()
 	return true

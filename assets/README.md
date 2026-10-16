@@ -1,5 +1,9 @@
 # 素材登记
 
+2026-10-17 v19：捕捞网状态提示恢复航初自动生产，主动打捞提示保底1张加完好网等级收益；无网时按钮可用。既有脚本登记同步版本/hash，无新增模型或图片。
+
+2026-10-16 v18：打捞按钮、提示与捕捞网状态文案改为1AP主动捕捞；既有脚本资产登记同步版本/hash，无新增模型、图片或外部依赖。
+
 2026-10-15 生图手绘木纹覆盖：共用暖棕/深褐/灰木三张1254贴图（`texture.shared.stylized-wood.*-albedo`）应用于箱子v2及木盆v4两植株状态，取代这两个模型此前的程序木纹。几何、生产规则及箱子待接入状态保持；木材采用粗糙度0.90，不叠旧微法线。Godot导入派生图片一并登记hash/尺寸/依赖，原始生图和完整提示词保留。当前来源与复建见 [手绘木纹记录](../asset-sources/stylized-wood-v1/README.md)。
 
 2026-10-15 独立木箱资产：新增 `model.prop.wooden-crate`，状态 `staged-not-integrated`，不替换筏根旧箱、不加入储物/合成/安装玩法。33块错落拼板、斜撑、独立箱盖、铁件与绳提手；7000三角面/9网格批次，5张512木纹PBR图片内嵌GLB。源 `asset-sources/wooden-crate-v1/wooden_crate_v001.blend`，来源与复建见 [木箱源记录](../asset-sources/wooden-crate-v1/README.md)。
@@ -168,3 +172,45 @@ model.raft.module.deck-intact / deck-damaged / root-decor / lamp / filter / plan
 2026-10-15 用户提供五张新波纹木纹，依序用于盾架、发电机、捕捞网、箱子和成熟/幼苗木盆。对应模型材料与 UV 已更新，位置和网格未改。五张 PNG 与原附件像素一致，作为源纹理登记。版本化 Blender 源、导出备份和 Godot 运行贴图登记见 [木纹 v2 记录](../asset-sources/stylized-wood-user-v2/README.md)。
 
 2026-10-15 设备战斗 UI：`ui.battle.equipment` 对应固定攻击/格挡与本地预览确认、盾/敌意图摘要、发电机燃料和增益领取/指派，以及箱子有效手牌上限。设备模型继续使用上列稳定 AssetId；仅在资源加载失败时显示明确标注的临时占位。UI 与模型分开登记，详见 manifest。
+
+2026-10-16：ui.hud.voyage-adapter v11、ui.voyage-hud v6，新增环境名称/原生悬停说明、侦察与定向按钮；移除顶部装饰底板。texture.voyage.topbar-v1仅保留归档，不再运行使用。新增data.environment-buffs v1，规则原稿来源、运行映射、依赖及SHA256见manifest；没有新增外部美术。
+
+难度v13：`data.difficulties`登记三档试测参数，`rules.difficulty`登记统一规则；`ui.starting-resources`按难度选择自选/随机起手数量，说明只显示相邻难度增量。没有新增外部美术或视觉随机。
+
+### v14战斗补给试测
+
+新增稳定登记`ui.battle.salvage`，复用原海面打捞按钮；战斗费用由dispatch处理，未引入新美术资产。捕捞网继续使用`model.raft.module.fishingNet`，战斗发牌规则不改变模型映射。
+
+### v15扩建费用
+
+`ui.raft.expansion-cost`登记动态扩建报价，场景虚影与木筏详情共用核心费用。沿用现有筏格模型，无新增美术；前3次成功扩建1木头，之后2木头，AP均1。
+
+### v16螺旋与视角
+
+登记`layout.raft.spiral`与`ui.raft.camera-controls`。1/2装饰模型整体平移到螺旋中心，初始3/4/5/6及海面接触映射同步；GLB及Blender源不改。视角脚本提供转动/缩放/复位，锁定默认关，运行时与规则状态分离；变动的GD源hash已更新。
+
+### 中键平移与R复位
+
+`ui.raft.camera-controls`新增中键世界XZ水平平移，R/按钮共用0.45秒平滑复位；复用现有相机和UI，无新模型。相关GD源hash及运行映射更新，局内内容版本仍v16。
+
+### 视角按键自定义
+
+`ui.raft.camera-controls`运行映射更新为默认右键旋转/左键水平平移/R平滑复位，设置可改鼠标键与复位键、恢复默认；相关显示偏好、设置、场景和HUD源hash更新，无新模型或局内规则变动。
+
+### 自由视角水平限位
+
+`ui.raft.camera-controls`增加相对默认自动构图位置的XZ半径3米平移限制，更新脚本hash和运行映射；无新美术或局内规则变动。
+
+
+### 2026-10-17 首页 v3 与自由比例
+
+`video.title.ocean` / `texture.title.ocean-poster` 的运行映射更新为用户提供的“月下灯塔与星海航行”视频及首帧。原始文件为2940×1260、约5.09秒，运行视频为2240×960静音Theora，保持21:9。`texture.title.logo-v3` 使用本次透明PNG，第二张整页图登记为 `reference.title.home-v3`，不参与运行渲染。
+
+`ui.title.frame-v3` 使用4条连续边线+16张等比装饰；`assets/title_ui/frame_v3/source_manifest.json` 保留源尺寸清单。四分点位于目标宽度25%/75%，无分段边线接缝。`tools/register_title_v3.py` 记录稳定ID、来源、版本、依赖、运行映射与SHA-256，不运行旧的v2登记器覆盖v3映射。表现层无规则随机。
+
+`ui.title.logo-backdrop`：原生绘制的黑色70%不透明圆形，无新增图片；作为 `TitleLogo` 后置子节点同步位置、缩放与可见性。
+
+
+### 2026-10-17 战斗四大面板
+
+用户附件 `deep_surge_ui_panels (1).zip` 的四张 PNG 原样归档于 `asset-sources/battle-ui-panels-v1/`，运行副本为 `battle_ui/panels_v1/`。稳定 ID 为 `texture.battle.panel.monster`、`intent`、`preview`、`log`（后面三项共用 `texture.battle.panel.` 前缀）与适配器 `ui.battle.panels`。`tools/register_battle_panels.py` 登记源、版本、SHA256、原图尺寸、依赖与运行映射。原图像素保持不变，无新规则随机；原生深色圆底与控件随四面板等比适配。只应用四个大板块。验证见 [战斗四面板](../evidence/battle-panels-verification.md)。

@@ -20,6 +20,7 @@ var save_blocked := false
 var persistence := true
 var display_settings = preload("res://presentation/display_settings.gd").new()
 var settings_tab := "display"
+var camera_binding_capture := false
 var hand_layout = preload("res://presentation/hand_layout.gd").new()
 var world_view: TextureRect
 var local_panel := ""
@@ -43,6 +44,9 @@ func _ready() -> void:
 		display_settings.load_preferences()
 		display_settings.apply_window(get_window())
 	world_view.motion=display_settings.motion
+	world_view.camera_controls.locked=display_settings.view_locked
+	world_view.camera_orbit_button=display_settings.camera_orbit_button
+	world_view.camera_pan_button=display_settings.camera_pan_button
 	resized.connect(update_render_resolution)
 	update_render_resolution.call_deferred()
 	render()
@@ -68,6 +72,9 @@ func apply_display_settings(change_mode: bool = true) -> void:
 	var restore_slider_focus: bool=is_instance_valid(focused) and focused.name=="UIScale"
 	display_settings.apply_window(get_window(),change_mode)
 	world_view.motion=display_settings.motion
+	world_view.camera_controls.locked=display_settings.view_locked
+	world_view.camera_orbit_button=display_settings.camera_orbit_button
+	world_view.camera_pan_button=display_settings.camera_pan_button
 	if persistence and display_settings.save_preferences()!=OK: message="显示设置保存失败"
 	update_render_resolution.call_deferred()
 	render()
@@ -77,7 +84,21 @@ func _restore_scale_focus() -> void:
 	var slider:=layout.find_child("UIScale",true,false)
 	if is_instance_valid(slider): slider.grab_focus()
 
+func _unhandled_key_input(event: InputEvent) -> void:
+	if not event is InputEventKey or not event.pressed or event.echo: return
+	if camera_binding_capture:
+		if event.keycode==KEY_ESCAPE:
+			camera_binding_capture=false; render()
+		elif not event.ctrl_pressed and not event.alt_pressed and not event.meta_pressed and display_settings.valid_camera_reset_key(int(event.keycode)):
+			display_settings.camera_reset_key=int(event.keycode); camera_binding_capture=false; apply_display_settings(false)
+		get_viewport().set_input_as_handled(); return
+	if not event.ctrl_pressed and not event.alt_pressed and not event.meta_pressed and event.keycode==display_settings.camera_reset_key:
+		if is_instance_valid(world_view) and world_view.camera_input_enabled:
+			world_view.reset_camera_view(); get_viewport().set_input_as_handled()
+
 func handle_ui(action: String, value: String = "") -> void:
+	if action=="camera_reset":
+		world_view.reset_camera_view(); return
 	if action=="event_target":
 		if session.phase()!="story": return
 		var target: Dictionary=session.Rules.find_cell(session.state,value)
@@ -120,7 +141,8 @@ func handle_command(command: String, args: Dictionary = {}) -> void:
 			ui_state.list_page = 0; ui_state.selected_id = ""; ui_state.category = ""
 			ui_state.craft_tab = "craft"; ui_state.transmute_target = "wood"; ui_state.transmute_uids = ""
 			ui_state.transmute_count = 1
-		if command == "new": setup_mode = ""; save_blocked = false; hand_layout.order.clear()
+		if command == "new":
+			setup_mode = ""; save_blocked = false; hand_layout.order.clear(); world_view.reset_camera_view()
 		if persistence and not save_blocked and not store.write(session.snapshot()): message = store.error
 	render()
 
@@ -136,6 +158,8 @@ func page(id: String, parent: Node, view: Dictionary) -> Control:
 	return result
 
 func render() -> void:
+	camera_binding_capture=false
+	world_view.set_camera_input_enabled(false)
 	if is_instance_valid(event_target_surface): event_target_surface.hide(); event_target_surface.queue_free()
 	var hand_visual := {}
 	if is_instance_valid(layout) and not reset_hand_visual:
@@ -148,6 +172,7 @@ func render() -> void:
 	view.ui_state = ui_state.duplicate(true)
 	view.hand_layout = hand_layout
 	view.ui_scale = display_settings.ui_scale
+	view.camera_help = display_settings.camera_help()
 	if view.has("hand"):
 		var arranged: Array=hand_layout.build(view.hand)
 		hand_layout.order.clear()
@@ -238,6 +263,7 @@ func render() -> void:
 	if view.screen=="game" and view.get("can_base",false) and panel_id=="":
 		var interaction=preload("res://presentation/raft_interaction.gd").new()
 		host.add_child(interaction); interaction.create(self)
+	world_view.set_camera_input_enabled(view.screen=="game" and panel_id=="" and report.is_empty())
 	_update_world_framing.call_deferred()
 
 func local_content(parent: Node, id: String, view: Dictionary) -> void:

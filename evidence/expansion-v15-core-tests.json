@@ -1,0 +1,146 @@
+[
+  {
+    "test": "expansion_discount",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nEXPANSION DISCOUNT: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "raft_interactions",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRAFT INTERACTIONS: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "action_query",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nACTION QUERY: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "agent_session",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nAGENT SESSION: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "save",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSAVE / RECOVERY: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "difficulty",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nDIFFICULTY: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "battle_salvage",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBATTLE SALVAGE: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "environment",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nENVIRONMENT: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "formal_shop",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nFORMAL SHOP: PASS (79 checks)\n",
+    "stderr": ""
+  },
+  {
+    "test": "economy_balance",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nECONOMY BALANCE: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "node_shop_integration",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nNODE SHOP INTEGRATION: PASS (87 checks, 0 failures)\n",
+    "stderr": ""
+  },
+  {
+    "test": "spring_supply",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSPRING SUPPLY: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "round_start_production",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCONTENT FINGERPRINT: b2dacf3be0452f1501f34a184e790a27dedb1d2a9544947b5cdc482f606c7ef9\nROUND START PRODUCTION: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "fuel_uid",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nFUEL UID: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "combat_integration",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCOMBAT INTEGRATION: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "mechanics",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nMECHANICS: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "node_redesign",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nNODE REDESIGN: PASS (0 failures)\n",
+    "stderr": ""
+  },
+  {
+    "test": "health_balance",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nHEALTH BALANCE: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "new_equipment",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nNEW EQUIPMENT: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "battle_actions",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBATTLE ACTIONS: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "auto_progress",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nAUTO PROGRESS: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "navigation_actions",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nNAVIGATION ACTIONS: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "settlement",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSETTLEMENT: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "story",
+    "exit": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSTORY ROUTE scholar/seal: phase=finished, day=15, actions=9, hp=12 SAN=100\nSTORY ROUTE scholar/tow: phase=finished, day=15, actions=9, hp=12 SAN=100\nSTORY ROUTE scholar/release: phase=finished, day=15, actions=9, hp=10 SAN=100\nSTORY ROUTE solo/continue: phase=finished, day=15, actions=9, hp=12 SAN=100\nSTORY: PASS (15站学者A/B/C、独航、夜间与存档)\n",
+    "stderr": ""
+  }
+]

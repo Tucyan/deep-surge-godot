@@ -57,7 +57,7 @@ func test_cards_balance() -> void:
 	
 	# Simulate 1 movement: drains 30 hunger, 30 hydration, 15 sanity
 	s.dispatch("voyage", {"id": s.state.candidates[0].visit_id})
-	check(s.state.player.hunger == 10 and s.state.player.hydration == 10, "Movement drains exactly 30 hunger and 30 thirst (40 -> 10)")
+	check(s.state.player.hunger == 40 and s.state.player.hydration == 40, "Movement defers food and water until voyage end")
 	check(s.state.player.sanity == 65, "Movement without burning lamp drains exactly 15 sanity (80 -> 65)")
 	
 	# Deprivation threshold: At 0 hunger or 0 hydration, player takes deprivation damage (1 each, capped at 2)
@@ -67,6 +67,7 @@ func test_cards_balance() -> void:
 	s.state.phase = "navigation"
 	s.Rules.candidates(s)
 	s.dispatch("voyage", {"id": s.state.candidates[0].visit_id})
+	s.state.phase="aftermath"; s.dispatch("end_voyage")
 	check(s.state.player.hp == hp_before - 2, "Double deprivation inflicts exactly 2 HP damage per voyage")
 	
 	# Spring supply rate: 1 wood + 3 random base cards
@@ -76,7 +77,7 @@ func test_cards_balance() -> void:
 	var wood_count = s.state.hand.filter(func(c): return c.id == "wood").size()
 	check(s.state.hand.size() == 4, "Spring grants exactly 4 cards per voyage")
 	check(wood_count >= 1 and wood_count <= 4, "Spring guarantees at least 1 wood, up to 4 wood")
-	print("  Cards Balance Insight: Starting hunger/hydration is 40. Without food/water, player reaches 0 on voyage 2 and takes deprivation damage on voyage 3!")
+	print("  Cards Balance Insight: Starting hunger/hydration is 40. Without food/water, player reaches 0 and takes deprivation damage at the end of voyage 2!")
 
 ## ------------------------------------------------------------------
 ## 2. 木筏建造、老化与维护平衡 (Raft Maintenance Equilibrium)

@@ -1,0 +1,389 @@
+{
+  "title": "深潮 自适应无缝边框（四分点修复）",
+  "version": "3.0",
+  "original_size": [
+    1672,
+    941
+  ],
+  "model": "continuous-rail + unscaled-overlays",
+  "quarter_points": [
+    "W/4",
+    "3*W/4"
+  ],
+  "minimum": [
+    1300,
+    830
+  ],
+  "corner_top_height": 405,
+  "corner_bottom_height": 124,
+  "fixed_side_sections": {
+    "top_corner": [
+      0,
+      405
+    ],
+    "ring": [
+      405,
+      474
+    ],
+    "moon": [
+      532,
+      662
+    ],
+    "diamond": [
+      710,
+      758
+    ],
+    "bottom_corner": [
+      817,
+      941
+    ]
+  },
+  "gap_source_lengths": [
+    58,
+    48,
+    59
+  ],
+  "important": "连续拉伸轨道铺在底层；全部16个fixed素材始终保持原始宽高，不要以拉伸线段直接相接",
+  "parts": [
+    {
+      "id": "top_continuous_rail",
+      "file": "assets/stretch/top_continuous_rail.png",
+      "type": "stretch",
+      "axis": "x",
+      "source_rect": [
+        530,
+        0,
+        660,
+        100
+      ],
+      "size": [
+        1,
+        100
+      ],
+      "usage": "顶部完整连续水平双线：只拉伸 X，不切断圆点前后的连接"
+    },
+    {
+      "id": "bottom_continuous_rail",
+      "file": "assets/stretch/bottom_continuous_rail.png",
+      "type": "stretch",
+      "axis": "x",
+      "source_rect": [
+        530,
+        817,
+        660,
+        941
+      ],
+      "size": [
+        1,
+        124
+      ],
+      "usage": "底部完整连续水平双线：只拉伸 X"
+    },
+    {
+      "id": "left_continuous_rail",
+      "file": "assets/stretch/left_continuous_rail.png",
+      "type": "stretch",
+      "axis": "y",
+      "source_rect": [
+        0,
+        485,
+        170,
+        512
+      ],
+      "size": [
+        170,
+        1
+      ],
+      "usage": "left边完整连续竖线：只拉伸 Y，装饰覆盖在轨道之上"
+    },
+    {
+      "id": "right_continuous_rail",
+      "file": "assets/stretch/right_continuous_rail.png",
+      "type": "stretch",
+      "axis": "y",
+      "source_rect": [
+        1502,
+        485,
+        1672,
+        512
+      ],
+      "size": [
+        170,
+        1
+      ],
+      "usage": "right边完整连续竖线：只拉伸 Y，装饰覆盖在轨道之上"
+    },
+    {
+      "id": "top_left_corner",
+      "file": "assets/fixed/top_left_corner.png",
+      "type": "fixed",
+      "axis": "none",
+      "source_rect": [
+        0,
+        0,
+        280,
+        405
+      ],
+      "size": [
+        280,
+        405
+      ],
+      "usage": "left上角：星徽、月相、侧面斜弧与星形全部固定"
+    },
+    {
+      "id": "bottom_left_corner",
+      "file": "assets/fixed/bottom_left_corner.png",
+      "type": "fixed",
+      "axis": "none",
+      "source_rect": [
+        0,
+        817,
+        280,
+        941
+      ],
+      "size": [
+        280,
+        124
+      ],
+      "usage": "left下角完整星徽和底部弧线，固定"
+    },
+    {
+      "id": "top_right_corner",
+      "file": "assets/fixed/top_right_corner.png",
+      "type": "fixed",
+      "axis": "none",
+      "source_rect": [
+        1392,
+        0,
+        1672,
+        405
+      ],
+      "size": [
+        280,
+        405
+      ],
+      "usage": "right上角：星徽、月相、侧面斜弧与星形全部固定"
+    },
+    {
+      "id": "bottom_right_corner",
+      "file": "assets/fixed/bottom_right_corner.png",
+      "type": "fixed",
+      "axis": "none",
+      "source_rect": [
+        1392,
+        817,
+        1672,
+        941
+      ],
+      "size": [
+        280,
+        124
+      ],
+      "usage": "right下角完整星徽和底部弧线，固定"
+    },
+    {
+      "id": "top_center_medallion",
+      "file": "assets/fixed/top_center_medallion.png",
+      "type": "fixed",
+      "axis": "none",
+      "source_rect": [
+        740,
+        0,
+        932,
+        550
+      ],
+      "size": [
+        192,
+        550
+      ],
+      "usage": "顶部中央星盘及垂饰（整块固定）"
+    },
+    {
+      "id": "bottom_center_medallion",
+      "file": "assets/fixed/bottom_center_medallion.png",
+      "type": "fixed",
+      "axis": "none",
+      "source_rect": [
+        740,
+        817,
+        932,
+        941
+      ],
+      "size": [
+        192,
+        124
+      ],
+      "usage": "底部中央星盘完整装饰（固定）"
+    },
+    {
+      "id": "top_left_quarter_dot",
+      "file": "assets/fixed/top_left_quarter_dot.png",
+      "type": "fixed",
+      "axis": "none",
+      "source_rect": [
+        397,
+        0,
+        473,
+        80
+      ],
+      "size": [
+        76,
+        80
+      ],
+      "usage": "top边left圆点：中心定位在目标宽度的25%, 固定76px宽"
+    },
+    {
+      "id": "top_right_quarter_dot",
+      "file": "assets/fixed/top_right_quarter_dot.png",
+      "type": "fixed",
+      "axis": "none",
+      "source_rect": [
+        1199,
+        0,
+        1275,
+        80
+      ],
+      "size": [
+        76,
+        80
+      ],
+      "usage": "top边right圆点：中心定位在目标宽度的75%, 固定76px宽"
+    },
+    {
+      "id": "bottom_left_quarter_dot",
+      "file": "assets/fixed/bottom_left_quarter_dot.png",
+      "type": "fixed",
+      "axis": "none",
+      "source_rect": [
+        397,
+        817,
+        473,
+        941
+      ],
+      "size": [
+        76,
+        124
+      ],
+      "usage": "bottom边left圆点：中心定位在目标宽度的25%, 固定76px宽"
+    },
+    {
+      "id": "bottom_right_quarter_dot",
+      "file": "assets/fixed/bottom_right_quarter_dot.png",
+      "type": "fixed",
+      "axis": "none",
+      "source_rect": [
+        1199,
+        817,
+        1275,
+        941
+      ],
+      "size": [
+        76,
+        124
+      ],
+      "usage": "bottom边right圆点：中心定位在目标宽度的75%, 固定76px宽"
+    },
+    {
+      "id": "left_ring",
+      "file": "assets/fixed/left_ring.png",
+      "type": "fixed",
+      "axis": "none",
+      "source_rect": [
+        0,
+        405,
+        170,
+        474
+      ],
+      "size": [
+        170,
+        69
+      ],
+      "usage": "left侧第一圆环装饰（固定大小）"
+    },
+    {
+      "id": "left_moon",
+      "file": "assets/fixed/left_moon.png",
+      "type": "fixed",
+      "axis": "none",
+      "source_rect": [
+        0,
+        532,
+        170,
+        662
+      ],
+      "size": [
+        170,
+        130
+      ],
+      "usage": "left侧中部月相及小圆环（固定大小）"
+    },
+    {
+      "id": "left_diamond",
+      "file": "assets/fixed/left_diamond.png",
+      "type": "fixed",
+      "axis": "none",
+      "source_rect": [
+        0,
+        710,
+        170,
+        758
+      ],
+      "size": [
+        170,
+        48
+      ],
+      "usage": "left侧下部菱形星饰（固定大小）"
+    },
+    {
+      "id": "right_ring",
+      "file": "assets/fixed/right_ring.png",
+      "type": "fixed",
+      "axis": "none",
+      "source_rect": [
+        1502,
+        405,
+        1672,
+        474
+      ],
+      "size": [
+        170,
+        69
+      ],
+      "usage": "right侧第一圆环装饰（固定大小）"
+    },
+    {
+      "id": "right_moon",
+      "file": "assets/fixed/right_moon.png",
+      "type": "fixed",
+      "axis": "none",
+      "source_rect": [
+        1502,
+        532,
+        1672,
+        662
+      ],
+      "size": [
+        170,
+        130
+      ],
+      "usage": "right侧中部月相及小圆环（固定大小）"
+    },
+    {
+      "id": "right_diamond",
+      "file": "assets/fixed/right_diamond.png",
+      "type": "fixed",
+      "axis": "none",
+      "source_rect": [
+        1502,
+        710,
+        1672,
+        758
+      ],
+      "size": [
+        170,
+        48
+      ],
+      "usage": "right侧下部菱形星饰（固定大小）"
+    }
+  ]
+}

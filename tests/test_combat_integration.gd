@@ -35,7 +35,7 @@ func _init() -> void:
 		s.state.phase="aftermath"; check(s.dispatch("end_voyage"),"settle disabled generator")
 		check(not eq.boost_cards.any(func(c):return c.uid==overflow_uid) and eq.boost_cards.size()==1,"disabled generator still expires overflow and preserves permanent card")
 	# Demo development explicitly rejects old content instead of migrating it.
-	s=fresh(); s.state.candidates=[catalog.entry("nodes","ruin")]; s.state.candidates[0].visit_id="current-ruin"
+	s=fresh(); s.state.candidates=[catalog.entry("nodes","ruin")]; s.state.candidates[0].visit_id="current-ruin"; s.EnvironmentRules.prepare_navigation(s)
 	var old: Dictionary=s.snapshot(); old.content_version="godot-flow-v02-4"; old.fingerprint=catalog.prior_flow_fingerprint()
 	old.state.candidates[0].erase("difficulty")
 	var reloaded=Session.new(catalog)

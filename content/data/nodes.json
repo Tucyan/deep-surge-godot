@@ -834,7 +834,7 @@
     "id": "fogGuide",
     "name": "漂流灯塔",
     "kind": "environment",
-    "description": "守灯人送出少量木料，或陪你在雾中静坐一会。",
+    "description": "守灯人提供备用木料与休整，也可借完好燃灯为下一航次导引。",
     "event": "lighthouse-service",
     "category": "service",
     "min_voyage": 3,
@@ -863,6 +863,21 @@
             "type": "ChangeCurrent",
             "stat": "sanity",
             "delta": 10
+          }
+        ],
+        "cost": 0
+      },
+      {
+        "id": "navigation",
+        "name": "请求航向导引",
+        "description": "需要完好且有燃料的灯；下一航次揭示全部候选，偏航率减少15个百分点。",
+        "conditions": {
+          "equipment": "lamp",
+          "fuel": true
+        },
+        "effects": [
+          {
+            "type": "GuideNavigation"
           }
         ],
         "cost": 0

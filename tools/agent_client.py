@@ -138,7 +138,7 @@ def choose_action(observation, actions):
         if action:
             return action
     if phase == "navigation":
-        camp = next((n["visit_id"] for n in observation["candidates"] if n["id"] == "camp"), None)
+        camp = next((n["visit_id"] for n in observation["candidates"] if n.get("id") == "camp"), None)
         return first("voyage", lambda a: a["args"]["id"] == camp) or first("voyage")
     if phase == "story":
         action = first("advance")
@@ -163,8 +163,8 @@ def choose_action(observation, actions):
     return None
 
 
-def play(game, seed=22, mode="challenge", max_steps=600):
-    observation = data(game.request("reset", {"seed": seed, "mode": mode}))["observation"]
+def play(game, seed=22, mode="challenge", max_steps=600, difficulty="standard"):
+    observation = data(game.request("reset", {"seed": seed, "mode": mode, "difficulty": difficulty}))["observation"]
     for step in range(max_steps):
         if observation["terminal"]:
             result = data(game.request("result"))
@@ -183,12 +183,13 @@ def main():
     parser.add_argument("--play", action="store_true")
     parser.add_argument("--seed", type=int, default=22)
     parser.add_argument("--mode", choices=("challenge", "story"), default="challenge")
+    parser.add_argument("--difficulty", choices=("standard", "hard", "nightmare"), default="standard")
     parser.add_argument("--max-steps", type=int, default=600)
     parser.add_argument("--trace", type=Path)
     args = parser.parse_args()
     with AgentClient(godot=args.godot) as game:
         if args.play:
-            result = play(game, args.seed, args.mode, args.max_steps)
+            result = play(game, args.seed, args.mode, args.max_steps, args.difficulty)
             if args.trace:
                 args.trace.write_text(json.dumps(data(game.request("trace")), ensure_ascii=False), encoding="utf-8")
             print(json.dumps(result, ensure_ascii=False))

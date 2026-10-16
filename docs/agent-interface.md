@@ -54,7 +54,7 @@ Godot_v4.7.2-stable_win64_console.exe --headless --path . --script res://tools/a
 
 | 方法 | 参数与返回 |
 |---|---|
-| reset | 必填seed（0～4294967295整数），可选mode（challenge/story）、origin（默认strong）、starting_resources；新建空局外成长档的独立会话，返回observation；失败保留原会话。 |
+| reset | 必填seed（0～4294967295整数），可选mode（challenge/story）、origin（默认strong）、starting_resources、difficulty（standard/hard/nightmare，默认standard）；新建空局外成长档的独立会话，返回observation；失败保留原会话。 |
 | observe | 玩家视图与revision、terminal；查询不推进规则或随机。 |
 | actions | 当前revision与actions，每项有action_id、command、args、allowed、effective、reason、revision，可选parameters；只列合法操作。 |
 | act | 当前action_id、revision，可选arguments；通过同一个GameSession.dispatch执行，返回observation、本次及自动推进已产生的统计events、terminal。 |
@@ -108,7 +108,7 @@ Agent actions┘
 | tools/agent_stdio.gd | stdin/stdout JSONL分帧及退出，不包含玩法判断。 |
 | tools/agent_client.py | Python进程生命周期、超时和协议过滤；示例策略独立于通信。 |
 
-本次保持schema 2存档和现有UI信号；内容版本为 `godot-flow-v02-11`。节点事件选项、目标筏格与风险预览由核心投影，商店买卖也通过真实命令进入操作查询；不全面拆分面板状态，不安装MCP。screen/panel仍在既有GameSession中，Agent观察不暴露它们。
+本次保持schema 2存档和现有UI信号；内容版本为 `godot-flow-v02-13`。节点事件选项、目标筏格与风险预览由核心投影，商店买卖也通过真实命令进入操作查询；不全面拆分面板状态，不安装MCP。screen/panel仍在既有GameSession中，Agent观察不暴露它们。
 
 新增沿用现有效果/类型的卡牌、配方、节点，从目录和核心候选自动纳入，不修改JSONL/Python通信。新交互机制需扩展ActionQuery候选与核心命令；新效果需扩展规则。新参数选择方式扩展核心参数schema与测试，Agent适配层不按卡牌ID分支。
 
@@ -141,3 +141,31 @@ Godot_v4.7.2-stable_win64_console.exe --path . --script res://tests/test_craft_g
 ## v11经济契约
 
 商店stock每种资源的purchased仍表示单项限购，所有基础资源共享其购买数之和决定的2^N原价。折扣后报价与尸体支付需求由核心返回；成功买入任一资源后应刷新全部stock。尸体sellable.price=2，其余可售牌=1，五种基础材料不出现在sellable和合法sell操作中。UI与Agent不得自行结算金额。木头fuel动作提供2单位灯燃料，尸体3；查看、取消、失败和恢复不改价格阶梯与随机。内容v10及更旧保存/轨迹明确拒绝；schema与JSONL协议不变。
+
+## v12 环境接口
+
+观察新增 `environments`（id/name/description/negative/remaining/pending/pending_refresh）与 `navigation`（wrong_direction_chance/heading_locked/guided/last_movement）。候选新增visibility；被迷雾隐藏时可能没有id、monster、options等字段，策略须兼容，仅visit_id可用于选择。完整剧情候选仍不暴露脚本。合法动作新增 `scout {id:visit_id}` 与 `fix_heading {}`；候选已公开、SAN不足或没有偏航风险时不会列为合法操作。战斗投影新增 `battle.enemy_direct_damage`，含血月与当前减伤。状态与动作契约见[环境规则](environment-buffs.md)。
+
+当前内容v13拒绝v12及更旧存档与轨迹；六条随机流中新增environment/movement，均随快照恢复。查询、悬停、查看、取消和恢复不重新抽取环境或遮蔽。示例Agent通过get读取可能隐藏的节点ID。
+
+## v13 难度接口
+
+`reset`新增可选`difficulty`，只接受`standard`、`hard`、`nightmare`字符串；省略使用标准档，非法值保持原会话。起手自选上限分别5/4/3，每类仍最多2张；全随机数量分别7/6/5。观察包含`difficulty`，敌方生命和伤害为取整后的实际值；不暴露内部环境概率或强化比例。`--difficulty hard`可传给Python客户端，剧情与挑战均适用。快照携带难度且恢复时校验，本版本拒绝旧轨迹。详见[难度规则](difficulty.md)。
+
+## v14 战斗补给接口
+
+现有命令 `salvage {}`：打捞每次消耗1AP，固定保底获得1张永久随机基础资源卡；每台完好已安装捕捞网按1/2/3级额外提供1/2/3张，各张独立使用rewards随机流抽取。导航/准备/收尾消耗基地AP，战斗消耗战斗AP。没有网、网破损或脱落时仍可领取保底，不计该网额外收益。航行轮初保留每台完好网自动产1张（各级同量）；开战及战斗回合开始不自动产牌。生产增压由该网下一次航行自动生产或主动打捞消耗，额外产1张；主动打捞不推进航行生产进度。 AP不足原子拒绝；查询/预览使用隔离副本，保存恢复不产牌、不重掷。末点AP沿用自动推进规则，观察通过hand/cells和统计反映。内容版本 `godot-flow-v02-19`，schema2及JSONL协议不变，v18及更旧保存/轨迹明确拒绝。
+
+## v15 扩建费用接口
+
+观察新增`expansion_count`（本局成功扩建/重建次数）与`expansion_cost`（当前材料费用，如`{"wood":1}`）。`expand {x,y}`不变，前3次1木头，之后2木头，AP均1；操作目录按当前费用筛选。失败/查询/取消不增加次数，脱落不返还；同版本恢复保留次数，缺失或非法计数拒绝。内容版本`godot-flow-v02-15`，schema2/随机算法/JSONL协议不变，v14及更旧保存和轨迹拒绝。重放候选参数比较通过JSON规范化解决整数坐标往返后变浮点数的问题；仍校验合法操作与每步状态hash。
+
+## v16木筏坐标
+
+四个初始cell-0..3改为螺旋编号3/4/5/6，坐标(2,2)/(1,2)/(0,2)/(0,1)，1/2装饰位(1,1)/(2,1)不可占用。默认3×3/解锁4×4边界不变，`expand {x,y}`及费用不变，操作目录按螺旋顺序枚举所有合法邻接位置；3D只提示下一个缺口。视角控制和锁定属于本地表现，不新增Agent规则动作或暴露随机。内容版本`godot-flow-v02-16`明确拒绝v15及更旧保存/轨迹；当前恢复校验spiral-v1布局、边界和装饰保留位，不做坐标迁移。
+
+## v17 航末生存结算
+
+`voyage`只结算精神与灯燃料，出发锁定`flags.voyage_survival_cost`（20/25/30）并消费旧avoidWave。`end_voyage`先扣食水、再判定饥渴生命损失；致死立即终局。剧情5～14站在进入夜间前结算，`finish_night`不重复。自动推进仍通过dispatch调用相同指令。战斗和事件伤害时机不变。
+
+观察新增`survival_settlement: {pending: bool, food_water_cost: int}`，费用为本航次食水各自待扣值，无待结算时为0；不公开随机或未来内容。费用随快照保存，非法费用/阶段组合拒绝；查询在副本上结算，不改变活动局。内容版本`godot-flow-v02-17`拒绝v16及更旧保存与轨迹，不迁移。

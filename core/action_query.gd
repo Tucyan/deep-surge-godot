@@ -105,10 +105,10 @@ static func base_candidates(ctx) -> Array:
 					if id!="ready": add(items,"claim_boost",{"cell":cell.id,"id":id})
 			elif boost.id=="production":
 				for target in s.cells: add(items,"boost_device",{"cell":target.id,"buff_uid":boost.uid})
-	if s.ap>=ctx.Rules.EXPANSION_AP and ctx.I.count(s,"wood")>=int(ctx.Rules.EXPANSION_COST.wood):
+	if s.ap>=ctx.Rules.EXPANSION_AP and ctx.I.count(s,"wood")>=int(ctx.Rules.expansion_cost(s).wood):
 		var side: int=4 if int(ctx.profile.purchases.get("raft",0))>0 else 3
-		for x in range(side):
-			for y in range(side): add(items,"expand",{"x":x,"y":y})
+		for point in ctx.Rules.Layout.positions(side):
+			if not ctx.Rules.Layout.is_root(point.x,point.y): add(items,"expand",{"x":point.x,"y":point.y})
 	if s.ap>0:
 		add(items,"salvage")
 		var inputs: Array=[]
@@ -121,6 +121,7 @@ static func base_candidates(ctx) -> Array:
 
 static func battle_candidates(ctx) -> Array:
 	var items: Array=[]
+	add(items,"salvage")
 	var boosts: Array=[{}]
 	for cell in ctx.state.cells:
 		if cell.status=="intact": boosts.append_array(cell.equipment.get("boost_cards",[]))
@@ -149,7 +150,10 @@ static func candidates(ctx) -> Array:
 	items=base_candidates(ctx)
 	match ctx.phase():
 		"navigation":
-			for node in ctx.state.candidates: add(items,"voyage",{"id":node.visit_id})
+			for node in ctx.state.candidates:
+				add(items,"voyage",{"id":node.visit_id})
+				add(items,"scout",{"id":node.visit_id})
+			add(items,"fix_heading")
 		"preparation": add(items,"enter")
 		"aftermath": add(items,"end_voyage")
 		"battle": items.append_array(battle_candidates(ctx))

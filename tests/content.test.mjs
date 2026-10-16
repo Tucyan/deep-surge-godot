@@ -60,7 +60,7 @@ test('v10整合旧节点身份，普通战斗与遗迹数值契约保持不变',
 
 test('v10节点选项效果、敌人和卡牌引用完整，不再保留未开放机制', () => {
   const nodes=read('nodes'), cards=read('cards'), enemies=read('enemies'), equipment=read('equipment');
-  const types=new Set(['GiveCard','ChangeCurrent','SetFlag','AddBuff','GiveRandomResource','ChangeAP','RepairCell','DamageTargetCell']);
+  const types=new Set(['GiveCard','ChangeCurrent','SetFlag','AddBuff','GiveRandomResource','ChangeAP','RepairCell','DamageTargetCell','GuideNavigation']);
   const inspect = option => {
     assert.equal(typeof option.id,'string'); assert.equal(typeof option.name,'string'); assert.equal(typeof option.description,'string');
     assert.ok(Number.isInteger(option.cost) && option.cost>=0);
@@ -77,7 +77,7 @@ test('v10节点选项效果、敌人和卡牌引用完整，不再保留未开�
     for(const effect of effects) {
       assert.ok(types.has(effect.type),effect.type);
       if(effect.type==='GiveCard') assert.ok(cards[effect.id],effect.id);
-      if(effect.type==='AddBuff') assert.equal(effect.id,'rested');
+      if(effect.type==='AddBuff') assert.ok(effect.id==='rested'||read('environments')[effect.id]);
     }
     for(const outcome of option.outcomes ?? []) assert.ok(Number.isInteger(outcome.weight) && outcome.weight>0);
   };

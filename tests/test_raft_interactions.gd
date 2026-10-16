@@ -24,8 +24,8 @@ func _init() -> void:
 	policy.refresh(session); before=session.snapshot()
 	var ghosts: Array=policy.expansions()
 	check(ghosts.size()==1,"Full raft offers exactly one next adjacent expansion ghost")
-	check(not ghosts.any(func(c):return c.y==0 and c.x in [0,1]),"Decorative roots never become targets")
-	check(ghosts[0].allowed and ghosts[0].cost=={"wood":2} and ghosts[0].ap==1,"Expansion quotes real wood/AP cost")
+	check(not ghosts.any(func(c):return c.y==1 and c.x in [1,2]),"Decorative roots never become targets")
+	check(ghosts[0].allowed and ghosts[0].cost=={"wood":1} and ghosts[0].ap==1,"Expansion quotes discounted wood/AP cost")
 	check(session.snapshot()==before,"Expansion preview/confirmation does not spend resources")
 	var command: Dictionary=ghosts[0]
 	check(session.dispatch("expand",command.args),"Confirmed expansion uses existing rule command")

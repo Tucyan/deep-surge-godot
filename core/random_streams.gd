@@ -1,6 +1,6 @@
 extends RefCounted
 ## All arithmetic masked to uint32. Seed zero is legal; each stream has a salt.
-const SALTS := {"initial":0x9e3779b9, "nodes":0x85ebca6b, "rewards":0xc2b2ae35, "battle":0x27d4eb2f}
+const SALTS := {"initial":0x9e3779b9, "nodes":0x85ebca6b, "rewards":0xc2b2ae35, "battle":0x27d4eb2f, "environment":0x165667b1, "movement":0xd3a2646c}
 static func create(seed: int) -> Dictionary:
 	var result := {}
 	for id in SALTS:

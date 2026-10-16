@@ -76,7 +76,7 @@ func run() -> void:
 		check(confirm!=null and not confirm.disabled,"Confirmation offers affordable construction")
 		if confirm!=null: await click(confirm.get_global_rect().get_center())
 		check(app.session.state.cells.size()==before.state.cells.size()+1,"Second click constructs one real cell")
-		check(app.session.I.count(app.session.state,"wood")==app.session.I.count(before.state,"wood")-2 and app.session.state.ap==before.state.ap-1,"Confirmed construction spends wood2/AP1 once")
+		check(app.session.I.count(app.session.state,"wood")==app.session.I.count(before.state,"wood")-1 and app.session.state.ap==before.state.ap-1,"Confirmed first construction spends wood1/AP1 once")
 		for c in app.session.state.cells: c.equipment={"id":"filter","level":1,"fuel":0,"progress":0}
 		app.session.state.hand=app.session.state.hand.filter(func(c):return c.id!="wood"); app.render(); await settle()
 		await capture("red-expansion-%d" % roundi(scale_value*100))

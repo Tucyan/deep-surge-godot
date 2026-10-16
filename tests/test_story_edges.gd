@@ -12,7 +12,7 @@ func _init() -> void:
 	s.dispatch("new",{"mode":"story","origin":"strong","seed":22})
 	# Isolated service fixture; complete 15-station routes are in test_story.gd.
 	var f: Dictionary = s.snapshot()
-	f.state.phase = "nightHub"; f.state.voyage = 6; f.state.ap = 0; f.state.completed = 6
+	f.state.phase = "nightHub"; f.state.environment.rolled_voyage = 6; f.state.voyage = 6; f.state.ap = 0; f.state.completed = 6
 	f.state.node = c.entry("nodes","camp"); f.state.node.visit_id = "service-test-fixture"
 	f.state.campaign.route = "scholar"; f.state.campaign.day_closed = 5
 	f.state.campaign.quests["QUEST.L1.ANOMALOUS_CABIN"] = {"status":"active","claimed":false}
@@ -43,7 +43,7 @@ func _init() -> void:
 	check(s.state.voyage == 7 and s.phase() == "navigation","夜间结束后仅推进一次航行")
 	reject(s,"finish_night")
 	# Final emergency fixture: no resources and 1HP must still have an affordable exit.
-	f = s.snapshot(); f.state.voyage = 15; f.state.completed = 14; f.state.phase = "preparation"; f.state.ap = 3
+	f = s.snapshot(); f.state.voyage = 15; f.state.environment.rolled_voyage = 15; f.state.completed = 14; f.state.phase = "preparation"; f.state.ap = 3
 	f.state.candidates = []; f.state.node = c.entry("story_nodes","ST.L1.F15"); f.state.node.visit_id = "emergency-test-fixture"
 	f.state.hand = []; f.state.coins = 0; f.state.player.hp = 1
 	check(s.restore(f),"危机夹具载入")
@@ -54,11 +54,11 @@ func _init() -> void:
 	check(s.dispatch("advance") and s.state.campaign.runtime.id == "ST.L1.EP15","结果后必须读尾声")
 	check(s.dispatch("skip") and s.dispatch("option",{"id":"continue"}) and s.dispatch("advance"),"尾声必须明确完成")
 	check(s.dispatch("end_voyage") and s.phase() == "chapterComplete" and s.profile.points == 0,"先收尾再停章，不发整局点数")
-	# Movement can kill; reaching a tutorial never resurrects the run.
+	# Survival settles at day end; tutorial supplies can be used before then.
 	var dead = load("res://core/game_session.gd").new(c); dead.dispatch("new",{"mode":"story","origin":"strong","seed":22})
 	f = dead.snapshot(); f.state.player.hp = 1; f.state.player.hunger = 0; f.state.player.hydration = 0
 	check(dead.restore(f),"移动濒死夹具")
-	check(dead.dispatch("voyage",{"id":dead.state.candidates[0].visit_id}) and dead.phase() == "finished","移动死亡先于教学补给")
-	check(dead.state.player.hp == 0 and dead.I.count(dead.state,"food") == 0,"教学不复活也不发死后物资")
-	print("STORY EDGES: %s (委托仅一次、夜间原子操作、危机零资源出口、移动死亡)" % ("PASS" if failures == 0 else "FAIL"))
+	check(dead.dispatch("voyage",{"id":dead.state.candidates[0].visit_id}) and dead.phase() == "preparation","移动不再结算饥渴扣血")
+	check(dead.state.player.hp == 1 and dead.I.count(dead.state,"food") == 3,"活着到站并领取补给，结束航行前可使用")
+	print("STORY EDGES: %s (委托仅一次、夜间原子操作、危机零资源出口、航末生存结算)" % ("PASS" if failures == 0 else "FAIL"))
 	quit(0 if failures == 0 else 1)

@@ -165,7 +165,9 @@ static func reason(ctx, option: Dictionary, args: Dictionary = {}) -> String:
 	var effects: Array=option.get("effects",[]).duplicate(true)
 	for outcome in option.get("outcomes",[]): effects.append_array(outcome.get("effects",[]))
 	for effect in effects:
-		if effect.type=="AddBuff" and effect.id!="rested": return "此环境效果尚未开放"
+		if effect.type=="AddBuff" and effect.id!="rested":
+			var probe=ctx.get_script().new(ctx.catalog); probe.state=ctx.state.duplicate(true)
+			if not ctx.EnvironmentRules.add(probe,effect.id): return probe.error
 	return ""
 
 static func apply(ctx, effects: Array, args: Dictionary, summary: Array) -> bool:
@@ -188,7 +190,8 @@ static func apply(ctx, effects: Array, args: Dictionary, summary: Array) -> bool
 				if effect.type=="GiveCard": summary.append("获得%s%d" % [ctx.catalog.entry("cards",effect.id).name,int(effect.get("amount",1))])
 				if effect.type=="ChangeCurrent": summary.append("%s%+d" % [{"hp":"生命","hunger":"饱食","hydration":"水分","sanity":"SAN"}.get(effect.stat,effect.stat),int(effect.delta)])
 				if effect.type=="SetFlag" and effect.key=="avoidWave": summary.append("下一次移动食水各少扣5")
-				if effect.type=="AddBuff": summary.append("后续两轮基地AP上限+1")
+				if effect.type=="AddBuff": summary.append("后续两轮基地AP上限+1" if effect.id=="rested" else "下一航次生效："+ctx.catalog.entry("environments",effect.id).name)
+				if effect.type=="GuideNavigation": summary.append("下一航次获得灯塔导引")
 		if not ctx.active(): return true
 	return true
 
@@ -260,7 +263,10 @@ static func reward_preview(option: Dictionary) -> Dictionary:
 			"ChangeAP": result.ap+=int(effect.delta)
 			"GiveRandomResource": result.random_resources+=int(effect.get("amount",1))
 			"RepairCell": result.repair=true
-			"AddBuff": result.rested=true
+			"AddBuff":
+				if effect.id=="rested": result.rested=true
+				else: result["environment"]=effect.id
+			"GuideNavigation": result.guidance=true
 	return result
 
 static func project(ctx, view: Dictionary) -> void:
