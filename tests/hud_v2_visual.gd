@@ -55,11 +55,13 @@ func run():
 	root.push_input(mouse,true); mouse=mouse.duplicate(); mouse.pressed=false; root.push_input(mouse,true); await settle()
 	check(app.session.snapshot()==disabled_snapshot,"disabled choice cannot dispatch")
 	disabled_button.disabled=false; disabled_button.pressed.emit(); await settle()
+	check(app.session.snapshot()==disabled_snapshot and disabled_button.text=="确认","first click preselects without dispatch")
+	disabled_button.pressed.emit(); await settle()
 	check(app.session.snapshot()!=disabled_snapshot and app.message=="","native choice dispatches actual option ID")
 	check(app.find_children("*","ScrollContainer",true,false).is_empty(),"no scroll containers")
 	p=panel()
 	# Read-only seven-choice fixture uses the current native event page, not the retired addon API.
-	var native_page=p.get_parent()
+	var native_page=app.layout.find_child("NodeEventBody",true,false)
 	for child in p.get_children(): child.queue_free()
 	await settle()
 	for title in ["迎战","离开遭遇","编网打捞木料","换取食物与淡水","检查受损设备","修补外围筏格","继续航行"]:

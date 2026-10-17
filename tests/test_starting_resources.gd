@@ -20,8 +20,9 @@ func run():
 		check(s.snapshot()==before,"invalid selection rolls back")
 	var app=load("res://scenes/main.tscn").instantiate(); app.persistence=false; root.size=Vector2i(1600,900); root.add_child(app); await process_frame
 	app.handle_ui("setup","challenge"); await process_frame
+	app.current_page.chosen_difficulty="standard"; app.current_page.rebuild(); await process_frame
 	var before: Dictionary=app.session.snapshot()
-	button(app,"开始航程").pressed.emit(); await process_frame; await process_frame
+	button(app,"选择起手资源").pressed.emit(); await process_frame; await process_frame
 	check(button(app,"随心所欲")!=null and app.session.snapshot()==before,"start enters picker without starting run")
 	var page=app.current_page
 	page.change_resource("wood",1); page.change_resource("wood",1); page.change_resource("wood",1)
@@ -37,7 +38,8 @@ func run():
 	button(app,"正式开始").pressed.emit(); await process_frame
 	check(app.session.phase()=="navigation" and app.session.state.hand.size()==5,"confirm chosen hand starts navigation")
 	app.handle_command("abandon"); app.handle_command("home"); app.handle_ui("setup","challenge"); await process_frame
-	button(app,"开始航程").pressed.emit(); await process_frame
+	app.current_page.chosen_difficulty="standard"; app.current_page.rebuild(); await process_frame
+	button(app,"选择起手资源").pressed.emit(); await process_frame
 	button(app,"随心所欲").pressed.emit(); await process_frame
 	check(app.session.phase()=="navigation" and app.session.state.hand.size()==7,"zero-choice UI starts with seven random resources")
 	app.queue_free(); await process_frame

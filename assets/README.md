@@ -1,5 +1,7 @@
 # 素材登记
 
+2026-10-18 全屏局外商店与两层科技：新增 `ui.meta-shop`、`rules.tech-tree`、`data.tech-tree`，复用已登记卡图；遗产与优惠券新增项目原创SVG `icon.meta.inheritance` / `icon.meta.coupon`，无下载依赖。同步图鉴共享预览卡片和全屏路由hash。详见[机制](../docs/meta-shop-and-tech.md)与[验证](../evidence/meta-shop-tech-v22-verification.md)。
+
 2026-10-17 全屏图鉴：新增 `ui.encyclopedia`，复用已有卡图、怪物图、藏品图和 `ui.card.back`；无新增外部图片。`ui.modal-layout` 同步全屏路由 hash，详见[验证记录](../evidence/encyclopedia-verification.md)。
 
 2026-10-17 新增 `ui.story-gallery`、`data.story-gallery-archive`，卡片封面复用开局分镜，未新增图片。同步序章只读回顾参数、App 根节点兼容启动层和回廊路由的 hash/依赖，详见 [剧情回廊](../docs/story-gallery.md)。
@@ -257,3 +259,5 @@ HUD 控件统一位于 `presentation/hud/`，五张 HUD 图片位于 `assets/ui/
 ### 2026-10-17 首页背景替换（带边框视频）
 
 当前首页使用用户提供的 `深潮_月下灯塔与远航帆船_去水印_2x超分2K_带边框.mp4`，运行资源为 `assets/title_ui/lighthouse_loop.ogv`（2560×1440、16:9、约5.09秒、Theora q7、静音循环）及同源首帧。完整画面等比居中，未覆盖区域纯黑，不裁剪画面。视频已含边框及Logo，移除独立 `TitleFrame`、透明Logo与圆形挡板实例，避免重复叠加；六个菜单按钮与设置入口保留。旧边框和Logo文件仅保留作历史资产。稳定AssetId沿用，来源、版本、依赖、映射和SHA-256由 `tools/register_title_v3.py` 更新。
+
+2026-10-18 发布前登记核对：同步18个现有脚本/数据资产绑定的实际SHA-256与版本（含剧情/事件页、教程初始选牌、手牌保护、航行HUD、设置、难度与入口）。保留稳定AssetId及既有来源、依赖与运行映射；没有替换外部美术。文件级完整性由 tools/check_supplied_assets.py 再次核验。

@@ -28,8 +28,8 @@
     "ui.settlement": {
       "path": "res://pages/settlement_page.gd",
       "source": "project-authored/native-Godot-settlement-v1",
-      "version": 6,
-      "sha256": "c16849988891cf1372ecb1997fcfba33e337998d5b561efbb23cb3c476636bec",
+      "version": 7,
+      "sha256": "6edf0eda7b3485b7808bbafed2a7f1980bb86c8bd27a3489b4ff0df5127da09e",
       "dependencies": [
         "res://pages/flow_base.gd",
         "res://presentation/widgets.gd"
@@ -43,7 +43,7 @@
         "initial_end_delay_seconds": 2
       },
       "license": "project-authored procedural UI; no external artwork",
-      "source_hash_verified_on": "2026-10-17"
+      "source_hash_verified_on": "2026-10-18"
     },
     "card.wood": {
       "path": "res://assets/images/supplied-20261012/asset-09.png",
@@ -1234,8 +1234,8 @@
     "ui.hand.fan": {
       "path": "res://presentation/hand_fan.gd",
       "source": "presentation/hand_fan.gd",
-      "version": 22,
-      "sha256": "4217beb80b3c52a2befb3b6b5fbefa917c2d95d3b5f16cf2bc96af54a11bd5cd",
+      "version": 23,
+      "sha256": "8f67e8128e0eec7f378f8202905651f3ce2b81309440204b8f01625541ee3df1",
       "dependencies": [
         "ui.hand.border",
         "ui.item-card",
@@ -1243,7 +1243,7 @@
         "ui.hand.stack-backplate"
       ],
       "license": "project-authored shader and deterministic procedural ornament; no external artwork",
-      "source_hash_verified_on": "2026-10-17",
+      "source_hash_verified_on": "2026-10-18",
       "runtime_mapping": "card height 97 percent of body excluding fixed-height header; hover and selected raise preserve sibling draw order; hover clearance uses visible frame width excluding transparent margins and shadow, threshold 5 percent; no battle-selection requirement or experimental rear layers"
     },
     "model.raft-state": {
@@ -1486,8 +1486,8 @@
     },
     "ui.hud.voyage-adapter": {
       "path": "res://pages/voyage_hud.gd",
-      "version": 23,
-      "sha256": "ec8fff1808cdb5d5f08aab502be0d189c0a86a3f44b8300cf7ced1c583591df4",
+      "version": 24,
+      "sha256": "2ce578e0dafb8390f755fededad868e0c7c072379dd28574d524065c7860b196",
       "source": [
         "asset-sources/hud-visual-v2/deep_surge_hud_godot4_v2_visual_match.zip",
         "pages/voyage_hud.gd"
@@ -1506,13 +1506,13 @@
       "license": "user-supplied HUD package; no explicit upstream license supplied, project adaptations",
       "visual_random": "none",
       "role": "read-only environment names and native hover tooltips; no top decoration plates; navigation dispatch buttons",
-      "source_hash_verified_on": "2026-10-17",
+      "source_hash_verified_on": "2026-10-18",
       "runtime_mapping": "unified navigation header; environment strip below heading; parchment hand tray; adaptive operation panel; independent long/round native buttons"
     },
     "ui.hud.story-adapter": {
       "path": "res://pages/flow_story.gd",
-      "version": 3,
-      "sha256": "a39677dde3c6bc0a52e40375879086ec0aa604730f698dfc96ce92457133c243",
+      "version": 4,
+      "sha256": "57317656e83e494127e50041874ca981699938dea4c0506814aa47e1678dcf95",
       "source": [
         "asset-sources/hud-visual-v2/deep_surge_hud_godot4_v2_visual_match.zip",
         "pages/flow_story.gd"
@@ -1524,7 +1524,7 @@
       "license": "user-supplied HUD package; no explicit upstream license supplied, project adaptations",
       "visual_random": "none",
       "role": "presentation-only; draws current read-only session view; native choices dispatch existing commands",
-      "source_hash_verified_on": "2026-10-16"
+      "source_hash_verified_on": "2026-10-18"
     },
     "texture.hud.status-art": {
       "path": "res://assets/ui/hud/status_art.png",
@@ -1858,8 +1858,8 @@
     "ui.title.menu": {
       "path": "res://presentation/title_menu.gd",
       "source": "presentation/title_menu.gd",
-      "version": 8,
-      "sha256": "6c3d51288470fa7c0c48f9feb53d33c5ed14e93a7e3454491d8d7a38d428b0c6",
+      "version": 9,
+      "sha256": "e4af5bbaf0593ad0a9795512e92de1a4b4cc7b1a60efd2052c7b35adef2c64de",
       "dependencies": [
         "texture.title.01-start-game-dark",
         "texture.title.01-start-game-light",
@@ -1908,18 +1908,20 @@
         "fit": "contain, centered",
         "uncovered_color": "#000000",
         "separate_frame": false
-      }
+      },
+      "source_hash_verified_on": "2026-10-18"
     },
     "ui.title.home": {
       "path": "res://pages/flow_home.gd",
       "source": "pages/flow_home.gd",
-      "version": 4,
-      "sha256": "8afb3904d0252f20bd3ca2a94c5525efd8aba27caf891b97e7e1a31a493bdfdf",
+      "version": 5,
+      "sha256": "b58da28908d2b4586132145d7aeaf775476de61a92aa23af4f95d946510c4aad",
       "dependencies": [
         "ui.title.menu"
       ],
       "license": "project authored layout and existing-command routing; supplied title art",
-      "visual_random": "none"
+      "visual_random": "none",
+      "source_hash_verified_on": "2026-10-18"
     },
     "texture.title.menu-board-source": {
       "path": "res://assets/title_ui/menu_board_source.png",
@@ -2035,7 +2037,7 @@
     },
     "ui.story.layout": {
       "path": "res://pages/story_page.gd",
-      "version": 2,
+      "version": 3,
       "source": "plain native Godot controls and system font; no image dependencies",
       "reference_size": [
         1600,
@@ -2043,18 +2045,21 @@
       ],
       "dependencies": [],
       "visual_seed": null,
-      "sha256": "2d34cfce2014f0a7fe8185ac111695cc9f4a0a6be645dac9326f1bbca587122c"
+      "sha256": "27f5593f9ee769c57a59f7146ddb7ec0286ccf6399324350c59071a23fcb2912",
+      "source_hash_verified_on": "2026-10-18"
     },
     "ui.node-event.embedded": {
       "path": "res://pages/flow_story.gd",
       "source": "pages/flow_story.gd",
-      "sha256": "a39677dde3c6bc0a52e40375879086ec0aa604730f698dfc96ce92457133c243",
-      "version": 4,
+      "sha256": "57317656e83e494127e50041874ca981699938dea4c0506814aa47e1678dcf95",
+      "version": 6,
       "dependencies": [
-        "res://core/difficulty_rules.gd"
+        "res://core/difficulty_rules.gd",
+        "res://pages/story_gallery.gd",
+        "res://presentation/hud_frame.gd"
       ],
-      "presentation": "full-screen translucent backdrop below HUD; fixed right-side frame extending to hand area displays intro then choices then result; native text/buttons",
-      "source_hash_verified_on": "2026-10-16"
+      "presentation": "full-screen translucent backdrop below HUD; three columns (illustration | prose | options) in one inset; options column shows only native buttons under a fixed header row (请做出选择 left, 取消选择 right while preselecting); two-step select then confirm",
+      "source_hash_verified_on": "2026-10-18"
     },
     "texture.voyage.topbar-v1": {
       "path": "res://assets/textures/voyage-topbar-v1.png",
@@ -2087,21 +2092,21 @@
     "ui.hand.capacity-badge": {
       "path": "res://pages/voyage_hud.gd",
       "source": "pages/voyage_hud.gd",
-      "version": 23,
-      "sha256": "ec8fff1808cdb5d5f08aab502be0d189c0a86a3f44b8300cf7ced1c583591df4",
+      "version": 24,
+      "sha256": "2ce578e0dafb8390f755fededad868e0c7c072379dd28574d524065c7860b196",
       "dependencies": [
         "ui.voyage-hud",
         "ui.controls.utility-icons"
       ],
       "role": "rounded numeric capacity badge centered above resized hand tray",
       "license": "project-authored procedural UI; user screenshot is layout reference",
-      "source_hash_verified_on": "2026-10-17"
+      "source_hash_verified_on": "2026-10-18"
     },
     "ui.craft.circle-entry": {
       "path": "res://pages/voyage_hud.gd",
       "source": "pages/voyage_hud.gd",
-      "version": 23,
-      "sha256": "ec8fff1808cdb5d5f08aab502be0d189c0a86a3f44b8300cf7ced1c583591df4",
+      "version": 24,
+      "sha256": "2ce578e0dafb8390f755fededad868e0c7c072379dd28574d524065c7860b196",
       "dependencies": [
         "ui.voyage-hud",
         "ui.hud.nautical-button-art",
@@ -2109,13 +2114,13 @@
       ],
       "role": "128 pixel circular craft entry below action points at lower left",
       "license": "project-authored procedural UI; user screenshot is layout reference",
-      "source_hash_verified_on": "2026-10-17"
+      "source_hash_verified_on": "2026-10-18"
     },
     "ui.starting-resources": {
       "path": "res://pages/new_game_setup.gd",
       "source": "pages/new_game_setup.gd",
-      "version": 3,
-      "sha256": "d521aee9ffbdb352eae4b539b89c7ffdcfc015f8ffe80b1fae2ff2d23ea460bb",
+      "version": 4,
+      "sha256": "8b3c180225c14a24931cb80282c82e9bbf2a7d202d2bd143d21414fbf75bd59f",
       "dependencies": [
         "card.wood",
         "card.iron",
@@ -2126,19 +2131,19 @@
       ],
       "role": "explicit difficulty selection with relative descriptions, origin and seed, tier-specific resource limits and random start",
       "license": "project-authored procedural UI, reuses existing card artwork",
-      "source_hash_verified_on": "2026-10-16"
+      "source_hash_verified_on": "2026-10-18"
     },
     "ui.craft.grid": {
       "path": "res://pages/craft_page.gd",
       "source": "pages/craft_page.gd",
-      "version": 6,
-      "sha256": "f4addcd47311714154693f763352b4a9e1b05b6056b5f8998dbbe291d4bee76f",
+      "version": 7,
+      "sha256": "9f67eba62c1df72855b60ed8396dd50b4fe78f05036c9377fe5750fba20dbb51",
       "dependencies": [
         "ui.controls.text-buttons"
       ],
       "role": "full-screen four-column two-row crafting, eight recipes per page at every UI scale, X close",
       "license": "project-authored procedural UI; user screenshot is layout reference",
-      "source_hash_verified_on": "2026-10-17"
+      "source_hash_verified_on": "2026-10-18"
     },
     "ui.hand.layout": {
       "path": "res://presentation/hand_layout.gd",
@@ -2180,8 +2185,8 @@
     "ui.settings-panel": {
       "path": "res://presentation/settings_panel.gd",
       "source": "presentation/settings_panel.gd",
-      "version": 9,
-      "sha256": "babdcdc6a73e079c315b7eb249df2a464ac724699747eae999dc23c0ee6c4e2c",
+      "version": 10,
+      "sha256": "39ab393b4cc181e47f8f680e37a44ef43740155b110797637757c72527c0a3eb",
       "dependencies": [
         "ui.controls.close",
         "ui.display-preferences",
@@ -2191,7 +2196,7 @@
       "role": "UI scale slider, shared 30/60/90/120/unlimited FPS selector, desktop/mobile display and game settings tabs",
       "license": "project-authored procedural UI; reuses existing artwork and theme",
       "visual_random": "none",
-      "source_hash_verified_on": "2026-10-17",
+      "source_hash_verified_on": "2026-10-18",
       "runtime_mapping": "game preferences HandHoverMode: spread occluders or raise front layer; save local hand preferences; compact short-screen settings"
     },
     "ui.display-preferences": {
@@ -2208,8 +2213,8 @@
     "ui.modal-layout": {
       "path": "res://flow_app.gd",
       "source": "flow_app.gd",
-      "version": 10,
-      "sha256": "9412242204a2959b4e7c453716c851a1b648f856abb881132ea0525e7293aae9",
+      "version": 12,
+      "sha256": "2584a957415a3d9edae6f1c6fc740d3d1508a5c6b79c894e56a264f69cc327e7",
       "dependencies": [
         "ui.controls.close",
         "ui.settings-panel",
@@ -2219,10 +2224,10 @@
         "data.story-gallery-archive",
         "ui.opening-intro"
       ],
-      "role": "full-screen eight-recipe crafting; modal X close; home navigation only in settings",
+      "role": "Full-screen crafting, encyclopedia and meta shop; modal X close; home navigation only in settings",
       "license": "project-authored procedural UI; reuses existing artwork and theme",
       "visual_random": "none",
-      "source_hash_verified_on": "2026-10-17"
+      "source_hash_verified_on": "2026-10-18"
     },
     "ui.battle.equipment": {
       "path": "res://pages/flow_battle.gd",
@@ -2335,8 +2340,8 @@
     "ui.raft.interaction": {
       "path": "res://presentation/raft_interaction.gd",
       "source": "presentation/raft_interaction.gd",
-      "version": 10,
-      "sha256": "45f0374c497270949177100c7e65a835033d711e7b89b9efc3db40793d92b9ac",
+      "version": 11,
+      "sha256": "b0b3df5e7b3e3f4cf43ea87f3632e99205d1c1e19b902b02028c917fc870e6ca",
       "dependencies": [
         "ui.raft.actions",
         "ui.raft.surface",
@@ -2351,7 +2356,7 @@
         "popup_overlap_fraction": 0.2,
         "raft_details_entry": "click/touch root cell 1; existing cell/expansion picking has priority"
       },
-      "source_hash_verified_on": "2026-10-16"
+      "source_hash_verified_on": "2026-10-18"
     },
     "ui.raft.ghost-fill": {
       "path": "res://presentation/raft_surface.gd",
@@ -3071,21 +3076,21 @@
     "data.difficulties": {
       "path": "res://content/data/difficulties.json",
       "source": "project-authored/content/data/difficulties.json",
-      "version": 1,
-      "sha256": "1fc65ab0802bed05e4dbceec1b35dba2760811da71ae408fb164026db46ab3d9",
+      "version": 2,
+      "sha256": "f231a4e8129d9138fbe740a3267c6dcbe966845feadb04dd864a6d3101aef236",
       "dependencies": [],
       "role": "v13 trial difficulty baselines, environment probabilities and normal/boss multipliers",
       "license": "project-authored",
       "runtime_mapping": {
         "entry": "GameSession dispatch(new), environment round generation, battle enter and read-only projections"
       },
-      "source_hash_verified_on": "2026-10-16"
+      "source_hash_verified_on": "2026-10-18"
     },
     "rules.difficulty": {
       "path": "res://core/difficulty_rules.gd",
       "source": "project-authored/core/difficulty_rules.gd",
-      "version": 1,
-      "sha256": "ed26bce26c6bf4e0f0fdf716acb9474bffc385b0587501acb55a288d278cbfea",
+      "version": 2,
+      "sha256": "f6f87c5e98f5f138c245ce7255ec2e42f3920cd8e5404cfb4972c6f9af9cdeb2",
       "dependencies": [
         "res://content/data/difficulties.json"
       ],
@@ -3094,13 +3099,13 @@
       "runtime_mapping": {
         "entry": "GameSession dispatch(new), environment round generation, battle enter and read-only projections"
       },
-      "source_hash_verified_on": "2026-10-16"
+      "source_hash_verified_on": "2026-10-18"
     },
     "ui.battle.salvage": {
       "path": "res://pages/voyage_hud.gd",
       "source": "project-authored/native-Godot-battle-salvage-v14",
-      "version": 23,
-      "sha256": "ec8fff1808cdb5d5f08aab502be0d189c0a86a3f44b8300cf7ced1c583591df4",
+      "version": 24,
+      "sha256": "2ce578e0dafb8390f755fededad868e0c7c072379dd28574d524065c7860b196",
       "dependencies": [
         "res://core/run_rules.gd",
         "res://core/action_query.gd",
@@ -3112,7 +3117,7 @@
         "command": "salvage",
         "phase": "battle"
       },
-      "source_hash_verified_on": "2026-10-17"
+      "source_hash_verified_on": "2026-10-18"
     },
     "ui.raft.expansion-cost": {
       "path": "res://presentation/raft_actions.gd",
@@ -3177,7 +3182,10 @@
         ],
         "pan_limit_metres": 3.0,
         "pan_limit_shape": "XZ radius around default automatic framing",
-        "elevation_degrees": [15, 90],
+        "elevation_degrees": [
+          15,
+          90
+        ],
         "mode_transition": "0.65 seconds from current visible pose to selected default; interrupted transitions continue from current pose"
       },
       "source_hash_verified_on": "2026-10-17"
@@ -4118,8 +4126,8 @@
     "ui.encyclopedia": {
       "path": "res://pages/paged_reference.gd",
       "source": "project-authored/native-Godot-encyclopedia",
-      "version": 1,
-      "sha256": "83ee778552e254f0638c2ce4c6d20665715a2ae903267c2c1819945f3c92e3fe",
+      "version": 2,
+      "sha256": "0aed01ad63b191b9a77161344d0ff516ed5cd0bb85435c2f9b21c6e6d35cd6bb",
       "dependencies": [
         "res://presentation/widgets.gd",
         "ui.modal-layout",
@@ -4134,7 +4142,104 @@
         "tabs": "UI-only encyclopedia_tab; no session mutation"
       },
       "license": "project-authored native UI; reuses existing artwork",
-      "source_hash_verified_on": "2026-10-17"
+      "source_hash_verified_on": "2026-10-18"
+    },
+    "ui.meta-shop": {
+      "path": "res://pages/paged_reference.gd",
+      "source": "project-authored/meta-shop-tech-tiers-v22",
+      "version": 1,
+      "sha256": "0aed01ad63b191b9a77161344d0ff516ed5cd0bb85435c2f9b21c6e6d35cd6bb",
+      "dependencies": [
+        "res://presentation/widgets.gd",
+        "ui.modal-layout",
+        "rules.tech-tree",
+        "data.tech-tree",
+        "icon.meta.inheritance",
+        "icon.meta.coupon",
+        "card.wood",
+        "card.medkit",
+        "card.repair",
+        "card.crate",
+        "card.filter",
+        "card.lamp",
+        "card.calm",
+        "card.spearRack",
+        "card.crossbow"
+      ],
+      "role": "Full-screen six-product gallery and two-tier technology nodes",
+      "license": "project-authored; previews reuse existing registered artwork",
+      "source_hash_verified_on": "2026-10-18",
+      "runtime_mapping": {
+        "entry": "flow_app.gd meta_shop full-screen panel",
+        "categories": [
+          "meta_shop",
+          "tech"
+        ],
+        "purchases": "dispatch meta_buy / tech; UI selection is read-only",
+        "technology": "two layers, three circular nodes each; second layer unlocked by two first-layer nodes"
+      }
+    },
+    "rules.tech-tree": {
+      "path": "res://core/tech_rules.gd",
+      "source": "project-authored/meta-shop-tech-tiers-v22",
+      "version": 1,
+      "sha256": "a1310d92838acdac0d1990bc538369acae8c66aa69cccec026c2cd5035fe7bee",
+      "dependencies": [
+        "data.tech-tree",
+        "res://core/game_session.gd",
+        "res://core/run_rules.gd",
+        "res://core/action_query.gd",
+        "res://adapters/agent_session.gd",
+        "res://content/catalog.gd"
+      ],
+      "role": "Two-tier unique-node gating, public progression projection and save validation",
+      "license": "project-authored; previews reuse existing registered artwork",
+      "source_hash_verified_on": "2026-10-18"
+    },
+    "data.tech-tree": {
+      "path": "res://content/data/tech.json",
+      "source": "project-authored/meta-shop-tech-tiers-v22",
+      "version": 1,
+      "sha256": "6edca0dc33eadd5d9c7db9a4440baaccd76703fb2fdef7eb9f2257e1af31bc0f",
+      "dependencies": [],
+      "role": "v22 trial: 3 nodes per tier, any 2 tier-one nodes unlock tier two",
+      "license": "project-authored; previews reuse existing registered artwork",
+      "source_hash_verified_on": "2026-10-18",
+      "runtime_mapping": {
+        "content_version": "godot-flow-v02-22",
+        "tier_one_prices": [
+          3,
+          4,
+          6
+        ],
+        "tier_two_prices": [
+          9,
+          10,
+          12
+        ],
+        "required_previous": 2,
+        "source_policy": "implementation trial values, not final balance"
+      }
+    },
+    "icon.meta.inheritance": {
+      "path": "res://assets/icons/meta-inheritance.svg",
+      "source": "project-authored/native-SVG-meta-shop",
+      "version": 1,
+      "sha256": "67aa5305d431593a7a13c793bdab53357503cd2ff2a0593f104c6bec1cc21540",
+      "dependencies": [],
+      "license": "project-authored",
+      "show_label": false,
+      "source_hash_verified_on": "2026-10-18"
+    },
+    "icon.meta.coupon": {
+      "path": "res://assets/icons/meta-coupon.svg",
+      "source": "project-authored/native-SVG-meta-shop",
+      "version": 1,
+      "sha256": "4c6b01037c0166eee9b75188bf80627c271b5f2c4fd1df1c82374314da18c09e",
+      "dependencies": [],
+      "license": "project-authored",
+      "show_label": false,
+      "source_hash_verified_on": "2026-10-18"
     }
   }
 }

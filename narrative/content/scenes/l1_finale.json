@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "id": "L1.finale",
+  "title": "第十五夜 · 最后的门",
+  "entry": "n1",
+  "nodes": [
+    {
+      "id": "n1",
+      "speaker": "旁白",
+      "description": "第十五处浮标 · 天亮前",
+      "text": "第十五处浮标之后，舱壁上出现一扇门。门框干燥，接缝笔直，像一直就在那里。",
+      "next": "n2"
+    },
+    {
+      "id": "n2",
+      "speaker": "沈岚",
+      "description": "门前",
+      "text": "“封住它，拖开它，还是现在走。我们只有这一夜。”",
+      "next": "n3"
+    },
+    {
+      "id": "n3",
+      "speaker": "旁白",
+      "description": "门前",
+      "text": "阿棠把缆绳放在你脚边，没有催你。绳子上还留着她手心的温度。",
+      "choices": [
+        {"id": "stay", "text": "请沈岚一起留下", "next": "n4", "affinity": {"leader": 3}, "set_flags": ["ending_stay"], "requires_affinity": {"leader": 18}},
+        {"id": "ask", "text": "问阿棠还能撑多久", "next": "n4", "affinity": {"carpenter": 2}},
+        {"id": "decide", "text": "不再等，直接决定", "next": "n4"}
+      ]
+    },
+    {
+      "id": "n4",
+      "speaker": "沈岚",
+      "description": "门前 · 决定",
+      "text": "“说吧。你打算怎么处理这扇门。”",
+      "choices": [
+        {"id": "seal", "text": "按节律封住门", "next": "n5", "affinity": {"leader": 4}, "set_flags": ["ending_seal"]},
+        {"id": "tow", "text": "把门拖离船体", "next": "n5", "affinity": {"carpenter": 4}, "set_flags": ["ending_tow"]},
+        {"id": "leave", "text": "现在解缆撤离", "next": "n5", "affinity": {"leader": -2}, "set_flags": ["ending_leave"]}
+      ]
+    },
+    {
+      "id": "n5",
+      "speaker": "旁白",
+      "description": "门后",
+      "text": "你做出决定时，门后传来一声很轻的、像是叹气的响动。",
+      "next": "n6"
+    },
+    {
+      "id": "n6",
+      "speaker": "旁白",
+      "description": "天亮",
+      "text": "天亮前，海面重新对齐。分队把缆绳收好，等你先动。"
+    }
+  ]
+}

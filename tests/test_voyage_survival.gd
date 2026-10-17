@@ -61,18 +61,6 @@ func _init() -> void:
 	check(s.snapshot()==before_query,"preview does not settle survival")
 	s.state.flags.avoidWave=true; s.state.phase="aftermath"
 	check(s.dispatch("end_voyage") and s.state.player.hunger==40-cost and s.state.flags.avoidWave,"arrival bonus remains for next voyage")
-	s=fresh("story"); s.state.voyage=5; s.state.environment.rolled_voyage=5; s.state.completed=5; s.state.candidates=[]; s.state.node=catalog.entry("nodes","camp"); s.state.node.visit_id="night-survival-fixture"; s.state.phase="aftermath"; s.state.campaign.route="solo"
-	check(s.dispatch("end_voyage") and s.phase()=="nightHub" and s.state.player.hunger==40,"story defers survival through night")
-	var night=fresh("story"); check(night.restore(JSON.parse_string(JSON.stringify(s.snapshot()))),"night save restores")
-	check(night.dispatch("finish_night") and night.state.player.hunger==10,"night completion without discard settles survival once")
-	s=fresh("story"); s.state.voyage=5; s.state.environment.rolled_voyage=5; s.state.completed=5; s.state.candidates=[]; s.state.node=catalog.entry("nodes","camp"); s.state.node.visit_id="night-discard-fixture"; s.state.phase="aftermath"; s.state.campaign.route="solo"
-	s.state.flags.voyage_survival_cost=30; s.I.give(s.state,"wood",15,false,"night-discard")
-	check(s.dispatch("end_voyage") and s.state.player.hunger==40,"night retains pending food cost")
-	var night_pending=fresh("story")
-	check(night_pending.restore(JSON.parse_string(JSON.stringify(s.snapshot()))),"night pending survival restores")
-	check(s.dispatch("finish_night") and s.phase()=="discard" and s.state.player.hunger==40,"night finishes before discard and survival")
-	while s.phase()=="discard": s.dispatch("discard",{"uid":s.state.hand[0].uid})
-	check(s.state.player.hunger==10 and s.state.voyage==6,"night discard settles exactly once before next voyage")
 	s=fresh(); s.state.voyage=s.state.length; s.state.phase="aftermath"; s.state.player.hunger=30
 	check(s.dispatch("end_voyage") and s.phase()=="finished" and s.state.player.hunger==0 and s.state.player.hp==15,"last voyage also settles before ending")
 	s=fresh(); s.dispatch("voyage",{"id":s.state.candidates[0].visit_id})

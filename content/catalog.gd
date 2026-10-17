@@ -10,7 +10,7 @@ func load_catalog() -> bool:
 		error = "内容清单格式错误"
 		return false
 	var pending := {}
-	for table in ["cards", "nodes", "enemies", "equipment", "boosts", "recipes", "shops", "meta_shop", "tech", "relics", "story_nodes", "story_config", "environments", "difficulties"]:
+	for table in ["cards", "nodes", "enemies", "equipment", "boosts", "recipes", "shops", "meta_shop", "tech", "relics", "environments", "difficulties"]:
 		var path: String = manifest.tables.get(table, "")
 		if not path.begins_with("res://content/data/") or ".." in path:
 			error = "内容路径非法：" + table
@@ -29,26 +29,6 @@ func load_catalog() -> bool:
 		if not pending.cards.has(pending.recipes[id].output):
 			error = "配方产物不存在：" + id
 			return false
-	for id in pending.story_nodes:
-		var node: Dictionary = pending.story_nodes[id]
-		if node.get("id") != id or not node.get("lines") is Array or node.lines.is_empty() or not node.get("choices") is Array or not node.get("art") is String or node.get("handler") not in ["survival","equipment","combat","route","door","public","final","epilogue","solo_exit"]:
-			error = "测试剧情结构非法："+id; return false
-		if node.has("monster") and not pending.enemies.has(node.monster): error = "教学怪物不存在"; return false
-		for line in node.lines:
-			if not line is String or line == "": error = "剧情文本为空"; return false
-	var story: Dictionary = pending.story_config.get("first_layer",{})
-	if story.get("version") != "test-story-v1" or story.get("length") != 15:
-		error = "测试剧情配置版本无效"; return false
-	for key in ["packs","solo_pack","rest","investigations","ordinary_quest","special_quest","exchange_reward","final_seal_costs","final_tow_costs"]:
-		if not story.get(key) is Dictionary: error = "测试剧情缺少配置："+key; return false
-	for schedule in ["fixed_days","public_nights"]:
-		if not story.get(schedule) is Dictionary: error = "剧情日程缺失"; return false
-		for id in story[schedule].values():
-			if not pending.story_nodes.has(id): error = "固定事件引用不存在"; return false
-	for pack in story.packs.values()+[story.solo_pack,story.exchange_reward,story.ordinary_quest.rewards]:
-		if not pack is Dictionary: error = "测试剧情补给包格式错误"; return false
-		for id in pack:
-			if not pending.cards.has(id) or not (pack[id] is float or pack[id] is int) or pack[id] < 1 or floor(float(pack[id])) != float(pack[id]): error = "剧情补给引用/数量非法"; return false
 	for id in pending.environments:
 		var d: Variant=pending.environments[id]
 		if not d is Dictionary or d.get("id")!=id or not d.get("name") is String or not d.get("description") is String or not d.get("negative") is bool:
@@ -58,6 +38,8 @@ func load_catalog() -> bool:
 				error="环境参数无效："+str(id); return false
 	if not preload("res://core/difficulty_rules.gd").valid(pending.difficulties):
 		error="难度定义无效"; return false
+	if not preload("res://core/tech_rules.gd").valid_definitions(pending.tech):
+		error="科技分层定义无效"; return false
 	_tables = pending
 	_fingerprint = JSON.stringify(_tables).sha256_text()
 	return true

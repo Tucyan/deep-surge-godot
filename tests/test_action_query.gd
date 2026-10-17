@@ -33,15 +33,6 @@ func _init() -> void:
 	check(not query.has_effective_action(s),"没有有效行动")
 	s.state.player.hydration=0
 	check(query.has_effective_action(s),"有效免费恢复保留行动")
-	s=load("res://core/game_session.gd").new(catalog)
-	s.dispatch("new",{"mode":"story","origin":"strong","seed":22})
-	s.state.voyage=2; s.state.phase="preparation"; s.state.hand=[]
-	s.give("wood",3); s.give("plastic",4); s.give("iron",2)
-	check(not query.quote(s,"craft",{"id":"lamp"}).allowed,"查询遵守教学校验")
-	check(query.quote(s,"craft",{"id":"filter"}).allowed,"教学允许正确配方")
-	s.state.voyage=3; s.state.node=catalog.entry("story_nodes","ST.L1.T03"); s.state.node.visit_id="query-combat"
-	s.Campaign.start_scene(s,"ST.L1.T03","day"); s.state.story_step="choice"
-	check(query.list_actions(s).any(func(a):return a.command=="fight"),"剧情教学战斗必须提供迎战操作")
 	# Existing kinds/effects automatically support newly named content.
 	catalog._tables.cards["test_water"]=catalog.entry("cards","water")
 	s.state.mode="challenge"; s.state.phase="preparation"; s.state.node=catalog.entry("nodes","camp"); s.state.player.hydration=0; s.give("test_water")

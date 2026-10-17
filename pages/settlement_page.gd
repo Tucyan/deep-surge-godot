@@ -210,23 +210,6 @@ func _detail_lines() -> Array[String]:
 				for recipe in crafts: result.append("制造配方："+_content_name("recipes",str(recipe),"已记录配方"))
 			else: result.append("制造配方：历史统计不完整")
 			for pair in [["tags","成果标签"],["commands","成功操作"]]: _append_records(result,pair[1],stats.get(pair[0],null))
-			var campaign := _dict("campaign_summary")
-			if not campaign.is_empty():
-				if campaign.has("route"): result.append("实际路线："+_label(str(campaign.route)))
-				var clues = campaign.get("clues",[])
-				if clues is Array:
-					for clue in clues: result.append("已知线索："+_display(clue))
-				var quests = campaign.get("quests",[])
-				if quests is Array:
-					for quest in quests:
-						if quest is Dictionary: result.append("委托：%s · %s" % [_value(quest,"name"),_label(str(quest.get("status","")))])
-				var resolution = campaign.get("resolution",{})
-				if resolution is Dictionary and not resolution.is_empty():
-					result.append("章节结果：%s · 方案：%s" % [_label(str(resolution.get("outcome",""))),_label(str(resolution.get("plan","")))])
-					if resolution.has("costs"): result.append("方案实际投入："+_item_amounts(resolution.costs))
-					if resolution.has("losses"): result.append("已公开损失："+_display(resolution.losses))
-					if resolution.has("relationship"): result.append("关系结果："+_display(resolution.relationship))
-					if resolution.has("people"): result.append("人员结果："+_display(resolution.people))
 			var chapters = report.get("prior_chapters",[])
 			if chapters is Array:
 				for chapter in chapters:
@@ -298,7 +281,7 @@ func _origin() -> String:
 	var origins = context.get("origins",{})
 	if origins is Dictionary and origins.get(id,{}) is Dictionary and origins.get(id,{}).get("name",null) is String: return origins[id].name
 	return {"strong":"强壮之人","fool":"愚者","restless":"多动症","hoarder":"囤积癖","zealot":"战斗狂热","skeptic":"无魔之人"}.get(id,"未知出身")
-func _mode() -> String: return {"challenge":"挑战模式","story":"剧情模式"}.get(str(report.get("mode","")),_value(report,"mode"))
+func _mode() -> String: return {"challenge":"挑战模式","story":"剧情模式","tutorial":"新手教程"}.get(str(report.get("mode","")),_value(report,"mode"))
 func _outcome() -> String:
 	if report.get("outcome_name",null) is String: return report.outcome_name
 	return {"survived":"完成航程","dead":"沉入深潮","death":"沉入深潮","lost":"迷失","abandoned":"主动放弃","retreated":"末站撤离","retreat":"末站撤离","chapterComplete":"章节完成"}.get(str(report.get("outcome","")),_label(str(report.get("outcome",""))))

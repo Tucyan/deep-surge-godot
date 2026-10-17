@@ -39,3 +39,21 @@
 ### 2026-10-17 转化图示间距补充
 
 中央产物槽仅显示资源图标，图标下方显示数量 `2`，移除名称、加号、单位及目标产物说明。顶部原料槽保持位置，产物、底部两槽与操作区随可用高度向下展开；紧凑窗口仍为顶部连线保留至少 40 逻辑像素的间隔。连线从框体边缘连接，箭头放在可见线段内，避免被框体遮挡。
+
+## 2026-10-18 导航两步出发与固定操作框
+
+- 导航改为两步：点候选名称只做选择，不移动；顶部随即显示该候选的名称与详细说明。被选中的那一行按钮文字变为「出发」，再次点击才发送 `voyage`。未选中时顶部保留原提示文。候选按钮不再带「出发 · 」前缀。
+- 选中项存于 `ui_state.nav_select`（表现层状态，按 `visit_id` 匹配），出发成功或开新局时清除；不写入规则状态、存档或随机流。顶部标题/详情节点名为 `NavigationDestinationTitle` / `NavigationDestinationDetail`，出发按钮为 `NavigationDepart`。
+- 右侧操作框改为固定尺寸：顶边常量 96、底边距视口底部 316、宽 328。不再按内容最小高度自动上移，点选候选后多出的标题与说明只向下占用内部空间，面板不跳动。详见[界面规范](frontend-guidelines.md)。
+- 验证入口：`tests/nav_panel_check.gd`（1600×900 与 1280×720，检查候选按钮数量、顶部标题/详情、唯一出发按钮、出发后进入准备阶段、面板尺寸在两态与换阶段后不变）。截图 `evidence/nav-step1-*.png`、`evidence/nav-step2-*.png`。`tests/flow_ui_smoke.gd`、`tests/story_ui_smoke.gd` 的导航点击已改为“点名称 → 点出发”；这两个冒烟脚本当前仍在首页断言处先失败（首页已改为纯图片按钮，脚本仍按「继续游戏」等文字查找），本次未修复该历史问题。
+
+### 2026-10-18 导航局部刷新（卡顿修复实施）
+
+原实现把选择与出发都送到 `flow_app.render()`：先释放整个 layout，再重建手牌、状态栏和木筏交互。选择目的地本不改变任何规则数据，却仍支付整页重建成本。
+
+- 选择路径：`NavigationOption` → `request("nav_select")` → `flow_app.select_navigation()`。先校验当前为 game/navigation、没有模态面板、`visit_id` 属于本轮候选；重复选择同一候选直接返回；失效 ID 只返回不产生副作用。通过后写 `ui_state.nav_select`，调用 `voyage_hud.refresh_navigation()`（只重建导航标题、说明、候选行与出发行），不再调用 `render()`。
+- 出发路径：`handle_command("voyage")` 仍执行原有 dispatch、版本校验、存档与剧情记录。仅当旧阶段为 navigation、新阶段为 preparation、无报错信息、手牌与筏格投影均未变化、且页面实例可用时，改走 `flow_app.update_after_departure()`：更新阶段标题、状态栏、AP、容量、环境条与操作框内容，并调用一次 `world_view.sync()`（仍由其签名缓存决定是否重建筏格与目的地标记）。其余情况（灯燃料等筏格变化、手牌变化、死亡/疯狂、剧情或夜间跳转、保存失败、模态面板）继续使用完整页面重建。
+- 局部方法把最新 view 合并进页面 `context`，因此存活按钮下一次 `send()` 自动带上当前 revision；不再沿用创建时捕获的旧候选或旧 revision。
+- 键盘焦点：被替换的选中行会把焦点交给新出现的「出发」；失效选择不改变焦点。课程条（`TutorialBanner`）依赖阶段文案，教程局因此不进入局部出发路径，仍走完整重建。
+- 计时口径（1280×720、seed 22、challenge/strong、RTX 4060 / OpenGL Compatibility，`tests/probe_navigation_stall.gd`，预热后 30 次，三次采样）：选择同步处理中位数 4.2–7.0 ms、p95 5.2–10.5 ms；无存档出发同步处理中位数 4.9–8.1 ms、p95 6.4–10.6 ms。改造前同机实测为选择 33–55 ms、无存档出发 41–50 ms，且每次都会替换主 layout 与手牌。三次采样的空操作绘制基线分别为 24.5 ms、61.6 ms、27.4 ms，说明绝对值随整机负载变化，只能用于同次运行内比较，不作其他机器的保证。
+- 回归：`tests/test_navigation_partial_refresh.gd` 断言选择与出发后主 layout、手牌、状态栏、RaftInteraction 与筏格实例 ID 不变，`snapshot`/`revision`/RNG 不变，标题/详情/出发目标正确，失效 ID 与旧 revision 无副作用，灯燃料变化与致死出发仍走完整重建，教程出发仍能抵达准备阶段且课程条保持单份，保存失败保留提示。视觉与布局验收：`tests/nav_panel_check.gd`、`tests/verify_navigation_panel.gd`（含 125% UI 与 1920×820）。

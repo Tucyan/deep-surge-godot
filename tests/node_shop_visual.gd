@@ -74,8 +74,12 @@ func run() -> void:
 	await capture("sold-out")
 	root.size=Vector2i(1600,900); await settle(); app.render(); await capture("shop-1600")
 	event_fixture("storm","hold"); app.handle_command("option",{"id":"take"}); await capture("cargo-stage")
-	event_fixture("storm","surface"); await capture("target-preview")
-	check(is_instance_valid(app.event_target_surface),"选择目标时高亮实际筏格")
+	event_fixture("storm","surface")
+	var story_page = app.layout.find_child("NodeEventBody",true,false)
+	for entry in story_page.entries:
+		if story_page.entry_cell(entry) != "": story_page.press(entry); break
+	await capture("target-preview")
+	check(is_instance_valid(app.event_target_surface),"预选格损选项时高亮实际筏格")
 	check(app.current_page.context.event_options.size()>=3,"格损选项与目标公开")
 	app.queue_free(); await process_frame
 	print("NODE SHOP GPU: %s" % ("PASS" if failures==0 else "FAIL")); quit(failures)

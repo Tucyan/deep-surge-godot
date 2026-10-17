@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "id": "L1.s12b",
+  "title": "第十二夜 · 没有回答",
+  "entry": "n1",
+  "nodes": [
+    {
+      "id": "n1",
+      "speaker": "旁白",
+      "description": "甲板 · 各自守夜",
+      "text": "敲击从船底移到舱壁。分队把缆绳收短了一截，两筏之间多出一段看得见的空隙。",
+      "next": "n2"
+    },
+    {
+      "id": "n2",
+      "speaker": "沈岚",
+      "description": "隔水喊话",
+      "text": "“今晚各自守夜。你们那边若撑不住，敲三下。”",
+      "choices": [
+        {"id": "reply", "text": "敲三下回应", "next": "n4", "affinity": {"leader": 3}},
+        {"id": "silent", "text": "保持沉默", "next": "n4", "affinity": {"leader": -3}},
+        {"id": "ask", "text": "去问阿棠怎么看", "next": "n4", "affinity": {"carpenter": 3}}
+      ]
+    },
+    {
+      "id": "n4",
+      "speaker": "旁白",
+      "description": "自己的灯下",
+      "text": "第七下没有落下。你听见另一种声音：有人正在数你的呼吸。",
+      "next": "n5"
+    },
+    {
+      "id": "n5",
+      "speaker": "旁白",
+      "description": "天亮",
+      "text": "天亮时，两筏重新并排。谁也没有提夜里的事。"
+    }
+  ]
+}

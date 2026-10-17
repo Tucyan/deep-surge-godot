@@ -4,7 +4,6 @@ const I = preload("res://core/inventory.gd")
 const R = preload("res://core/random_streams.gd")
 const Rules = preload("res://core/run_rules.gd")
 const Battle = preload("res://core/battle_rules.gd")
-const Campaign = preload("res://core/campaign_rules.gd")
 const Stats = preload("res://core/run_statistics.gd")
 const Settlement = preload("res://core/settlement.gd")
 const AutoProgress = preload("res://core/auto_progress.gd")
@@ -12,7 +11,8 @@ const Health = preload("res://core/health_balance.gd")
 const Encounter = preload("res://core/encounter_rules.gd")
 const Shop = preload("res://core/shop_rules.gd")
 const EnvironmentRules = preload("res://core/environment_rules.gd")
-const VERSION := "godot-flow-v02-21"
+const Tutorial = preload("res://core/tutorial_rules.gd")
+const VERSION := "godot-flow-v02-23"
 const ORIGINS := {
 	"strong":{"name":"强壮之人", "description":"生命上限+4，食水上限各+10"},
 	"fool":{"name":"愚者", "description":"非自愿精神损失少5"},
@@ -45,8 +45,8 @@ func dispatch(command: String, args: Dictionary = {}) -> bool:
 	error = ""
 	if args.has("revision") and int(args.revision) != revision:
 		return fail("操作已过期，请按当前界面重新选择")
-	var tutorial_guard := Campaign.tutorial_guard(self,command,args)
-	if tutorial_guard != "": return fail(tutorial_guard)
+	var blocked := Tutorial.guard(self,command,args)
+	if blocked != "": return fail(blocked)
 	var ok := false
 	if not state.is_empty() and command in Stats.GAME_COMMANDS:
 		state._stat_command=command; state._stat_revision=revision+1; state._stat_subsequence=0
@@ -63,13 +63,11 @@ func dispatch(command: String, args: Dictionary = {}) -> bool:
 		"scout", "fix_heading": ok = EnvironmentRules.navigate(self,command,args)
 		"enter":
 			if phase() == "preparation":
-				if Campaign.enabled(self) and not catalog.entry("story_nodes",state.node.id).is_empty(): ok = Campaign.enter(self)
-				else:
-					state.phase = "story"; state.story_step = "intro"; panel = "story"; ok = true
-					log_text(state.node.name+"："+state.node.description)
+				state.phase = "story"; state.story_step = "intro"; panel = "story"; ok = true
+				log_text(state.node.name+"："+state.node.description)
 				if ok: Stats.enter_crisis(state)
-		"advance", "skip": ok = Campaign.advance(self,command == "skip") if Campaign.has_scene(self) else Rules.advance(self)
-		"option": ok = Campaign.option(self,args.get("id","")) if Campaign.has_scene(self) else Encounter.option(self,args)
+		"advance", "skip": ok = Rules.advance(self)
+		"option": ok = Encounter.option(self,args)
 		"shop_enter":
 			if phase() == "story" and state.story_step == "choice" and state.node.kind == "shop":
 				ok = Shop.enter(self)
@@ -81,7 +79,7 @@ func dispatch(command: String, args: Dictionary = {}) -> bool:
 		"sell": ok = Shop.sell(self,args)
 		"fight": ok = Battle.enter(self)
 		"leave_encounter":
-			if phase() == "story" and state.story_step == "choice" and state.node.has("monster") and not Campaign.has_scene(self):
+			if phase() == "story" and state.story_step == "choice" and state.node.has("monster"):
 				Stats.resolve_crisis(state,false)
 				result_story("选择离开遭遇，没有战斗奖励。" ); ok = true
 		"play": ok = Rules.play(self, args)
@@ -94,13 +92,7 @@ func dispatch(command: String, args: Dictionary = {}) -> bool:
 		"salvage": ok = Rules.salvage(self)
 		"transmute": ok = Rules.transmute(self, args.get("target", ""), args.get("uids", []), int(args.get("count", 1)))
 		"install", "fuel", "repair_cell", "heal", "expand", "upgrade", "action_card", "dismantle": ok = Rules.raft_action(self, command, args)
-		"end_voyage": ok = Campaign.end_day(self) if Campaign.enabled(self) else Rules.settle(self)
-		"night_actions": ok = Campaign.open_actions(self) if Campaign.enabled(self) else false
-		"night_action": ok = Campaign.night_action(self,args.get("id","")) if Campaign.enabled(self) else false
-		"night_ack": ok = Campaign.night_ack(self) if Campaign.enabled(self) else false
-		"finish_night": ok = Campaign.finish_night(self) if Campaign.enabled(self) else false
-		"accept_quest", "submit_quest": ok = Campaign.quest(self,command) if Campaign.enabled(self) else false
-		"night_exchange": ok = Campaign.exchange(self,args.get("material","")) if Campaign.enabled(self) else false
+		"end_voyage": ok = Rules.settle(self)
 		"discard": ok = Rules.discard(self, args.get("uid", ""))
 		"meta_buy", "tech": ok = Rules.meta_buy(self, command, args.get("id", ""))
 		"abandon":
@@ -111,15 +103,16 @@ func dispatch(command: String, args: Dictionary = {}) -> bool:
 		screen = old_screen; panel = old_panel
 		if error.is_empty(): error = "当前阶段不能执行此操作"
 		return false
-	if Campaign.enabled(self): Campaign.record_action(self,command,args)
 	if command!="new": Stats.commit(state,before.state,command,args)
 	state.erase("_stat_command")
 	state.erase("_stat_revision"); state.erase("_stat_subsequence")
+	Tutorial.after_dispatch(self,command,args)
 	if not state.is_empty() and phase() in ["finished","chapterComplete"] and not state.has("settlement"):
 		state.settlement=Settlement.create(state,catalog,"run" if phase()=="finished" else "chapter")
 		last_settlement=state.settlement.duplicate(true)
 	revision += 1
-	if not _auto_advancing and (command in Stats.GAME_COMMANDS or command=="resume"):
+	# The tutorial never auto-advances: every action is the player's prompted choice.
+	if not _auto_advancing and state.get("mode","") != "tutorial" and (command in Stats.GAME_COMMANDS or command=="resume"):
 		var automatic: String=AutoProgress.next_command(self)
 		if automatic!="":
 			_auto_advancing=true
@@ -134,11 +127,10 @@ func active() -> bool:
 func base_action() -> bool:
 	return phase() in ["navigation", "preparation", "aftermath"]
 func event_panel() -> String:
-	return {"story":"story", "interaction":"shop", "battle":"battle", "nightHub":"night"}.get(phase(), "")
+	return {"story":"story", "interaction":"shop", "battle":"battle"}.get(phase(), "")
 func open_panel(id: String) -> bool:
 	if id in ["encyclopedia", "meta_shop"] and screen == "home": panel = id; return true
 	if not state.is_empty() and screen == "game" and id == "raft": panel = id; return true
-	if not state.is_empty() and screen == "game" and Campaign.enabled(self) and id == "journal": panel = id; return true
 	if not active() or screen != "game": return fail("请先开始或继续航程")
 	if id in ["craft", "build"] and base_action(): panel = id; return true
 	if id == event_panel() and not id.is_empty(): panel = id; return true
@@ -147,51 +139,61 @@ func open_panel(id: String) -> bool:
 func new_game(args: Dictionary) -> bool:
 	if active(): return fail("已有活动局，请先继续或主动放弃")
 	if args.get("mode", "") not in ["challenge","story"]: return fail("未知模式")
-	var origin: String = args.get("origin", "")
-	var seed = args.get("seed", -1)
-	if not ORIGINS.has(origin) or not (seed is int or seed is float) or seed < 0 or seed > 4294967295 or float(seed) != floor(float(seed)):
-		return fail("请选择出身，并输入0～4294967295整数种子")
 	var difficulty: Variant=args.get("difficulty","standard")
 	if not difficulty is String or difficulty not in Difficulty.IDS: return fail("请选择有效难度")
+	# Tutorial origin, seed and progression are isolated; starting picks come from the setup.
+	var tutorial: bool = difficulty == "tutorial"
+	var mode: String = "tutorial" if tutorial else str(args.mode)
+	var origin: String = Tutorial.ORIGIN if tutorial else str(args.get("origin", ""))
+	var seed: Variant = Tutorial.SEED if tutorial else args.get("seed", -1)
+	if not ORIGINS.has(origin) or not (seed is int or seed is float) or seed < 0 or seed > 4294967295 or float(seed) != floor(float(seed)):
+		return fail("请选择出身，并输入0～4294967295整数种子")
 	var baseline: Dictionary=Difficulty.profile(catalog,difficulty)
-	var starting = args.get("starting_resources",[])
+	var starting = args.get("starting_resources",Tutorial.STARTING.duplicate() if tutorial else [])
 	if not starting is Array or starting.size()>int(baseline.starting_cards): return fail("起手资源最多选择%d张" % int(baseline.starting_cards))
 	var counts := {}
 	for id in starting:
 		if not id is String or id not in I.RESOURCES: return fail("只能选择基础资源牌")
 		counts[id]=int(counts.get(id,0))+1
 		if counts[id]>2: return fail("每类起手资源最多2张")
+	if tutorial and counts != {"wood":2,"plastic":2,"rope":2,"iron":1,"cloth":1}:
+		return fail("新手教程起手请选择木头2、塑料2、绳索2、废铁1、布条1，共8张")
 	var stats := {"hp":int(baseline.hp), "hunger":int(baseline.hunger), "hydration":int(baseline.hydration), "sanity":int(baseline.sanity), "hp_max":int(baseline.hp), "hunger_max":100, "hydration_max":100, "sanity_max":100, "base_ap":3, "battle_ap":3, "limit":10, "damage":0}
 	if origin == "strong": stats.hp += Health.STRONG_BONUS; stats.hp_max += Health.STRONG_BONUS; stats.hunger_max += 10; stats.hydration_max += 10
 	if origin == "restless": stats.base_ap += 1; stats.battle_ap += 1
 	if origin == "hoarder": stats.limit += 1
-	Rules.profile_modifiers(self, stats)
-	state = {"difficulty":difficulty, "mode":"challenge", "origin":origin, "seed":int(seed), "rng":R.create(int(seed)), "phase":"navigation", "voyage":1, "length":0, "ap":0, "player":stats, "hand":[], "coins":0, "cells":[], "next_id":1, "node":{}, "candidates":[], "pool":[], "visits":{}, "story_step":"", "result_text":"", "battle":{}, "completed":0, "boss_defeated":false, "awarded":false, "flags":{}, "logs":[], "buffs":[], "xp":0, "level":1}
+	if not tutorial: Rules.profile_modifiers(self, stats)
+	state = {"difficulty":difficulty, "mode":mode, "origin":origin, "seed":int(seed), "rng":R.create(int(seed)), "phase":"navigation", "voyage":1, "length":0, "ap":0, "player":stats, "hand":[], "coins":0, "cells":[], "next_id":1, "node":{}, "candidates":[], "pool":[], "visits":{}, "story_step":"", "result_text":"", "battle":{}, "completed":0, "boss_defeated":false, "awarded":false, "flags":{}, "logs":[], "buffs":[], "xp":0, "level":1}
+	if tutorial: state.tutorial=Tutorial.new_state()
 	state.shop = {}; state.encounter = {}
 	EnvironmentRules.initialize(state)
 	state.flags.event_visits = {}; state.flags.event_last = {}
-	state.mode = args.mode
-	if state.mode == "story": Campaign.initialize(self)
-	else: state.length = 10 + int(R.draw(state.rng, "nodes") * 6)
+	state.mode = mode
+	state.length = Tutorial.LENGTH if tutorial else (15 if state.mode == "story" else 10 + int(R.draw(state.rng, "nodes") * 6))
 	state.flags.raft_layout = Rules.Layout.ID
 	state.expansion_count = 0
 	var initial_cells: Array = Rules.Layout.POSITIONS.slice(2,6)
 	for i in range(4): state.cells.append({"id":"cell-%d" % i, "x":initial_cells[i].x, "y":initial_cells[i].y, "status":"intact", "damaged_at":0, "equipment":{}})
 	state.next_boost_id=1; state.next_shield_id=1
-	state.run_id=Crypto.new().generate_random_bytes(16).hex_encode()
+	state.run_id="tutorial-v1" if tutorial else Crypto.new().generate_random_bytes(16).hex_encode()
 	state._stat_command="new"; state._stat_revision=revision+1; state._stat_subsequence=0
 	Stats.initialize(state)
 	if starting.is_empty():
 		for i in range(int(baseline.starting_cards)+2): give(R.pick(state.rng,"initial",I.RESOURCES),1,false,"initial")
 	else:
 		for id in starting: give(id,1,false,"initial")
-	if int(profile.purchases.get("inheritance",0)) > 0: give("coin",3)
-	if int(profile.pending.get("supply",0)) > 0: give("filter",1,false,"profile"); profile.pending.supply -= 1
+	if tutorial:
+		give("food",1,false,"tutorial"); give("water",1,false,"tutorial")
+	if not tutorial and int(profile.purchases.get("inheritance",0)) > 0: give("coin",3)
+	if not tutorial and int(profile.pending.get("supply",0)) > 0: give("filter",1,false,"profile"); profile.pending.supply -= 1
 	EnvironmentRules.start_round(self)
 	Rules.candidates(self)
 	Rules.refresh_voyage_ap(self)
 	screen = "game"; panel = ""
-	log_text(("随心所欲：随机获得%d张资源。" % (int(baseline.starting_cards)+2) if starting.is_empty() else "自选起手%d张资源。" % starting.size())+"首次不领取涌泉，选择本轮目的地。")
+	if tutorial:
+		log_text("新手教程：起手资源已选齐，请按提示完成每一步。首次不领取涌泉，先选择目的地。")
+	else:
+		log_text(("随心所欲：随机获得%d张资源。" % (int(baseline.starting_cards)+2) if starting.is_empty() else "自选起手%d张资源。" % starting.size())+"首次不领取涌泉，选择本轮目的地。")
 	return true
 
 func give(id: String, amount: int = 1, temporary: bool = false, source: String = "reward", producer: String = "", cell_id: String = "") -> void:
@@ -258,7 +260,12 @@ func view() -> Dictionary:
 	var result := state.duplicate(true)
 	result.merge({"page":panel if panel != "" else screen, "screen":screen, "panel":panel, "active":active(), "has_run":not state.is_empty(), "phase":phase(), "error":error, "profile":profile.duplicate(true), "origins":ORIGINS.duplicate(true), "difficulties":Difficulty.choices(catalog), "revision":revision},true)
 	result.last_settlement=last_settlement.duplicate(true)
-	result.erase("rng"); result.erase("pool")
+	result.tech_tree=preload("res://core/tech_rules.gd").projection(catalog,profile,active())
+	result.erase("rng"); result.erase("pool"); result.erase("tutorial")
+	var lesson: Dictionary = Tutorial.hint(state) if state.get("mode","") == "tutorial" else {}
+	result.tutorial_hint=lesson
+	result.tutorial_operation=str(lesson.get("operation","")) if not lesson.is_empty() else ""
+	result.tutorial_reason=str(lesson.get("text","")) if not lesson.is_empty() else ""
 	if not state.is_empty():
 		result.capacity = I.capacity(state)
 		result.player.limit = I.hand_limit(state,catalog)
@@ -282,6 +289,5 @@ func view() -> Dictionary:
 			for option in result.node.get("options",[]): option.disabled_reason = Rules.option_reason(self,option)
 		Encounter.project(self,result)
 		if phase()=="interaction": result.shop=Shop.view(self)
-		Campaign.project(self,result)
 		EnvironmentRules.project(self,result)
 	return result

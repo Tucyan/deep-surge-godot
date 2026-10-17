@@ -51,6 +51,7 @@ static func start_round(ctx) -> void:
 	if int(e.rolled_voyage)==int(s.voyage): return
 	e.rolled_voyage=int(s.voyage); e.visibility={}; e.revealed=[]; e.heading_locked=false
 	if int(s.voyage)==1 or int(s.voyage)==int(s.length): return
+	if s.get("mode","")=="tutorial": return
 	var difficulty: Dictionary=ctx.Difficulty.profile(ctx.catalog,str(s.difficulty))
 	var chance: float=float(difficulty.negative_chance)+float(difficulty.positive_chance)
 	if R.draw(s.rng,"environment")>=chance: return
@@ -84,7 +85,7 @@ static func spring_bonus(ctx) -> int:
 	return 1
 
 static func protected_node(ctx, node: Dictionary) -> bool:
-	return bool(node.get("boss",false)) or not ctx.catalog.entry("story_nodes",str(node.get("id",""))).is_empty()
+	return bool(node.get("boss",false))
 
 static func prepare_navigation(ctx) -> void:
 	var s: Dictionary=ctx.state; var levels: Dictionary={}

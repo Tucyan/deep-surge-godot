@@ -10,7 +10,7 @@ const read = table => JSON.parse(readFileSync(new URL(`../content/data/${table}.
 
 // The original lab remains a historical source. Godot now has explicitly approved
 // revisions; assert those revisions instead of pretending the two games match.
-for (const [table, source] of Object.entries({meta_shop:META_SHOP,tech:TECH,relics:RELICS})) {
+for (const [table, source] of Object.entries({meta_shop:META_SHOP,relics:RELICS})) {
   test(`${table}: 历史内容与health-12-v1修订`, () => {
     const expected=structuredClone(source);
     if(table==='meta_shop') { expected.body.modifiers.hpMax=2; expected.body.description='永久生命上限+2，饱食、水分、精神上限各+5。'; }
@@ -18,6 +18,21 @@ for (const [table, source] of Object.entries({meta_shop:META_SHOP,tech:TECH,reli
     assert.deepEqual(read(table),expected);
   });
 }
+
+test('v22科技为两层六节点，第一层任意两点开放第二层', () => {
+  const tech=read('tech');
+  assert.deepEqual(Object.keys(tech),['knowledge','endurance','craft','spear','vitality','tactics']);
+  assert.deepEqual(Object.values(tech).map(n=>n.price),[3,4,6,9,10,12]);
+  assert.deepEqual(Object.values(tech).map(n=>n.tier),[1,1,1,2,2,2]);
+  for(const node of Object.values(tech)) {
+    assert.equal(node.required_previous,node.tier===1?0:2);
+    assert.deepEqual(node.requires,[]);
+  }
+  for(const id of ['knowledge','endurance','craft']) assert.deepEqual(tech[id].modifiers,TECH[id].modifiers);
+  assert.deepEqual(tech.vitality.modifiers,{hpMax:2});
+  assert.deepEqual(tech.tactics.modifiers,{battleAp:1});
+  assert.equal(tech.spear.description,'解锁矛架制造。');
+});
 
 test('v11正式商店商品集合、提高设备报价与卡牌类型明确', () => {
   const shops=read('shops'), cards=read('cards');

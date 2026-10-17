@@ -54,13 +54,5 @@ func _init() -> void:
 	check(boosts.size()==2 and boosts[1].get("expires_voyage",0)==2,"overflow boost lasts until current round end")
 	var terminal=fixture(); terminal.state.voyage=terminal.state.length
 	check(terminal.dispatch("end_voyage") and terminal.phase()=="finished" and I.count(terminal.state,"water")==0,"no phantom production after final voyage")
-	var story=fixture("story"); story.state.voyage=6; story.state.campaign.route="solo"
-	check(story.dispatch("end_voyage") and story.phase()=="nightHub" and I.count(story.state,"water")==0,"story day end waits for night without production")
-	check(story.dispatch("night_actions") and story.dispatch("night_action",{"id":"rest"}) and story.dispatch("night_ack"),"night action completes")
-	story.give("wood",11)
-	check(story.dispatch("finish_night") and story.phase()=="discard" and I.count(story.state,"water")==0,"night end still waits for previous round discard")
-	while story.phase()=="discard":
-		if not story.dispatch("discard",{"uid":story.state.hand[0].uid}): check(false,"story discard"); break
-	check(story.state.voyage==7 and story.phase()=="navigation" and I.count(story.state,"water")==1,"story next morning produces once")
 	print("ROUND START PRODUCTION: %s" % ("PASS" if failures==0 else "FAIL"))
 	quit(0 if failures==0 else 1)

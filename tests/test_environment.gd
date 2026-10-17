@@ -82,10 +82,6 @@ func _init() -> void:
 		if s.state.node.visit_id!=planned.visit_id:
 			wrong+=1; check(not s.state.visits.has(planned.id) and s.state.visits.has(s.state.node.id),"only actual arrival counted")
 	check(wrong>0 and wrong<24,"confusion produces safe and wrong arrivals")
-	s=fresh(22,"story"); effect(s,"fog3"); s.EnvironmentRules.prepare_navigation(s)
-	check(s.view().candidates[0].visibility=="full","fixed story complete information")
-	check(not s.view().candidates[0].has("lines") and not s.view().candidates[0].has("choices") and not s.view().candidates[0].has("handler"),"environment projection preserves hidden story script")
-	check(not s.dispatch("fix_heading"),"fixed story cannot waste heading payment")
 	s=fresh(); effect(s,"current")
 	s.dispatch("voyage",{"id":s.state.candidates[0].visit_id})
 	check(s.state.player.hunger==40 and s.state.player.hydration==40,"current costs wait until settlement")

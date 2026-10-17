@@ -75,8 +75,8 @@ func observe() -> Dictionary:
 	var view: Dictionary=_session.view()
 	var observation: Dictionary={}
 	# Explicit player-facing projection; no seed/RNG, future pool, full stats,
-	# profile/debug reports, UI pages or hidden campaign script.
-	for key in ["survival_settlement","expansion_count","expansion_cost","difficulty","environments","navigation","revision","phase","mode","origin","voyage","length","ap","player","hand","coins","cells","node","candidates","story_step","result_text","battle","completed","level","xp","capacity","can_base","boost_cards","battle_actions","scene","campaign_summary","tutorial_reason","tutorial_operation","known_clues","known_quests","night","night_actions","shop","encounter","event_options"]:
+	# profile/debug reports, UI pages or hidden narrative state.
+	for key in ["survival_settlement","expansion_count","expansion_cost","difficulty","environments","navigation","revision","phase","mode","origin","voyage","length","ap","player","hand","coins","cells","node","candidates","story_step","result_text","battle","completed","level","xp","capacity","can_base","boost_cards","battle_actions","scene","shop","encounter","event_options"]:
 		if view.has(key): observation[key]=view[key]
 	for node in observation.get("candidates",[])+[observation.get("node",{})]:
 		for key in ["lines","choices","handler","outcomes","effects"]: node.erase(key)
@@ -86,6 +86,7 @@ func observe() -> Dictionary:
 	for option in observation.get("event_options",[]):
 		for field in ["effects","outcomes","next_stage"]: option.erase(field)
 	observation.terminal=terminal()
+	observation.tech_tree=view.tech_tree.duplicate(true)
 	if _session.phase()=="battle":
 		observation.enemy=_session.Difficulty.enemy(_catalog,_session.state,str(_session.state.battle.id))
 		observation.battle_combinations=_session.Battle.COMBO.duplicate(true)

@@ -29,8 +29,6 @@
     "meta_shop": "res://content/data/meta_shop.json",
     "tech": "res://content/data/tech.json",
     "relics": "res://content/data/relics.json",
-    "story_nodes": "res://content/data/story_nodes.json",
-    "story_config": "res://content/data/story_config.json",
     "environments": "res://content/data/environments.json",
     "difficulties": "res://content/data/difficulties.json"
   }

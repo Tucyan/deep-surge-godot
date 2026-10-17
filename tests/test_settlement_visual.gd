@@ -58,7 +58,6 @@ func run() -> void:
 	report.cards[0].remaining_permanent=3; report.cards[0].remaining_temporary=0
 	report.stats.devices={"filter/cell":{"id":"filter","cell":1,"uses":2,"produced":4,"outputs":{"water":4}}}
 	report.stats.attribute_sources={"hp":{"night":{"restored":8,"lost":0,"overflow":3}}}
-	report.campaign_summary={"route":"scholar","clues":["潮眼的流向"],"quests":[{"name":"修缮拖缆","status":"completed"}],"resolution":{"outcome":"A","plan":"seal","costs":{"wood":2},"losses":[],"relationship":"信任增加","people":"确认人员已撤离"}}
 	for i in range(12):
 		var card: Dictionary = report.cards[0].duplicate(true)
 		card.name="长列表测试物资 %d" % (i+1)

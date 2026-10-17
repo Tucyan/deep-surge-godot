@@ -58,8 +58,7 @@ func run() -> void:
 	app.handle_ui("setup","challenge"); await settle()
 	check(buttons(app.current_page,"返回模式选择").is_empty(),"Setup has no text return button")
 	# Current setup requires a difficulty before entering the resource picker.
-	var difficulty=app.current_page.find_child("DifficultyChoice",true,false)
-	difficulty.select(1); difficulty.item_selected.emit(1)
+	app.current_page.chosen_difficulty="standard"; app.current_page.rebuild(); await settle()
 	buttons(app.current_page,"选择起手资源")[0].pressed.emit(); await settle()
 	check(app.current_page.picking,"Starting-resource stage opens")
 	app.current_page.find_child("CloseX",true,false).pressed.emit(); await settle()

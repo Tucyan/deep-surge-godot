@@ -104,7 +104,9 @@ static func victory(ctx) -> void:
 	ctx.give("coin",int(rewards.get("coin",5 if s.node.get("boss",false) else (2 if s.node.get("difficulty", "") in ["hard","boss"] else 1)))); ctx.give("corpse",int(rewards.get("corpse",1)))
 	if ctx.EnvironmentRules.active(s,"bloodMoon") and not s.node.get("boss",false): ctx.give("coin",1,false,"bloodMoon")
 	var drops: int = int(rewards.get("resources",2 if s.node.get("difficulty", "") in ["hard","boss"] or s.node.get("boss",false) else 1))
-	for i in range(drops): ctx.give(R.pick(s.rng,"rewards",I.RESOURCES),1,false,"battle_reward")
+	for i in range(drops):
+		var drop: String = preload("res://core/tutorial_rules.gd").fixed_resource(s) if s.get("mode","")=="tutorial" else R.pick(s.rng,"rewards",I.RESOURCES)
+		ctx.give(drop,1,false,"battle_reward")
 	s.xp += int(rewards.get("xp",20 if s.node.get("boss",false) else 5))
 	while s.xp >= 5:
 		s.xp -= 5; s.level += 1
@@ -112,7 +114,6 @@ static func victory(ctx) -> void:
 		if int(s.level)%15==5: s.player.base_ap+=1; s.player.battle_ap+=1
 		if int(s.level)%15==10: s.player.limit+=1
 	if s.node.get("boss",false): s.boss_defeated = true
-	ctx.Campaign.battle_won(ctx)
 	exit_battle(ctx,"战斗胜利；奖励已领取。")
 
 static func supply(ctx) -> void:
@@ -253,7 +254,6 @@ static func battle_alive(ctx) -> bool:
 	return false
 
 static func retreat(ctx) -> bool:
-	if ctx.Campaign.has_scene(ctx): return ctx.fail("教学战斗需要实际胜利，不能撤退")
 	if ctx.phase() != "battle" or ctx.state.battle.turn < 2: return ctx.fail("第二回合起才可撤退")
 	if ctx.state.node.kind == "ruin": ctx.change("hp",int(ctx.state.battle.entry_hp)-int(ctx.state.player.hp))
 	else: ctx.change("hp",0 if ctx.state.origin == "zealot" else -Health.RETREAT)

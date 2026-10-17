@@ -1,8 +1,10 @@
 # Deep Surge 文档索引
 
+导航候选/出发按钮的卡顿诊断与分阶段修复方案见 [导航按钮卡顿修复方案 v1](superpowers/plans/2026-10-18-navigation-stall-repair.md)（已测量，未实施修复）。
+
 首页按钮在宽屏、窄高窗口及 100%/125% UI 缩放下的布局修正见[首页按钮比例验证](../evidence/title-layout-verification.md)。
 
-“回溯潮涌”现为卡片式[剧情回廊](story-gallery.md)，收录特殊开局序章与已接触剧情；[验证记录](../evidence/story-gallery-verification.md)。
+剧情已改为独立层：每 3 站触发、只受好感度影响，剧情档与玩法存档分离。契约见 [剧情层与剧情存档](narrative-and-save.md)。旧剧情模式与剧情回廊已删除。
 
 首次进入的五幕世界观序章（逐字狸语与 BGM）见 [opening-intro.md](opening-intro.md)，验证见 [opening-intro-verification.md](../evidence/opening-intro-verification.md)。
 
@@ -24,7 +26,8 @@
 | 战斗与设备供给 | [battle-equipment.md](battle-equipment.md) |
 | 螺旋布局与视角操作 | [spiral-raft-and-camera.md](spiral-raft-and-camera.md) |
 | 木筏交互与状态 | [raft-direct-interaction.md](raft-direct-interaction.md)、[raft-state-models.md](raft-state-models.md) |
-| 剧情数据、夜间与接口 | [story-data.md](story-data.md)、[story-interface.md](story-interface.md) |
+| 剧情数据结构与 VN 接口 | [story-data.md](story-data.md)、[story-interface.md](story-interface.md) |
+| 剧情层、好感分支与剧情存档 | [narrative-and-save.md](narrative-and-save.md) |
 | 结算与评分 | [settlement.md](settlement.md) |
 | UI、布局与显示 | [frontend-guidelines.md](frontend-guidelines.md)、[display-settings.md](display-settings.md)、[hand-layout.md](hand-layout.md) |
 | 航海顶栏、手牌底板与行动点 | [nautical-hud.md](nautical-hud.md) |
@@ -82,3 +85,5 @@ python -m unittest discover -s tests -p test_agent_stdio.py -v
 结算详情五个分类取消分页、完整列表滚动与GPU检查见[结算滚动验证](../evidence/settlement-scroll-verification.md)。
 
 全屏图鉴、预览卡片与故事／说明页签见[图鉴验证](../evidence/encyclopedia-verification.md)。
+
+全屏局外商店、两层科技节点与试测参数见[商店与科技](meta-shop-and-tech.md)，[验证记录](../evidence/meta-shop-tech-v22-verification.md)。

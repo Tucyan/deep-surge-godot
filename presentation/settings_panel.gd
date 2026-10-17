@@ -1,12 +1,13 @@
 extends RefCounted
 const W = preload("res://presentation/widgets.gd")
 const Display = preload("res://presentation/display_settings.gd")
+const NarrativeMenu = preload("res://pages/narrative_menu.gd")
 
 static func build(parent: Node, app: Control, view: Dictionary) -> void:
 	var prefs = app.display_settings
 	var compact := app.size.y<780
 	if compact: parent.add_theme_constant_override("separation",6)
-	var current_tab: String = app.settings_tab if app.settings_tab in ["display", "game"] else "display"
+	var current_tab: String = app.settings_tab if app.settings_tab in ["display", "game", "narrative"] else "display"
 
 	# Subtitle / context description
 	var subtitle := Label.new()
@@ -37,6 +38,14 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 	tab_bar.add_child(tab_game)
 	W.TextButtonArt.apply(tab_game)
 
+	var tab_narrative := Button.new()
+	tab_narrative.name = "TabNarrative"
+	tab_narrative.text = "剧情"
+	tab_narrative.custom_minimum_size = Vector2(0, 36)
+	tab_narrative.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	tab_bar.add_child(tab_narrative)
+	W.TextButtonArt.apply(tab_narrative)
+
 	# 2. Tab Content Containers
 	var content_area := VBoxContainer.new()
 	content_area.name = "SettingsContentArea"
@@ -53,6 +62,12 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 	game_box.name = "GameTabContent"
 	game_box.add_theme_constant_override("separation", 4 if compact else 6)
 	content_area.add_child(game_box)
+
+	var narrative_box := VBoxContainer.new()
+	narrative_box.name = "NarrativeTabContent"
+	narrative_box.add_theme_constant_override("separation", 4 if compact else 6)
+	content_area.add_child(narrative_box)
+	NarrativeMenu.build_settings(narrative_box, app)
 
 	# --- TAB 1: 画面显示 ---
 	# Row 1: UI 缩放
@@ -271,15 +286,19 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 		app.settings_tab = target
 		display_box.visible = (target == "display")
 		game_box.visible = (target == "game")
+		narrative_box.visible = (target == "narrative")
 
 		tab_display.set_meta("surge_primary", target == "display")
 		tab_game.set_meta("surge_primary", target == "game")
-		tab_display.queue_redraw(); tab_game.queue_redraw()
+		tab_narrative.set_meta("surge_primary", target == "narrative")
+		tab_display.queue_redraw(); tab_game.queue_redraw(); tab_narrative.queue_redraw()
 		tab_display.add_theme_color_override("font_color", Color("fff8e9") if target == "display" else Color("8ca1b0"))
 		tab_game.add_theme_color_override("font_color", Color("fff8e9") if target == "game" else Color("8ca1b0"))
+		tab_narrative.add_theme_color_override("font_color", Color("fff8e9") if target == "narrative" else Color("8ca1b0"))
 
 	tab_display.pressed.connect(func(): update_tabs.call("display"))
 	tab_game.pressed.connect(func(): update_tabs.call("game"))
+	tab_narrative.pressed.connect(func(): update_tabs.call("narrative"))
 	update_tabs.call(current_tab)
 
 	# --- Bottom Section: 航程管理 (Voyage Actions) ---

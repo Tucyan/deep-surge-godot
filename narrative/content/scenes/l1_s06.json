@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "id": "L1.s06",
+  "title": "第六夜 · 木匠的刻痕",
+  "entry": "n1",
+  "nodes": [
+    {
+      "id": "n1",
+      "speaker": "旁白",
+      "description": "筏尾 · 傍晚",
+      "text": "阿棠蹲在你的筏尾，用指节敲船板。她敲到第三块时停下来，抬头看你。",
+      "next": "n2"
+    },
+    {
+      "id": "n2",
+      "speaker": "阿棠",
+      "description": "筏尾",
+      "text": "“这块板不是你的。木纹是横的，钉子却是从里往外打的。”",
+      "choices": [
+        {"id": "open", "text": "让她拆开看", "next": "n3", "affinity": {"carpenter": 5}, "set_flags": ["opened_board"]},
+        {"id": "record", "text": "先记下位置", "next": "n3", "affinity": {"carpenter": 2}},
+        {"id": "ignore", "text": "说这不重要", "next": "n3", "affinity": {"carpenter": -3}}
+      ]
+    },
+    {
+      "id": "n3",
+      "speaker": "旁白",
+      "description": "船板之下",
+      "text": "你做出决定时，她已经把撬棍插进缝里。木板抬起半寸，没有水涌进来。",
+      "next": "n4"
+    },
+    {
+      "id": "n4",
+      "speaker": "旁白",
+      "description": "船板之下",
+      "text": "板下只有一段被磨平的刻痕，像有人反复数过同一组数字。",
+      "next": "n5"
+    },
+    {
+      "id": "n5",
+      "speaker": "阿棠",
+      "description": "夜",
+      "text": "“七下。和前天夜里的敲击一样。你那位领队知道这个数。”"
+    }
+  ]
+}
