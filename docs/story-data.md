@@ -1,6 +1,8 @@
 # 独立剧情数据结构 v1
 
-2026-10-14。对应 `story/story_player.gd`、`story/demo_story.json`。这是独立页面的程序设计契约和演示文本，不覆盖正式玩法或现有 `content/data/story_nodes.json`，没有 AP、物资奖励或 GameSession 命令。
+2026-10-14。对应 `story/story_player.gd`、`story/demo_story.json`。这是独立 VN 页面的程序设计契约，没有 AP、物资奖励或 GameSession 命令。
+
+2026-10-18：本 schema 现在是剧情层的实际运行格式。`narrative/content/scenes/*.json` 在 v1 字段之外增加了可选 `requires_affinity`（选项好感门槛）和 `affinity` / `set_flags`（选项结算），`story_player.gd` 只读已知字段，因此不改变原有校验。旧 `content/data/story_nodes.json` 已随旧剧情模式删除。
 
 ## 内容定义
 
@@ -48,6 +50,6 @@ JSON 可序列化，无 Node、Texture、Callable、DOM 或场景引用。
 
 `StoryResult = {story_id:String, reason:"finished"|"skipped", choices:Array<{node_id:String, choice_id:String}>}`，只包含实际选择顺序。日志及 view 深拷贝，调用方不能通过改副本改变会话。
 
-私有运行状态：内容副本、节点索引、当前节点 ID、status、日志和选择记录。打字计时、LOG 页码、焦点和纹理由页面独立持有。当前没有保存/恢复 API，关闭独立 Demo 后重新从入口开始。
+私有运行状态：内容副本、节点索引、当前节点 ID、status、日志和选择记录。打字计时、LOG 页码、焦点和纹理由页面独立持有。页面本身仍不持有存档；剧情进度由 `narrative/narrative_session.gd` 在场景结束后写入独立剧情档。
 
 配套调用约定：[接口文档](story-interface.md)。

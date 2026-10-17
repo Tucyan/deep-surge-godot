@@ -61,7 +61,7 @@ func _init() -> void:
 	if not recovered:
 		print("DIAG stats=",s.Stats.valid(saved.state)," report=",s.Settlement.valid_report(saved.state.settlement)," last=",s.Settlement.valid_report(saved.last_settlement))
 		print("DIAG original_report=",s.Settlement.valid_report(report)," expected=",s.Settlement.score(saved.state.settlement.score.inputs)," actual=",saved.state.settlement.score)
-		print("DIAG schema membership=",saved.schema in [1,2]," node=",s.Rules.valid_node(s,saved.state.node,saved.state.mode)," campaign=",s.Campaign.valid_save(s,saved.state))
+		print("DIAG schema membership=",saved.schema in [1,2]," node=",s.Rules.valid_node(s,saved.state.node,saved.state.mode))
 		quit(1); return
 	var points: int = copy.profile.points
 	var corrupt: Dictionary = saved.duplicate(true); corrupt.state.settlement.score.total=999

@@ -1,0 +1,194 @@
+[
+  {
+    "test": "test_narrative.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nNARRATIVE: 53 checks, 0 failures"
+  },
+  {
+    "test": "test_narrative_flow.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nNARRATIVE FLOW: 19 checks, 0 failures"
+  },
+  {
+    "test": "test_narrative_repairs.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nNARRATIVE REPAIRS: 27 checks, 0 failures"
+  },
+  {
+    "test": "test_tutorial_rules_repairs.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTUTORIAL REPAIRS: PASS"
+  },
+  {
+    "test": "test_tutorial.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTUTORIAL: PASS"
+  },
+  {
+    "test": "test_tutorial_setup.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTUTORIAL SETUP: PASS"
+  },
+  {
+    "test": "tutorial_start.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTUTORIAL START: PASS"
+  },
+  {
+    "test": "tutorial_ui.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTUTORIAL UI: PASS"
+  },
+  {
+    "test": "test_tutorial_event_layout.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "EVENT GEOMETRY (1280, 720)/1.0 app=(1600.0, 900.0) banner=[P: (380.0, 122.0), S: (840.0, 92.0)] body=[P: (56.0, 226.0), S: (1488.0, 346.0)] options=[P: (1175.0, 226.0), S: (368.0, 346.0)] header=[P: (64.0, 618.0), S: (1244.0, 56.0)]\nEVENT GEOMETRY (1280, 720)/1.25 app=(1280.0, 720.0) banner=[P: (220.0, 122.0), S: (840.0, 92.0)] body=[P: (56.0, 226.0), S: (1168.0, 166.0)] options=[P: (856.0, 226.0), S: (368.0, 166.0)] header=[P: (64.0, 438.0), S: (924.0, 56.0)]\nEVENT GEOMETRY (1600, 900)/1.0 app=(1600.0, 900.0) banner=[P: (380.0, 122.0), S: (840.0, 92.0)] body=[P: (56.0, 226.0), S: (1488.0, 346.0)] options=[P: (1175.0, 226.0), S: (368.0, 346.0)] header=[P: (64.0, 618.0), S: (1244.0, 56.0)]\nEVENT GEOMETRY (1600, 900)/1.25 app=(1280.0, 720.0) banner=[P: (220.0, 122.0), S: (840.0, 92.0)] body=[P: (56.0, 226.0), S: (1168.0, 166.0)] options=[P: (856.0, 226.0), S: (368.0, 166.0)] header=[P: (64.0, 438.0), S: (924.0, 56.0)]\nTUTORIAL EVENT LAYOUT: PASS"
+  },
+  {
+    "test": "test_difficulty.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nDIFFICULTY: PASS"
+  },
+  {
+    "test": "test_ui_layout_controls.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nUI LAYOUT CONTROLS: PASS"
+  },
+  {
+    "test": "test_save.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSAVE / RECOVERY: PASS"
+  },
+  {
+    "test": "test_flow.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nFLOW SESSION: PASS"
+  },
+  {
+    "test": "test_catalog.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCATALOG / ASSET CACHE: PASS"
+  },
+  {
+    "test": "test_action_query.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nACTION QUERY: PASS"
+  },
+  {
+    "test": "test_auto_progress.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nAUTO PROGRESS: PASS"
+  },
+  {
+    "test": "test_agent_session.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nAGENT SESSION: PASS"
+  },
+  {
+    "test": "test_formal_shop.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nFORMAL SHOP: PASS (79 checks)"
+  },
+  {
+    "test": "test_combat_integration.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCOMBAT INTEGRATION: PASS"
+  },
+  {
+    "test": "test_tech_tiers.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\ntech_tiers: 0 failures"
+  },
+  {
+    "test": "test_recall_restore.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRECALL RESTORE: 9 checks, 0 failures"
+  },
+  {
+    "test": "test_navigation_partial_refresh.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nNAVIGATION PARTIAL REFRESH: PASS"
+  },
+  {
+    "test": "test_navigation_actions.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nNAVIGATION ACTIONS: PASS"
+  },
+  {
+    "test": "test_round_start_production.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCONTENT FINGERPRINT: d79afe40677c84e21bdddb42221f1022ce22ee4430b61af2e67cff82a1ac1919\nROUND START PRODUCTION: PASS"
+  },
+  {
+    "test": "test_starting_resources.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSTARTING RESOURCES: PASS"
+  },
+  {
+    "test": "test_settlement.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSETTLEMENT: PASS"
+  },
+  {
+    "test": "test_settlement_integration.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSETTLEMENT INTEGRATION: PASS"
+  },
+  {
+    "test": "test_settlement_page.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSETTLEMENT PAGE: PASS"
+  },
+  {
+    "test": "test_voyage_survival.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVOYAGE SURVIVAL: PASS"
+  },
+  {
+    "test": "test_environment.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nENVIRONMENT: PASS"
+  },
+  {
+    "test": "test_node_redesign.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nNODE REDESIGN: PASS (0 failures)"
+  },
+  {
+    "test": "test_node_shop_integration.gd",
+    "ok": true,
+    "exit": 0,
+    "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nNODE SHOP INTEGRATION: PASS (87 checks, 0 failures)"
+  }
+]

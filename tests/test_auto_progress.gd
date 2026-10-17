@@ -62,7 +62,4 @@ func _init():
 	var before: Dictionary=s.snapshot()
 	check(s.AutoProgress.next_command(s)=="" and s.AutoProgress.next_command(s)=="","free fuel remains a legal action")
 	check(s.snapshot()==before,"repeated legality probes do not mutate inventory stats or RNG")
-	s=fixture("aftermath",0,[]); s.state.mode="story"; s.Campaign.initialize(s); s.state.voyage=5
-	s.dispatch("resume")
-	check(s.phase()=="nightHub" and s.state.voyage==5,"automatic end of day respects mandatory night services")
 	print("AUTO PROGRESS: %s" % ("PASS" if failures==0 else "FAIL")); quit(failures)

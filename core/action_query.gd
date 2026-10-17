@@ -146,6 +146,11 @@ static func battle_candidates(ctx) -> Array:
 
 static func candidates(ctx) -> Array:
 	var items: Array=[]
+	if ctx.screen=="home" and ctx.panel=="meta_shop":
+		for id in ctx.catalog.table("tech"): add(items,"tech",{"id":id})
+		for id in ctx.catalog.table("meta_shop"):
+			if id!="blessing": add(items,"meta_buy",{"id":id})
+		return items
 	if ctx.state.is_empty() or ctx.phase() in ["finished","chapterComplete"]: return items
 	items=base_candidates(ctx)
 	match ctx.phase():
@@ -160,11 +165,7 @@ static func candidates(ctx) -> Array:
 		"story":
 			if ctx.state.story_step!="choice":
 				add(items,"advance")
-				if ctx.Campaign.has_scene(ctx) and ctx.state.story_step=="intro": add(items,"skip")
-			elif ctx.Campaign.has_scene(ctx):
-				var node: Dictionary=ctx.catalog.entry("story_nodes",ctx.state.campaign.runtime.id)
-				for option in node.choices: add(items,"option",{"id":option.id})
-				if node.get("handler","")=="combat": add(items,"fight")
+				if ctx.state.story_step=="intro": add(items,"skip")
 			else:
 				for option in ctx.Encounter.options(ctx):
 					for args in ctx.Encounter.arguments(ctx,option): add(items,"option",args)
@@ -178,10 +179,5 @@ static func candidates(ctx) -> Array:
 		"discard":
 			for card in ctx.state.hand: add(items,"discard",{"uid":card.uid})
 			if ctx.state.coins>0: add(items,"discard",{"uid":"coins"})
-		"nightHub":
-			for command in ["night_actions","night_ack","finish_night","accept_quest","submit_quest"]: add(items,command)
-			add(items,"night_action",{"id":"rest"})
-			for id in ctx.Campaign.config(ctx).investigations: add(items,"night_action",{"id":id})
-			for material in ctx.I.RESOURCES: add(items,"night_exchange",{"material":material})
 	add(items,"abandon")
 	return items

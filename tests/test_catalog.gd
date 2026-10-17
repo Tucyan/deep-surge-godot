@@ -6,7 +6,7 @@ func _init() -> void:
 	assert(catalog.table("cards").size() == 26)
 	for id in ["shieldRack","generator","fishingNet","crate"]:
 		assert(catalog.entry("cards",id).kind=="equipment")
-	assert(catalog.table("nodes").size() == 12)
+	assert(catalog.table("nodes").size() == 18)
 	var card: Dictionary = catalog.entry("cards", "water")
 	card.name = "changed"
 	assert(catalog.entry("cards", "water").name == "淡水")

@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "id": "L1.s12",
+  "title": "第十二夜 · 第七下",
+  "entry": "n1",
+  "nodes": [
+    {
+      "id": "n1",
+      "speaker": "旁白",
+      "description": "甲板 · 争执",
+      "text": "敲击从船底移到舱壁。分队的人在甲板上分成两边，谁都不肯先开口。",
+      "next": "n2"
+    },
+    {
+      "id": "n2",
+      "speaker": "阿棠",
+      "description": "舱壁前",
+      "text": "“再敲下去，船会先散。让我把那段舱壁拆掉。”",
+      "next": "n3"
+    },
+    {
+      "id": "n3",
+      "speaker": "沈岚",
+      "description": "舱壁前",
+      "text": "“拆了就没有证据。等天亮，我们按记录封住它。”",
+      "choices": [
+        {"id": "carpenter", "text": "支持阿棠拆壁", "next": "n4", "affinity": {"carpenter": 6, "leader": -2}, "set_flags": ["side_carpenter"]},
+        {"id": "leader", "text": "支持沈岚封门", "next": "n4", "affinity": {"leader": 6, "carpenter": -2}, "set_flags": ["side_leader"]},
+        {"id": "neutral", "text": "让她们自己决定", "next": "n4", "affinity": {"leader": 2, "carpenter": 2}, "set_flags": ["side_neutral"]}
+      ]
+    },
+    {
+      "id": "n4",
+      "speaker": "旁白",
+      "description": "甲板",
+      "text": "第七下没有落下。海面先安静了，安静得像在等一个答案。",
+      "next": "n5"
+    },
+    {
+      "id": "n5",
+      "speaker": "旁白",
+      "description": "夜",
+      "text": "有人在舱壁内侧用指甲划了一下。很轻，但所有人都听见了。"
+    }
+  ]
+}

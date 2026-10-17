@@ -1,6 +1,7 @@
 extends RefCounted
 ## Pure data projections. No random draws or mutations of the session/catalogue.
-const IDS := ["standard","hard","nightmare"]
+const IDS := ["tutorial","standard","hard","nightmare"]
+const CHALLENGE_IDS := ["standard","hard","nightmare"]
 static func valid(table: Dictionary) -> bool:
 	if table.size()!=IDS.size(): return false
 	for id in IDS:
@@ -19,12 +20,21 @@ static func valid(table: Dictionary) -> bool:
 static func profile(catalog, id: String) -> Dictionary:
 	return catalog.entry("difficulties",id)
 
+## Unlock chain shown by the setup page. The tutorial and standard are always
+## open; each later tier needs the immediately previous challenge clear.
+static func unlock_requirement(id: String) -> String:
+	if id == "hard": return "通关简单后解锁"
+	if id == "nightmare": return "通关困难后解锁"
+	return ""
+
 static func choices(catalog) -> Array:
 	var result: Array=[]
 	for i in range(IDS.size()):
 		var d: Dictionary=profile(catalog,IDS[i])
 		var description := "基准难度。"
-		if i>0:
+		if IDS[i]=="tutorial":
+			description="从选择初始卡牌开始，逐步学习航行、生存、设备、战斗与交易。"
+		elif i>1:
 			var previous: Dictionary=profile(catalog,IDS[i-1])
 			var changes: Array=[]
 			for pair in [["hp","生命上限"],["hunger","初始饱食度"],["hydration","初始水分"],["sanity","初始SAN"],["starting_cards","初始手牌"]]:

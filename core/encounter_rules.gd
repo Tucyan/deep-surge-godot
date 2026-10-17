@@ -66,8 +66,14 @@ static func pick(ctx, nodes: Array) -> Dictionary:
 	return choices[-1].duplicate(true)
 
 static func candidates(ctx) -> void:
-	if ctx.Campaign.fixed_candidate(ctx): return
 	var s: Dictionary=ctx.state; var chosen: Array=[]
+	if s.get("mode","")=="tutorial":
+		var scripted: Array=preload("res://core/tutorial_rules.gd").NODES
+		var index: int=clampi(int(s.voyage)-1,0,scripted.size()-1)
+		var node: Dictionary=ctx.catalog.entry("nodes",scripted[index])
+		node.visit_id="candidate-%d" % int(s.next_id); s.next_id+=1
+		s.candidates=[node]
+		return
 	if s.voyage==s.length: chosen=[ctx.catalog.entry("nodes","boss")]
 	else:
 		var available: Array=[]
@@ -175,7 +181,7 @@ static func apply(ctx, effects: Array, args: Dictionary, summary: Array) -> bool
 		match effect.type:
 			"GiveRandomResource":
 				for i in range(int(effect.get("amount",1))):
-					var id: String=R.pick(ctx.state.rng,"rewards",I.RESOURCES)
+					var id: String=preload("res://core/tutorial_rules.gd").fixed_resource(ctx.state) if ctx.state.get("mode","")=="tutorial" else R.pick(ctx.state.rng,"rewards",I.RESOURCES)
 					ctx.give(id,1,false,"event"); summary.append("获得"+ctx.catalog.entry("cards",id).name+"1")
 			"ChangeAP":
 				ctx.state.ap=maxi(0,int(ctx.state.ap)+int(effect.delta)); summary.append("本轮基地AP%+d" % int(effect.delta))
@@ -219,15 +225,22 @@ static func option(ctx, args: Dictionary) -> bool:
 	var continuation: int=int(chosen.get("next_stage",-1))
 	var succeeded := true
 	if chosen.has("outcomes"):
-		var total := 0.0
-		for outcome in chosen.outcomes: total+=float(outcome.weight)
-		var roll: float=R.draw(s.rng,"rewards")*total
-		for outcome in chosen.outcomes:
-			roll-=float(outcome.weight)
-			if roll<0:
-				if not apply(ctx,outcome.get("effects",[]),args,summary): return false
-				succeeded=bool(outcome.get("success",true))
-				continuation=int(outcome.get("next_stage",-1)); break
+		if s.get("mode","")=="tutorial":
+			# Deterministic teaching run: always resolve the first listed outcome.
+			var first: Dictionary=chosen.outcomes[0]
+			if not apply(ctx,first.get("effects",[]),args,summary): return false
+			succeeded=bool(first.get("success",true))
+			continuation=int(first.get("next_stage",-1))
+		else:
+			var total := 0.0
+			for outcome in chosen.outcomes: total+=float(outcome.weight)
+			var roll: float=R.draw(s.rng,"rewards")*total
+			for outcome in chosen.outcomes:
+				roll-=float(outcome.weight)
+				if roll<0:
+					if not apply(ctx,outcome.get("effects",[]),args,summary): return false
+					succeeded=bool(outcome.get("success",true))
+					continuation=int(outcome.get("next_stage",-1)); break
 	if not ctx.active():
 		ctx.Stats.resolve_crisis(s,false); return true
 	var text: String=chosen.name+"："+("；".join(summary) if not summary.is_empty() else "保留已有物资，结束停留。")
@@ -270,7 +283,7 @@ static func reward_preview(option: Dictionary) -> Dictionary:
 	return result
 
 static func project(ctx, view: Dictionary) -> void:
-	if ctx.state.is_empty() or ctx.Campaign.has_scene(ctx): return
+	if ctx.state.is_empty(): return
 	view.encounter={"stage":stage(ctx),"last_result":ctx.state.get("encounter",{}).get("last_result","")}
 	if ctx.phase()!="story" or ctx.state.story_step!="choice": return
 	view.event_options=[]

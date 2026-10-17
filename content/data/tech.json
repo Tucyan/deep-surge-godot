@@ -6,36 +6,60 @@
     "requires": [],
     "modifiers": {
       "handLimit": 1
-    }
-  },
-  "craft": {
-    "name": "熟练双手",
-    "description": "永久基地AP上限+1。",
-    "price": 6,
-    "requires": [
-      "knowledge"
-    ],
-    "modifiers": {
-      "baseAp": 1
-    }
+    },
+    "tier": 1,
+    "required_previous": 0
   },
   "endurance": {
     "name": "深海耐性",
     "description": "永久精神上限+10。",
     "price": 4,
-    "requires": [
-      "knowledge"
-    ],
+    "requires": [],
     "modifiers": {
       "sanityMax": 10
-    }
+    },
+    "tier": 1,
+    "required_previous": 0
+  },
+  "craft": {
+    "name": "熟练双手",
+    "description": "永久基地AP上限+1。",
+    "price": 6,
+    "requires": [],
+    "modifiers": {
+      "baseAp": 1
+    },
+    "tier": 1,
+    "required_previous": 0
   },
   "spear": {
     "name": "长矛工艺",
     "description": "解锁矛架制造。",
-    "price": 5,
-    "requires": [
-      "craft"
-    ]
+    "price": 9,
+    "requires": [],
+    "tier": 2,
+    "required_previous": 2
+  },
+  "vitality": {
+    "name": "强健体魄",
+    "description": "永久生命上限+2。",
+    "price": 10,
+    "modifiers": {
+      "hpMax": 2
+    },
+    "tier": 2,
+    "required_previous": 2,
+    "requires": []
+  },
+  "tactics": {
+    "name": "战斗筹备",
+    "description": "永久战斗AP上限+1。",
+    "price": 12,
+    "modifiers": {
+      "battleAp": 1
+    },
+    "tier": 2,
+    "required_previous": 2,
+    "requires": []
   }
 }

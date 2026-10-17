@@ -23,6 +23,11 @@ func create(owner_app: Control) -> void:
 			fan.equipment_dragged.connect(_dragged); fan.equipment_released.connect(_released); fan.drag_canceled.connect(_clear_drop)
 func _exit_tree() -> void:
 	if is_instance_valid(surface): surface.hide(); surface.queue_free()
+## Re-quote cell actions after a rules change that kept the same cells and surface.
+func refresh_policy() -> void:
+	if not is_instance_valid(surface): return
+	policy.refresh(app.session)
+	select_target({})
 func _surface_input(event: InputEvent) -> void:
 	if not is_inside_tree(): return
 	if event is InputEventScreenTouch:

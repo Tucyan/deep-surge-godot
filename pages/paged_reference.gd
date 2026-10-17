@@ -117,7 +117,10 @@ func encyclopedia_art(id: String) -> String:
 func encyclopedia_card(grid: GridContainer, id: String, number: int, selected: bool) -> void:
 	var title: String = "尚未发现 · %02d" % number
 	if discovered(id): title = ending_names()[id] if selected_table == "endings" else catalog.entry(selected_table,id).name
-	var card := Button.new(); card.name = "EncyclopediaCard_"+id
+	preview_card(grid,id,title,encyclopedia_art(id),selected,"EncyclopediaCard_")
+
+func preview_card(grid: GridContainer, id: String, title: String, art: String, selected: bool, prefix: String, caption: String = "") -> void:
+	var card := Button.new(); card.name = prefix+id
 	card.set_meta("entry_id",id); card.accessibility_name = title
 	card.custom_minimum_size = Vector2(0,120)
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL; card.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -133,12 +136,17 @@ func encyclopedia_card(grid: GridContainer, id: String, number: int, selected: b
 	card.add_child(margin); margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	for edge in ["left","right","top","bottom"]: margin.add_theme_constant_override("margin_"+edge,12)
 	var column := VBoxContainer.new(); column.mouse_filter = Control.MOUSE_FILTER_IGNORE; margin.add_child(column)
-	W.art(column,assets,encyclopedia_art(id),54,false)
+	W.art(column,assets,art,54,false)
 	var cover: TextureRect = column.get_child(0); cover.name = "Cover"
 	cover.size_flags_vertical = Control.SIZE_EXPAND_FILL; cover.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var label := W.text(column,title,18,W.GOLD if selected else W.INK); label.name = "EntryTitle"
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER; label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	label.autowrap_mode = TextServer.AUTOWRAP_OFF; label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	if caption != "":
+		var price := W.text(column,caption,15,W.MUTED); price.name = "ProductPrice"
+		price.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER; price.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		price.autowrap_mode = TextServer.AUTOWRAP_OFF
+		card.custom_minimum_size.y = 160
 
 func ending_names() -> Dictionary:
 	return {"survived":"灯火未熄","withdrawn":"离开潮眼","true":"回声归航","dead":"沉入深潮","mad":"迷失潮声","abandon":"返回岸边"}
@@ -171,28 +179,127 @@ func encyclopedia_detail(id: String) -> void:
 	text.name = "DetailCopy"; text.custom_minimum_size.y = 96
 
 func meta_page() -> void:
-	heading("局外商店","涌潮点 %d%s" % [context.profile.points," · 活动航程中，购买锁定" if context.active else ""])
+	name = "MetaShop"
+	var header := HBoxContainer.new(); add_child(header)
+	W.text(header,"局外商店",30,W.GOLD)
+	var balance := W.text(header,"涌潮点  %d" % context.profile.points,23,W.GOLD)
+	balance.name = "MetaShopBalance"; balance.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	var close_space := Control.new(); close_space.custom_minimum_size.x = 56; header.add_child(close_space)
 	selected_table = category_bar({"meta_shop":"成长与补给","tech":"科技"},"meta_shop")
+	if selected_table == "tech":
+		tech_page(); return
 	var ids: Array = catalog.table(selected_table).keys().filter(func(id): return id != "blessing")
-	var names := {}
-	for id in ids: names[id] = catalog.entry(selected_table,id).name
-	list_body(ids,names,Callable(self,"meta_detail"))
+	body = HBoxContainer.new(); body.size_flags_vertical = Control.SIZE_EXPAND_FILL; add_child(body)
+	body.add_theme_constant_override("separation",18)
+	var left := VBoxContainer.new(); left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	left.size_flags_stretch_ratio = 1.8; body.add_child(left)
+	var grid := W.grid(left,3); grid.name = "MetaShopGrid"; grid.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	var pages := maxi(1,ceili(float(ids.size())/6.0))
+	var index := clampi(int(context.ui_state.get("list_page",0)),0,pages-1)
+	var visible_ids := ids.slice(index*6,index*6+6)
+	var selected: String = context.ui_state.get("selected_id","")
+	if selected not in visible_ids: selected = str(visible_ids[0]) if not visible_ids.is_empty() else ""
+	for id in visible_ids:
+		var item: Dictionary = catalog.entry(selected_table,id)
+		var status := meta_status(id)
+		var caption := "%d 涌潮点 · %s" % [item.price,status]
+		preview_card(grid,str(id),item.name,meta_art(str(id)),str(id)==selected,"MetaShopCard_",caption)
+	for unused in range(6-visible_ids.size()):
+		var space := Control.new(); space.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		space.size_flags_horizontal = Control.SIZE_EXPAND_FILL; space.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		grid.add_child(space)
+	var footer := HBoxContainer.new(); footer.alignment = BoxContainer.ALIGNMENT_CENTER; left.add_child(footer)
+	pager(footer,index,pages)
+	detail = W.panel(body); detail.name = "MetaShopDetail"
+	detail.add_theme_constant_override("separation",8)
+	if selected != "": meta_detail(selected)
+	else: W.text(detail,"当前没有可显示的商品。",18,W.MUTED)
+
+func meta_art(id: String) -> String:
+	return {"raft":"card.wood","body":"card.medkit","inheritance":"icon.meta.inheritance","coupon":"icon.meta.coupon","hands":"card.repair","smallBox":"card.crate","bigBox":"card.crate","supply":"card.filter","knowledge":"card.lamp","craft":"card.repair","endurance":"card.calm","spear":"card.spearRack","vitality":"card.medkit","tactics":"card.crossbow"}.get(id,"ui.card.back")
+
+func tech_page() -> void:
+	body = HBoxContainer.new(); body.size_flags_vertical = Control.SIZE_EXPAND_FILL; add_child(body)
+	body.add_theme_constant_override("separation",18)
+	var tree := VBoxContainer.new(); tree.name = "TechTree"
+	tree.size_flags_horizontal = Control.SIZE_EXPAND_FILL; tree.size_flags_stretch_ratio = 1.8; body.add_child(tree)
+	var selected: String = context.ui_state.get("selected_id","")
+	if not catalog.table("tech").has(selected): selected = "knowledge"
+	var projection: Dictionary = context.tech_tree
+	for tier in projection.tiers:
+		var section := W.panel(tree); section.name = "TechTier_%d" % tier.tier
+		section.get_parent().size_flags_vertical = Control.SIZE_EXPAND_FILL
+		section.add_theme_constant_override("separation",4)
+		var style: StyleBoxFlat = section.get_parent().get_theme_stylebox("panel").duplicate()
+		style.content_margin_top = 10; style.content_margin_bottom = 10
+		style.border_color = Color("536b87") if tier.unlocked else Color("334253")
+		section.get_parent().add_theme_stylebox_override("panel",style)
+		var title := "第一层 · 漂流基础" if int(tier.tier)==1 else "第二层 · 深潮进阶"
+		W.text(section,"%s    %d / %d 已点亮" % [title,tier.lit,tier.total],20,W.GOLD if tier.unlocked else W.MUTED)
+		var nodes := W.grid(section,3); nodes.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		for node in projection.nodes:
+			if int(node.tier)==int(tier.tier): tech_node(nodes,node,selected)
+		if int(tier.tier)==1:
+			var gate := W.text(tree,"──  第一层点亮 %d / 2   →   %s第二层  ──" % [tier.lit,"已解锁" if projection.tiers[1].unlocked else "解锁"],17,W.GOLD if projection.tiers[1].unlocked else W.MUTED)
+			gate.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	detail = W.panel(body); detail.name = "MetaShopDetail"; detail.add_theme_constant_override("separation",8)
+	meta_detail(selected)
+
+func tech_node(parent: GridContainer, node: Dictionary, selected: String) -> void:
+	var column := VBoxContainer.new(); column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	column.size_flags_vertical = Control.SIZE_EXPAND_FILL; column.add_theme_constant_override("separation",4); parent.add_child(column)
+	var center := CenterContainer.new(); center.size_flags_vertical = Control.SIZE_EXPAND_FILL; column.add_child(center)
+	var point := Button.new(); point.name = "TechNode_"+node.id
+	point.custom_minimum_size = Vector2(72,72); point.accessibility_name = node.name
+	point.tooltip_text = node.description+"\n"+str(node.price)+" 涌潮点"+ ("\n"+node.reason if node.reason!="" else "")
+	point.icon = assets.texture(meta_art(node.id)); point.expand_icon = true
+	point.add_theme_constant_override("icon_max_width",42)
+	point.modulate = Color("8a99ac") if node.reason.begins_with("需先") else Color.WHITE
+	for state in ["normal","hover","pressed","focus"]:
+		var style := StyleBoxFlat.new(); style.set_corner_radius_all(38); style.set_border_width_all(2)
+		style.bg_color = Color("143B83") if node.lit or state in ["hover","pressed"] else Color("08224B")
+		style.border_color = W.GOLD if node.lit or selected==node.id else Color("536b87")
+		if state=="focus": style.border_color = Color("F6EBDA")
+		if selected==node.id: style.set_border_width_all(3)
+		point.add_theme_stylebox_override(state,style)
+	center.add_child(point); point.pressed.connect(func(): request("selected_id",node.id))
+	var title := W.text(column,node.name,18,W.GOLD if node.lit or selected==node.id else W.INK)
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.autowrap_mode = TextServer.AUTOWRAP_OFF; title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	var state_text := "已点亮" if node.lit else ("层级锁定" if node.reason.begins_with("需先") else "未点亮")
+	var price := W.text(column,"%d 涌潮点 · %s" % [node.price,state_text],15,W.GOLD if node.lit else W.MUTED)
+	price.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+
+func meta_status(id: String) -> String:
+	var item: Dictionary = catalog.entry(selected_table,id)
+	if selected_table == "tech":
+		for node in context.tech_tree.nodes:
+			if node.id == id: return "可点亮" if node.allowed else node.reason
+	elif int(context.profile.purchases.get(id,0)) >= int(item.maxPurchases): return "已购满"
+	if context.active: return "航程中锁定"
+	if context.profile.points < item.price: return "涌潮点不足"
+	return "可解锁" if selected_table == "tech" else "可购买"
 
 func meta_detail(id: String) -> void:
 	var item: Dictionary = catalog.entry(selected_table,id)
-	W.text(detail,item.name,28,W.GOLD)
-	W.text(detail,item.description,20)
-	W.text(detail,"价格 %d 涌潮点" % item.price,23,W.GOLD)
-	var locked: bool = context.active or context.profile.points < item.price
+	W.art(detail,assets,meta_art(id),80,false)
+	var image: TextureRect = detail.get_child(0); image.name = "DetailImage"
+	image.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	W.text(detail,item.name,24,W.GOLD)
+	W.text(detail,item.description,18).name = "MetaShopDescription"
 	if selected_table == "tech":
-		if id in context.profile.tech: locked = true; W.text(detail,"已经解锁",18,W.MUTED)
-		for pre in item.requires:
-			W.text(detail,"前置："+catalog.entry("tech",pre).name,18,W.MUTED)
-			if pre not in context.profile.tech: locked = true
+		W.text(detail,"第 %d 层 · 每个节点仅可点亮一次" % item.tier,16,W.MUTED)
 	else:
-		W.text(detail,"累计购买 %d/%d" % [context.profile.purchases.get(id,0),item.maxPurchases],18,W.MUTED)
-		if context.profile.purchases.get(id,0) >= item.maxPurchases: locked = true
-	action(detail,"解锁" if selected_table == "tech" else "购买","tech" if selected_table == "tech" else "meta_buy",{"id":id},locked,"积分/前置不足，或活动航程锁定")
+		W.text(detail,"累计购买 %d / %d" % [context.profile.purchases.get(id,0),item.maxPurchases],16,W.MUTED)
+	W.text(detail,"%d 涌潮点" % item.price,23,W.GOLD)
+	var status := meta_status(id)
+	var locked := status not in ["可购买","可点亮"]
+	var reason := status
+	if status == "航程中锁定": reason = "活动航程中，局外购买锁定。"
+	W.text(detail,reason,16,W.MUTED if locked else W.GOLD).name = "MetaShopStatus"
+	var purchase := W.button(detail,"点亮节点" if selected_table == "tech" else "购买",func(): send("tech" if selected_table == "tech" else "meta_buy",{"id":id}),locked,reason if locked else "")
+	purchase.name = "MetaShopPurchase"
+	if not locked: W.primary(purchase)
 
 func raft_page() -> void:
 	heading("木筏详情","选择一个筏格查看；导航、准备与收尾阶段可以操作。")

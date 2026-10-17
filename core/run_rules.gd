@@ -7,7 +7,7 @@ const Health = preload("res://core/health_balance.gd")
 const I = preload("res://core/inventory.gd")
 const R = preload("res://core/random_streams.gd")
 const Stats = preload("res://core/run_statistics.gd")
-const PHASES := ["navigation","preparation","story","interaction","battle","aftermath","discard","finished","nightHub","chapterComplete"]
+const PHASES := ["navigation","preparation","story","interaction","battle","aftermath","discard","finished","chapterComplete"]
 
 static func expansion_cost(state: Dictionary) -> Dictionary:
 	return {"wood":1 if int(state.get("expansion_count",0)) < DISCOUNTED_EXPANSIONS else int(EXPANSION_COST.wood)}
@@ -31,7 +31,7 @@ static func voyage(ctx, id: String) -> bool:
 	node = ctx.EnvironmentRules.target(ctx,node)
 	s.node = node; s.candidates = []
 	ctx.Encounter.arrived(ctx)
-	if not node.get("boss",false) and ctx.catalog.entry("story_nodes",node.id).is_empty(): s.pool.erase(node.id)
+	if not node.get("boss",false): s.pool.erase(node.id)
 	s.visits[node.id] = int(s.visits.get(node.id,0)) + 1
 	s.last_node = node.id
 	ctx.discover("node." + node.id)
@@ -50,7 +50,6 @@ static func voyage(ctx, id: String) -> bool:
 	ctx.log_text("抵达%s；移动支付SAN%d，食水各%d在轮末弃牌完成后结算。" % [node.name,sanity_cost,30-reduction])
 	if not ctx.alive(): return true
 	s.phase = "preparation"
-	ctx.Campaign.after_move(ctx)
 	return true
 
 static func advance(ctx) -> bool:
@@ -187,14 +186,14 @@ static func salvage(ctx) -> bool:
 	else:
 		if s.ap < 1: return ctx.fail("基地AP不足")
 		s.ap -= 1
-	ctx.give(R.pick(s.rng,"rewards",I.RESOURCES),1,false,"salvage")
+	ctx.give(preload("res://core/tutorial_rules.gd").fixed_resource(s) if s.mode=="tutorial" else R.pick(s.rng,"rewards",I.RESOURCES),1,false,"salvage")
 	var total := 1
 	var amounts: Array = ctx.catalog.entry("equipment","fishingNet").salvageAmounts
 	for cell in nets:
 		var level: int = clampi(int(cell.equipment.level)-1,0,amounts.size()-1)
 		var amount: int = int(amounts[level])+int(cell.equipment.get("production_bonus",0))
 		for index in range(amount):
-			var item: String = R.pick(s.rng,"rewards",I.RESOURCES)
+			var item: String = preload("res://core/tutorial_rules.gd").fixed_resource(s) if s.mode=="tutorial" else R.pick(s.rng,"rewards",I.RESOURCES)
 			ctx.give(item,1,false,"salvage","fishingNet",cell.id)
 			Stats.device_used(s,"fishingNet",cell.id,item,1)
 			Stats.increment(s,"produced",1)
@@ -425,7 +424,6 @@ static func settle_survival(ctx) -> bool:
 static func settle(ctx) -> bool:
 	var s: Dictionary = ctx.state
 	if ctx.phase() != "aftermath": return ctx.fail("先完成当前节点结果剧情")
-	if ctx.Campaign.enabled(ctx) and s.voyage >= 5 and s.voyage < 15 and s.campaign.day_closed != s.voyage: return ctx.fail("先完成今晚安排")
 	s.ap = 0
 	for cell in s.cells:
 		if cell.status == "damaged" and s.voyage - cell.damaged_at >= 2:
@@ -476,14 +474,28 @@ static func next_voyage(ctx) -> void:
 	var s: Dictionary = ctx.state
 	# Capacity is satisfied: charge survival before production or any successful ending.
 	if not settle_survival(ctx): return
-	if ctx.Campaign.next_voyage(ctx): return
 	if s.voyage == s.length:
+		if s.mode == "tutorial":
+			ctx.log_text("新手教程完成：你已经走完一次完整的航行循环。")
+			ctx.finish("tutorial")
+			return
+		if s.mode == "story":
+			s.phase = "chapterComplete"; ctx.panel = ""
+			ctx.log_text("第一层结束；保留章节成果，第二层尚未开放。")
+			return
 		ctx.finish("survived" if s.boss_defeated else "withdrawn")
 		return
 	s.voyage += 1; s.phase = "navigation"; s.node = {}; s.battle = {}; s.encounter = {}; ctx.panel = ""
 	ctx.EnvironmentRules.start_round(ctx)
 	refresh_voyage_ap(ctx)
 	produce_at_round_start(ctx)
+	if s.mode == "tutorial":
+		# Fixed spring: same two cards on every playthrough.
+		ctx.give("wood",1,false,"spring")
+		ctx.give("food",1,false,"spring")
+		candidates(ctx)
+		ctx.log_text("领取本轮涌泉：木头1份、食用植物1份；开放导航。")
+		return
 	var spring_extra: int=ctx.EnvironmentRules.spring_bonus(ctx)
 	for i in range(spring_extra): ctx.give(R.pick(s.rng,"initial",I.RESOURCES),1,false,"spring")
 	ctx.give("wood",1,false,"spring")
@@ -522,8 +534,8 @@ static func meta_buy(ctx, command: String, id: String) -> bool:
 	if int(ctx.profile.points) < int(item.price): return ctx.fail("涌潮点不足")
 	if command == "tech":
 		if id in ctx.profile.tech: return ctx.fail("已经解锁")
-		for prerequisite in item.requires:
-			if prerequisite not in ctx.profile.tech: return ctx.fail("前置科技尚未解锁")
+		var gate: String=preload("res://core/tech_rules.gd").gate_reason(ctx.catalog,ctx.profile.tech,id)
+		if gate!="": return ctx.fail(gate)
 		ctx.profile.tech.append(id)
 	else:
 		var count: int = int(ctx.profile.purchases.get(id,0))
@@ -547,8 +559,7 @@ static func valid_save(ctx, data: Dictionary) -> bool:
 	for id in p.purchases:
 		var item: Dictionary = ctx.catalog.entry("meta_shop",id)
 		if item.is_empty() or not integer(p.purchases[id]) or p.purchases[id] < 0 or p.purchases[id] > item.maxPurchases: return false
-	for id in p.tech:
-		if not id is String or ctx.catalog.entry("tech",id).is_empty(): return false
+	if not preload("res://core/tech_rules.gd").valid_profile(ctx.catalog,p.tech): return false
 	for id in p.pending:
 		if id not in ["supply","blessing"] or not integer(p.pending[id]) or p.pending[id] < 0 or p.pending[id] > int(p.purchases.get(id,0)): return false
 	var s: Dictionary = data.state
@@ -564,7 +575,14 @@ static func valid_save(ctx, data: Dictionary) -> bool:
 		if not s.has(key): return false
 	if not s.difficulty is String or s.difficulty not in ctx.Difficulty.IDS: return false
 	if not integer(s.get("expansion_count")) or s.expansion_count < 0: return false
-	if s.mode not in ["challenge","story"] or s.phase not in PHASES or not ctx.ORIGINS.has(s.origin) or not s.player is Dictionary or not s.hand is Array or not s.rng is Dictionary: return false
+	if s.mode not in ["challenge","story","tutorial"] or s.phase not in PHASES or not ctx.ORIGINS.has(s.origin) or not s.player is Dictionary or not s.hand is Array or not s.rng is Dictionary: return false
+	if s.mode == "tutorial":
+		if s.difficulty != "tutorial" or int(s.length) != preload("res://core/tutorial_rules.gd").LENGTH: return false
+		if not s.get("tutorial") is Dictionary: return false
+		for key in ["supply_voyage","used_water_voyage","used_food_voyage"]:
+			if not integer(s.tutorial.get(key)) or int(s.tutorial.get(key)) < 0: return false
+		if not s.tutorial.get("granted") is Dictionary: return false
+	elif s.difficulty == "tutorial": return false
 	for key in ["seed","voyage","length","ap","coins","next_id","completed","level","xp"]:
 		if not integer(s[key]) or s[key] < 0: return false
 	if s.seed > 4294967295: return false
@@ -574,7 +592,8 @@ static func valid_save(ctx, data: Dictionary) -> bool:
 		if not integer(s.flags.voyage_survival_cost) or int(s.flags.voyage_survival_cost) not in [20,25,30]: return false
 		if s.phase in ["navigation","chapterComplete"]: return false
 	if not ctx.EnvironmentRules.valid(ctx,s): return false
-	if s.voyage < 1 or s.voyage > s.length or s.length < 10 or s.length > 15 or s.coins < 0 or s.ap < 0: return false
+	if s.voyage < 1 or s.voyage > s.length or s.coins < 0 or s.ap < 0: return false
+	if s.mode != "tutorial" and (s.length < 10 or s.length > 15): return false
 	if s.phase == "navigation" and (s.candidates.is_empty() or s.candidates.size() > 3): return false
 	for key in ["hp","hunger","hydration","sanity","hp_max","hunger_max","hydration_max","sanity_max","base_ap","battle_ap","limit","damage"]:
 		if not s.player.has(key) or not integer(s.player[key]): return false
@@ -614,7 +633,7 @@ static func valid_save(ctx, data: Dictionary) -> bool:
 					else: permanent_count+=1
 				if permanent_count>cap or boosts.size()>cap+1: return false
 			elif not cell.equipment.get("boost_cards",[]).is_empty(): return false
-	if s.phase in ["preparation","story","interaction","battle","aftermath","nightHub","chapterComplete"] and ctx.catalog.entry("nodes",s.node.get("id","")).is_empty() and ctx.catalog.entry("story_nodes",s.node.get("id","")).is_empty(): return false
+	if s.phase in ["preparation","story","interaction","battle","aftermath","chapterComplete"] and ctx.catalog.entry("nodes",s.node.get("id","")).is_empty(): return false
 	if not s.node.is_empty() and not valid_node(ctx,s.node,s.mode,false,false): return false
 	if s.phase == "story" and s.story_step not in ["intro","choice","result"]: return false
 	if s.phase == "interaction" and s.node.get("kind") != "shop": return false
@@ -642,7 +661,7 @@ static func valid_save(ctx, data: Dictionary) -> bool:
 		if not valid_node(ctx,node,s.mode,false,false): return false
 		if s.phase=="navigation" and not ctx.Encounter.eligible(ctx,node,s): return false
 	if current and s.phase=="battle" and (not integer(s.battle.get("turn")) or s.battle.turn<1 or not integer(s.battle.get("hp")) or s.battle.hp<0 or not integer(s.battle.get("ap")) or s.battle.ap<0): return false
-	return ctx.Encounter.valid_state(ctx,s) and ctx.Shop.valid_state(ctx,s,p) and ctx.Campaign.valid_save(ctx,s)
+	return ctx.Encounter.valid_state(ctx,s) and ctx.Shop.valid_state(ctx,s,p)
 
 static func uid_suffix(uid: String,prefix: String) -> int:
 	if not uid.begins_with(prefix): return 0
@@ -655,9 +674,6 @@ static func integer(value) -> bool:
 
 static func valid_node(ctx, node: Dictionary, mode: String = "challenge", allow_old_hard_marker: bool = false, allow_old_production_text: bool = false) -> bool:
 	var definition: Dictionary = ctx.catalog.entry("nodes",node.get("id",""))
-	if definition.is_empty():
-		if mode != "story": return false
-		definition = ctx.catalog.entry("story_nodes",node.get("id",""))
 	if definition.is_empty(): return false
 	var node_id: String = definition.id
 	if node.has("variant_id"):

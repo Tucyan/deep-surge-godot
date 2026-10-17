@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "id": "L1",
+  "version": "narr-l1-v2",
+  "length": 15,
+  "beats": [
+    {"id": "L1-B03", "after_voyage": 3, "scene": "L1.s03"},
+    {"id": "L1-B06", "after_voyage": 6, "scene": "L1.s06"},
+    {"id": "L1-B09", "after_voyage": 9, "scene": "L1.s09"},
+    {"id": "L1-B12-close", "after_voyage": 12, "scene": "L1.s12", "priority": 10, "requires_affinity": {"leader": 12}},
+    {"id": "L1-B12-far", "after_voyage": 12, "scene": "L1.s12b", "priority": 0},
+    {"id": "L1-B15", "after_voyage": 15, "scene": "L1.finale", "at": "chapterComplete"}
+  ],
+  "scene_files": [
+    "res://narrative/content/scenes/l1_s03.json",
+    "res://narrative/content/scenes/l1_s06.json",
+    "res://narrative/content/scenes/l1_s09.json",
+    "res://narrative/content/scenes/l1_s12.json",
+    "res://narrative/content/scenes/l1_s12b.json",
+    "res://narrative/content/scenes/l1_finale.json"
+  ]
+}

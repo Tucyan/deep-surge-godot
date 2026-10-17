@@ -58,8 +58,9 @@ func _init() -> void:
 	var old: Dictionary=save.duplicate(true); old.content_version="godot-flow-v02-12"
 	check(not default_run.restore(old),"old content version rejected")
 	var choices: Array=D.choices(catalog)
-	check(choices[0].description=="基准难度。" and "相对标准" in choices[1].description and "相对困难" in choices[2].description,"description compares immediately previous tier")
-	for d in choices.slice(1):
+	check(choices.size()==4 and choices[0].id=="tutorial" and choices[1].description=="基准难度。","tutorial first, standard is the baseline")
+	check(choices[0].description.contains("初始卡牌") and not choices[0].description.contains("固定") and "相对简单" in choices[2].description and "相对困难" in choices[3].description,"tutorial starts with card selection and later tiers compare to the previous one")
+	for d in choices.slice(2):
 		check("生命上限−2" in d.description and "初始手牌−1" in d.description and "迎来更恶劣的环境" in d.description and "迎来更艰难的战斗" in d.description and "%" not in d.description and "概率" not in d.description,"only relative initial deltas and vague pressure hints")
 	var agent=load("res://adapters/agent_session.gd").new(catalog)
 	var response: Dictionary=agent.handle({"method":"reset","params":{"seed":22,"difficulty":"nightmare"}})

@@ -25,9 +25,13 @@ func run():
 			await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png("res://evidence/navigation-panel-%dx%d-%d.png" % [resolution.x,resolution.y,roundi(scale_value*100)])
 	check(app.session.snapshot()==before,"layout preserves state and random stream")
-	# Use a native destination button to verify command wiring survives reparenting.
-	var buttons=app.find_child("VoyageOperationActions",true,false).find_children("*","Button",true,false)
-	buttons[0].pressed.emit(); await settle()
+	# Use native destination buttons to verify command wiring survives reparenting.
+	var options=app.find_child("VoyageOperationActions",true,false).find_children("NavigationOption","Button",true,false)
+	check(not options.is_empty(),"navigation offers destination buttons")
+	if not options.is_empty(): options[0].pressed.emit(); await settle()
+	var depart=app.find_child("NavigationDepart",true,false)
+	check(depart!=null,"choosing a destination offers departure")
+	if depart!=null: depart.pressed.emit(); await settle()
 	check(app.session.state.phase=="preparation","departure button dispatches")
 	app.queue_free(); await process_frame
 	print("NAVIGATION PANEL: "+("PASS" if failures==0 else "FAIL")); quit(0 if failures==0 else 1)

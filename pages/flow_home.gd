@@ -22,6 +22,8 @@ func select_mode(title: Control) -> void:
 	var center:=CenterContainer.new(); center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT); title.add_child(center)
 	var box:=W.panel(center,Vector2(520,260))
 	W.text(box,"选择航程",30,W.GOLD)
-	W.button(box,"剧情模式",func(): request("setup","story"))
+	W.button(box,"剧情模式",func():
+		center.queue_free(); title.composition.visible=true
+		request("narrative_choose",""))
 	W.button(box,"挑战模式",func(): request("setup","challenge"))
 	W.corner_close(box.get_parent(),func(): center.queue_free(); title.composition.visible=true)

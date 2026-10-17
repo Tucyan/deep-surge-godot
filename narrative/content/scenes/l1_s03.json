@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "id": "L1.s03",
+  "title": "第三夜 · 雾里的灯",
+  "entry": "n1",
+  "nodes": [
+    {
+      "id": "n1",
+      "speaker": "旁白",
+      "description": "第九日 · 雾",
+      "text": "雾从海面立起来。你在灯下听见另一只木筏的敲击：三短，一长，又三短。",
+      "next": "n2"
+    },
+    {
+      "id": "n2",
+      "speaker": "沈岚",
+      "description": "陌生木筏 · 船舷",
+      "text": "她没有先报名字，只把绳梯放下来一半：“我们从北边来。你们还剩几盏灯？”",
+      "choices": [
+        {"id": "answer", "text": "如实回答", "next": "n3", "affinity": {"leader": 4}},
+        {"id": "ask", "text": "先问她的来路", "next": "n3", "affinity": {"leader": 1}}
+      ]
+    },
+    {
+      "id": "n3",
+      "speaker": "旁白",
+      "description": "雾中 · 并排",
+      "text": "你说不清自己为什么放低了灯罩。她把绳梯收回去，改成并排停靠。",
+      "next": "n4"
+    },
+    {
+      "id": "n4",
+      "speaker": "沈岚",
+      "description": "停靠条件",
+      "text": "“白天各走各的，晚上靠在一起。我们不替你划筏，也不问你从哪来。”",
+      "choices": [
+        {"id": "accept", "text": "接受并排停靠", "next": "n5", "affinity": {"leader": 6}, "set_flags": ["convoy"]},
+        {"id": "decline", "text": "保持距离", "next": "n5", "affinity": {"leader": -2}, "set_flags": ["solo"]}
+      ]
+    },
+    {
+      "id": "n5",
+      "speaker": "旁白",
+      "description": "雾中 · 深处",
+      "text": "两支木筏在雾里并排。你听见有人在她身后低声报数，数到第七下停住。"
+    }
+  ]
+}

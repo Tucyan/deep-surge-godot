@@ -16,10 +16,13 @@ static func enter(ctx) -> bool:
 	equipment.sort()
 	if equipment.size()<3: return ctx.fail("设备货架配置不足")
 	var stock: Array=[]
-	for pool in [resources,equipment]:
-		for n in range(3):
-			var index: int=int(R.draw(ctx.state.rng,"rewards")*pool.size())
-			stock.append(pool[index]); pool.remove_at(index)
+	if ctx.state.get("mode","")=="tutorial":
+		stock=preload("res://core/tutorial_rules.gd").fixed_stock()
+	else:
+		for pool in [resources,equipment]:
+			for n in range(3):
+				var index: int=int(R.draw(ctx.state.rng,"rewards")*pool.size())
+				stock.append(pool[index]); pool.remove_at(index)
 	var purchased := {}
 	for id in stock: purchased[id]=0
 	ctx.state.shop={"visit_id":node.visit_id,"stock":stock,"purchased":purchased}

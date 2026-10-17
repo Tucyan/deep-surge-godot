@@ -178,4 +178,13 @@ Godot_v4.7.2-stable_win64_console.exe --path . --script res://tests/test_craft_g
 
 ### 2026-10-17：结算评分不封顶（v21）
 
-当前内容版本为 `godot-flow-v02-21`，报告 `score_version` 为 `settlement-score-v2`。探索分数按全部有效成果标签计算，不再截断到4项，总分可能超过1000；Agent结果结构、合法操作、评级阈值和涌潮点规则不变。旧内容存档/轨迹及旧评分报告明确拒绝，不静默迁移。同版本路线使用 `evidence/settlement-v21-*.trace.json`，生成命令为 `python tools/validate_survival_discard.py --trace-prefix settlement-v21`。
+该轮内容版本为 `godot-flow-v02-21`，报告 `score_version` 为 `settlement-score-v2`。探索分数按全部有效成果标签计算，不再截断到4项，总分可能超过1000；Agent结果结构、合法操作、评级阈值和涌潮点规则不变。旧内容存档/轨迹及旧评分报告明确拒绝，不静默迁移。同版本路线使用 `evidence/settlement-v21-*.trace.json`，生成命令为 `python tools/validate_survival_discard.py --trace-prefix settlement-v21`。
+
+
+## 2026-10-18 两层科技 v22
+
+当前内容版本为 `godot-flow-v02-22`，schema 2、JSONL协议和随机算法不变。`tech {id}` 仍从 dispatch 扣点及点亮；第一层任意2个不同节点解锁第二层，已点亮不可重复扣费，活动航程禁止购买。存档拒绝重复节点、未知节点和越层点亮，v21及更旧版本存档/轨迹明确拒绝，不迁移或重置。
+
+`view()` 和 Agent `observe()` 新增公开 `tech_tree: {points, active, tiers, nodes}`。tiers 含 tier/lit/total/required_previous/unlocked；nodes 含 id/name/description/tier/price/lit/allowed/reason。只投影公开成长信息，不暴露种子、随机流、未来内容。ActionQuery 在首页局外商店面板列出真实 `tech` 和已开放 `meta_buy` 操作，报价仍执行副本 dispatch；未开放祝福不枚举。Agent JSONL 仍限当前活动局的合法操作，没有新增授予积分或跳过门槛的接口。查询/预览不点亮、不扣费，不消费随机。
+
+同版本新路线为 `evidence/tech-v22-*.trace.json`；生成及回放命令为 `python tools/validate_survival_discard.py --trace-prefix tech-v22`，测试入口仍为 `test_routes.gd`。详见[机制](meta-shop-and-tech.md)和[验证](../evidence/meta-shop-tech-v22-verification.md)。

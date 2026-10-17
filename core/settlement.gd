@@ -2,7 +2,7 @@ extends RefCounted
 const Stats = preload("res://core/run_statistics.gd")
 const SCORE_VERSION := "settlement-score-v2"
 const REWARD_VERSION := "completed-nodes-v1"
-const OUTCOMES := {"survived":"灯火未熄","true":"回声归航","withdrawn":"离开潮眼","dead":"沉入深潮","mad":"迷失潮声","abandon":"返回岸边","A":"成功封闭","B":"付出代价后处理","C":"紧急撤离","SOLO":"独航出口"}
+const OUTCOMES := {"survived":"灯火未熄","true":"回声归航","withdrawn":"离开潮眼","dead":"沉入深潮","mad":"迷失潮声","abandon":"返回岸边","tutorial":"航程入门","A":"成功封闭","B":"付出代价后处理","C":"紧急撤离","SOLO":"独航出口","chapter":"章节完成"}
 
 static func rounded(value: float) -> int:
 	# JSON round trips can move exact half points by a few ULPs (e.g. HP10/12).
@@ -22,7 +22,7 @@ static func score(input: Dictionary) -> Dictionary:
 
 static func create(state: Dictionary, catalog, scope: String = "run") -> Dictionary:
 	var stats: Dictionary = state.stats.duplicate(true)
-	var outcome: String = state.get("result","") if scope=="run" else state.get("campaign",{}).get("resolution",{}).get("outcome","")
+	var outcome: String = state.get("result","") if scope=="run" else "chapter"
 	var report := {"report_id":state.get("run_id","legacy")+"/"+scope+"/L1","run_id":state.get("run_id","legacy"),"scope":scope,"mode":state.mode,"origin":state.origin,"seed":state.seed,"outcome":outcome,"outcome_name":OUTCOMES.get(outcome,outcome),"completed":state.completed,"length":state.length,"complete":stats.complete,"score_version":SCORE_VERSION,"reward_policy_version":REWARD_VERSION,"fingerprint":catalog.fingerprint(),"score":{},"points":{"granted":state.completed if scope=="run" else 0,"pending":state.completed if scope=="chapter" else 0,"bonus":0},"logs":state.logs.duplicate(true),"stats":stats,"cards":[],"analysis":[]}
 	var remaining := {}
 	var temporary := {}
@@ -40,18 +40,6 @@ static func create(state: Dictionary, catalog, scope: String = "run") -> Diction
 		row.merge({"id":id,"name":definition.get("name",id),"kind":definition.get("kind","resource"),"remaining":int(remaining.get(id,0)),"remaining_temporary":int(temporary.get(id,0)),"remaining_permanent":int(remaining.get(id,0))-int(temporary.get(id,0))},true)
 		report.cards.append(row)
 	report.player=state.player.duplicate(true)
-	report.campaign_summary={}
-	if state.mode=="story":
-		var campaign: Dictionary = state.campaign
-		var config: Dictionary = catalog.entry("story_config","first_layer")
-		var summary := {"route":campaign.route,"clues":[],"quests":[],"resolution":campaign.resolution.duplicate(true)}
-		for clue in campaign.clues:
-			for investigation in config.investigations.values():
-				if investigation.clue==clue: summary.clues.append(investigation.clue_name)
-		for id in campaign.quests:
-			var name: String = config.ordinary_quest.get("name","补给委托") if id==config.ordinary_quest.id else config.special_quest.get("name","异常舱门调查")
-			summary.quests.append({"name":name,"status":campaign.quests[id].status})
-		report.campaign_summary=summary
 	report.prior_chapters=[]
 	if state.has("chapter_report"):
 		report.prior_chapters.append({"outcome":state.chapter_report.outcome,"score":state.chapter_report.score.duplicate(true)})

@@ -2,6 +2,12 @@
 
 文档入口：[文档索引](docs/README.md) · [当前机制](docs/current-game-mechanics.md) · [正式商店](docs/formal-shop.md) · [验证记录](evidence/economy-v11-verification.md)。以下按日期排列的条目仅作变更历史，不能覆盖当前代码。
 
+2026-10-18 剧情系统重做：删除旧剧情模式（固定教学剧情、夜间服务、调查线索、委托、第15站封门结算）及其页面与测试；新增独立 `narrative/` 层，每 3 站（3/6/9/12/15）触发一段剧情，节拍与选项都支持仅按好感度设门槛的分支，未满足版本记为跳过且不会回补。剧情不读写任何玩法数值，播放期间锁定指令，结束后才写回独立剧情档 `user://narrative/`。玩法内容版本升到 `godot-flow-v02-23`，旧存档与旧轨迹按版本拒绝。契约与验证见[剧情层与剧情存档](docs/narrative-and-save.md)。
+
+2026-10-18 事件页三栏与两步选项：节点事件由单一右侧框改为「立绘 / 说明 / 选项」三栏，右侧框只放选项并均匀分布，不再显示标题与说明；事件底板按 z 序压在世界层之上、常驻 HUD 之下，视角复位/切换与打捞按钮在事件阶段仍然绘制但被底板盖住，离开事件后恢复。事件与剧情选项改为先点选、右侧变「确认」再点提交，文本栏显示该选项标题与说明，预选时选项栏右上出现「取消选择」、左侧固定「请做出选择」；取消按钮占位常驻，出现或消失不推动其他选项。继续/跳过文字/结束节点/迎战/进店仍是一步动作。规则、AP、随机与存档不变。详见[事件呈现](docs/node-event-presentation.md)与[验证](evidence/node-event-ui-verification.md)。
+
+2026-10-18 导航两步出发：右侧操作框候选改为“先选点、再出发”。点候选名称只在顶部显示该目的地标题与详细说明，被选中的那一行按钮变为「出发」，再点才启航；候选按钮不再带「出发 · 」前缀。操作框改为固定尺寸（顶边96、底边距视口316），不再随内容自动伸缩。详见[航行操作](docs/navigation-and-crafting.md)与[验证](evidence/nav-panel-verification.md)。
+
 2026-10-16 经济试测 v11：涌泉减为木头1＋随机资源1，免费补给事件限访1次，仅挑战前两站保底食水；削减战斗收益。商店资源共享翻倍价格（1/2/4/8/16/32），设备价+1，尸体出售2币、基础材料不可售；木头支持灯燃烧2轮。内容版本`godot-flow-v02-11`拒绝旧档。见[验证记录](evidence/economy-v11-verification.md)。
 
 2026-10-16 已应用 V0.2 节点与正式局内商店：漂浮物、营地、风暴、修复/节奏/目标筏格事件按新候选规则投放；祭坛退出候选池，增加 E11 分支战斗和“零星漂浮物”回退。商店每次生成3种资源＋3种设备，按单店限购并支持确认后的买卖；藏品货架保留为未开放。内容版本为 `godot-flow-v02-10`，旧内容版本拒绝载入。见[当前规则](docs/current-game-mechanics.md)、[正式商店](docs/formal-shop.md)与[验证记录](evidence/node-shop-v10-verification.md)。
@@ -66,9 +72,9 @@
 | 任务与线索 | 仅剧情中已有信息才提供入口；每次一条，分页，无未来剧情树 |
 
 ```text
-首页 → 新局初始化 → 导航 → 出发（精神/灯） → 准备
+首页 → 新局初始化 → 导航（点候选看标题/详情 → 该行「出发」） → 准备
 → 进入节点 → 文字 → 必选项/商店/战斗 → 结果文字 → 收尾
-→ 结束航行（食水与饥渴扣血） → 老化/临时增益到期 → 超限整理 → 下一轮开始生产/涌泉/导航或终局
+→ 结束航行 → 老化/临时增益到期 → 超限整理 → 食水与饥渴扣血 → 下一轮开始生产/涌泉/导航或终局
 ```
 
 收起面板只改变 UI，不改变游戏 phase；主界面提供“处理当前事件”恢复。未完成事件时没有下一节点入口。商店离店/战斗胜退先恢复结果剧情，剧情end才算完成节点，基地AP不刷新。准备/收尾可使用剩余AP；AP0不自动结束。精神与灯在移动时处理，食水和饥渴扣血在结束航行时各结算一次，剧情夜间不重复扣除。
@@ -119,9 +125,18 @@ godot --headless --path . --script tests/test_mechanics.gd
 godot --headless --path . --script tests/test_routes.gd
 godot --headless --path . --script tests/test_save.gd
 godot --headless --path . --script tests/test_catalog.gd
+godot --headless --path . --script tests/test_difficulty.gd
+godot --headless --path . --script tests/test_tutorial.gd
+godot --path . --script tests/difficulty_ui.gd
+godot --path . --script tests/tutorial_ui.gd
+godot --path . --script tests/tutorial_start.gd
 godot --headless --path . --script tests/test_clean_ui.gd
-godot --headless --path . --script tests/test_story.gd
-godot --headless --path . --script tests/test_story_edges.gd
+godot --headless --path . --script tests/test_narrative.gd
+godot --headless --path . --script tests/test_narrative_flow.gd
+godot --headless --path . --script tests/test_narrative_repairs.gd
+godot --headless --path . --script tests/test_tutorial_rules_repairs.gd
+godot --headless --path . --script tests/test_tutorial_setup.gd
+godot --headless --path . --script tests/test_tutorial_event_layout.gd
 python tools/check_supplied_assets.py
 godot --headless --path . --script tests/test_supplied_assets.gd
 godot --headless --path . --script tests/test_texture_ocean.gd

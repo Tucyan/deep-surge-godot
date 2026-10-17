@@ -106,7 +106,7 @@ func create(assets: RefCounted, entries: Array, view: Dictionary) -> void:
 		stack_bases.append(backing)
 		var tile := ItemCard.new(); add_child(tile)
 		tile.z_index = 2
-		var disabled: bool = context.phase == "discard" and card.id in ["punch","pollution"]
+		var disabled: bool = context.phase == "discard" and (card.id in ["punch","pollution"] or tutorial_currency(card))
 		if context.phase == "battle": disabled = card.definition.cost > context.battle.ap
 		tile.create(assets,card,action_name(card),func(): activated.emit(card),120,184,disabled)
 		ignore_mouse(tile)
@@ -169,7 +169,10 @@ func ignore_mouse(node: Control) -> void:
 	node.mouse_filter = MOUSE_FILTER_IGNORE
 	for child in node.get_children():
 		if child is Control: ignore_mouse(child)
+func tutorial_currency(card: Dictionary) -> bool:
+	return context.get("mode","") == "tutorial" and context.get("phase","") == "discard" and card.id == "coin"
 func action_name(card: Dictionary) -> String:
+	if tutorial_currency(card): return "保留 · 贝币"
 	if card.get("is_fixed_action", false): return "选择 · "+card.definition.name
 	if card.id == "coin": return "弃置全部 · 贝币" if context.phase == "discard" else "查看 · 贝币"
 	if context.phase == "discard": return "弃置 · "+card.definition.name
@@ -177,6 +180,7 @@ func action_name(card: Dictionary) -> String:
 	if context.phase == "battle" or (context.can_base and card.definition.kind == "survival"): return "使用 · "+card.definition.name
 	return "查看 · "+card.definition.name
 func usage(card: Dictionary) -> String:
+	if tutorial_currency(card): return "请保留贝币用于接下来的交易，选择其他可弃手牌。"
 	if context.phase == "battle" and card.definition.kind == "resource": return "选择该资源后，再选攻击或格挡；确认前不会消耗。"
 	if card.id in ["wood","corpse"] and context.can_base: return "长按后拖到已安装的灯上松开，投入一份燃料，不消耗 AP；也可用于合成。"
 	if card.id == "coin":

@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "id": "L1.s09",
+  "title": "第九夜 · 祖父的记录",
+  "entry": "n1",
+  "nodes": [
+    {
+      "id": "n1",
+      "speaker": "旁白",
+      "description": "灯下",
+      "text": "沈岚把一本被盐水泡皱的册子摊在灯下。纸页边缘全是同一种铅笔标记。",
+      "next": "n2"
+    },
+    {
+      "id": "n2",
+      "speaker": "沈岚",
+      "description": "册子 · 第一页",
+      "text": "“我祖父也听过这个节律。他写：不要在第七下之后回答。”",
+      "choices": [
+        {"id": "tell", "text": "说出船板的刻痕", "next": "n3", "affinity": {"leader": 6}, "set_flags": ["shared_knocks"]},
+        {"id": "ask", "text": "只问他还写了什么", "next": "n3", "affinity": {"leader": 2}},
+        {"id": "close", "text": "合上册子", "next": "n3", "affinity": {"leader": -3}}
+      ]
+    },
+    {
+      "id": "n3",
+      "speaker": "旁白",
+      "description": "灯下",
+      "text": "她听完没有惊讶，只把册子翻到最后一页。那页被撕掉了，留下整齐的毛边。",
+      "next": "n4"
+    },
+    {
+      "id": "n4",
+      "speaker": "沈岚",
+      "description": "灯下",
+      "text": "“撕掉这页的人，不想让下一个人知道门的另一侧是什么。”",
+      "next": "n5"
+    },
+    {
+      "id": "n5",
+      "speaker": "旁白",
+      "description": "深夜",
+      "text": "灯芯短了一截。你听见海面下有什么在移动，很慢，像一条船在翻身。"
+    }
+  ]
+}
