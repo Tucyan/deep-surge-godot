@@ -1,6 +1,7 @@
 extends Control
 signal menu_action(action: String)
 const REFERENCE := Vector2(1672,941)
+const BUTTON_GROUP_CENTER_Y := (161.5 + 653.0 + 135.0) * 0.5
 const FILES := ["01_start_game","02_continue","03_journal","04_shop","05_rewind","06_exit"]
 const ACTIONS := ["start","continue","journal","shop","recall","quit"]
 var composition: Control
@@ -14,8 +15,11 @@ var selected := 0
 var _tweens: Dictionary = {}
 func create_background() -> void:
 	clip_contents=true
+	var fill:=ColorRect.new(); fill.name="TitleBlackFill"; fill.color=Color.BLACK
+	fill.mouse_filter=MOUSE_FILTER_IGNORE; add_child(fill)
+	fill.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	poster=TextureRect.new(); poster.texture=load("res://assets/title_ui/lighthouse_poster.png")
-	poster.expand_mode=TextureRect.EXPAND_IGNORE_SIZE; poster.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	poster.expand_mode=TextureRect.EXPAND_IGNORE_SIZE; poster.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	poster.mouse_filter=MOUSE_FILTER_IGNORE; add_child(poster)
 	background=VideoStreamPlayer.new(); background.expand=true
 	background.stream=load("res://assets/title_ui/lighthouse_loop.ogv"); background.loop=true
@@ -43,16 +47,6 @@ func create(view: Dictionary, with_background: bool = true) -> void:
 	shade.size=REFERENCE; shade.mouse_filter=MOUSE_FILTER_IGNORE
 	shade.visible=false
 	composition.add_child(shade)
-	var logo:=TextureRect.new(); logo.name="TitleLogo"; logo.texture=load("res://assets/title_ui/deep_surge_logo_v3.png")
-	logo.expand_mode=TextureRect.EXPAND_IGNORE_SIZE; logo.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	logo.position=Vector2(140,80); logo.size=Vector2(650,487.5)
-	logo.mouse_filter=MOUSE_FILTER_IGNORE; logo.visible=true
-	composition.add_child(logo)
-	var logo_backdrop:=preload("res://presentation/title_logo_backdrop.gd").new()
-	logo_backdrop.name="TitleLogoBackdrop"; logo_backdrop.show_behind_parent=true
-	logo.add_child(logo_backdrop); logo_backdrop.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
-	var frame:=preload("res://presentation/title_frame.gd").new(); frame.name="TitleFrame"
-	add_child(frame); frame.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	var edge_material:=ShaderMaterial.new()
 	edge_material.shader=load("res://assets/shaders/title_button_edge.gdshader")
 	for i in range(6):
@@ -67,10 +61,12 @@ func create(view: Dictionary, with_background: bool = true) -> void:
 			"recall": {"x": 1141.0, "y": 560.0, "width": 405.0, "height": 135.0},
 			"quit": {"x": 1141.0, "y": 653.0, "width": 405.0, "height": 135.0}
 		}[ACTIONS[i]]
-		b.position=Vector2(layout.x,layout.y)
 		var ui_zoom: float=view.get("ui_scale",1.0)
 		b.size=Vector2(layout.width,layout.height)*ui_zoom
-		b.position-=Vector2(layout.width,layout.height)*(ui_zoom-1.0)*0.5
+		# Scale row spacing with the artwork so 125% does not crowd adjacent buttons.
+		var center := Vector2(layout.x + layout.width * 0.5, layout.y + layout.height * 0.5)
+		center.y = REFERENCE.y * 0.5 + (center.y - BUTTON_GROUP_CENTER_Y) * ui_zoom
+		b.position = center - b.size * 0.5
 		b.material=edge_material
 		b.ignore_texture_size=true; b.stretch_mode=TextureButton.STRETCH_SCALE
 		b.pivot_offset=b.size*Vector2(0.5,0.5); b.focus_mode=FOCUS_ALL
@@ -95,14 +91,15 @@ func _reflow() -> void:
 	if size.x<1 or size.y<1:return
 	if composition!=null:
 		var fit:=minf(size.x/REFERENCE.x,size.y/REFERENCE.y)
-		composition.scale=Vector2.ONE*fit; composition.position=Vector2.ZERO
-		composition.size=size/fit
-		for b in buttons:
-			b.position.x=composition.size.x-REFERENCE.x+(1125.0 if b==buttons[0] else 1141.0)-(b.size.x-(435.0 if b==buttons[0] else 405.0))*0.5
+		# Use the same centered contain transform as the title artwork, including black bars.
+		composition.scale=Vector2.ONE*fit
+		composition.size=REFERENCE
+		composition.position=(size-REFERENCE*fit)*0.5
 	if background!=null:
-		var cover:=maxf(size.x/2240.0,size.y/960.0)
-		background.size=Vector2(2240,960)*cover; background.position=(size-background.size)*0.5
-		if poster!=null: poster.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
+		var fit:=minf(size.x/2560.0,size.y/1440.0)
+		background.size=Vector2(2560,1440)*fit; background.position=(size-background.size)*0.5
+		if poster!=null:
+			poster.size=background.size; poster.position=background.position
 func _update_highlight() -> void:
 	for i in range(buttons.size()): buttons[i].texture_normal=light[i] if i==selected and not buttons[i].disabled else dark[i]
 func _hover(index: int, active: bool) -> void:

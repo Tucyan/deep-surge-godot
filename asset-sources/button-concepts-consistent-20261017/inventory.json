@@ -1,0 +1,60 @@
+{
+  "date": "2026-10-17",
+  "assets": {
+    "concept.button.consistent-a": {
+      "label": "星盘导航",
+      "status": "preview-only-awaiting-user-selection",
+      "path": "asset-sources/button-concepts-consistent-20261017/preview-a.png",
+      "sha256": "9d20c67cb153ef2cdeb99f762a7857eae487ee7d7f3c20c733a3429fdddadf92",
+      "dimensions": [
+        1610,
+        977
+      ],
+      "source": "built-in image_gen; two user-provided screenshot references",
+      "dependencies": [
+        "gameplay-reference.png",
+        "title-reference.png",
+        "prompts.json"
+      ],
+      "runtime_mapping": null
+    },
+    "concept.button.consistent-b": {
+      "label": "月相航线",
+      "status": "preview-only-awaiting-user-selection",
+      "path": "asset-sources/button-concepts-consistent-20261017/preview-b.png",
+      "sha256": "108d063cd8f6654e74278cacb8ec5ebd29e3b370e78ed1b76222e2bac79f9b60",
+      "dimensions": [
+        1609,
+        977
+      ],
+      "source": "built-in image_gen; two user-provided screenshot references",
+      "dependencies": [
+        "gameplay-reference.png",
+        "title-reference.png",
+        "prompts.json"
+      ],
+      "runtime_mapping": null
+    },
+    "concept.button.consistent-c": {
+      "label": "海图铭牌",
+      "status": "preview-only-awaiting-user-selection",
+      "path": "asset-sources/button-concepts-consistent-20261017/preview-c.png",
+      "sha256": "29dd81792b11421194848110b34e0ba70321461b6719031b87506899322cb324",
+      "dimensions": [
+        1609,
+        977
+      ],
+      "source": "built-in image_gen; two user-provided screenshot references",
+      "dependencies": [
+        "gameplay-reference.png",
+        "title-reference.png",
+        "prompts.json"
+      ],
+      "runtime_mapping": null
+    }
+  },
+  "reference_hashes": {
+    "gameplay-reference.png": "34319f942bd2e67c888a5716e4df8da56e7420ca9dc4be9242238db0d23f4dfe",
+    "title-reference.png": "e2eaba7930bc0f058122923a5485ea6ef414c023df3eab8e224ed0ba2303b974"
+  }
+}

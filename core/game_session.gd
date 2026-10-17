@@ -12,7 +12,7 @@ const Health = preload("res://core/health_balance.gd")
 const Encounter = preload("res://core/encounter_rules.gd")
 const Shop = preload("res://core/shop_rules.gd")
 const EnvironmentRules = preload("res://core/environment_rules.gd")
-const VERSION := "godot-flow-v02-19"
+const VERSION := "godot-flow-v02-21"
 const ORIGINS := {
 	"strong":{"name":"强壮之人", "description":"生命上限+4，食水上限各+10"},
 	"fool":{"name":"愚者", "description":"非自愿精神损失少5"},

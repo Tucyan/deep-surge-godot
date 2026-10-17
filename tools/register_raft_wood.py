@@ -61,7 +61,7 @@ def register(manifest):
             'dependencies': deps,
             'texture_style': 'unified raft weathered wood; exact weathered_wood_albedo; roughness 0.80',
             'license': 'project-authored geometry; raft weathered wood albedo',
-            'generator': 'tools/apply_raft_wood.py'
+            'generator': 'tools/fit_fishing_net_to_cell.py' if category == 'fishingNet' else 'tools/apply_raft_wood.py'
         })
         return deps
 
@@ -69,7 +69,8 @@ def register(manifest):
     model('model.raft.module.planter', 'planter_v006.blend', 'planter', ROOT / 'assets/models/raft-modules/planter.glb', 6)
     model('model.raft.module.planter-seedling', 'planter_v006.blend', 'planter', ROOT / 'assets/models/raft-modules/planter-seedling.glb', 6)
     for key in ['shieldRack', 'generator', 'fishingNet']:
-        model('model.raft.module.' + key, key + '_v003.blend', key, ROOT / 'assets/models/raft-modules' / f'{key}.glb', 3)
+        version = 4 if key == 'fishingNet' else 3
+        model('model.raft.module.' + key, key + f'_v{version:03d}.blend', key, ROOT / 'assets/models/raft-modules' / f'{key}.glb', version)
 
     wrapper = ROOT / 'assets/models/props/storage-crate-module.tscn'
     assets['model.raft.module.crate'].update({

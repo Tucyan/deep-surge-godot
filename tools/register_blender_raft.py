@@ -1,7 +1,11 @@
 import json,pathlib,hashlib
 root=pathlib.Path('.');p=root/'assets/manifest.json';m=json.loads(p.read_text(encoding='utf-8'))
+barrel_repair=m['assets'].get('model.raft.module.root-decor',{}).copy()
 for file in (root/'assets/models/raft-modules').glob('*.glb'):
  m['assets']['model.raft.module.'+file.stem]={'path':'res://'+file.as_posix(),'source':'asset-sources/raft-blender-v1/raft_modules_v005.blend','version':5 if file.stem=='root-decor' or file.stem.startswith('deck-') else 1,'sha256':hashlib.sha256(file.read_bytes()).hexdigest(),'dependencies':[],'license':'project-authored Blender meshes; canopy/lamp/planter reused from original raft_v005.blend','units':'metres, Godot Y-up, module-local origin'}
+ if file.stem=='root-decor' and barrel_repair.get('barrel_repair_complete') and barrel_repair.get('sha256')==m['assets']['model.raft.module.root-decor']['sha256']:
+  for key in ['source','version','repair','barrel_repair_complete']:
+   m['assets']['model.raft.module.root-decor'][key]=barrel_repair[key]
 from register_planter_model import register
 register(m)
 if (root/'asset-sources/equipment-models-v1/shieldRack_v001.blend').exists():

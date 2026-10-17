@@ -21,14 +21,14 @@ func run() -> void:
 	check(app.session.screen=="home","结算返回首页")
 	app.handle_ui("local_panel","recall")
 	await process_frame
-	check(app.current_page.get("page_index")==0,"首页回溯最近报告")
-	app.handle_ui("settlement_exit","")
+	check(app.layout.find_child("StoryGallery",true,false)!=null,"首页回溯定位为剧情回廊")
+	app.handle_ui("local_panel","")
 	app.handle_command("new",{"mode":"challenge","origin":"strong","seed":23})
 	await process_frame
 	var active: Dictionary=app.session.snapshot()
 	app.handle_ui("local_panel","recall"); await process_frame
-	check(app.current_page.get("page_index")==0,"活动新局可只读回看旧结算")
-	app.handle_ui("settlement_exit","")
-	check(app.session.state==active.state and app.session.state.phase=="navigation","回看旧结算保留活动局")
+	check(app.layout.find_child("StoryGallery",true,false)!=null,"有旧结算的活动新局仍展示剧情回廊")
+	app.handle_ui("local_panel","")
+	check(app.session.snapshot()==active,"浏览剧情回廊保留活动局与随机流")
 	app.queue_free(); await process_frame
 	print("SETTLEMENT INTEGRATION: "+("PASS" if failures==0 else "FAIL")); quit(0 if failures==0 else 1)

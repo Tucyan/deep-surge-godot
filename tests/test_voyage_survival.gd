@@ -23,6 +23,21 @@ func _init() -> void:
 			check(s.state.rng[stream].value==twin.state.rng[stream].value and s.state.rng[stream].cursor==twin.state.rng[stream].cursor,"restored RNG "+stream)
 		var after = s.snapshot()
 		check(not s.dispatch("end_voyage") and s.snapshot()==after,"cannot double settle")
+	for mode in ["challenge","story"]:
+		var pending = fresh(mode)
+		pending.dispatch("voyage",{"id":pending.state.candidates[0].visit_id})
+		pending.state.phase="aftermath"; pending.state.player.hp=1; pending.state.player.hunger=0; pending.state.player.hydration=0
+		pending.I.give(pending.state,"wood",15,false,"discard-order")
+		check(pending.dispatch("end_voyage") and pending.phase()=="discard" and pending.state.player.hp==1,"survival waits for discard "+mode)
+		var restored = fresh(mode)
+		check(restored.restore(JSON.parse_string(JSON.stringify(pending.snapshot()))),"pending discard save restores "+mode)
+		while pending.phase()=="discard":
+			var uid: String=pending.state.hand[0].uid
+			check(pending.dispatch("discard",{"uid":uid}) and restored.dispatch("discard",{"uid":uid}),"discard both sessions")
+			check(pending.state.player.hp==(1 if pending.phase()=="discard" else 0),"only final discard charges survival")
+		for stream in pending.state.rng:
+			check(pending.state.rng[stream].value==restored.state.rng[stream].value and pending.state.rng[stream].cursor==restored.state.rng[stream].cursor,"discard restore preserves RNG "+stream)
+		check(pending.phase()=="finished" and pending.state.voyage==1 and pending.state.player.hp==restored.state.player.hp and pending.state.player.hunger==restored.state.player.hunger and pending.state.player.hydration==restored.state.player.hydration,"fatal final discard prevents next round and restores deterministically")
 	var s = fresh(); s.state.player.hp=1; s.state.player.hunger=0; s.state.player.hydration=0
 	check(s.dispatch("voyage",{"id":s.state.candidates[0].visit_id}) and s.phase()=="preparation","starving player reaches node alive")
 	s.give("food"); s.give("water")
@@ -47,14 +62,22 @@ func _init() -> void:
 	s.state.flags.avoidWave=true; s.state.phase="aftermath"
 	check(s.dispatch("end_voyage") and s.state.player.hunger==40-cost and s.state.flags.avoidWave,"arrival bonus remains for next voyage")
 	s=fresh("story"); s.state.voyage=5; s.state.environment.rolled_voyage=5; s.state.completed=5; s.state.candidates=[]; s.state.node=catalog.entry("nodes","camp"); s.state.node.visit_id="night-survival-fixture"; s.state.phase="aftermath"; s.state.campaign.route="solo"
-	check(s.dispatch("end_voyage") and s.phase()=="nightHub" and s.state.player.hunger==10,"story settles before night")
+	check(s.dispatch("end_voyage") and s.phase()=="nightHub" and s.state.player.hunger==40,"story defers survival through night")
 	var night=fresh("story"); check(night.restore(JSON.parse_string(JSON.stringify(s.snapshot()))),"night save restores")
-	check(night.dispatch("finish_night") and night.state.player.hunger==10,"night completion never charges again")
+	check(night.dispatch("finish_night") and night.state.player.hunger==10,"night completion without discard settles survival once")
+	s=fresh("story"); s.state.voyage=5; s.state.environment.rolled_voyage=5; s.state.completed=5; s.state.candidates=[]; s.state.node=catalog.entry("nodes","camp"); s.state.node.visit_id="night-discard-fixture"; s.state.phase="aftermath"; s.state.campaign.route="solo"
+	s.state.flags.voyage_survival_cost=30; s.I.give(s.state,"wood",15,false,"night-discard")
+	check(s.dispatch("end_voyage") and s.state.player.hunger==40,"night retains pending food cost")
+	var night_pending=fresh("story")
+	check(night_pending.restore(JSON.parse_string(JSON.stringify(s.snapshot()))),"night pending survival restores")
+	check(s.dispatch("finish_night") and s.phase()=="discard" and s.state.player.hunger==40,"night finishes before discard and survival")
+	while s.phase()=="discard": s.dispatch("discard",{"uid":s.state.hand[0].uid})
+	check(s.state.player.hunger==10 and s.state.voyage==6,"night discard settles exactly once before next voyage")
 	s=fresh(); s.state.voyage=s.state.length; s.state.phase="aftermath"; s.state.player.hunger=30
 	check(s.dispatch("end_voyage") and s.phase()=="finished" and s.state.player.hunger==0 and s.state.player.hp==15,"last voyage also settles before ending")
 	s=fresh(); s.dispatch("voyage",{"id":s.state.candidates[0].visit_id})
-	var old = s.snapshot(); old.content_version="godot-flow-v02-16"
-	check(not s.restore(old),"v16 saves explicitly rejected")
+	var old = s.snapshot(); old.content_version="godot-flow-v02-19"
+	check(not s.restore(old),"v19 saves explicitly rejected")
 	var invalid = s.snapshot(); invalid.state.flags.voyage_survival_cost=0
 	check(not s.restore(invalid),"invalid pending cost rejected")
 	check(s.view().survival_settlement.pending and s.view().survival_settlement.food_water_cost==30,"visible pending cost")

@@ -93,5 +93,7 @@ func decorative_root(world,font: Font,layout: String=Layout.ID) -> Node3D:
 	tent_light.shadow_enabled = true; tent_light.omni_shadow_mode = OmniLight3D.SHADOW_CUBE
 	tent_light.shadow_opacity=world.shadow_opacity
 	base.add_child(tent_light)
-	label(base,font,"1 · 2  装饰筏根" if layout in ["123456",Layout.ID] else "装饰筏根",Vector3(0,.35,.84))
+	var first_root: Dictionary=root_cells(layout)[0]
+	var details_position:=Vector3((first_root.x-.5)*2.35,.48,(first_root.y-.5)*2.1+.84)
+	label(base,font,"木筏详情",base.transform.affine_inverse()*details_position)
 	return base

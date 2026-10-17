@@ -90,7 +90,7 @@ func run() -> void:
 	var first: Dictionary = app.session.state.candidates[0]
 	await click("出发 · "+first.name)
 	await click("合成"); await shot("craft"); await click("X")
-	await click("木筏详情"); await shot("raft"); await click("X")
+	app.handle_command("panel",{"id":"raft"}); await process_frame; await shot("raft"); await click("X")
 	await click("进入节点"); await shot("story")
 	await click("X")
 	check(app.session.phase() == "story","收起事件不推进阶段")
@@ -148,7 +148,7 @@ func full_mouse_route() -> void:
 						if v.hand.filter(func(c): return c.id == id).is_empty(): materials_ok = false
 					if materials_ok and v.ap >= 2:
 						await click("合成"); await click("制造弓弩 · 1 AP"); await click("X")
-						await click("木筏详情"); await click("安装 · 弓弩"); await click("X")
+						app.handle_command("panel",{"id":"raft"}); await process_frame; await click("安装 · 弓弩"); await click("X")
 				for card in v.hand:
 					if card.definition.kind == "survival": await click("使用 · "+card.definition.name)
 				await click("进入节点" if v.phase == "preparation" else "结束航行")

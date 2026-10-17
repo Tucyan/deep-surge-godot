@@ -1,6 +1,7 @@
 extends Control
 const ItemCard = preload("res://presentation/item_card.gd")
 const W = preload("res://presentation/widgets.gd")
+const CardStack = preload("res://presentation/card_stack.gd")
 const Border = preload("res://presentation/hand_border.gd")
 signal activated(card: Dictionary)
 signal battle_action_double_clicked(card: Dictionary)
@@ -20,19 +21,20 @@ var touch_index := -1
 const HOLD_SECONDS := 0.2
 var cards: Array = []
 var tiles: Array = []
+var stack_bases: Array = []
+var stack_targets: Array[Vector2] = []
 var buttons: Array = []
 var context: Dictionary
 var visual_assets: RefCounted
 var hovered := -1
 var focus_x := 0.0
 var dwell := 0.0
-var back_copy: BackBufferCopy
-var glass: ColorRect
 var border: Control
 var tip: PanelContainer
 var tip_text: Label
 var card_width := 120.0
 var card_height := 184.0
+var card_face_width := 103.65
 var base_x: Array = []
 var target_positions: Array[Vector2] = []
 var laid_out := false
@@ -93,14 +95,15 @@ func create(assets: RefCounted, entries: Array, view: Dictionary) -> void:
 	size_flags_horizontal = SIZE_EXPAND_FILL
 	size_flags_vertical = SIZE_EXPAND_FILL
 	mouse_filter = MOUSE_FILTER_STOP
-	back_copy = BackBufferCopy.new(); back_copy.copy_mode = BackBufferCopy.COPY_MODE_RECT; add_child(back_copy)
-	glass = ColorRect.new(); glass.mouse_filter = MOUSE_FILTER_IGNORE
-	var mat := ShaderMaterial.new(); mat.shader = preload("res://assets/shaders/hand_glass.gdshader"); glass.material = mat
-	add_child(glass); glass.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	border = Border.new(); add_child(border); border.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
-	border.z_index = 2
+	border.z_index = 0
 	for i in range(cards.size()):
 		var card: Dictionary = cards[i]
+		var backing: Control=null
+		if card.definition.kind=="resource" and not card.get("temporary",false) and int(card.get("stack_count",1))>1:
+			backing=CardStack.new(); backing.name="StackRear_"+str(card.uid); add_child(backing)
+			backing.setup(assets.texture("ui.card.front"),card.stack_count); backing.z_index=1
+		stack_bases.append(backing)
 		var tile := ItemCard.new(); add_child(tile)
 		tile.z_index = 2
 		var disabled: bool = context.phase == "discard" and card.id in ["punch","pollution"]
@@ -123,13 +126,14 @@ func create(assets: RefCounted, entries: Array, view: Dictionary) -> void:
 	mouse_exited.connect(func(): focus_card(-1))
 	arrange.call_deferred()
 func capture_visual() -> Dictionary:
-	var positions := {}; var entries := {}; var scales := {}; var actions := {}
+	var positions := {}; var entries := {}; var scales := {}; var actions := {}; var stack_positions := {}
 	for i in range(cards.size()):
 		positions[cards[i].uid] = tiles[i].position; entries[cards[i].uid] = cards[i]; scales[cards[i].uid] = tiles[i].scale; actions[cards[i].uid] = action_name(cards[i])
+		if stack_bases[i]!=null: stack_positions[cards[i].uid]=stack_bases[i].position
 	var exiting := []
 	for exit in departures:
 		exiting.append({"card":exit.card,"origin":exit.origin,"scale":exit.scale,"elapsed":exit.elapsed,"action":exit.get("action","")})
-	return {"selected_uids":selected_uids.duplicate(),"stack_resources":hand_layout.stack_resources,"actions":actions,"entries":entries,"scales":scales,"departures":exiting,"refill_delay":refill_delay,"positions":positions,"hover_uid":cards[hovered].uid if hovered>=0 else "","dwell":dwell,"tip_visible":tip.visible}
+	return {"stack_positions":stack_positions,"selected_uids":selected_uids.duplicate(),"stack_resources":hand_layout.stack_resources,"actions":actions,"entries":entries,"scales":scales,"departures":exiting,"refill_delay":refill_delay,"positions":positions,"hover_uid":cards[hovered].uid if hovered>=0 else "","dwell":dwell,"tip_visible":tip.visible}
 func restore_visual(saved: Dictionary) -> void:
 	if saved.is_empty(): return
 	if saved.has("selected_uids"):
@@ -138,6 +142,7 @@ func restore_visual(saved: Dictionary) -> void:
 	hovered = -1
 	for i in range(cards.size()):
 		if saved.positions.has(cards[i].uid): tiles[i].position = saved.positions[cards[i].uid]
+		if stack_bases[i]!=null and saved.get("stack_positions",{}).has(cards[i].uid): stack_bases[i].position=saved.stack_positions[cards[i].uid]
 		if cards[i].uid == saved.hover_uid: hovered = i
 	laid_out = true; dwell = saved.dwell if hovered>=0 else 0.0
 	arrange()
@@ -192,45 +197,49 @@ func focus_card(index: int) -> void:
 	if is_instance_valid(tip): tip.hide()
 	arrange()
 func arrange() -> void:
-	if is_instance_valid(back_copy): back_copy.rect = Rect2(Vector2.ZERO,size).grow(24)
-	card_height = clampf(size.y-40,160,190); card_width = card_height*0.651
-	var plate_top := maxf(0.0,size.y-card_height-28.0)
-	if is_instance_valid(glass): glass.offset_top = plate_top
+	card_height = maxf(1.0,size.y*.97); card_width = card_height*(1024.0/1536.0)
+	card_face_width = card_width*(ItemCard.FACE_HORIZONTAL_BOUNDS.y-ItemCard.FACE_HORIZONTAL_BOUNDS.x)
+	var plate_top := 0.0
 	if is_instance_valid(border): border.offset_top = plate_top
 	if tiles.is_empty(): return
 	var left: float = context.get("hand_reserved_left",0.0)
 	var available := maxf(1,size.x-left-40-card_width)
-	var step := minf(card_width+8.0,available/maxi(1,cards.size()-1))
-	var crowded := step < card_width
+	var stack_space := 14.0*card_height/184.0 if stack_bases.any(func(b):return b!=null) else 0.0
+	var step := minf(card_width+8.0+stack_space,available/maxi(1,cards.size()-1))
 	var start := left+(size.x-left-(step*(cards.size()-1)+card_width))*0.5
 	base_x.clear()
-	target_positions.clear()
+	target_positions.clear(); stack_targets.clear()
 	for i in range(cards.size()): base_x.append(start+i*step)
 	for i in range(cards.size()):
 		var x: float = base_x[i]
-		if hovered >= 0:
-			# Only the closest two cards on each side make a small amount of room.
-			# The raised card renders above overlap; the rest of the hand stays anchored.
-			focus_x = base_x[hovered]
-			var distance := absi(i-hovered)
-			if crowded and distance > 0 and distance <= 2:
-				# Move only by the overlap with this neighbour, with no added gap.
-				var visible_width := card_width*.5 if i<hovered else card_width
-				var overlap := maxf(0.0,visible_width-step*distance)
-				var movement := minf(overlap,step*.45)
-				x += movement*(-1.0 if i<hovered else 1.0)
-				x = clampf(x,left+20,size.x-20-card_width)
 		var is_selected: bool = selected_uids.has(cards[i].uid) or (cards[i].has("stack_uids") and cards[i].stack_uids.any(func(u): return selected_uids.has(u)))
+		if hovered >= 0 and hand_layout.hover_mode=="spread":
+			# Pointer focus needs clearance independently of battle selection.
+			# Ignore minor overlaps; the shadow is not part of the card width.
+			focus_x = base_x[hovered]
+			var distance := i-hovered
+			if distance > 0:
+				var rear_extent := 0.0
+				if stack_bases[i]!=null: rear_extent=CardStack.OFFSET*stack_bases[i].layer_count*card_height/184.0
+				var overlap := maxf(0.0,card_face_width+rear_extent-step*distance)
+				if overlap/card_face_width >= 0.05 or is_equal_approx(overlap/card_face_width,0.05):
+					x = minf(x+overlap,size.x-card_width)
 		var raise_y := 0.0
 		if i == hovered: raise_y += 14.0
 		if is_selected: raise_y += card_height / 3.0
 		var tile: Control = tiles[i]
 		# ItemCard keeps its authored aspect ratio; scale its fixed base size.
 		tile.size = Vector2(120,184); tile.scale = Vector2.ONE*(card_height/184)
-		var target := Vector2(x,size.y-card_height-14-raise_y)
+		var target := Vector2(x,(size.y-card_height)*.5-raise_y)
 		target_positions.append(target)
 		if not laid_out: tile.position = target
-		tile.z_index = 25 if is_selected else (20 if i == hovered else 1)
+		# Only the front can raise its drawing layer; rear cards keep sibling order.
+		tile.z_index = 20 if i==hovered and hand_layout.hover_mode=="raise" else 1
+		var rest := Vector2(x,(size.y-card_height)*.5)
+		stack_targets.append(rest)
+		if stack_bases[i]!=null:
+			stack_bases[i].size=Vector2(120,184); stack_bases[i].scale=tile.scale
+			if not laid_out: stack_bases[i].position=rest
 		tile.modulate = Color(1.15, 1.1, 0.95) if is_selected else Color.WHITE
 	laid_out = true
 	if is_instance_valid(tip) and tip.visible: place_tip()
@@ -273,6 +282,16 @@ func _process(delta: float) -> void:
 		var tile: Control = tiles[i]
 		if tile.position.distance_squared_to(target_positions[i]) < .04: tile.position = target_positions[i]
 		else: tile.position = tile.position.lerp(target_positions[i],blend)
+	for i in range(stack_bases.size()):
+		var backing: Control=stack_bases[i]
+		if backing==null: continue
+		if dragging and i==pressed_index:
+			backing.position=tiles[i].position+Vector2(0,14)
+			backing.z_index=299
+		else:
+			backing.position=backing.position.lerp(stack_targets[i],blend)
+			backing.z_index=1
+		backing.modulate.a=tiles[i].modulate.a
 	if tip.visible: place_tip()
 	if hovered >= 0 and pressed_index<0:
 		dwell += delta
@@ -280,13 +299,7 @@ func _process(delta: float) -> void:
 func _gui_input(event: InputEvent) -> void:
 	if pressed_index>=0: return
 	if event is InputEventMouseMotion and not cards.is_empty():
-		# Keep the raised card while the pointer is inside it; hit-test the
-		# visible neighbours only after leaving. This avoids layout feedback.
-		if hovered >= 0 and Rect2(tiles[hovered].position,tiles[hovered].size*tiles[hovered].scale).has_point(event.position): return
-		var index := -1
-		for i in range(tiles.size()-1,-1,-1):
-			if Rect2(tiles[i].position,tiles[i].size*tiles[i].scale).has_point(event.position):
-				index = i; break
+		var index := hit_card(event.position)
 		focus_card(index)
 	elif event is InputEventScreenTouch and event.pressed and touch_index<0:
 		var index:=hit_card(event.position)
@@ -317,10 +330,16 @@ func _begin_press(index: int,point: Vector2) -> void:
 	press_point=point-tiles[index].position; tip.hide()
 
 func hit_card(point: Vector2) -> int:
-	if hovered>=0 and Rect2(tiles[hovered].position,tiles[hovered].size*tiles[hovered].scale).has_point(point): return hovered
-	for i in range(tiles.size()-1,-1,-1):
-		if Rect2(tiles[i].position,tiles[i].size*tiles[i].scale).has_point(point): return i
-	return -1
+	var result := -1
+	var top_z := -1
+	# Match painter order: each group's rear, then its front; later siblings win ties.
+	for i in range(tiles.size()):
+		var backing: Control=stack_bases[i]
+		if backing!=null and backing.z_index>=top_z and backing.hit_rect().has_point(point):
+			result=i; top_z=backing.z_index
+		if tiles[i].z_index>=top_z and Rect2(tiles[i].position,tiles[i].size*tiles[i].scale).has_point(point):
+			result=i; top_z=tiles[i].z_index
+	return result
 
 func _input(event: InputEvent) -> void:
 	if pressed_index<0 or not is_visible_in_tree(): return
@@ -346,6 +365,7 @@ func _input(event: InputEvent) -> void:
 				if pressed_index<drop_index and i>pressed_index and i<=drop_index: slot=i-1
 				elif pressed_index>drop_index and i>=drop_index and i<pressed_index: slot=i+1
 				target_positions[i].x=base_x[slot]
+				stack_targets[i].x=base_x[slot]
 			get_viewport().set_input_as_handled()
 	elif (event is InputEventMouseButton and touch_index<0 and event.button_index==MOUSE_BUTTON_LEFT and not event.pressed) or (event is InputEventScreenTouch and event.index==touch_index and not event.pressed):
 		var index := pressed_index; var was_dragging := dragging; var destination := drop_index

@@ -13,6 +13,7 @@ var camera_controls = preload("res://presentation/raft_camera_controls.gd").new(
 var camera_input_enabled := false
 var camera_orbit_button := MOUSE_BUTTON_RIGHT
 var camera_pan_button := MOUSE_BUTTON_LEFT
+var camera_mode := "oblique"
 var _camera_drag_button := 0
 var _camera_pivot := Vector3.ZERO
 var _automatic_camera_pose := Transform3D.IDENTITY
@@ -84,6 +85,18 @@ func reset_camera_view() -> void:
 	if _has_camera_pose:
 		_reset_from=camera.global_transform; _reset_progress=0.0
 	camera_controls.reset(); _camera_touches.clear(); _camera_drag_button=0; _animate_camera(0)
+
+func set_camera_mode(value: String) -> void:
+	if value not in ["oblique","top"] or value==camera_mode: return
+	# Consume the manual offsets into the interpolation source before clearing them.
+	# This also preserves the visible pose when switching during a reset/transition.
+	if _has_camera_pose:
+		_automatic_camera_pose=camera.global_transform
+		_camera_from=_automatic_camera_pose; _camera_target=_automatic_camera_pose
+		_camera_progress=0.0
+	camera_mode=value
+	camera_controls.reset(); _camera_touches.clear(); _camera_drag_button=0
+	_reset_progress=1.0; _framing_pending=true
 
 func camera_input(event: InputEvent) -> void:
 	if not camera_input_enabled or _reset_progress<1.0: return
@@ -360,6 +373,9 @@ func _frame_raft_if_needed() -> void:
 	if meshes.is_empty(): return
 	var previous: Transform3D=_automatic_camera_pose if _has_camera_pose else camera.global_transform
 	camera.global_transform=_camera_base
+	if camera_mode=="top":
+		# Explicit screen-up avoids the singular UP vector of a vertical look_at.
+		camera.global_transform=Transform3D(Basis.IDENTITY,_camera_pivot+Vector3.UP*(_camera_base.origin-_camera_pivot).length()).looking_at(_camera_pivot,Vector3.FORWARD)
 	var safe:=Rect2(framing_rect.position*Vector2(viewport.size),framing_rect.size*Vector2(viewport.size))
 	var target:=safe.get_center()
 	for attempt in range(10):
@@ -382,6 +398,7 @@ func _frame_raft_if_needed() -> void:
 		var units_per_pixel := 2.0*depth*tan(deg_to_rad(camera.fov)*0.5)/float(viewport.size.y)
 		camera.position += (camera.basis.x*error.x-camera.basis.y*error.y)*units_per_pixel
 	_camera_target=camera.global_transform
+	camera_controls.base_elevation=asin(clampf(_camera_target.basis.z.y,-1.0,1.0))
 	if _has_camera_pose:
 		_camera_from=previous; _camera_progress=0.0; _automatic_camera_pose=previous
 	else:

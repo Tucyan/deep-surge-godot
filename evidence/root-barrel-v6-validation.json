@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "changed_vertices": {
+    "MAT-WarmWeatheredWood": 384,
+    "MAT-AgedIron.001": 1372
+  },
+  "barrel_before_bottom_m": 0.5,
+  "barrel_after_bottom_m": 0.16,
+  "translation_y_m": -0.34,
+  "triangles": 22124,
+  "only_complete_triangles_moved": true,
+  "other_binary_data_unchanged": true,
+  "other_scene_structure_unchanged": true,
+  "sha256": "cb6f6bdad9d6f7d7b5f57228409449a1ae65555836d136d3e1396ca9a0ec7f6b"
+}

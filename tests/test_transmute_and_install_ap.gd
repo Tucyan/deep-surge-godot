@@ -11,8 +11,8 @@ func _init() -> void:
 	call_deferred("run")
 
 func settle() -> void:
-	await process_frame
-	await process_frame
+	# Wait through deferred modal and container layout after pointer-triggered rebuilds.
+	for i in range(4): await process_frame
 
 func run() -> void:
 	root.size = Vector2i(1600, 900)
@@ -111,166 +111,127 @@ func run() -> void:
 	check(not s.dispatch("transmute", {"target": "wood"}), "Transmute blocked during battle")
 	s.state.phase = "preparation"
 	
-	# 4. Test UI Integration
-	app = load("res://scenes/main.tscn").instantiate()
+	# 4. Real pointer integration: selection is local until dispatch.
+	app = load("res://flow_app.gd").new()
+	app.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	app.persistence = false
 	root.add_child(app)
 	await settle()
-	
-	app.handle_command("new", {"mode": "challenge", "origin": "strong", "seed": 22})
-	for id in ["wood", "wood", "wood", "wood", "wood", "wood", "plastic", "iron"]:
+	app.handle_command("new", {"mode":"challenge", "origin":"strong", "seed":22})
+	for id in ["wood", "wood", "wood", "iron", "plastic"]:
 		app.session.give(id, 1, false, "test-fixture")
-	app.session.state.ap = 3
-	app.render()
-	await settle()
-	
-	var craft_btn = app.find_child("CraftEntry", true, false)
-	check(craft_btn != null, "CraftEntry button exists in HUD")
-	check(craft_btn.text == "合成/转化", "CraftEntry button text is '合成/转化' (was '%s')" % craft_btn.text)
-	
-	# Open craft panel
-	app.handle_command("panel", {"id": "craft"})
-	await settle()
-	
-	var recipe_grid = app.find_child("RecipeGrid", true, false)
-	check(recipe_grid != null, "Default tab shows RecipeGrid")
-	
-	var craft_tab_btn = app.find_child("CraftTabButton", true, false)
-	var transmute_tab_btn = app.find_child("TransmuteTabButton", true, false)
-	check(craft_tab_btn != null and transmute_tab_btn != null, "Header has both craft and transmute tab buttons")
-	
-	# Verify CloseX button does not overlap TransmuteTabButton
-	var close_x = app.find_child("CloseX", true, false)
-	check(close_x != null, "CloseX button exists on modal surface")
-	var close_rect = Rect2(close_x.global_position, close_x.size)
-	var tab_rect = Rect2(transmute_tab_btn.global_position, transmute_tab_btn.size)
-	check(not close_rect.intersects(tab_rect), "CloseX does not overlap TransmuteTabButton (close_x: %s, tab: %s)" % [close_rect, tab_rect])
-	
-	# Switch to transmute tab
+	app.handle_command("panel", {"id":"craft"})
 	app.handle_ui("craft_tab", "transmute")
 	await settle()
-	
-	var transmute_panel = app.find_child("TransmutePanel", true, false)
-	check(transmute_panel != null, "TransmutePanel is displayed after switching tab")
-	
-	# Verify 3-column layout elements
-	var left_inv = app.find_child("TransmuteInventory", true, false)
-	check(left_inv != null, "Left column TransmuteInventory exists")
-	var mat_list = app.find_child("TransmuteMaterialList", true, false)
-	check(mat_list != null, "TransmuteMaterialList exists in left column")
-	for res_id in ["wood", "iron", "plastic", "rope", "cloth"]:
-		var mat_item = app.find_child("MatItem_" + res_id, true, false)
-		check(mat_item != null, "Material item %s exists" % res_id)
-		var minus_btn = app.find_child("MatMinus_" + res_id, true, false)
-		var plus_btn = app.find_child("MatPlus_" + res_id, true, false)
-		check(minus_btn != null and plus_btn != null, "Material %s has minus and plus steppers" % res_id)
-	
-	var center_core = app.find_child("TransmuteCore", true, false)
-	check(center_core != null, "Center column TransmuteCore exists")
-	var fusion_diag = app.find_child("FusionDiagram", true, false)
-	check(fusion_diag != null, "FusionDiagram exists in center column")
-	
-	# Test clicking card body directly auto-allocates +1
-	app.handle_ui("transmute_uids", "none")
-	await settle()
-	var iron_card_item = app.find_child("MatItem_iron", true, false)
-	check(iron_card_item != null, "MatItem_iron exists")
-	var click_event := InputEventMouseButton.new()
-	click_event.button_index = MOUSE_BUTTON_LEFT
-	click_event.pressed = true
-	click_event.position = iron_card_item.size * 0.5
-	iron_card_item.gui_input.emit(click_event)
-	await settle()
-	var uids_after_click = app.ui_state.get("transmute_uids", "")
-	var iron_uids = app.session.state.hand.filter(func(c): return c.id == "iron").map(func(c): return c.uid)
-	check(uids_after_click in iron_uids, "Clicking card body auto-allocated 1 iron (transmute_uids: %s)" % uids_after_click)
-	
-	# Test minus button on iron card
-	var minus_iron = app.find_child("MatMinus_iron", true, false)
-	check(minus_iron != null and not minus_iron.disabled, "MatMinus_iron enabled after allocation")
-	minus_iron.pressed.emit()
-	await settle()
-	check(app.ui_state.get("transmute_uids", "") == "none", "Minus button cleared iron allocation back to none")
-	
-	# Test right click on card body decreases allocation
-	iron_card_item = app.find_child("MatItem_iron", true, false)
-	iron_card_item.gui_input.emit(click_event)
-	await settle()
-	check(app.ui_state.get("transmute_uids", "") in iron_uids, "Left click allocates iron again")
-	iron_card_item = app.find_child("MatItem_iron", true, false)
-	var rclick_event := InputEventMouseButton.new()
-	rclick_event.button_index = MOUSE_BUTTON_RIGHT
-	rclick_event.pressed = true
-	rclick_event.position = iron_card_item.size * 0.5
-	iron_card_item.gui_input.emit(rclick_event)
-	await settle()
-	check(app.ui_state.get("transmute_uids", "") == "none", "Right click on card body successfully decrements allocation")
-	
-	# Test clicking target item row selects the target material
-	var target_iron_row = app.find_child("TargetItem_iron", true, false)
-	check(target_iron_row != null, "TargetItem_iron row exists")
-	var target_click := InputEventMouseButton.new()
-	target_click.button_index = MOUSE_BUTTON_LEFT
-	target_click.pressed = true
-	target_iron_row.gui_input.emit(target_click)
-	await settle()
-	check(app.ui_state.get("transmute_target", "") == "iron", "Clicking target item row selected 'iron' as target")
-	
-	# Reset target back to wood and default recommendation for subsequent tests
-	app.handle_ui("transmute_target", "wood")
-	app.handle_ui("transmute_uids", "")
-	await settle()
-	
-	var right_col = app.find_child("TransmuteRightCol", true, false)
-	check(right_col != null, "Right column TransmuteRightCol exists")
-	var count_sec = app.find_child("TransmuteCountSection", true, false)
-	check(count_sec != null, "TransmuteCountSection exists in right column")
-	var target_sec = app.find_child("TransmuteTargetSection", true, false)
-	check(target_sec != null, "TransmuteTargetSection exists in right column")
-	
-	var targets_row = app.find_child("TransmuteTargets", true, false)
-	check(targets_row != null and targets_row.get_child_count() == 5, "TransmuteTargets has 5 target options")
-	
-	var execute_btn = app.find_child("TransmuteExecuteButton", true, false)
-	var quick_btn = app.find_child("QuickTransmuteButton", true, false)
-	check(execute_btn != null and not execute_btn.disabled, "TransmuteExecuteButton is available")
-	check("开始转化" in execute_btn.text, "TransmuteExecuteButton text contains '开始转化' (was '%s')" % execute_btn.text)
-	check(quick_btn != null and not quick_btn.disabled, "QuickTransmuteButton is available")
-	
-	# Test Stepper controls
-	var minus_btn = app.find_child("TransmuteCountMinus", true, false)
-	var plus_btn = app.find_child("TransmuteCountPlus", true, false)
-	var count_lbl = app.find_child("TransmuteCountLabel", true, false)
-	check(minus_btn != null and plus_btn != null and count_lbl != null, "Stepper buttons and label exist")
-	check(count_lbl.text == "1 批次", "Initial count label is '1 批次'")
-	
-	# Increase count to 2 via UI
-	app.handle_ui("transmute_count", "2")
-	await settle()
-	count_lbl = app.find_child("TransmuteCountLabel", true, false)
-	check(count_lbl.text == "2 批次", "Count label updated to '2 批次'")
-	
-	# Execute batch transmute (count=2: 6 wood -> 4 cloth, 2 AP)
-	var ap_before = app.session.state.ap
-	var cloth_before = app.session.I.count(app.session.state, "cloth")
-	var wood_cards = app.session.state.hand.filter(func(c): return c.id == "wood")
-	var wood_uids = wood_cards.slice(0, 6).map(func(c): return c.uid)
-	var wood_before_ui = wood_cards.size()
-	app.handle_command("transmute", {"target": "cloth", "count": 2, "uids": wood_uids})
-	await settle()
-	
-	check(app.session.state.ap == ap_before - 2, "UI batch transmute spends 2 AP (was %d, now %d)" % [ap_before, app.session.state.ap])
-	check(app.session.I.count(app.session.state, "cloth") == cloth_before + 4, "UI batch transmute grants 4 cloth")
-	check(app.session.I.count(app.session.state, "wood") == wood_before_ui - 6, "UI batch transmute consumed 6 wood")
-	
-	# Switch back to craft tab
-	app.handle_ui("craft_tab", "craft")
-	await settle()
-	recipe_grid = app.find_child("RecipeGrid", true, false)
-	check(recipe_grid != null, "Can switch back to RecipeGrid")
-	
+	var before: Dictionary = app.session.snapshot()
+	var execute = app.find_child("TransmuteExecuteButton", true, false)
+	check(execute.disabled, "initial selection is empty and cannot execute")
+	check(app.find_child("TransmuteCountSection", true, false) == null, "batch controls removed")
+	for id in ["wood", "iron", "plastic", "rope", "cloth"]:
+		check(app.find_child("MatPlus_" + id, true, false) == null, "no material stepper")
+		var item = app.find_child("MatItem_" + id, true, false)
+		check(item != null and item.size.y >= 130, "larger material card")
+	var wood_count: int = app.session.I.count(app.session.state, "wood")
+	var quantity = app.find_child("MatQuantity_wood", true, false)
+	check(quantity != null, "quantity ratio exists")
+	if quantity != null: check(quantity.text == "0/%d" % wood_count, "initial ratio shows zero selected")
+	await click(app.find_child("MatItem_cloth", true, false))
+	check(app.ui_state.transmute_uids in ["", "none"], "unavailable material cannot be selected")
+	await click(app.find_child("MatItem_wood", true, false))
+	check(app.ui_state.transmute_uids.split(",").size() == 1, "one click selects one material")
+	quantity = app.find_child("MatQuantity_wood", true, false)
+	if quantity != null: check(quantity.text == "1/%d" % wood_count, "ratio updates after selecting")
+	await click(app.find_child("DiagramSlot1", true, false))
+	check(app.ui_state.transmute_uids in ["none", ""], "clicking input slot cancels last selection")
+	await click(app.find_child("DiagramSlot1", true, false))
+	check(app.session.snapshot() == before, "empty slot click is harmless")
+	await click(app.find_child("MatItem_wood", true, false))
+	await click(app.find_child("MatItem_iron", true, false))
+	await click(app.find_child("MatItem_plastic", true, false))
+	if "--capture" in OS.get_cmdline_user_args():
+		await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png("res://evidence/workbench-selected.png")
+	for name in ["DiagramSlot1", "DiagramSlot2", "DiagramSlot3"]:
+		check(app.find_child(name, true, false).find_children("*", "Label", true, false).is_empty(), "input slot displays icons only")
+	var output = app.find_child("DiagramOutputSlot", true, false)
+	var output_labels = output.find_children("*", "Label", true, false)
+	check(output_labels.size() == 1 and output_labels[0].text == "2", "output shows only the quantity 2 beneath its icon")
+	var top_input = app.find_child("DiagramSlot1", true, false)
+	check(output.get_global_rect().position.y - top_input.get_global_rect().end.y >= 36, "upper green connector has visible space")
+	var selected: String = app.ui_state.transmute_uids
+	await click(app.find_child("MatItem_wood", true, false))
+	check(app.ui_state.transmute_uids == selected, "full slots reject fourth input")
+	await click(app.find_child("DiagramSlot2", true, false))
+	check(app.ui_state.transmute_uids.split(",").size() == 2, "middle slot cancels exactly one UID")
+	check(selected.split(",")[1] not in app.ui_state.transmute_uids.split(","), "middle slot removes its own material UID")
+	check(app.session.snapshot() == before, "selection and cancellation preserve state and RNG")
+	var help = app.find_child("CraftHelpButton", true, false)
+	check(help != null, "workbench help exists")
+	if help != null:
+		var close = app.find_child("CloseX", true, false)
+		check(help.get_global_rect().end.x < close.get_global_rect().position.x, "help is left of close")
+		await click(help)
+		var dialog = app.find_child("CraftHelpDialog", true, false)
+		check(dialog != null and dialog.visible, "help opens workbench instructions")
+		if dialog != null:
+			check(dialog.size.x <= root.size.x, "help fits window")
+			if "--capture" in OS.get_cmdline_user_args():
+				await RenderingServer.frame_post_draw
+				dialog.get_texture().get_image().save_png("res://evidence/workbench-help.png")
+			dialog.hide()
+		check(app.session.snapshot() == before, "help preserves state and RNG")
+	await click(app.find_child("MatItem_wood", true, false))
+	await click(app.find_child("TargetItem_cloth", true, false))
+	check(app.ui_state.transmute_uids in ["", "none"], "changing target leaves empty inputs")
+	for i in range(3):
+		await click(app.find_child("MatItem_wood", true, false))
+	var ap_before: int = app.session.state.ap
+	var cloth_before: int = app.session.I.count(app.session.state, "cloth")
+	execute = app.find_child("TransmuteExecuteButton", true, false)
+	check(not execute.disabled, "three chosen inputs enable conversion")
+	await click(execute)
+	check(app.session.state.ap == ap_before - 1, "execute spends exactly one AP")
+	check(app.session.I.count(app.session.state, "cloth") == cloth_before + 2, "execute produces two chosen resources")
+	check(app.find_child("TransmuteExecuteButton", true, false).disabled, "consumed inputs do not auto-refill")
+	for config in [Vector3(1600,900,1), Vector3(1280,720,1), Vector3(1280,720,1.25), Vector3(1920,820,1.25)]:
+		root.size = Vector2i(config.x, config.y)
+		app.display_settings.free_aspect = true
+		app.display_settings.ui_scale = config.z
+		app.apply_display_settings(false)
+		await settle()
+		for name in ["TransmuteColumns", "TransmuteMaterialList", "TransmuteTargets", "TransmuteExecuteButton"]:
+			var control = app.find_child(name, true, false)
+			check(app.get_global_rect().encloses(control.get_global_rect()), name + " fits viewport " + str(config))
+		var diagram = app.find_child("FusionDiagram", true, false)
+		check(app.find_child("DiagramOutputSlot", true, false).get_global_rect().position.y - app.find_child("DiagramSlot1", true, false).get_global_rect().end.y >= 36, "upper connector remains visible at " + str(config))
+		for name in ["DiagramSlot1", "DiagramSlot2", "DiagramSlot3", "DiagramOutputSlot"]:
+			check(diagram.get_global_rect().encloses(app.find_child(name, true, false).get_global_rect()), "diagram slot fits " + name)
+		if "--capture" in OS.get_cmdline_user_args():
+			await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png("res://evidence/workbench-%dx%d-%d.png" % [config.x, config.y, roundi(config.z * 100)])
+	for config in [Vector3(1280,720,1.25), Vector3(1600,900,1)]:
+		root.size = Vector2i(config.x, config.y)
+		app.display_settings.ui_scale = config.z
+		app.apply_display_settings(false)
+		app.handle_ui("craft_tab", "craft")
+		await settle()
+		var grid = app.find_child("RecipeGrid", true, false)
+		check(grid != null and grid.columns == 4, "recipe tab still uses four columns")
+		check(app.get_global_rect().encloses(grid.get_global_rect()), "larger recipe UI fits " + str(config))
+		if "--capture" in OS.get_cmdline_user_args():
+			await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png("res://evidence/workbench-recipes-%dx%d-%d.png" % [config.x, config.y, roundi(config.z * 100)])
 	app.queue_free()
 	await settle()
-	
 	print("TRANSMUTE AND INSTALL AP: %s" % ("PASS" if failures == 0 else "FAIL"))
 	quit(failures)
+
+func click(control: Control) -> void:
+	var pos: Vector2 = root.get_final_transform() * control.get_global_rect().get_center()
+	for pressed in [true, false]:
+		var event := InputEventMouseButton.new()
+		event.position = pos; event.global_position = pos
+		event.button_index = MOUSE_BUTTON_LEFT; event.pressed = pressed
+		Input.parse_input_event(event)
+		await process_frame
+	await settle()

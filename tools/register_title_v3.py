@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / 'assets/manifest.json'
 data = json.loads(MANIFEST.read_text(encoding='utf-8'))
 assets = data['assets']
-VIDEO_SOURCE = 'user-supplied/月下灯塔与星海航行_无水印_2x超分辨率.mp4'
+VIDEO_SOURCE = 'user-supplied/深潮_月下灯塔与远航帆船_去水印_2x超分2K_带边框.mp4'
 FRAME_SOURCE = 'user-supplied/深潮_矩形框_无缝修复版.zip'
 
 
@@ -24,8 +24,9 @@ def register(asset_id, relative, source, **extra):
 
 
 register('video.title.ocean', 'assets/title_ui/lighthouse_loop.ogv', VIDEO_SOURCE,
-         encoding='FFmpeg 7.1 libtheora q7, 2240x960, yuv420p, silent, native Godot loop; preserves source 21:9')
-register('texture.title.ocean-poster', 'assets/title_ui/lighthouse_poster.png', VIDEO_SOURCE + '#first-frame')
+         encoding='FFmpeg 7.1 libtheora q7, 2560x1440, yuv420p, silent, native Godot loop; preserves source 16:9',
+         version=4)
+register('texture.title.ocean-poster', 'assets/title_ui/lighthouse_poster.png', VIDEO_SOURCE + '#first-frame', version=4)
 register('texture.title.logo-v3', 'assets/title_ui/deep_surge_logo_v3.png',
          'user-supplied/codex-clipboard-1a3fb0cf-cad3-4cca-9f6f-47f243db5f95.png')
 register('reference.title.home-v3', 'assets/title_ui/home_reference_v3.png',
@@ -42,14 +43,18 @@ entry = assets['ui.title.menu']
 register('ui.title.logo-backdrop', 'presentation/title_logo_backdrop.gd', 'project-authored',
          runtime_mapping='Circular black 70% opacity; child behind TitleLogo; inherits movement, scale and visibility',
          visual_random='none')
-entry.update(version=7, sha256=hashlib.sha256((ROOT / 'presentation/title_menu.gd').read_bytes()).hexdigest())
-entry['dependencies'] = [dep for dep in entry['dependencies'] if dep != 'shader.title.board']
-for dep in ['ui.title.frame-v3', 'texture.title.logo-v3', 'texture.title.ocean-poster', 'ui.title.logo-backdrop']:
+entry.update(version=8, sha256=hashlib.sha256((ROOT / 'presentation/title_menu.gd').read_bytes()).hexdigest())
+entry['dependencies'] = [dep for dep in entry['dependencies'] if dep not in ['shader.title.board', 'ui.title.frame-v3', 'texture.title.logo-v3', 'ui.title.logo-backdrop']]
+assets['ui.title.frame-v3']['runtime'] = False
+assets['ui.title.logo-backdrop']['runtime'] = False
+assets['texture.title.logo-v3']['runtime'] = False
+for dep in ['texture.title.ocean-poster']:
     if dep not in entry['dependencies']:
         entry['dependencies'].append(dep)
-entry['layout'] = dict(reference_size=[1672, 941], logo=[140, 80, 650, 487.5],
+entry['layout'] = dict(reference_size=[1672, 941], logo='embedded in video',
                        buttons='Right anchored; original aspect and UI scale retained', landscape_aspects=['3:2', '21:9'])
-entry['shade'] = dict(opacity=0, layer_order=['poster', 'video', 'logo/buttons', 'continuous-frame'])
+entry['shade'] = dict(opacity=0, layer_order=['black-fill', 'poster', 'video', 'buttons'])
+entry['background'] = dict(aspect='16:9', fit='contain, centered', uncovered_color='#000000', separate_frame=False)
 for entry in assets.values():
     if entry.get('path') in ['res://presentation/display_settings.gd', 'res://presentation/settings_panel.gd']:
         entry['sha256'] = hashlib.sha256((ROOT / entry['path'][6:]).read_bytes()).hexdigest()

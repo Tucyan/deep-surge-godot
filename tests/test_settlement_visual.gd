@@ -18,10 +18,37 @@ func button(text: String) -> Button:
 	return null
 func click(item: Control) -> void:
 	var point := item.get_global_rect().get_center()
+	var move := InputEventMouseMotion.new(); move.position=point; root.push_input(move,true)
+	await process_frame
 	await mouse(point,true); await mouse(point,false)
 func capture(id: String) -> void:
 	await process_frame; await process_frame; await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png("res://evidence/settlement-page-"+id+".png")
+func check_detail_scroll() -> void:
+	await process_frame; await process_frame
+	check(button("上一页")==null and button("下一页")==null,"detail has no pagination")
+	var scrolls: Array[Node] = page.find_children("*","ScrollContainer",true,false)
+	check(scrolls.size()==1,"detail has one scroll container")
+	if scrolls.size()!=1: return
+	var scroll: ScrollContainer = scrolls[0]
+	var entries: Control = scroll.get_child(0)
+	var expected: Array[String] = page._detail_lines()
+	check(entries.get_child_count()==expected.size(),"every detail line is present")
+	for i in range(mini(entries.get_child_count(),expected.size())):
+		check(entries.get_child(i).text==expected[i],"detail line matches report")
+	check(scroll.scroll_vertical==0,"switching category starts at top")
+	var bar := scroll.get_v_scroll_bar()
+	if bar.max_value>bar.page:
+		var wheel := InputEventMouseButton.new()
+		wheel.position=scroll.get_global_rect().get_center(); wheel.button_index=MOUSE_BUTTON_WHEEL_DOWN; wheel.pressed=true
+		root.push_input(wheel,true); await process_frame
+		wheel=wheel.duplicate(); wheel.pressed=false; root.push_input(wheel,true)
+		await process_frame
+		check(scroll.scroll_vertical>0,"mouse wheel scrolls detail")
+		scroll.scroll_vertical=int(bar.max_value)
+		await process_frame; await process_frame
+		var last: Control = entries.get_child(entries.get_child_count()-1)
+		check(last.get_global_rect().end.y<=scroll.get_global_rect().end.y+1,"last detail is reachable at bottom")
 func run() -> void:
 	root.size=Vector2i(1600,900)
 	page=load("res://pages/settlement_page.gd").new(); root.add_child(page)
@@ -32,6 +59,10 @@ func run() -> void:
 	report.stats.devices={"filter/cell":{"id":"filter","cell":1,"uses":2,"produced":4,"outputs":{"water":4}}}
 	report.stats.attribute_sources={"hp":{"night":{"restored":8,"lost":0,"overflow":3}}}
 	report.campaign_summary={"route":"scholar","clues":["潮眼的流向"],"quests":[{"name":"修缮拖缆","status":"completed"}],"resolution":{"outcome":"A","plan":"seal","costs":{"wood":2},"losses":[],"relationship":"信任增加","people":"确认人员已撤离"}}
+	for i in range(12):
+		var card: Dictionary = report.cards[0].duplicate(true)
+		card.name="长列表测试物资 %d" % (i+1)
+		report.cards.append(card)
 	var before := report.duplicate(true)
 	var catalog = load("res://content/catalog.gd").new(); check(catalog.load_catalog(),"visual fixture catalog loads")
 	page.setup({"settlement":report},catalog,RefCounted.new())
@@ -67,15 +98,19 @@ func run() -> void:
 	await space(true); await space(false)
 	check(page.page_index==0 and page.paused,"focused analysis button responds to space")
 	await click(button("跳过，查看结算"))
-	await click(button("下一页")); await capture("crisis-score-1600")
-	await click(button("卡牌收支")); await capture("cards-1600")
-	await click(button("生存与木筏")); await click(button("下一页")); await capture("survival-1600")
-	await click(button("航行与剧情")); await capture("campaign-1600")
+	await check_detail_scroll(); await capture("crisis-score-1600")
+	await click(button("卡牌收支")); await check_detail_scroll(); await capture("cards-1600")
+	await click(button("生存与木筏")); await check_detail_scroll(); await capture("survival-1600")
+	await click(button("航行与剧情")); await check_detail_scroll(); await capture("campaign-1600")
+	await click(button("战斗与危机")); await check_detail_scroll()
 	await click(button("回看航海日志"))
 	check(page.paused and page.scroll_position==0,"actual return starts paused at beginning")
 	root.size=Vector2i(1280,720); await process_frame; await process_frame
 	await capture("logs-1280")
-	await click(button("跳过，查看结算")); await capture("analysis-1280")
+	await click(button("跳过，查看结算")); await check_detail_scroll(); await capture("analysis-1280")
+	for title in ["卡牌收支","战斗与危机","生存与木筏","航行与剧情"]:
+		await click(button(title)); await check_detail_scroll()
+		await capture("scroll-"+str(page._tab)+"-1280")
 	for item in page.find_children("*","Button",true,false):
 		if item.is_visible_in_tree():
 			var transform: Transform2D = root.get_final_transform() * item.get_global_transform()

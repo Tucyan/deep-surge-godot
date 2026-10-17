@@ -25,6 +25,8 @@ func build() -> void:
 	confirmation.ok_button_text="确认购买"
 	confirmation.cancel_button_text="取消"
 	add_child(confirmation)
+	for button in [confirmation.get_ok_button(), confirmation.get_cancel_button()]:
+		W.TextButtonArt.apply(button)
 	var dialog_body := VBoxContainer.new()
 	dialog_body.custom_minimum_size=Vector2(500,190)
 	dialog_body.size=Vector2(500,220)

@@ -22,6 +22,8 @@ func _init() -> void:
 	if not s.state.has("stats"):
 		quit(1); return
 	var before: Dictionary = s.snapshot()
+	var previous: Dictionary=before.duplicate(true); previous.content_version="godot-flow-v02-20"
+	check(not s.restore(previous) and same(s.snapshot(),before),"拒绝v20旧档且保持当前会话")
 	check(not s.dispatch("voyage",{"id":"missing"}) and s.snapshot()==before,"拒绝命令不改变统计")
 	check(s.dispatch("voyage",{"id":s.state.candidates[0].visit_id}),"实际出发")
 	s.change("hydration",int(s.state.player.hydration_max)-30-int(s.state.player.hydration),"test_fixture")
@@ -42,6 +44,15 @@ func _init() -> void:
 	var report: Dictionary = s.state.get("settlement",{})
 	check(not report.is_empty(),"终局生成报告")
 	check(report.get("complete",false),"新局报告完整")
+	var high_report: Dictionary=report.duplicate(true)
+	high_report.completed=high_report.length; high_report.outcome="survived"
+	high_report.stats.tags=["exploration","craft","device","investigation","quest"]
+	high_report.score.inputs.merge({"completed":high_report.length,"goal":true,"hp":1.0,"sanity":1.0,"cells":1.0,"events_entered":0,"battles_entered":0,"tags":5},true)
+	high_report.score=s.Settlement.score(high_report.score.inputs)
+	high_report.points.granted=high_report.completed
+	check(high_report.score.total==1025 and s.Settlement.valid_report(JSON.parse_string(JSON.stringify(high_report))),"超过千分的报告经JSON仍可校验")
+	var old_score_report: Dictionary=report.duplicate(true); old_score_report.score_version="settlement-score-v1"
+	check(not s.Settlement.valid_report(old_score_report),"拒绝旧评分报告，不静默重算")
 	check(report.get("points",{}).get("granted",-1)==s.state.completed,"节点发点保持")
 	var saved: Dictionary = JSON.parse_string(JSON.stringify(s.snapshot()))
 	var copy = load("res://core/game_session.gd").new(c)
@@ -105,6 +116,12 @@ func _init() -> void:
 		check(scoring.score(fixture).total==763,"设计撤离763分夹具")
 		fixture.merge({"completed":15,"length":15,"goal":true,"hp":0.6,"sanity":0.4,"cells":0.5,"events_entered":0,"events_won":0,"battles_entered":0,"battles_won":0,"tags":4},true)
 		check(scoring.score(fixture).total==928,"设计章节928分夹具")
+		fixture.merge({"hp":1.0,"sanity":1.0,"cells":1.0,"tags":5},true)
+		check(scoring.score(fixture).total==1025 and scoring.score(fixture).components.exploration==125,"第五项成果继续计分，总分可超过1000")
+		fixture.tags=8
+		check(scoring.score(fixture).total==1100 and scoring.score(fixture).grade=="S","成果计分无人工上限，评级阈值保持")
+		fixture.completed=8
+		check(scoring.score(fixture).components.exploration==107,"未完成航程仍按推进比例计算全部成果")
 		fixture.completed=0; fixture.goal=false
 		check(scoring.score(fixture).total==0,"零推进不刷成果分")
 	else: check(false,"独立评分模块")

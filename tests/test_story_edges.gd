@@ -46,6 +46,7 @@ func _init() -> void:
 	f = s.snapshot(); f.state.voyage = 15; f.state.environment.rolled_voyage = 15; f.state.completed = 14; f.state.phase = "preparation"; f.state.ap = 3
 	f.state.candidates = []; f.state.node = c.entry("story_nodes","ST.L1.F15"); f.state.node.visit_id = "emergency-test-fixture"
 	f.state.hand = []; f.state.coins = 0; f.state.player.hp = 1
+	f.state.player.hunger = 100; f.state.player.hydration = 100 # Isolate emergency exit from final survival damage.
 	check(s.restore(f),"危机夹具载入")
 	check(s.dispatch("enter") and s.dispatch("skip"),"进入最终危机，跳过仅文字")
 	reject(s,"skip"); reject(s,"option",{"id":"seal"}); reject(s,"option",{"id":"tow"}); reject(s,"leave_encounter")

@@ -1,5 +1,7 @@
 # 用户提供的 HUD 包接入（2026-10-13）
 
+2026-10-17 航海 HUD 更新：顶部五图标、独立长条/圆形按钮、程序化米白手牌底板，以及新行动点素材已接入；卡牌顶栏固定逻辑高度，仅横向伸展。当前外观、来源与缩放约定见[航海 HUD](nautical-hud.md)，覆盖下文旧外观记录。
+
 来源为 `deep_surge_complete_hud_godot4.zip`，原包、完整解压文件及 SHA 清单保存在 `asset-sources/complete-hud-v1/`，该目录以 `.gdignore` 排除运行导入。包实际包含三个程序绘制的 Control，没有图片图集、3D 模型或新玩法内容。脚本经检查，运行组件只使用 Godot 绘制、原生控件与信号，不含文件访问、网络访问或外部命令执行。包内 README 为参考资料，不替代项目规则。
 
 ## 实际接入
@@ -9,7 +11,7 @@
 - `ui.hud.event-choices`：已有剧情/遭遇子页面的选择区域，继续、跳过、迎战、离开、商店入口和选项全部映射原有命令/稳定选项 ID。事件仍按阶段触发，收起面板不结束事件。
 - 两个表现适配资产 `ui.hud.voyage-adapter`、`ui.hud.story-adapter` 记录页面依赖和 hash。登记工具为 `tools/register_supplied_hud.py`。
 
-运行组件放在 `addons/deep_surge_status/`；直接实例化，不需要启用编辑器插件。包内 demo、plugin.gd/plugin.cfg 和 project.godot 只保留在原始来源目录，不覆盖当前项目设置。
+运行组件放在 `presentation/hud/`，运行纹理放在 `assets/ui/hud/`；直接实例化，不需要启用编辑器插件。2026-10-17 已将运行组件从 `addons/` 迁入上述主工程目录。包内 demo、plugin.gd/plugin.cfg 和 project.godot 只保留在原始来源目录，不覆盖当前项目设置。
 
 ## 适配
 
@@ -60,7 +62,7 @@
 - 行动点使用 332×85 逻辑像素，位于状态栏下方；原始球体纹理分别表示可用/耗尽，夜间机会沿用原状态绑定。
 - 当前操作区位于其下方，底边留在手牌上方。沿用 1600×900 的 canvas_items 缩放，保留现有手牌动画与毛玻璃底板。
 - 事件面板仅由现有流程按需打开。采用新版灯塔顶图和原图选项边框，正文和选项为原生控件；支持全部选项、键盘聚焦、禁用原因及原命令路由。1 个选项时顶图高145，2～3个时高65，4个及以上隐藏顶图并紧凑排列；多选项详情通过按钮悬停提示阅读。
-- 纹理统一位于 `addons/deep_surge_status/textures/`，脚本预加载并可复用缓存；状态/AP的 `art_override` 仍可替换美术。事件图切片坐标登记于 manifest 的 `texture.hud.event-art.atlas_regions`。资源重登记使用 `python tools/register_supplied_hud.py`。
+- 纹理统一位于 `assets/ui/hud/`，脚本预加载并可复用缓存；状态/AP的 `art_override` 仍可替换美术。事件图切片坐标登记于 manifest 的 `texture.hud.event-art.atlas_regions`。资源重登记使用 `python tools/register_supplied_hud.py`。
 
 验证：`tests/hud_v2_visual.gd` 在 RTX 4060 / Compatibility 实际运行通过，覆盖1920×1080、1600×900、1280×720，真实状态/AP、条件出现、原生命令、禁用拦截、绘制不改状态和七选项布局。`tests/test_clean_ui.gd` 通过，无滚动容器；`tools/check_supplied_assets.py` 通过，73项哈希绑定。截图和日志见 `evidence/hud-v2-*`。七选项截图是布局夹具，不代表该剧情节点真实有七个选项。
 

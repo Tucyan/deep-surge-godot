@@ -1,5 +1,11 @@
 # Deep Surge 文档索引
 
+首页按钮在宽屏、窄高窗口及 100%/125% UI 缩放下的布局修正见[首页按钮比例验证](../evidence/title-layout-verification.md)。
+
+“回溯潮涌”现为卡片式[剧情回廊](story-gallery.md)，收录特殊开局序章与已接触剧情；[验证记录](../evidence/story-gallery-verification.md)。
+
+首次进入的五幕世界观序章（逐字狸语与 BGM）见 [opening-intro.md](opening-intro.md)，验证见 [opening-intro-verification.md](../evidence/opening-intro-verification.md)。
+
 当前默认工程是 `deep-surge-godot/`。规则冲突时以当前 Godot 代码和测试为准。
 
 ## 当前 Godot V0.2
@@ -21,16 +27,29 @@
 | 剧情数据、夜间与接口 | [story-data.md](story-data.md)、[story-interface.md](story-interface.md) |
 | 结算与评分 | [settlement.md](settlement.md) |
 | UI、布局与显示 | [frontend-guidelines.md](frontend-guidelines.md)、[display-settings.md](display-settings.md)、[hand-layout.md](hand-layout.md) |
+| 航海顶栏、手牌底板与行动点 | [nautical-hud.md](nautical-hud.md) |
 | 资产与 HUD | [../assets/README.md](../assets/README.md)、[supplied-hud.md](supplied-hud.md) |
 | 设计/实施计划 | [superpowers/plans/](superpowers/plans/) |
 
 ### 当前验证记录
 
+两种视角共享自由移动限位、从实际姿态连续平滑切换见[自由视角验证](../evidence/camera-free-view-verification.md)。
+
+默认视角适配收缩顶栏、俯视模式及显示目标姿态的SVG切换按钮见[视角模式与居中](../evidence/camera-modes-verification.md)。
+
+资源牌点击及设置更改触发画面停顿的调用路径与 GPU 耗时诊断见 [点击停顿排查](../evidence/click-stall-diagnostic.md)（原因已定位，尚未修复）。
+
+关闭 X、航行/设置复位图标及实际指针验证见[工具按钮验证](../evidence/utility-buttons-verification.md)。
+
+普通文字按钮四态素材接入、紧凑符号按钮及 GPU 布局检查见 [文字按钮验证](../evidence/text-buttons-verification.md)。
+
+正式资源叠牌、单张主卡悬停及两种设置见 [叠牌与悬停验证](../evidence/hand-stack-hover-verification.md)。
+
 战斗四大板块素材接入与 GPU/交互验证见 [battle-panels-verification.md](../evidence/battle-panels-verification.md)。
 
 最新横屏自由比例与首页素材更新见 [title-v3-display-verification.md](../evidence/title-v3-display-verification.md)。
 
-验证证据集中在 `deep-surge-godot/evidence/`。最新主动打捞修订见 [salvage-v19-verification.md](../evidence/salvage-v19-verification.md)。最新航末生存结算见 [survival-v17-verification.md](../evidence/survival-v17-verification.md)。最新视角平移限位验证见 [camera-pan-limit-verification.md](../evidence/camera-pan-limit-verification.md)。此前视角按键绑定验证见 [camera-bindings-verification.md](../evidence/camera-bindings-verification.md)。此前中键平移与R复位验证见 [camera-pan-reset-verification.md](../evidence/camera-pan-reset-verification.md)。此前螺旋与视角验证见 [spiral-camera-v16-verification.md](../evidence/spiral-camera-v16-verification.md)。此前扩建试测见 [expansion-v15-verification.md](../evidence/expansion-v15-verification.md)。此前战斗补给试测见 [battle-supply-v14-verification.md](../evidence/battle-supply-v14-verification.md)。此前难度验证见 [difficulty-v13-verification.md](../evidence/difficulty-v13-verification.md)。此前环境验证见 [environment-v12-verification.md](../evidence/environment-v12-verification.md)。历史经济验证见 [economy-v11-verification.md](../evidence/economy-v11-verification.md)。此前节点与商店改版见 [node-shop-v10-verification.md](../evidence/node-shop-v10-verification.md)。专项证据按主题命名；证据只对记录的代码版本和命令负责。
+验证证据集中在 `deep-surge-godot/evidence/`。最新主动打捞修订见 [salvage-v19-verification.md](../evidence/salvage-v19-verification.md)。最新弃牌后生存结算见 [survival-v20-verification.md](../evidence/survival-v20-verification.md)。此前航末生存结算见 [survival-v17-verification.md](../evidence/survival-v17-verification.md)。最新视角平移限位验证见 [camera-pan-limit-verification.md](../evidence/camera-pan-limit-verification.md)。此前视角按键绑定验证见 [camera-bindings-verification.md](../evidence/camera-bindings-verification.md)。此前中键平移与R复位验证见 [camera-pan-reset-verification.md](../evidence/camera-pan-reset-verification.md)。此前螺旋与视角验证见 [spiral-camera-v16-verification.md](../evidence/spiral-camera-v16-verification.md)。此前扩建试测见 [expansion-v15-verification.md](../evidence/expansion-v15-verification.md)。此前战斗补给试测见 [battle-supply-v14-verification.md](../evidence/battle-supply-v14-verification.md)。此前难度验证见 [difficulty-v13-verification.md](../evidence/difficulty-v13-verification.md)。此前环境验证见 [environment-v12-verification.md](../evidence/environment-v12-verification.md)。历史经济验证见 [economy-v11-verification.md](../evidence/economy-v11-verification.md)。此前节点与商店改版见 [node-shop-v10-verification.md](../evidence/node-shop-v10-verification.md)。专项证据按主题命名；证据只对记录的代码版本和命令负责。
 
 ### 常用命令
 
@@ -53,3 +72,13 @@ python -m unittest discover -s tests -p test_agent_stdio.py -v
 
 根目录的玩法原稿、压缩包和实验记录不作为当前实现入口；需要追溯来源时再查阅。
 
+
+工作台材料大卡片、点击投入/撤回及问号帮助见[工作台交互验证](../evidence/workbench-material-selection-verification.md)。
+
+工作台配方图标、点击说明及边缘定位见 [配方提示验证](../evidence/recipe-tooltip-verification.md)。
+
+取消结算分数上限（v21）、完整路线和GPU页面验证见[结算评分不封顶](../evidence/settlement-uncapped-verification.md)。
+
+结算详情五个分类取消分页、完整列表滚动与GPU检查见[结算滚动验证](../evidence/settlement-scroll-verification.md)。
+
+全屏图鉴、预览卡片与故事／说明页签见[图鉴验证](../evidence/encyclopedia-verification.md)。

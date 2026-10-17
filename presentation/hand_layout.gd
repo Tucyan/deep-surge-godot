@@ -2,6 +2,8 @@ extends RefCounted
 ## UI preferences/order only; never writes inventory or consumes rule RNG.
 var auto_sort := true
 var stack_resources := true
+const HOVER_MODES := ["spread","raise"]
+var hover_mode := "spread"
 var order: Array = []
 var path := "user://hand-layout.cfg"
 const KINDS := ["survival","resource","currency","equipment","action","combat","negative"]
@@ -13,11 +15,14 @@ func load_preferences() -> void:
 	auto_sort=bool(config.get_value("hand","auto_sort",true))
 	stack_resources=bool(config.get_value("hand","stack_resources",true))
 	order=Array(config.get_value("hand","order",[]))
+	var mode=config.get_value("hand","hover_mode","spread")
+	hover_mode=mode if mode in HOVER_MODES else "spread"
 
 func save_preferences() -> Error:
 	var config := ConfigFile.new()
 	config.set_value("hand","auto_sort",auto_sort)
 	config.set_value("hand","stack_resources",stack_resources)
+	config.set_value("hand","hover_mode",hover_mode if hover_mode in HOVER_MODES else "spread")
 	config.set_value("hand","order",order)
 	return config.save(path)
 
@@ -25,7 +30,7 @@ func build(entries: Array, force_unstack_resources: bool = false) -> Array:
 	var entries_by_uid := {}
 	for entry in entries:
 		entries_by_uid[entry.uid] = entry
-	
+
 	var sorted := entries.duplicate()
 	if not order.is_empty():
 		# Prune any UIDs from order that are no longer in entries
@@ -48,7 +53,7 @@ func build(entries: Array, force_unstack_resources: bool = false) -> Array:
 			if ka!=kb: return ka<kb
 			if a.id!=b.id: return a.id<b.id
 			return entries.find(a)<entries.find(b))
-	
+
 	var result: Array = []; var stacks := {}
 	var resource_counts := {}
 	for entry in sorted:
@@ -70,7 +75,7 @@ func _insert_into_order(new_entry: Dictionary, entries_by_uid: Dictionary) -> vo
 	var new_id: String = new_entry.id
 	var new_kind: String = str(new_entry.definition.kind)
 	var new_kind_idx: int = KINDS.find(new_kind)
-	
+
 	# 1. Try to place next to cards with the exact same ID
 	var last_same_id := -1
 	for i in range(order.size()):
@@ -80,7 +85,7 @@ func _insert_into_order(new_entry: Dictionary, entries_by_uid: Dictionary) -> vo
 	if last_same_id >= 0:
 		order.insert(last_same_id + 1, new_uid)
 		return
-	
+
 	# 2. Try to place within the same kind, maintaining ID alphabetical ordering
 	var first_larger_id := -1
 	var last_same_kind := -1
@@ -96,7 +101,7 @@ func _insert_into_order(new_entry: Dictionary, entries_by_uid: Dictionary) -> vo
 	if last_same_kind >= 0:
 		order.insert(last_same_kind + 1, new_uid)
 		return
-	
+
 	# 3. Find neighbor kind based on KINDS order
 	var insert_pos := 0
 	var found_earlier := false
@@ -110,7 +115,7 @@ func _insert_into_order(new_entry: Dictionary, entries_by_uid: Dictionary) -> vo
 	if found_earlier:
 		order.insert(insert_pos, new_uid)
 		return
-	
+
 	# If this kind precedes all existing kinds in order, put at 0
 	order.insert(0, new_uid)
 

@@ -169,3 +169,13 @@ Godot_v4.7.2-stable_win64_console.exe --path . --script res://tests/test_craft_g
 `voyage`只结算精神与灯燃料，出发锁定`flags.voyage_survival_cost`（20/25/30）并消费旧avoidWave。`end_voyage`先扣食水、再判定饥渴生命损失；致死立即终局。剧情5～14站在进入夜间前结算，`finish_night`不重复。自动推进仍通过dispatch调用相同指令。战斗和事件伤害时机不变。
 
 观察新增`survival_settlement: {pending: bool, food_water_cost: int}`，费用为本航次食水各自待扣值，无待结算时为0；不公开随机或未来内容。费用随快照保存，非法费用/阶段组合拒绝；查询在副本上结算，不改变活动局。内容版本`godot-flow-v02-17`拒绝v16及更旧保存与轨迹，不迁移。
+
+## v20 弃牌后生存结算（覆盖 v17 时机）
+
+`end_voyage`先进入剧情夜间（如有），再处理轮末老化、增益到期和超限弃牌。最后一张`discard`使容量达标后，先扣食水，再判定饥渴生命损失；不超限时由`end_voyage`或`finish_night`直接执行同一结算。死亡立即终局，存活才进入下一轮或成功终局。自动推进仍经dispatch执行。
+
+`survival_settlement`结构不变，`pending`在夜间和弃牌期间仍为true；待扣费用随快照保存，查询/预览/恢复不重掷或结算。夜间休息恢复先于食水结算生效。内容版本`godot-flow-v02-20`明确拒绝v19及更旧保存和轨迹，不迁移；schema 2、JSONL协议和随机算法不变。
+
+### 2026-10-17：结算评分不封顶（v21）
+
+当前内容版本为 `godot-flow-v02-21`，报告 `score_version` 为 `settlement-score-v2`。探索分数按全部有效成果标签计算，不再截断到4项，总分可能超过1000；Agent结果结构、合法操作、评级阈值和涌潮点规则不变。旧内容存档/轨迹及旧评分报告明确拒绝，不静默迁移。同版本路线使用 `evidence/settlement-v21-*.trace.json`，生成命令为 `python tools/validate_survival_discard.py --trace-prefix settlement-v21`。

@@ -3,6 +3,8 @@ extends RefCounted
 const INK := Color("e3dfcc")
 const MUTED := Color("9baeb1")
 const GOLD := Color("c8b17a")
+const TextButtonArt = preload("res://presentation/text_button_art.gd")
+const UtilityButtonArt = preload("res://presentation/utility_button_art.gd")
 
 static func theme() -> Theme:
 	var result := Theme.new()
@@ -48,6 +50,7 @@ static func button(parent: Node, title: String, callback: Callable, disabled: bo
 	result.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	result.pressed.connect(callback)
 	parent.add_child(result)
+	TextButtonArt.apply(result)
 	return result
 
 static func panel(parent: Node, minimum: Vector2 = Vector2.ZERO) -> VBoxContainer:
@@ -93,6 +96,10 @@ static func counter(parent: Node, value: String) -> Label:
 	return label
 
 static func primary(button: Button) -> void:
+	if button.has_node("SurgeTextButtonArt"):
+		button.set_meta("surge_primary", true)
+		button.queue_redraw()
+		return
 	var style := StyleBoxFlat.new(); style.bg_color = GOLD; style.border_color = Color("e5d4a2"); style.set_border_width_all(1)
 	style.content_margin_left = 12; style.content_margin_right = 12; style.content_margin_top = 10; style.content_margin_bottom = 10
 	button.add_theme_stylebox_override("normal",style)
@@ -107,6 +114,7 @@ static func corner_close(parent: Control, callback: Callable) -> Button:
 	close.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
 	close.offset_left=-48; close.offset_right=0; close.offset_top=0; close.offset_bottom=44
 	close.custom_minimum_size=Vector2(44,44); close.add_theme_font_size_override("font_size",24)
+	UtilityButtonArt.apply(close, "close")
 	return close
 
 static func grid(parent: Node, columns: int = 3) -> GridContainer:

@@ -37,6 +37,7 @@ func run() -> void:
 	page._tab=0
 	var readable: String = "\n".join(page._detail_lines())
 	check(not readable.contains("inputs") and not readable.contains("granted") and readable.contains("推进"),"score detail readable without internal keys")
+	check(not readable.contains("最多4项") and not readable.contains("/ 100 分") and readable.contains("不封顶"),"探索评分说明不再显示上限")
 	page.report.stats.visits=[{"voyage":2,"id":"secret-node","visit_id":"private-candidate-id","name":"沉船水道","kind":"combat"}]
 	page._tab=4; readable="\n".join(page._detail_lines())
 	check(not readable.contains("private-candidate-id") and not readable.contains("secret-node") and readable.contains("第2航次"),"visits hide identifiers and retain voyage")
@@ -87,7 +88,7 @@ func run() -> void:
 		root.push_input(key,true); await process_frame
 	check(page.page_index==0,"focused analysis button responds to space")
 	page.show_analysis()
-	check(page.find_children("*","ScrollContainer",true,false).filter(func(n): return n.is_visible_in_tree()).is_empty(),"analysis contains no visible scroll")
+	check(page.find_children("*","ScrollContainer",true,false).filter(func(n): return n.is_visible_in_tree()).size()==1,"analysis contains one detail scroll")
 	page.page_index=0; page._review=false; page.paused=false; page._draw_page()
 	await process_frame; await process_frame
 	page.scroll_position=page.max_scroll(); page._process(1.0)

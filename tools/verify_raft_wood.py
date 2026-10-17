@@ -48,7 +48,8 @@ for stem, category in mapping.items():
     
     assert wood_count > 0, (stem, "No wood materials found")
     report_key = stem + '.glb'
-    assert report_key in records and records[report_key]['geometry_unchanged'] and records[report_key]['uv_unchanged']
+    assert report_key in records and records[report_key]['uv_unchanged']
+    assert records[report_key]['geometry_unchanged'] is (stem != 'fishingNet')
     
     # Check extracted file by Godot
     extracted_path = path.parent / (path.stem + '_weathered_wood_albedo.png')

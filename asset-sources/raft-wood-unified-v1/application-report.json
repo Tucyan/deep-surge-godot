@@ -56,13 +56,30 @@
   },
   "fishingNet.glb": {
     "texture": "assets/textures/raft-wood/weathered_wood_albedo.png",
-    "texture_sha256": "b1f116eb46d6c1c7f3b03369969ca2ab6d202c6908ea0bfd7f3f15ea47e3e017",
-    "geometry_signature": "28524b860dec69b0f42ebe9ae37efd67499926ee3a8ac6ad5d4d933900831501",
-    "uv_signature": "73c2c69f548b82702d93619a5755b69c552ac8ce283b07e02efb3f13661ab055",
-    "geometry_unchanged": true,
+    "geometry_unchanged": false,
     "uv_unchanged": true,
-    "bytes": 1661380,
-    "glb_sha256": "7392e54203252b6b53426b6360e634eca59fd080f25536af5c1ae00f81f6d3e5",
+    "fit_factor": 0.92,
+    "centered_blender_y": -0.752624,
+    "bounds_blender_xyz": [
+      [
+        -0.56672,
+        0.56672
+      ],
+      [
+        -0.906979,
+        0.906979
+      ],
+      [
+        -0.173,
+        1.192416
+      ]
+    ],
+    "cell_spacing_godot_xz": [
+      2.35,
+      2.1
+    ],
+    "bytes": 1671680,
+    "glb_sha256": "9eef8b70db2df583c53796728cc6c27deea6ad3a56cb8877db26cdf3db7d785d",
     "roughness": 0.8
   }
 }

@@ -2,11 +2,11 @@ from pathlib import Path
 import hashlib,json
 from PIL import Image
 r=Path(__file__).resolve().parents[1];p=r/'assets/manifest.json';m=json.loads(p.read_text(encoding='utf-8'))
-entries={'ui.hud.status':('addons/deep_surge_status/status_hud.gd',[]),'ui.hud.action-points':('addons/deep_surge_status/action_points_hud.gd',[]),'ui.hud.event-choices':('addons/deep_surge_status/event_choice_panel.gd',[]),'ui.hud.voyage-adapter':('pages/voyage_hud.gd',['ui.hud.status','ui.hud.action-points','ui.hand.fan']),'ui.hud.story-adapter':('pages/flow_story.gd',['ui.hud.event-choices'])}
+entries={'ui.hud.status':('presentation/hud/status_hud.gd',[]),'ui.hud.action-points':('presentation/hud/action_points_hud.gd',[]),'ui.hud.event-choices':('presentation/hud/event_choice_panel.gd',[]),'ui.hud.voyage-adapter':('pages/voyage_hud.gd',['ui.hud.status','ui.hud.action-points','ui.hand.fan']),'ui.hud.story-adapter':('pages/flow_story.gd',['ui.hud.event-choices'])}
 for id,(file,deps) in entries.items():
  m['assets'][id]={'path':'res://'+file,'version':2,'sha256':hashlib.sha256((r/file).read_bytes()).hexdigest(),'source':['asset-sources/hud-visual-v2/deep_surge_hud_godot4_v2_visual_match.zip',file],'dependencies':deps,'license':'user-supplied HUD package; no explicit upstream license supplied, project adaptations','visual_random':'none','role':'presentation-only; draws current read-only session view; native choices dispatch existing commands'}
 for name in ['status_art','ap_art','ap_orb_full','ap_orb_empty','event_art']:
- file='addons/deep_surge_status/textures/'+name+'.png'
+ file='assets/ui/hud/'+name+'.png'
  id='texture.hud.'+name.replace('_','-')
  m['assets'][id]={'path':'res://'+file,'version':2,'sha256':hashlib.sha256((r/file).read_bytes()).hexdigest(),'dimensions':list(Image.open(r/file).size),'source':'asset-sources/hud-visual-v2/deep_surge_hud_godot4_v2_visual_match.zip','dependencies':[],'license':'user supplied visual v2 pack; upstream license not specified'}
 m['assets']['texture.hud.event-art']['atlas_regions']={'header':[0,0,678,282],'choices':[[48,489,560,65],[48,561,560,65],[48,633,560,65]]}

@@ -41,3 +41,8 @@ GPU截图和交互验证：tests/title_v2_visual.gd，evidence/title-v2-*；验�
 新版亮色包第五张名为回溯潮涌但画面为开始游戏，原文件保留作来源证据；运行时05_rewind_light恢复title-ui-v2原版正确回溯图片，其余5张使用新版。
 
 回溯亮色v4：imagegen参考原正确回溯按钮生成完整右尖角的透明PNG，保留文字和时钟图标；源归档title-rewind-v4，运行选择05_rewind_light_v4.png，旧版本保留。
+
+
+### 2026-10-17 首页背景替换（带边框视频）
+
+当前首页使用用户提供的 `深潮_月下灯塔与远航帆船_去水印_2x超分2K_带边框.mp4`，运行资源为 `assets/title_ui/lighthouse_loop.ogv`（2560×1440、16:9、约5.09秒、Theora q7、静音循环）及同源首帧。完整画面等比居中，未覆盖区域纯黑，不裁剪画面。视频已含边框及Logo，移除独立 `TitleFrame`、透明Logo与圆形挡板实例，避免重复叠加；六个菜单按钮与设置入口保留。旧边框和Logo文件仅保留作历史资产。稳定AssetId沿用，来源、版本、依赖、映射和SHA-256由 `tools/register_title_v3.py` 更新。

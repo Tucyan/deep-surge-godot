@@ -1,0 +1,1 @@
+普通剧情取 campaign.ledger，bypassed 不收录，entered 只收录 runtime 已显示行，completed 读取全部已过行。独立本地文本归档不更改核心存档；开局序章常驻特殊卡。重播复用 opening_intro，禁用完成标记写入。正式剧情插画原来是空 path，明确复用船队封面。发现上一轮bootstrap包装主场景破坏app.persistence等既有测试接口，需要兼容原根接口。

@@ -37,9 +37,8 @@ func run() -> void:
 	await create_timer(0.4).timeout
 	var data = JSON.parse_string(FileAccess.get_file_as_string("res://story/demo_story.json"))
 	check(page.load_story(data).ok, "page loads story")
-	check(not page.assets.show_label("texture.title.ocean-poster"), "homepage background resolves through asset catalogue")
-	for id in ["dialogue", "choice", "toolbar"]:
-		check(not page.assets.show_label("ui.story." + id), "generated UI sprite resolves: " + id)
+	for image_control in page.find_children("*", "TextureRect", true, false):
+		check(image_control.texture == null or not image_control.texture.resource_path.begins_with("res://"), "story page uses no image assets")
 	await create_timer(0.15).timeout
 	check(page.body.visible_characters < page.body.text.length(), "typewriter begins gradually")
 	await click(page.next_button)
@@ -57,9 +56,9 @@ func run() -> void:
 	page.advance()
 	check(page.player.get_view() == before and page.body.visible_characters == chars, "log pauses playback and commands")
 	await capture("log-1600")
-	await click(page.log_prev)
-	check(page.log_counter.text == "1 / 2" and page.player.get_view() == before, "log pagination leaves playback unchanged")
-	await click(page.log_next)
+	check(page.find_children("*", "ScrollContainer", true, false).size() == 1, "log uses continuous scrolling")
+	for control in page.log_overlay.find_children("*", "Button", true, false):
+		check(not "上一页" in control.text and not "下一页" in control.text, "log has no pagination buttons")
 	await click(page.log_close)
 	check(not page.log_overlay.visible, "close log returns to same line")
 	await click(page.choice_buttons[0])
@@ -73,7 +72,6 @@ func run() -> void:
 		var transform: Transform2D = root.get_final_transform() * button.get_global_transform()
 		var bounds := Rect2(transform * Vector2.ZERO, button.size * transform.get_scale())
 		check(Rect2(Vector2.ZERO, Vector2(root.size)).encloses(bounds), "button inside small viewport")
-	check(page.find_children("*", "ScrollContainer", true, false).is_empty(), "log uses pagination")
 	await click(page.skip_button)
 	check(page.player.get_view().status == "completed", "page signals completion")
 	await capture("completed-1280")
@@ -85,13 +83,36 @@ func run() -> void:
 	page.skip()
 	await process_frame
 	var line_height: float = page.body.get_theme_font("font").get_height(page.body.get_theme_font_size("font_size"))
-	check(page.body.size.y <= 100, "long text does not expand Label beyond artwork safe area")
+	check(page.body.size.y <= 100, "long text does not expand Label beyond dialogue area")
 	check(page.body.get_line_count() * line_height <= page.body.size.y, "maximum dialogue fits text area")
 	check(page.choice_buttons.size() == 3, "three-choice layout supported")
 	await capture("three-choices-1280")
 	page.open_log()
 	await capture("log-1280")
 	page.close_log()
+	var long_story: Dictionary = data.duplicate(true)
+	long_story.nodes = []
+	long_story.entry = "line0"
+	for i in range(20):
+		var row := {"id": "line%d" % i, "speaker": "旁白", "text": "记录%d：" % i + "海".repeat(100)}
+		if i < 19: row["next"] = "line%d" % (i + 1)
+		long_story.nodes.append(row)
+	check(page.load_story(long_story).ok, "long log fixture loads")
+	page.skip()
+	page.open_log()
+	await create_timer(0.15).timeout
+	var bar: VScrollBar = page.log_scroll.get_v_scroll_bar()
+	check(bar.max_value > bar.page, "long log overflows viewport")
+	check(absf(page.log_scroll.scroll_vertical - (bar.max_value - bar.page)) <= 1, "log opens at latest entry")
+	check(page.log_text.text.find("记录0：") < page.log_text.text.find("记录19："), "log order is oldest to newest")
+	page.log_scroll.scroll_vertical = 0
+	await process_frame
+	check(page.log_scroll.scroll_vertical == 0 and page.player.get_view().status == "completed", "scrolling preserves playback")
+	page.close_log()
+	page.open_log()
+	await create_timer(0.15).timeout
+	check(absf(page.log_scroll.scroll_vertical - (bar.max_value - bar.page)) <= 1, "reopening returns to bottom")
+	await capture("log-scroll-1280")
 	page.queue_free()
 	await process_frame
 	print("STORY PAGE GPU: " + ("PASS" if failures == 0 else "FAIL") + ", failures=" + str(failures))

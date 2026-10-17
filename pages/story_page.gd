@@ -2,18 +2,13 @@ extends Control
 ## Explicitly instantiated page. Not registered in the main app's routing.
 signal story_completed(result: Dictionary)
 const Player = preload("res://story/story_player.gd")
-const W = preload("res://presentation/widgets.gd")
-const Assets = preload("res://presentation/asset_catalog.gd")
 const REFERENCE := Vector2(1600, 900)
-const LOG_PAGE_SIZE := 2
 var player = Player.new()
-var assets = Assets.new()
 var composition: Control
 var body: Label
 var speaker: Label
 var description: Label
 var title_label: Label
-var hint: Label
 var skip_button: Button
 var log_button: Button
 var next_button: Button
@@ -22,35 +17,31 @@ var choice_root: Control
 var log_overlay: Control
 var log_close: Button
 var log_text: Label
-var log_counter: Label
-var log_prev: Button
-var log_next: Button
-var _log_page := 0
+var log_scroll: ScrollContainer
 var _elapsed := 0.0
 var characters_per_second := 32.0
 
 func _ready() -> void:
-	theme = W.theme()
+	var plain_theme := Theme.new()
+	var font := SystemFont.new()
+	font.font_names = PackedStringArray(["Microsoft YaHei", "Noto Sans CJK SC", "sans-serif"])
+	plain_theme.default_font = font
+	theme = plain_theme
 	clip_contents = true
-	var poster := TextureRect.new()
-	poster.texture = assets.texture("texture.title.ocean-poster")
-	poster.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	poster.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-	poster.mouse_filter = MOUSE_FILTER_IGNORE
-	add_child(poster)
-	poster.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
-	var shade := ColorRect.new()
-	shade.color = Color(0.005, 0.012, 0.028, 0.47)
-	shade.mouse_filter = MOUSE_FILTER_IGNORE
-	add_child(shade)
-	shade.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
+	var background := ColorRect.new()
+	background.color = Color("202020")
+	background.mouse_filter = MOUSE_FILTER_IGNORE
+	add_child(background)
+	background.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	composition = Control.new()
 	composition.size = REFERENCE
 	composition.mouse_filter = MOUSE_FILTER_IGNORE
 	add_child(composition)
 	title_label = _label(composition, "", Vector2(82, 54), Vector2(940, 60), 35)
-	_label(composition, "DEEP SURGE  /  航海叙事", Vector2(86, 110), Vector2(680, 40), 18, Color("abc8ec"))
-	skip_button = _button(composition, "SKIP  ▷▷", Vector2(1320, 42), Vector2(220, 72), "toolbar")
+	_label(composition, "DEEP SURGE  /  航海叙事", Vector2(86, 110), Vector2(680, 40), 18, Color("eeeeee"))
+	skip_button = _button(composition, "SKIP  ▷▷", Vector2(1320, 42), Vector2(220, 72))
+	for state in ["normal", "hover", "pressed", "focus", "disabled"]:
+		skip_button.add_theme_stylebox_override(state, StyleBoxEmpty.new())
 	skip_button.tooltip_text = "跳过对白，遇到选项停止"
 	skip_button.pressed.connect(skip)
 	var desc_box := Panel.new()
@@ -58,40 +49,39 @@ func _ready() -> void:
 	desc_box.size = Vector2(720, 116)
 	desc_box.mouse_filter = MOUSE_FILTER_IGNORE
 	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0.01, 0.02, 0.05, 0.85)
-	style.border_color = Color("0062ff")
-	style.border_width_left = 5
+	style.bg_color = Color("303030")
+	style.border_color = Color("707070")
+	style.set_border_width_all(1)
 	desc_box.add_theme_stylebox_override("panel", style)
 	composition.add_child(desc_box)
-	description = _label(desc_box, "", Vector2(26, 18), Vector2(654, 84), 23, Color("e0e9f7"))
+	description = _label(desc_box, "", Vector2(26, 18), Vector2(654, 84), 23, Color("eeeeee"))
 	choice_root = Control.new()
 	choice_root.mouse_filter = MOUSE_FILTER_IGNORE
 	composition.add_child(choice_root)
-	_texture(composition, "dialogue", Vector2(58, 602), Vector2(1490, 284))
+	_panel(composition, Vector2(82, 630), Vector2(1452, 196))
 	var name_tag := Panel.new()
-	name_tag.position = Vector2(334, 650)
+	name_tag.position = Vector2(110, 642)
 	name_tag.size = Vector2(370, 48)
 	name_tag.mouse_filter = MOUSE_FILTER_IGNORE
 	var name_style := StyleBoxFlat.new()
-	name_style.bg_color = Color("080e1b")
-	name_style.border_color = Color("0062ff")
-	name_style.border_width_left = 4
+	name_style.bg_color = Color("303030")
+	name_style.border_color = Color("707070")
+	name_style.set_border_width_all(0)
 	name_tag.add_theme_stylebox_override("panel", name_style)
 	composition.add_child(name_tag)
-	speaker = _label(name_tag, "", Vector2(16, 5), Vector2(346, 40), 27, Color("82b5ff"))
-	body = _label(composition, "", Vector2(350, 706), Vector2(980, 100), 25)
-	log_button = _button(composition, "LOG  航海笔记", Vector2(92, 542), Vector2(286, 64), "toolbar")
+	speaker = _label(name_tag, "", Vector2(16, 5), Vector2(346, 40), 27, Color("eeeeee"))
+	body = _label(composition, "", Vector2(110, 706), Vector2(980, 100), 25)
+	log_button = _button(composition, "LOG  航海笔记", Vector2(92, 832), Vector2(286, 58))
 	log_button.pressed.connect(open_log)
-	next_button = _button(composition, "继续  ▷", Vector2(1270, 832), Vector2(232, 58), "toolbar")
+	next_button = _button(composition, "继续  ▷", Vector2(1270, 832), Vector2(232, 58))
 	next_button.pressed.connect(advance)
-	hint = _label(composition, "点击继续 / Enter · 显示全文，再推进", Vector2(354, 839), Vector2(850, 28), 16, Color("aebbd0"))
 	_build_log()
 	player.completed.connect(func(result): story_completed.emit(result.duplicate(true)))
 	resized.connect(_reflow)
 	_reflow()
 	_refresh()
 
-func _label(parent: Node, text: String, pos: Vector2, dimensions: Vector2, font_size: int, color := Color("fffdf1")) -> Label:
+func _label(parent: Node, text: String, pos: Vector2, dimensions: Vector2, font_size: int, color := Color("eeeeee")) -> Label:
 	var label := Label.new()
 	label.text = text
 	label.position = pos
@@ -114,35 +104,27 @@ func _fit_text(label: Label, maximum: int, minimum: int) -> void:
 	label.add_theme_font_size_override("font_size", font_size)
 	label.size = bounds
 
-func _texture(parent: Node, asset: String, pos: Vector2, dimensions: Vector2) -> TextureRect:
-	var image := TextureRect.new()
-	image.texture = assets.texture("ui.story." + asset)
-	image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	image.position = pos
-	image.size = dimensions
-	image.mouse_filter = MOUSE_FILTER_IGNORE
-	parent.add_child(image)
-	return image
+func _panel(parent: Node, pos: Vector2, dimensions: Vector2) -> Panel:
+	var panel := Panel.new()
+	panel.position = pos
+	panel.size = dimensions
+	panel.mouse_filter = MOUSE_FILTER_IGNORE
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("303030")
+	style.border_color = Color("707070")
+	style.set_border_width_all(1)
+	panel.add_theme_stylebox_override("panel", style)
+	parent.add_child(panel)
+	return panel
 
-func _button(parent: Node, text: String, pos: Vector2, dimensions: Vector2, asset: String) -> Button:
+func _button(parent: Node, text: String, pos: Vector2, dimensions: Vector2) -> Button:
 	var button := Button.new()
 	button.position = pos
 	button.size = dimensions
 	button.text = text
 	button.mouse_default_cursor_shape = CURSOR_POINTING_HAND
 	button.add_theme_font_size_override("font_size", 23)
-	for state in ["normal", "hover", "pressed", "focus", "disabled"]:
-		button.add_theme_stylebox_override(state, StyleBoxEmpty.new())
-	button.add_theme_color_override("font_hover_color", Color("8abfff"))
-	button.add_theme_color_override("font_focus_color", Color("8abfff"))
 	parent.add_child(button)
-	var image := _texture(button, asset, Vector2.ZERO, dimensions)
-	button.move_child(image, 0)
-	image.show_behind_parent = true
-	button.mouse_entered.connect(func(): image.modulate = Color(1.3, 1.3, 1.3))
-	button.mouse_exited.connect(func(): image.modulate = Color.WHITE)
-	button.focus_entered.connect(func(): image.modulate = Color(1.3, 1.3, 1.3))
-	button.focus_exited.connect(func(): image.modulate = Color.WHITE)
 	return button
 
 func _build_log() -> void:
@@ -151,7 +133,7 @@ func _build_log() -> void:
 	log_overlay.mouse_filter = MOUSE_FILTER_STOP
 	composition.add_child(log_overlay)
 	var veil := ColorRect.new()
-	veil.color = Color(0.0, 0.015, 0.05, 0.94)
+	veil.color = Color(0, 0, 0, 0.85)
 	veil.size = REFERENCE
 	log_overlay.add_child(veil)
 	var sheet := Panel.new()
@@ -159,20 +141,26 @@ func _build_log() -> void:
 	sheet.size = Vector2(1080, 630)
 	sheet.mouse_filter = MOUSE_FILTER_IGNORE
 	var paper := StyleBoxFlat.new()
-	paper.bg_color = Color("070d18")
-	paper.border_color = Color("005bff")
+	paper.bg_color = Color("303030")
+	paper.border_color = Color("707070")
 	paper.set_border_width_all(2)
 	sheet.add_theme_stylebox_override("panel", paper)
 	log_overlay.add_child(sheet)
-	_texture(log_overlay, "choice", Vector2(280, 132), Vector2(1110, 120))
+
 	_label(log_overlay, "LOG  /  航海笔记", Vector2(450, 174), Vector2(780, 54), 34)
-	log_text = _label(log_overlay, "", Vector2(378, 278), Vector2(920, 414), 21)
-	log_prev = _button(log_overlay, "◁ 上一页", Vector2(440, 705), Vector2(212, 60), "toolbar")
-	log_prev.pressed.connect(func(): _log_page -= 1; _refresh_log())
-	log_next = _button(log_overlay, "下一页 ▷", Vector2(860, 705), Vector2(212, 60), "toolbar")
-	log_next.pressed.connect(func(): _log_page += 1; _refresh_log())
-	log_counter = _label(log_overlay, "", Vector2(698, 723), Vector2(154, 40), 22)
-	log_close = _button(log_overlay, "X", Vector2(1468, 42), Vector2(72, 72), "toolbar")
+	log_scroll = ScrollContainer.new()
+	log_scroll.position = Vector2(378, 260)
+	log_scroll.size = Vector2(920, 500)
+	log_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	log_overlay.add_child(log_scroll)
+	log_text = Label.new()
+	log_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	log_text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	log_text.mouse_filter = MOUSE_FILTER_IGNORE
+	log_text.add_theme_font_size_override("font_size", 21)
+	log_text.add_theme_color_override("font_color", Color("eeeeee"))
+	log_scroll.add_child(log_text)
+	log_close = _button(log_overlay, "X", Vector2(1468, 42), Vector2(72, 72))
 	log_close.pressed.connect(close_log)
 	log_overlay.hide()
 
@@ -210,7 +198,7 @@ func _refresh() -> void:
 	var options: Array = node.get("choices", [])
 	for i in range(options.size()):
 		var choice: Dictionary = options[i]
-		var button := _button(choice_root, choice.text, Vector2(996, 586 - options.size() * 76 + i * 76), Vector2(538, 70), "choice")
+		var button := _button(choice_root, choice.text, Vector2(996, 586 - options.size() * 76 + i * 76), Vector2(538, 70))
 		button.pressed.connect(choose.bind(choice.id))
 		choice_buttons.append(button)
 	next_button.disabled = view.status != "playing" or not options.is_empty()
@@ -218,11 +206,6 @@ func _refresh() -> void:
 	log_button.disabled = view.log_count == 0
 	if view.status == "completed":
 		body.visible_characters = -1
-		hint.text = "本段剧情已结束 · 可在 LOG 中回看"
-	elif not options.is_empty():
-		hint.text = "请选择下一步行动"
-	else:
-		hint.text = "点击继续 / Enter · 显示全文，再推进"
 	_update_choice_visibility()
 
 func _process(delta: float) -> void:
@@ -256,11 +239,11 @@ func skip() -> void:
 
 func open_log() -> void:
 	if player.get_log().is_empty(): return
-	_log_page = maxi(0, ceili(player.get_log().size() / float(LOG_PAGE_SIZE)) - 1)
 	_refresh_log()
 	log_overlay.show()
 	for button in [skip_button, log_button, next_button] + choice_buttons: button.focus_mode = FOCUS_NONE
 	log_close.grab_focus()
+	_scroll_log_to_latest()
 
 func close_log() -> void:
 	log_overlay.hide()
@@ -269,18 +252,20 @@ func close_log() -> void:
 
 func _refresh_log() -> void:
 	var rows: Array = player.get_log()
-	var count := maxi(1, ceili(rows.size() / float(LOG_PAGE_SIZE)))
-	_log_page = clampi(_log_page, 0, count - 1)
 	var texts: PackedStringArray = []
-	for row in rows.slice(_log_page * LOG_PAGE_SIZE, (_log_page + 1) * LOG_PAGE_SIZE):
+	for row in rows:
 		var line: String = "【" + row.speaker + "】\n" + row.description + "\n" + row.text
 		if not row.choice_text.is_empty(): line += "\n→ " + row.choice_text
 		texts.append(line)
 	log_text.text = "\n\n".join(texts)
-	_fit_text(log_text, 21, 16)
-	log_counter.text = "%d / %d" % [_log_page + 1, count]
-	log_prev.disabled = _log_page == 0
-	log_next.disabled = _log_page == count - 1
+
+func _scroll_log_to_latest() -> void:
+	# Wait for the container to measure wrapped text before setting the scrollbar.
+	await get_tree().process_frame
+	await get_tree().process_frame
+	if not log_overlay.visible: return
+	var bar := log_scroll.get_v_scroll_bar()
+	log_scroll.scroll_vertical = int(ceilf(bar.max_value))
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if not event.is_pressed() or event.is_echo(): return

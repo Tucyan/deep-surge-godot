@@ -40,3 +40,14 @@ GPU测试输出 `TITLE V3 GPU: PASS`：1350×900、1600×900、2100×900首页/�
 新增原生黑色55%不透明圆形挡板，位于背景与Logo之间。`test_title_v3.gd` 先因缺少挡板失败，实现后通过；验证父子绑定、后置绘制及移动跟随。重新运行 `title_v3_visual.gd` 输出 `TITLE V3 GPU: PASS`，更新三种横屏比例截图。
 
 2026-10-17 后续参数调整：按用户要求将挡板不透明度由55%提高至70%，同步资产运行映射与脚本hash。重新执行 `test_title_v3.gd`（headless）通过；此前GPU截图对应55%，本次未重新截图。
+
+
+## 带边框视频替换（2026-10-17）
+
+当前背景改为用户提供的 `深潮_月下灯塔与远航帆船_去水印_2x超分2K_带边框.mp4`：2560×1440、16:9、约5.09秒。使用本机 imageio_ffmpeg 的 FFmpeg 7.1 转为原尺寸 Theora q7 静音OGV，并提取首帧poster。移除独立装饰边框及重复Logo/圆形挡板；视频等比居中完整显示，剩余区域由纯黑ColorRect填充。
+
+更新既有 `test_title_v3.gd`，先确认旧实现因边框、比例、黑底断言失败，移除Logo叠层前确认重复Logo断言失败；最终 headless 输出 `TITLE V3: PASS`。三项运行资产SHA-256复核通过。
+
+既有GPU脚本首次因main.tscn已改为序章bootstrap、无persistence属性而失败，已停止该进程；脚本改为直接实例化flow_app，避免序章偏好及用户存档写入。最终运行 `Godot_v4.7.2-stable_win64_console.exe --path deep-surge-godot --script res://tests/title_v3_visual.gd` 退出0，输出 `TITLE V3 GPU: PASS`：1350×900、1600×900、2100×900，验证按钮范围、设置、会话不变及播放推进/循环；截图更新为 `title-v3-*`。实际查看2100×900首页，确认两侧黑底、视频内Logo和边框，已无重复Logo。此前55%/70%圆形挡板记录属历史状态。
+
+本次仅修改首页表现，未重跑规则路线或Android真机验证。

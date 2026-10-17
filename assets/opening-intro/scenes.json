@@ -1,0 +1,102 @@
+{
+  "project": "深潮 Deep Surge",
+  "description": "开场世界观介绍，5个分镜顺序；图片与旁白一一对应",
+  "scenes": [
+    {
+      "order": 1,
+      "scene": "洪水冲击海堤",
+      "image": "res://assets/opening-intro/scene-01.png",
+      "text": "texts/01_旁白.txt",
+      "narration": [
+        "最初，人们以为那只是一场海啸。",
+        "他们筑起高墙，试图将海洋阻挡在文明之外。"
+      ],
+      "image_width": 1755,
+      "image_height": 896,
+      "source_image": "images/01_洪水冲击海堤.png",
+      "display_region": [
+        169,
+        191,
+        1417,
+        514
+      ]
+    },
+    {
+      "order": 2,
+      "scene": "沉没的城市",
+      "image": "res://assets/opening-intro/scene-02.png",
+      "text": "texts/02_旁白.txt",
+      "narration": [
+        "然而，潮水从未退去。",
+        "城市、道路、山川……一切熟悉的事物，都逐渐消失在海平面之下。"
+      ],
+      "image_width": 1755,
+      "image_height": 896,
+      "source_image": "images/02_城市被海水淹没.png",
+      "display_region": [
+        169,
+        200,
+        1417,
+        494
+      ]
+    },
+    {
+      "order": 3,
+      "scene": "海上航行的船队",
+      "image": "res://assets/opening-intro/scene-03.png",
+      "text": "texts/03_旁白.txt",
+      "narration": [
+        "幸存者将船只作为新的家园。",
+        "在这片无边无际的海洋上，人类文明得以艰难延续。"
+      ],
+      "image_width": 1672,
+      "image_height": 941,
+      "source_image": "images/03_幸存者船队航行.png",
+      "display_region": [
+        95,
+        198,
+        1481,
+        544
+      ]
+    },
+    {
+      "order": 4,
+      "scene": "深海漩涡",
+      "image": "res://assets/opening-intro/scene-04.png",
+      "text": "texts/04_旁白.txt",
+      "narration": [
+        "但海洋带来的，远不止灾难。",
+        "诡异的漩涡、未知的遗迹，以及那些本不应存在的事物，开始接连涌现。"
+      ],
+      "image_width": 1672,
+      "image_height": 941,
+      "source_image": "images/04_海上异常漩涡.png",
+      "display_region": [
+        0,
+        0,
+        1672,
+        941
+      ]
+    },
+    {
+      "order": 5,
+      "scene": "木筏上的苏醒",
+      "image": "res://assets/opening-intro/scene-05.png",
+      "text": "texts/05_旁白.txt",
+      "narration": [
+        "而你的故事，就从这里开始。",
+        "你在一艘破旧的木筏上醒来，记忆空白，眼前只有一望无际的海。"
+      ],
+      "image_width": 1755,
+      "image_height": 896,
+      "source_image": "images/05_主角木筏苏醒.png",
+      "display_region": [
+        59,
+        168,
+        1640,
+        576
+      ]
+    }
+  ],
+  "music": "res://assets/opening-intro/music.ogg"
+}

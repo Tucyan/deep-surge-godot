@@ -47,7 +47,7 @@ static func voyage(ctx, id: String) -> bool:
 		if cell.status == "intact" and cell.equipment.get("id","") == "lamp" and cell.equipment.fuel > 0:
 			ctx.change("sanity",15+5*(int(cell.equipment.level)-1),"lamp"); cell.equipment.fuel -= 1
 			Stats.device_used(s,"lamp",cell.id)
-	ctx.log_text("抵达%s；移动支付SAN%d，食水各%d在结束航行时结算。" % [node.name,sanity_cost,30-reduction])
+	ctx.log_text("抵达%s；移动支付SAN%d，食水各%d在轮末弃牌完成后结算。" % [node.name,sanity_cost,30-reduction])
 	if not ctx.alive(): return true
 	s.phase = "preparation"
 	ctx.Campaign.after_move(ctx)
@@ -419,16 +419,13 @@ static func settle_survival(ctx) -> bool:
 	var hunger_damage: int = Health.DEPRIVATION_EACH if s.player.hunger == 0 else 0
 	var thirst_damage: int = Health.DEPRIVATION_EACH if s.player.hydration == 0 else 0
 	ctx.change("hp",-mini(Health.DEPRIVATION_CAP,hunger_damage+thirst_damage),"deprivation")
-	ctx.log_text("结束航行：食水各扣%d；饥饿/缺水造成%d生命损失。" % [cost,mini(Health.DEPRIVATION_CAP,hunger_damage+thirst_damage)])
+	ctx.log_text("轮末整理完成：食水各扣%d；饥饿/缺水造成%d生命损失。" % [cost,mini(Health.DEPRIVATION_CAP,hunger_damage+thirst_damage)])
 	return ctx.alive()
 
 static func settle(ctx) -> bool:
 	var s: Dictionary = ctx.state
 	if ctx.phase() != "aftermath": return ctx.fail("先完成当前节点结果剧情")
 	if ctx.Campaign.enabled(ctx) and s.voyage >= 5 and s.voyage < 15 and s.campaign.day_closed != s.voyage: return ctx.fail("先完成今晚安排")
-	# Story day end has already charged survival before opening the night.
-	var after_night: bool = ctx.Campaign.enabled(ctx) and s.voyage >= 5 and s.voyage < 15 and s.campaign.day_closed == s.voyage
-	if not after_night and not settle_survival(ctx): return true
 	s.ap = 0
 	for cell in s.cells:
 		if cell.status == "damaged" and s.voyage - cell.damaged_at >= 2:
@@ -477,6 +474,8 @@ static func produce_at_round_start(ctx) -> void:
 
 static func next_voyage(ctx) -> void:
 	var s: Dictionary = ctx.state
+	# Capacity is satisfied: charge survival before production or any successful ending.
+	if not settle_survival(ctx): return
 	if ctx.Campaign.next_voyage(ctx): return
 	if s.voyage == s.length:
 		ctx.finish("survived" if s.boss_defeated else "withdrawn")
@@ -573,7 +572,7 @@ static func valid_save(ctx, data: Dictionary) -> bool:
 	if s.flags.get("raft_layout","") != Layout.ID: return false
 	if s.flags.has("voyage_survival_cost"):
 		if not integer(s.flags.voyage_survival_cost) or int(s.flags.voyage_survival_cost) not in [20,25,30]: return false
-		if s.phase in ["navigation","nightHub","discard","chapterComplete"]: return false
+		if s.phase in ["navigation","chapterComplete"]: return false
 	if not ctx.EnvironmentRules.valid(ctx,s): return false
 	if s.voyage < 1 or s.voyage > s.length or s.length < 10 or s.length > 15 or s.coins < 0 or s.ap < 0: return false
 	if s.phase == "navigation" and (s.candidates.is_empty() or s.candidates.size() > 3): return false

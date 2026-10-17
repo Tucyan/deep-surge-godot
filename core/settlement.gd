@@ -1,6 +1,6 @@
 extends RefCounted
 const Stats = preload("res://core/run_statistics.gd")
-const SCORE_VERSION := "settlement-score-v1"
+const SCORE_VERSION := "settlement-score-v2"
 const REWARD_VERSION := "completed-nodes-v1"
 const OUTCOMES := {"survived":"灯火未熄","true":"回声归航","withdrawn":"离开潮眼","dead":"沉入深潮","mad":"迷失潮声","abandon":"返回岸边","A":"成功封闭","B":"付出代价后处理","C":"紧急撤离","SOLO":"独航出口"}
 
@@ -15,7 +15,7 @@ static func score(input: Dictionary) -> Dictionary:
 	var rb: float = clampf(float(input.battles_won)/b,0,1) if b>0 else 1.0
 	if e==0: re=rb
 	if b==0: rb=re
-	var parts := {"voyage":rounded(350*p+150*int(input.goal)),"crisis":rounded(p*(150*re+100*rb)),"survival":rounded(p*(75*clampf(float(input.hp),0,1)+45*clampf(float(input.sanity),0,1)+30*clampf(float(input.cells),0,1))),"exploration":rounded(p*25*clampi(int(input.tags),0,4))}
+	var parts := {"voyage":rounded(350*p+150*int(input.goal)),"crisis":rounded(p*(150*re+100*rb)),"survival":rounded(p*(75*clampf(float(input.hp),0,1)+45*clampf(float(input.sanity),0,1)+30*clampf(float(input.cells),0,1))),"exploration":rounded(p*25*maxi(int(input.tags),0))}
 	var total: int = parts.voyage+parts.crisis+parts.survival+parts.exploration
 	var grade: String = "S" if total>=900 else ("A" if total>=750 else ("B" if total>=600 else ("C" if total>=400 else "D")))
 	return {"total":total,"grade":grade,"components":parts,"inputs":input.duplicate(true),"progress":p,"event_rate":re,"battle_rate":rb}
@@ -81,6 +81,7 @@ static func create(state: Dictionary, catalog, scope: String = "run") -> Diction
 static func valid_report(report: Variant) -> bool:
 	if not report is Dictionary: return false
 	if report.is_empty(): return true
+	if report.get("score_version")!=SCORE_VERSION: return false
 	for field in ["report_id","run_id","scope","mode","origin","outcome","score_version","reward_policy_version"]:
 		if not report.get(field) is String: return false
 	if report.scope not in ["run","chapter"] or not report.get("complete") is bool or not report.get("logs") is Array or not report.get("cards") is Array or not report.get("analysis") is Array or not report.get("stats") is Dictionary or not report.get("points") is Dictionary or not report.get("score") is Dictionary: return false

@@ -1,6 +1,7 @@
 extends PanelContainer
 # Debug-only presentation tool. Never writes game state or shipped defaults.
 const SAVE_PATH := "user://title-layout-debug.json"
+const W = preload("res://presentation/widgets.gd")
 const KEYS := ["start","continue","journal","shop","recall","quit","logo"]
 var targets: Array[Control] = []
 var defaults: Dictionary
@@ -23,6 +24,7 @@ func setup(menu, logo: Control) -> void:
 	add_theme_stylebox_override("panel",style)
 	var column:=VBoxContainer.new(); add_child(column)
 	var toggle:=Button.new(); toggle.text="布局调试 · F8"; column.add_child(toggle); toggle.pressed.connect(toggle_editor)
+	W.TextButtonArt.apply(toggle)
 	body=VBoxContainer.new(); column.add_child(body); body.hide()
 	picker=OptionButton.new(); body.add_child(picker)
 	for label in ["开始游戏","继续游戏","航海笔记","局外商店","回溯潮涌","退出游戏","游戏 Logo"]: picker.add_item(label)
@@ -43,6 +45,7 @@ func setup(menu, logo: Control) -> void:
 	sync_fields()
 func add_action(label: String, callback: Callable) -> void:
 	var button:=Button.new(); button.text=label; body.add_child(button); button.pressed.connect(callback)
+	W.TextButtonArt.apply(button)
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode==KEY_F8 and is_visible_in_tree():
 		toggle_editor(); get_viewport().set_input_as_handled()

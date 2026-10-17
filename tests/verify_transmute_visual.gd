@@ -61,10 +61,11 @@ func run() -> void:
 	# Capture Transmute 3-column view
 	await capture("res://evidence/verify_transmute_tab.png")
 	
-	# Switch batch to 2
-	app.handle_ui("transmute_count", "2")
+	# Show explicitly selected inputs (the page no longer auto-selects).
+	var uids: Array = app.session.state.hand.filter(func(c): return c.id == "wood").slice(0, 3).map(func(c): return c.uid)
+	app.handle_ui("transmute_uids", ",".join(uids))
 	await settle()
-	await capture("res://evidence/verify_transmute_batch2.png")
+	await capture("res://evidence/verify_transmute_selected.png")
 	
 	app.queue_free()
 	await settle()

@@ -27,7 +27,6 @@ var _hold_time := 0.0
 var _end_time := 0.0
 var _review := false
 var _tab := 0
-var _detail_page := 0
 var _syncing_scroll := false
 var _scroll: ScrollContainer
 var _pause_button: Button
@@ -111,7 +110,7 @@ func _draw_analysis() -> void:
 		W.text(score,notice+"\n终点状态仍为结算时的实际数值。",14,W.MUTED)
 	var components = scoring.get("components",{})
 	if not components is Dictionary: components = {}
-	W.text(score,"航行 %s / 500    危机 %s / 250\n生存 %s / 150    探索 %s / 100" % [_value(components,"voyage"),_value(components,"crisis"),_value(components,"survival"),_value(components,"exploration")],17)
+	W.text(score,"航行 %s / 500    危机 %s / 250\n生存 %s / 150    探索 %s（不封顶）" % [_value(components,"voyage"),_value(components,"crisis"),_value(components,"survival"),_value(components,"exploration")],17)
 	W.text(score,"评分与评级为试测值；结局保持实际结果",13,W.MUTED)
 	var insights := HBoxContainer.new(); _content.add_child(insights)
 	var analysis = report.get("analysis",[])
@@ -121,19 +120,19 @@ func _draw_analysis() -> void:
 	var names := ["分数明细","卡牌收支","战斗与危机","生存与木筏","航行与剧情"]
 	for i in range(names.size()):
 		var index := i
-		var button := W.button(tabs,names[i],func(): _tab=index; _detail_page=0; _draw_page())
+		var button := W.button(tabs,names[i],func(): _tab=index; _draw_page())
 		if i == _tab: W.primary(button)
 	var detail := W.panel(_content)
 	detail.get_parent().size_flags_vertical = Control.SIZE_EXPAND_FILL
-	var lines := _detail_lines()
-	var per_page := 3 if _tab==0 else 5
-	var pages := maxi(1,ceili(float(lines.size()) / per_page))
-	_detail_page = clampi(_detail_page,0,pages-1)
-	for line in lines.slice(_detail_page*per_page,(_detail_page+1)*per_page): W.text(detail,line,16)
-	var pager := HBoxContainer.new(); detail.add_child(pager)
-	W.button(pager,"上一页",func(): _detail_page-=1; _draw_page(),_detail_page==0)
-	W.text(pager,"%d / %d" % [_detail_page+1,pages],15,W.MUTED).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
-	W.button(pager,"下一页",func(): _detail_page+=1; _draw_page(),_detail_page==pages-1)
+	var detail_scroll := ScrollContainer.new()
+	detail_scroll.name = "SettlementDetailScroll"
+	detail_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	detail_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	detail.add_child(detail_scroll)
+	var entries := VBoxContainer.new()
+	entries.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	detail_scroll.add_child(entries)
+	for line in _detail_lines(): W.text(entries,line,16)
 	var controls := HBoxContainer.new(); _content.add_child(controls)
 	W.button(controls,"回看航海日志",show_logs)
 
@@ -156,8 +155,8 @@ func _detail_lines() -> Array[String]:
 			result.append("生存与维护 · %s / 150 分" % _value(parts,"survival"))
 			result.append("推进比例 ×（75 × 生命比例 + 45 × 精神比例 + 30 × 初始筏格保全比例）。")
 			result.append("生命比例 %s；精神比例 %s；初始筏格保全比例 %s" % [_ratio(inputs.get("hp",inputs.get("h",null))),_ratio(inputs.get("sanity",inputs.get("s",null))),_ratio(inputs.get("cells",inputs.get("c",null)))])
-			result.append("探索与建设 · %s / 100 分" % _value(parts,"exploration"))
-			result.append("推进比例 × 25 × 成果标签数（最多4项）；耗卡数量不直接计分。")
+			result.append("探索与建设 · %s 分（不封顶）" % _value(parts,"exploration"))
+			result.append("推进比例 × 25 × 成果标签数（全部计入，不封顶）；耗卡数量不直接计分。")
 			result.append("达成成果 %s 项；涌潮点：%s" % [_value(inputs,"tags"),_display(report.get("points",null))])
 		1:
 			var cards = report.get("cards",[])
@@ -304,7 +303,7 @@ func _outcome() -> String:
 	if report.get("outcome_name",null) is String: return report.outcome_name
 	return {"survived":"完成航程","dead":"沉入深潮","death":"沉入深潮","lost":"迷失","abandoned":"主动放弃","retreated":"末站撤离","retreat":"末站撤离","chapterComplete":"章节完成"}.get(str(report.get("outcome","")),_label(str(report.get("outcome",""))))
 func show_analysis() -> void:
-	page_index=1; _tab=0; _detail_page=0; _draw_page()
+	page_index=1; _tab=0; _draw_page()
 func show_logs() -> void:
 	page_index=0; _review=true; paused=true; scroll_position=0; _end_time=0; _draw_page()
 func toggle_pause() -> void:

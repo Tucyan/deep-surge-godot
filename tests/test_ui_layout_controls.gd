@@ -57,7 +57,10 @@ func run() -> void:
 	check(app.session.screen=="home","Settlement X closes to home")
 	app.handle_ui("setup","challenge"); await settle()
 	check(buttons(app.current_page,"返回模式选择").is_empty(),"Setup has no text return button")
-	buttons(app.current_page,"开始航程")[0].pressed.emit(); await settle()
+	# Current setup requires a difficulty before entering the resource picker.
+	var difficulty=app.current_page.find_child("DifficultyChoice",true,false)
+	difficulty.select(1); difficulty.item_selected.emit(1)
+	buttons(app.current_page,"选择起手资源")[0].pressed.emit(); await settle()
 	check(app.current_page.picking,"Starting-resource stage opens")
 	app.current_page.find_child("CloseX",true,false).pressed.emit(); await settle()
 	check(not app.current_page.picking,"Resource picker X returns to origin setup")

@@ -1,5 +1,7 @@
 # 手牌排列与资源叠牌
 
+2026-10-17 航海 HUD 更新：顶部五图标、独立长条/圆形按钮、程序化米白手牌底板，以及新行动点素材已接入；卡牌顶栏固定逻辑高度，仅横向伸展。当前外观、来源与缩放约定见[航海 HUD](nautical-hud.md)，覆盖下文旧外观记录。
+
 2026-10-15：设备牌长按后移出手牌区可拖到真实筏格安装；手牌区内仍排序，无效外部落点则回位。鼠标/触摸、取消、双击及规则收费关系见[直接交互](raft-direct-interaction.md)。
 
 2026-10-14，分支 `codex/hand-layout-stacking`。这是表现设计，不改变卡牌规则。
@@ -20,3 +22,28 @@
 程序化资产：`ui.hand.fan` v11（`presentation/hand_fan.gd`），`ui.hand.layout` v3（`presentation/hand_layout.gd`），`ui.item-card` v2 及 `ui.hand.stack-quantity` v1（`presentation/item_card.gd`）。贝币复用 `card.coin` 和数量徽章。数量徽章采用铜金边/深蓝底，与现有卡面字体及 W.GOLD 共用；没有新增外部图片或视觉随机种子。映射与源 hash 登记在 `assets/manifest.json`。
 
 验证入口：`tests/test_hand_layout.gd`、`tests/test_hand_gestures.gd`、`tests/test_hand_fan.gd`、`tests/test_hand_click.gd`；实际渲染入口 `tests/hand_layout_visual.gd`。画面使用明确的超限测试夹具，不表示正常初始库存。证据见 `evidence/hand-layout-verification.md`。
+
+## 2026-10-17 卡高、阴影和数量文字
+
+当前卡牌区从固定顶栏下沿开始，卡牌控件高为该区域高度的97%，上下各留1.5%；保持原卡面比例和悬停/选牌抬起逻辑。鼠标悬停让目标牌上浮，保留原有兄弟节点图层顺序；是否腾位不依赖战斗选中状态。按可见卡框宽度计算与右侧卡牌的重叠，透明留白和阴影不计入；重叠不足5%不移动，达到5%才推动造成遮挡的右侧牌。卡面底部增加原生 StyleBoxFlat 柔和接触阴影。叠牌数量移除底板和外框，以浅色填充、深色描边的 `×数量` Label 直接叠在卡面上；数量语义、合并阈值和实际容量不变。
+
+额外背后卡层只存在于 `experiments/card_stack_v1/preview.gd` 的独立实验入口，正式页面未启用。预览对比整齐错层/轻微扇开两种样式；不生成新卡牌实例、不改变库存或RNG。见 [实验与验证](../evidence/card-size-shadow-stack-preview.md)。
+
+2026-10-17 数量文字加粗：正式卡面使用字重800的系统粗体，字号19→20，深色描边3→5逻辑像素；保留浅色填充且无底板。当前叠层实验输出 `evidence/card-stack-experiment-bold-quantity.png`，沿用25%淡阴影，叠层仍未接入正式页面。GPU预览 `STACK EXPERIMENT: PASS`，正式多尺寸与点击验证 `NAUTICAL HUD: PASS`。
+
+2026-10-17 数量文字再放大：当前字号23、描边6逻辑像素，字重800；文字区域略向左扩展，保持无底板。当前实验预览 `evidence/card-stack-experiment-larger-quantity.png`，GPU `STACK EXPERIMENT: PASS` / `NAUTICAL HUD: PASS`，已核对实际渲染。
+
+## 2026-10-17 正式叠层与悬停设置（当前）
+
+此节覆盖此前“额外卡层仅为实验”和“悬停始终不改层级”的描述。
+
+- 资源叠牌正式使用整齐错层：主卡在右上方，最多两张装饰后层向左各错开7逻辑像素，交界使用25%不透明、2像素范围的淡阴影。只对已合并的永久资源牌显示；货币数量和单张牌不生成后层。原四张合并阈值、UID、数量和容量不变。
+- 后层是主卡的独立同级表现节点，悬停只抬主卡14逻辑像素；后层留在桌面。数量移至主卡左侧外露区域，保留23号粗体、6像素深色描边、浅色填充、无底板。
+- 设置 → 游戏偏好 → 手牌悬停方式，新增两选项。默认“排开遮挡”：主卡上抬，右侧存在至少5%有效重叠时局部让位，包含右侧叠牌的左伸后层；保持右牌在上的原始顺序。“图层上浮”：邻牌横向不动，仅将悬停主卡放到更高绘制层，后层不提层。
+- hover_mode=`spread`/`raise` 与原理牌偏好同存 `user://hand-layout.cfg`。旧配置缺失和非法值默认spread；不写入游戏存档或Agent观察。开关切换不修改规则/RNG。
+- 命中顺序匹配实际绘制层：常态右侧组在上，图层模式悬停主卡在上；露出的后层也映射同一代表UID。装饰后层没有独立Button/规则动作。拖动将整叠作为一组，其他主卡与后层同步换槽；取消、抬起回位及界面重建继续使用表现快照接续。
+- 短屏设置收紧间距和内边距，不增加滚动容器。
+
+实现：`presentation/card_stack.gd`、`hand_fan.gd`、`hand_layout.gd`、`item_card.gd`、`settings_panel.gd`。验证见 [正式叠牌与两种悬停](../evidence/hand-stack-hover-verification.md)。独立实验脚本保留为历史对比，不再决定正式效果。
+
+2026-10-17 数量位置调整：叠牌数量移回卡牌右侧（右对齐），保留字号 23、字重 800、描边 6 与无底板样式。

@@ -26,4 +26,8 @@ func _init() -> void:
 	controls.reset(); controls.orbit(Vector2(100,20))
 	controls.pan(Vector2(-10000,10000),controls.apply_pose(base,Vector3.ZERO).basis,.04)
 	check(controls.pan_offset.length()<=3.0001,"limit also applies after rotating and changing pan scale")
+	controls.reset()
+	var overhead:=Transform3D(Basis.IDENTITY,Vector3(0,14,0)).looking_at(Vector3.ZERO,Vector3.FORWARD)
+	controls.pan(Vector2(0,40),overhead.basis,.02)
+	check(controls.pan_offset.length()>.5 and is_zero_approx(controls.pan_offset.y),"vertical drag pans horizontally in top view")
 	print("CAMERA PAN: %s" % ("PASS" if failures==0 else "FAIL")); quit(failures)

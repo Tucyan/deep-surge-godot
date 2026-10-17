@@ -15,13 +15,14 @@ func run():
 	if not trays.is_empty():
 		var tray = trays[0]; var saved = app.session.snapshot()
 		check(tray.cards.size() == app.session.view().hand.size(),"No hand pagination")
-		# Regression: hovering only moves a few nearby cards.
+		# Hover clears only actual occlusion, keeping the original draw order.
 		var start: Vector2 = tray.tiles[1].position
 		tray.focus_card(1)
 		var target: Vector2 = tray.target_positions[1]
 		check(tray.tiles[1].position == start,"Hover must not teleport card")
-		for i in range(4,tray.cards.size()):
-			check(is_equal_approx(tray.target_positions[i].x,tray.base_x[i]),"Distant cards remain anchored")
+		for i in range(2,tray.cards.size()):
+			if tray.base_x[i]>=tray.base_x[1]+tray.card_width:
+				check(is_equal_approx(tray.target_positions[i].x,tray.base_x[i]),"Non-overlapping cards remain anchored")
 		var spacing: float = tray.base_x[1]-tray.base_x[0]
 		check(absf(tray.target_positions[0].x-tray.base_x[0])<=maxf(0,tray.card_width-spacing)+.1,"Neighbour only clears actual overlap")
 		if spacing*2 >= tray.card_width:
@@ -48,6 +49,25 @@ func run():
 		await process_frame; sparse.focus_card(1)
 		for i in range(4): check(is_equal_approx(sparse.target_positions[i].x,sparse.base_x[i]),"Few cards do not shift horizontally")
 		check(sparse.target_positions[1].y<sparse.target_positions[0].y,"Sparse hover only raises selected card")
+		# Hover is a pointer focus, not a battle selection. Ignore tiny overlaps,
+		# but retain right-side clearance in a crowded hand without selected UIDs.
+		check(sparse.selected_uids.is_empty(),"Hover clearance fixture has no battle selection")
+		for ratio in [0.0,0.049,0.05,0.051,0.35]:
+			sparse.focus_card(-1)
+			var desired_step: float=sparse.card_face_width*(1.0-ratio)
+			sparse.size.x=40+sparse.card_width+desired_step*(sparse.cards.size()-1)
+			sparse.arrange(); sparse.focus_card(1)
+			var right_shift: float=sparse.target_positions[2].x-sparse.base_x[2]
+			if ratio<0.05:
+				check(absf(right_shift)<.001,"Overlap below 5 percent does not shift: %s" % ratio)
+			else:
+				check(right_shift>0,"Crowded hover clears right neighbour without battle selection: %s" % ratio)
+			check(is_equal_approx(sparse.target_positions[1].x,sparse.base_x[1]),"Hovered card stays horizontally anchored")
+			check(is_equal_approx(sparse.target_positions[0].x,sparse.base_x[0]),"Left neighbour stays anchored")
+			for tile in sparse.tiles: check(tile.z_index==1,"Hover does not change stacking order")
+			sparse.set_selected_uids([sparse.cards[1].uid])
+			for tile in sparse.tiles: check(tile.z_index==1,"Selected raise does not change stacking order")
+			sparse.set_selected_uids([])
 		sparse.queue_free()
 		check(app.session.snapshot() == saved,"Hover must not mutate game or RNG")
 		var expected: String = tray.cards.back().uid

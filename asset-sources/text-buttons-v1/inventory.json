@@ -1,0 +1,25 @@
+{
+  "archive_sha256": "4884a08b45047de9b2c09f89b53811436c126efc4e9e003e018b2348a66fddab",
+  "source_files": {
+    "deep_surge_resizable_buttons/addons/deep_surge_resizable_buttons/normal.png": "79674311789b9316b6004fdb4a67c1b8426da6213886d5e6ef5620c40062d86f",
+    "deep_surge_resizable_buttons/addons/deep_surge_resizable_buttons/normal.svg": "dd7ad8750414742a8b44e9cac7ddf0e370269b302a37ef3139caaf5d9d6dc9bf",
+    "deep_surge_resizable_buttons/addons/deep_surge_resizable_buttons/hover.png": "dc0bc5f1ab25fee41eb1a034f00158dca21be05b7c77ac1affe2a10f16d7b502",
+    "deep_surge_resizable_buttons/addons/deep_surge_resizable_buttons/hover.svg": "ef0d6decbe6b3d964efe473bcf22e4e165adc8e018e97a9c9970663c5185e783",
+    "deep_surge_resizable_buttons/addons/deep_surge_resizable_buttons/pressed.png": "05a9a72acf8b96e94174bde34b3dde734601a1615784e22fc6ebb85fc71f5d28",
+    "deep_surge_resizable_buttons/addons/deep_surge_resizable_buttons/pressed.svg": "9a3959125317f365e3716018fadf09b0fd00a303435717af9338ff2394bcb2fe",
+    "deep_surge_resizable_buttons/addons/deep_surge_resizable_buttons/disabled.png": "7eb2845f9d4df1506728f167fd05d121d3531eb38142053c11f4c8790c2cb4e6",
+    "deep_surge_resizable_buttons/addons/deep_surge_resizable_buttons/disabled.svg": "37571f04020060bfa47320e3d3e9a92c176107fbc997e3224bbd51a50e9f9162",
+    "deep_surge_resizable_buttons/addons/deep_surge_resizable_buttons/compass.png": "0cb005e329007916d3df3817df4adae1d1cbecad8a35d393e18180e0d480e6af",
+    "deep_surge_resizable_buttons/addons/deep_surge_resizable_buttons/compass.svg": "c40aefd033d55ada2ae60e39119c318bbeac78118e43f7eee7c13f2d93de7881"
+  },
+  "runtime_images": "all ten existing PNG/SVG files match the supplied archive byte-for-byte",
+  "updated_script_assets": [
+    "ui.title.layout-debug",
+    "ui.craft.grid",
+    "ui.controls.close",
+    "ui.settings-panel",
+    "ui.modal-layout",
+    "ui.formal-shop",
+    "ui.controls.text-buttons"
+  ]
+}

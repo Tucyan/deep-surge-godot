@@ -26,9 +26,9 @@ for name, region in regions.items():
         'dimensions': list(piece.size), 'sha256': hashlib.sha256(target.read_bytes()).hexdigest(),
         'dependencies': [], 'show_label': False, 'license': 'AI-generated using built-in imagegen; style reference user-provided homepage',
     }
-records['ui.story.layout'] = {'path': 'res://pages/story_page.gd', 'version': 1,
-    'source': 'programmatic layout, font configuration and button states', 'reference_size': [1600, 900],
-    'dependencies': list(records) + ['texture.title.ocean-poster'], 'visual_seed': None, 'sha256': hashlib.sha256((ROOT / 'pages/story_page.gd').read_bytes()).hexdigest()}
+records['ui.story.layout'] = {'path': 'res://pages/story_page.gd', 'version': 2,
+    'source': 'plain native Godot controls and system font; no image dependencies', 'reference_size': [1600, 900],
+    'dependencies': [], 'visual_seed': None, 'sha256': hashlib.sha256((ROOT / 'pages/story_page.gd').read_bytes()).hexdigest()}
 inventory = {'schema': 1, 'assets': records, 'source_dimensions': list(sheet.size), 'alpha': 'original RGBA preserved; rectangular crop only'}
 (SOURCE.parent / 'inventory.json').write_text(json.dumps(inventory, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
 manifest_path = ROOT / 'assets/manifest.json'

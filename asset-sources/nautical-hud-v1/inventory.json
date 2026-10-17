@@ -1,0 +1,16 @@
+{
+  "source_files": {
+    "01_compass.png": "0f2d58306c814086cc4b4d3c84d7653fc43cd35682efaa793ec25d150d3d7c03",
+    "02_health.png": "f7355581a06a0c8042d8d95e8f32009be2f1cc8ac20dc059d2f4864dcd3a76f3",
+    "03_hunger.png": "f29854068f10d212a5d19d003c23e8cfb7416cc1da7a405939a4ef67d3532f7f",
+    "04_water.png": "c50ec2ef562101e79dcc48e689691778330801743a1fda0b471ca61fdb9246a8",
+    "05_sanity.png": "dcaa8b4ce6759da547f17ed5cadbc541052d8d6f50beab9512c6e51ee715a32c",
+    "action-points-layout-reference.png": "24f790bdf7ea1d2a2705c818bb593455198b5133e6604ab9b87a4993a95f1469",
+    "action-points-original.png": "4eed8d80403bdfe3b4cd22e748d183dc1cbdeecd9244a677b6c274fd8282fa69",
+    "button-reference.png": "990ead66dc1abe3aaf0184af27f5b93cdfa2d843d4e21923669d785f062efaff",
+    "icons-original.zip": "a0d6a0e4b1afc8259ccf70d334f5bbd1ba95168295cef0ecba0cabfc4eea48d4",
+    "layout-reference.png": "d44a038387235ec813192f40a067158ba11c76e250c210ad96de9bdca1942f1f",
+    "panel-reference.png": "605ca8ffafb23210180db1a88bcbfd209861811de9c1acd100cb2f2f3d15cd39"
+  },
+  "notes": "All five icons and the AP artwork are unmodified. AP uses an AtlasTexture crop. Reference sheets are source-only and excluded by .gdignore. Button shapes are recreated separately with native geometry; reference sheets are not runtime backgrounds. No game RNG or rule changes."
+}

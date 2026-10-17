@@ -1,0 +1,68 @@
+{
+  "date": "2026-10-17",
+  "assets": {
+    "concept.workbench.conversion-v2.a": {
+      "label": "航海仪表",
+      "path": "asset-sources/workbench-concepts-20261017-v2/preview-a.png",
+      "status": "preview-only-awaiting-user-selection",
+      "sha256": "744ae484dfe758e7333619ec56cc84a53f61aa7a917da942a6b078a8370bcbb3",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "source": "built-in image_gen screenshot edit",
+      "prompt": "prompts.json/common + variants/A",
+      "runtime_mapping": null
+    },
+    "concept.workbench.conversion-v2.b": {
+      "label": "月相海图",
+      "path": "asset-sources/workbench-concepts-20261017-v2/preview-b.png",
+      "status": "preview-only-awaiting-user-selection",
+      "sha256": "477625738408481922e40016a9bc9322323d88fcc96cae528a82300f4125b760",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "source": "built-in image_gen screenshot edit",
+      "prompt": "prompts.json/common + variants/B",
+      "runtime_mapping": null
+    },
+    "concept.workbench.conversion-v2.c": {
+      "label": "星图塔罗",
+      "path": "asset-sources/workbench-concepts-20261017-v2/preview-c.png",
+      "status": "preview-only-awaiting-user-selection",
+      "sha256": "8915fe75ef04765831ec5604974d17df6b8bc4047e0b223a0448a5a455d41395",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "source": "built-in image_gen screenshot edit",
+      "prompt": "prompts.json/common + variants/C",
+      "runtime_mapping": null
+    }
+  },
+  "references": {
+    "reference-title.png": {
+      "sha256": "e2eaba7930bc0f058122923a5485ea6ef414c023df3eab8e224ed0ba2303b974",
+      "dimensions": [
+        1284,
+        780
+      ]
+    },
+    "reference-transmute.png": {
+      "sha256": "f1c00371e99d467d4dee344a18207c7d05a4ca55cf0c171d82f3136625a6cc06",
+      "dimensions": [
+        1280,
+        720
+      ]
+    },
+    "reference-voyage.png": {
+      "sha256": "34319f942bd2e67c888a5716e4df8da56e7420ca9dc4be9242238db0d23f4dfe",
+      "dimensions": [
+        1284,
+        780
+      ]
+    }
+  },
+  "notes": "Preview-only concepts. No runtime images, scripts, rules or themes changed."
+}

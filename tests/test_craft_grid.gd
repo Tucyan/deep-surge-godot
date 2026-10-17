@@ -32,7 +32,7 @@ func run():
 		check(grid.columns==4 and grid.get_child_count()==8,"eight recipes in four columns")
 		check(grid.get_child(5).find_child("CraftRecipeButton",true,false).disabled,"locked technology recipe disabled")
 		for resolution in [Vector2i(1600,900),Vector2i(1280,720)]:
-			root.size=resolution; await process_frame; await process_frame
+			root.size=resolution; await process_frame; await process_frame; await process_frame; await process_frame
 			check(app.get_global_rect().encloses(grid.get_global_rect()),"grid within viewport")
 			if "--capture" in OS.get_cmdline_user_args():
 				await RenderingServer.frame_post_draw
@@ -50,7 +50,7 @@ func run():
 	app.handle_ui("list_page","1")
 	await process_frame; await process_frame
 	grid=app.find_child("RecipeGrid",true,false)
-	check(grid!=null and grid.get_child_count()==5 and grid.get_child(4).get_meta("recipe_id")=="extra","extra recipe is on second page")
+	check(grid!=null and grid.get_child_count()==8 and grid.get_child(4).get_meta("recipe_id")=="extra","extra recipe is on second page")
 	check(app.session.snapshot()==before,"pagination changes no state or RNG")
 	app.handle_ui("list_page","0")
 	await process_frame; await process_frame

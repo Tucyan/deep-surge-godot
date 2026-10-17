@@ -34,17 +34,27 @@ func _surface_input(event: InputEvent) -> void:
 		else: _release(event.position)
 func _press(local_point: Vector2) -> void:
 	_press_point=app.world_view.get_global_transform()*local_point
-	_pressed=surface.pick(_press_point,policy.targets())
+	_pressed=_pick_click(_press_point)
+func _pick_click(point: Vector2) -> Dictionary:
+	var target: Dictionary=surface.pick(point,policy.targets())
+	if not target.is_empty(): return target
+	var root_cell: Dictionary=app.world_view.raft_models.root_cells(app.world_view._raft_layout)[0].duplicate(true)
+	root_cell.kind="raft_details"
+	return surface.pick(point,[root_cell])
 func _release(local_point: Vector2) -> void:
 	if app.world_view.camera_controls.dragged:
 		_pressed={}; return
 	var point: Vector2=app.world_view.get_global_transform()*local_point
-	var target: Dictionary=surface.pick(point,policy.targets())
+	var target: Dictionary=_pick_click(point)
 	if point.distance_to(_press_point)<18 and target.get("id","")==_pressed.get("id",""):
 		if target.get("kind","")=="cell" and target.id==selected.get("id",""): target={}
 		select_target(target)
 	_pressed={}
 func select_target(target: Dictionary) -> void:
+	if target.get("kind","")=="raft_details":
+		select_target({})
+		app.handle_command.call_deferred("panel",{"id":"raft"})
+		return
 	selected=target; surface.select(target)
 	_popup_anchor_y=0.0; _popup_vertical_placed=false
 	if is_instance_valid(popup): remove_child(popup); popup.queue_free()

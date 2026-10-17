@@ -1,13 +1,13 @@
 extends SceneTree
-## v19 public-interface routes, captured by tools/validate_salvage.py.
-## The v7 health-route fixture remains historical and is not replayed against v19.
+## v21 public-interface routes, captured with --trace-prefix settlement-v21.
+## The v7 health-route fixture remains historical and is not replayed against v21.
 var failures := 0
 func check(ok: bool, message: String) -> void:
 	if not ok: failures+=1; printerr("FAIL: "+message)
 func _init() -> void:
 	var catalog=load("res://content/catalog.gd").new(); check(catalog.load_catalog(),"load catalogue")
 	for name in ["standard-challenge-22","standard-challenge-39","standard-challenge-9","standard-challenge-73","standard-challenge-1000","standard-challenge-7919","standard-challenge-20261016","standard-challenge-4294967295","standard-story-22","hard-challenge-22","hard-story-22","nightmare-challenge-22","nightmare-story-22"]:
-		var trace=JSON.parse_string(FileAccess.get_file_as_string("res://evidence/salvage-v19-"+name+".trace.json"))
+		var trace=JSON.parse_string(FileAccess.get_file_as_string("res://evidence/settlement-v21-"+name+".trace.json"))
 		check(trace is Dictionary,"recorded public trace exists "+name)
 		if not trace is Dictionary: continue
 		var agent=load("res://adapters/agent_session.gd").new(catalog)

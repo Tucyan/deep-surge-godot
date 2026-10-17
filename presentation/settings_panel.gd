@@ -4,6 +4,8 @@ const Display = preload("res://presentation/display_settings.gd")
 
 static func build(parent: Node, app: Control, view: Dictionary) -> void:
 	var prefs = app.display_settings
+	var compact := app.size.y<780
+	if compact: parent.add_theme_constant_override("separation",6)
 	var current_tab: String = app.settings_tab if app.settings_tab in ["display", "game"] else "display"
 
 	# Subtitle / context description
@@ -25,6 +27,7 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 	tab_display.custom_minimum_size = Vector2(0, 36)
 	tab_display.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	tab_bar.add_child(tab_display)
+	W.TextButtonArt.apply(tab_display)
 
 	var tab_game := Button.new()
 	tab_game.name = "TabGame"
@@ -32,6 +35,7 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 	tab_game.custom_minimum_size = Vector2(0, 36)
 	tab_game.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	tab_bar.add_child(tab_game)
+	W.TextButtonArt.apply(tab_game)
 
 	# 2. Tab Content Containers
 	var content_area := VBoxContainer.new()
@@ -47,7 +51,7 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 
 	var game_box := VBoxContainer.new()
 	game_box.name = "GameTabContent"
-	game_box.add_theme_constant_override("separation", 6)
+	game_box.add_theme_constant_override("separation", 4 if compact else 6)
 	content_area.add_child(game_box)
 
 	# --- TAB 1: 画面显示 ---
@@ -164,6 +168,7 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 		prefs.view_locked=enabled; app.apply_display_settings.call_deferred(false))
 	var camera_reset:=W.button(camera_row,"复位",func():app.world_view.reset_camera_view())
 	camera_reset.name="SettingsResetRaftView"
+	W.UtilityButtonArt.apply(camera_reset, "reset", false)
 	game_box.add_child(make_row("视角锁定",prefs.camera_help(),camera_row,210))
 	var mouse_bindings:=HBoxContainer.new()
 	for action in ["orbit","pan"]:
@@ -216,6 +221,15 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 	)
 	game_box.add_child(make_row("资源合并显示 (叠牌)", "同种基础资源达到 4 张时自动合并为单格显示，减少拥挤", opt_stack, 130))
 
+	var hover_picker := OptionButton.new(); hover_picker.name="HandHoverMode"
+	hover_picker.add_item("排开遮挡"); hover_picker.add_item("图层上浮")
+	hover_picker.select(app.hand_layout.HOVER_MODES.find(app.hand_layout.hover_mode))
+	hover_picker.item_selected.connect(func(index):
+		app.hand_layout.hover_mode=app.hand_layout.HOVER_MODES[index]
+		if app.persistence and app.hand_layout.save_preferences()!=OK: app.message="手牌设置保存失败"
+		app.render.call_deferred())
+	game_box.add_child(make_row("手牌悬停方式","排开遮挡：让右侧牌让位；图层上浮：仅将主卡显示到上层",hover_picker,150))
+
 	# Row 3: 游戏操作与手势提示卡片
 	var tip_card := PanelContainer.new()
 	var tip_style := StyleBoxFlat.new()
@@ -244,29 +258,23 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 	tip_body.add_theme_color_override("font_color", Color("9ab0be"))
 	tip_vbox.add_child(tip_body)
 	game_box.add_child(tip_card)
+	if compact:
+		for row in game_box.get_children():
+			if not row is PanelContainer: continue
+			var style: StyleBoxFlat=row.get_theme_stylebox("panel").duplicate()
+			style.content_margin_top=maxf(4,style.content_margin_top-2)
+			style.content_margin_bottom=maxf(4,style.content_margin_bottom-2)
+			row.add_theme_stylebox_override("panel",style)
 
 	# --- Tab Switching Behavior (Instant, No Full Screen Reload) ---
-	var active_tab_style := StyleBoxFlat.new()
-	active_tab_style.bg_color = Color(0.12, 0.22, 0.30, 0.95)
-	active_tab_style.border_color = W.GOLD
-	active_tab_style.set_border_width_all(1)
-	active_tab_style.border_width_bottom = 2
-	active_tab_style.set_corner_radius_all(3)
-
-	var inactive_tab_style := StyleBoxFlat.new()
-	inactive_tab_style.bg_color = Color(0.035, 0.065, 0.09, 0.7)
-	inactive_tab_style.border_color = Color(0.22, 0.32, 0.42, 0.4)
-	inactive_tab_style.set_border_width_all(1)
-	inactive_tab_style.set_corner_radius_all(3)
-
 	var update_tabs = func(target: String):
 		app.settings_tab = target
 		display_box.visible = (target == "display")
 		game_box.visible = (target == "game")
 
-		for state in ["normal", "hover", "pressed", "focus"]:
-			tab_display.add_theme_stylebox_override(state, active_tab_style if target == "display" else inactive_tab_style)
-			tab_game.add_theme_stylebox_override(state, active_tab_style if target == "game" else inactive_tab_style)
+		tab_display.set_meta("surge_primary", target == "display")
+		tab_game.set_meta("surge_primary", target == "game")
+		tab_display.queue_redraw(); tab_game.queue_redraw()
 		tab_display.add_theme_color_override("font_color", Color("fff8e9") if target == "display" else Color("8ca1b0"))
 		tab_game.add_theme_color_override("font_color", Color("fff8e9") if target == "game" else Color("8ca1b0"))
 
@@ -320,6 +328,7 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 			home_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			home_btn.pressed.connect(func(): app.handle_command("home"))
 			btn_row.add_child(home_btn)
+			W.TextButtonArt.apply(home_btn)
 
 		if view.active:
 			var abandon_btn := Button.new()
@@ -328,16 +337,11 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 			abandon_btn.tooltip_text = "放弃当前航行并按已完成节点进行结算"
 			abandon_btn.custom_minimum_size.y = 36
 			abandon_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			var ab_style := StyleBoxFlat.new()
-			ab_style.bg_color = Color(0.18, 0.08, 0.08, 0.9)
-			ab_style.border_color = Color(0.75, 0.35, 0.3, 0.8)
-			ab_style.set_border_width_all(1)
-			ab_style.set_corner_radius_all(3)
-			for state in ["normal", "hover", "pressed", "focus"]:
-				abandon_btn.add_theme_stylebox_override(state, ab_style)
-			abandon_btn.add_theme_color_override("font_color", Color("f09d92"))
 			abandon_btn.pressed.connect(func(): app.confirm_abandon())
 			btn_row.add_child(abandon_btn)
+			W.TextButtonArt.apply(abandon_btn)
+			abandon_btn.set_meta("surge_danger", true)
+			abandon_btn.add_theme_color_override("font_color", Color("f09d92"))
 
 static func make_row(title_text: String, hint_text: String, control: Control, control_width: float = 160.0) -> PanelContainer:
 	var panel := PanelContainer.new()

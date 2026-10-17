@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-17",
+  "mode": "built-in image_gen",
+  "assets": {
+    "concept.button.family-a": {
+      "label": "航海铜框",
+      "status": "preview-only-awaiting-user-selection",
+      "path": "asset-sources/button-concepts-20261017/preview-a.png",
+      "source": "built-in image_gen, screenshot concept edit",
+      "sha256": "1ec1db44dc8c24c1217c75b544d56d080e41f88b9d6b534f81f7e880b678303f",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "dependencies": [
+        "evidence/text-buttons-transmute-1280x720-125.png",
+        "asset-sources/button-concepts-20261017/prompts.json"
+      ],
+      "runtime_mapping": null
+    },
+    "concept.button.family-b": {
+      "label": "潮汐海玻璃",
+      "status": "preview-only-awaiting-user-selection",
+      "path": "asset-sources/button-concepts-20261017/preview-b.png",
+      "source": "built-in image_gen, screenshot concept edit",
+      "sha256": "a601252fb8ab7b4d8aa3aa9b4f43430193f54c70accc594720d8224d927f1dcf",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "dependencies": [
+        "evidence/text-buttons-transmute-1280x720-125.png",
+        "asset-sources/button-concepts-20261017/prompts.json"
+      ],
+      "runtime_mapping": null
+    },
+    "concept.button.family-c": {
+      "label": "航海日志纸签",
+      "status": "preview-only-awaiting-user-selection",
+      "path": "asset-sources/button-concepts-20261017/preview-c.png",
+      "source": "built-in image_gen, screenshot concept edit",
+      "sha256": "daad4f344b6375fad5b24ca50088b83e4fc0c8641c30df36fde505a63a178117",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "dependencies": [
+        "evidence/text-buttons-transmute-1280x720-125.png",
+        "asset-sources/button-concepts-20261017/prompts.json"
+      ],
+      "runtime_mapping": null
+    }
+  }
+}

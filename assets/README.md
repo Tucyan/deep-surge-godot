@@ -1,5 +1,27 @@
 # 素材登记
 
+2026-10-17 全屏图鉴：新增 `ui.encyclopedia`，复用已有卡图、怪物图、藏品图和 `ui.card.back`；无新增外部图片。`ui.modal-layout` 同步全屏路由 hash，详见[验证记录](../evidence/encyclopedia-verification.md)。
+
+2026-10-17 新增 `ui.story-gallery`、`data.story-gallery-archive`，卡片封面复用开局分镜，未新增图片。同步序章只读回顾参数、App 根节点兼容启动层和回廊路由的 hash/依赖，详见 [剧情回廊](../docs/story-gallery.md)。
+
+2026-10-17 独立剧情 LOG 改用原生 ScrollContainer 连续滚动，移除分页，打开时定位最新记录；无新增图片，ui.story.layout 脚本 SHA256 已同步。
+
+2026-10-17 独立剧情页：`ui.story.layout` v2 移除背景及对白/选项/工具条的全部图片依赖，改用 Godot 原生按钮、纯色矩形和系统字体。历史 `ui.story.dialogue/choice/toolbar` 图片保留但不再被此页面使用。详见 [验证记录](../evidence/story-plain-verification.md)。
+
+2026-10-17 木筏视角切换：新增项目原创 SVG `icon.camera.top`、`icon.camera.oblique`，圆圈内平面／倾斜田字表示点击后的目标视角，接入复位按钮上方的`ToggleRaftView`。源文件即`assets/icons/camera-top.svg`、`camera-oblique.svg`，版本1，无外部依赖，SHA-256与运行映射登记在manifest。相关UI脚本登记同步hash；验证见[视角模式](../evidence/camera-modes-verification.md)。
+
+2026-10-17 新增 `opening.image.01`～`05`、`opening.music`、`opening.scenes`、`audio.blip-voice`、`ui.opening-intro`、`ui.game-bootstrap`。用户原包五张 PNG/OGG 与 Blip Voice 插件保留原字节；仅新增显示区域与运行路径。源与 hash 见 [序章源记录](../asset-sources/opening-intro-v1/README.md)，运行说明见 [世界观序章](../docs/opening-intro.md)。
+
+2026-10-17 工具按钮优化：`ui.controls.utility-icons` 登记几何 X / 复位箭头及统一圆角/圆形底框；刷新 Widgets、航行 HUD 和设置的直接相关脚本 hash。旧 `ui.camera.reset-icon` 标记保留但不在运行中使用。无新外部依赖；imagegen 候选留在 `.gdignore` 来源目录等待用户选择，不作为运行资产。验证见[关闭与复位](../evidence/utility-buttons-verification.md)。
+
+2026-10-17 普通文字按钮：新增 `ui.controls.text-buttons`，由 Widgets、设置和确认框共用四态九宫格/星盘绘图层。现有 `texture.ui.tarot.*` 十张 PNG/SVG 已与本次用户原包逐字节比较一致，补全原包路径与条目来源；运行图像没有改动。同步七个直接相关 UI 脚本条目的 hash/依赖/版本；不刷新其他脚本 hash。原包和清单见 [text-buttons-v1](../asset-sources/text-buttons-v1/README.md)，登记命令 `python tools/register_text_buttons.py`，验证见 [文字按钮](../evidence/text-buttons-verification.md)。
+
+2026-10-17 v20：捕捞网模型 v004 的包围盒对齐格子中心并缩至格子宽深的 92%，避免网兜伸入相邻格；材质与 UV 保持。稳定 AssetId 不变，源、GLB、资产登记和重建脚本见 [木筏设备模型源记录](../asset-sources/raft-wood-unified-v1/README.md)。
+
+同日复核：运行时旧导入缓存仍加载舷外模型，现已重新导入。AssetCatalog 模型与 GLB 范围一致，Godot GPU 顶视/斜视单格夹具通过，见 [捕捞网运行验证](../evidence/fishing-net-v20-verification.md)。
+
+2026-10-17 航海 HUD 更新：顶部五图标、独立长条/圆形按钮、程序化米白手牌底板，以及新行动点素材已接入；卡牌顶栏固定逻辑高度，仅横向伸展。当前外观、来源与缩放约定见[航海 HUD](../docs/nautical-hud.md)，覆盖下文旧外观记录。
+
 2026-10-17 v19：捕捞网状态提示恢复航初自动生产，主动打捞提示保底1张加完好网等级收益；无网时按钮可用。既有脚本登记同步版本/hash，无新增模型或图片。
 
 2026-10-16 v18：打捞按钮、提示与捕捞网状态文案改为1AP主动捕捞；既有脚本资产登记同步版本/hash，无新增模型、图片或外部依赖。
@@ -136,7 +158,7 @@ HUD v2为教学超限手牌预留分页行；`ui.voyage-hud`资产仍对应同�
 
 ## 手牌底板与展开交互（2026-10-13）
 
-`ui.hand.fan`（presentation/hand_fan.gd）用于航行和战斗手牌：全部实例同排显示，不分页、不滚动，按可用宽度重叠；鼠标经过时局部展开并抬起，停留 0.35 秒显示真实卡牌描述和阶段使用说明。命令通过 UID 发给页面，hover 不修改规则状态。不可弃置牌和战斗 AP 不足仍禁用操作；空白处点击不执行。
+`ui.hand.fan`（presentation/hand_fan.gd）用于航行和战斗手牌：全部实例同排显示，不分页、不滚动，按可用宽度重叠；悬停上浮保留原图层顺序，不要求战斗选中；以可见卡框宽度计算重叠，透明留白和阴影不参与，低于5%时不横移，达到5%才推动遮挡目标牌的右侧牌。停留 0.35 秒显示真实卡牌描述和阶段使用说明。命令通过 UID 发给页面，hover 不修改规则状态。不可弃置牌和战斗 AP 不足仍禁用操作；空白处点击不执行。
 
 `shader.ui.hand-glass` 独立屏幕 mipmap 模糊 shader，带可配置 tint / blur_lod；`ui.hand.border` 独立程序绘制铜金双线、绳纹刻痕与铆钉角饰。装饰公式确定，不使用玩法 RNG；材质归底板实例持有，shader 和卡图由资源缓存共享。用户卡牌图片未重绘。通过 tools/register_hand_ui.py 更新源/hash/依赖。
 
@@ -151,6 +173,8 @@ HUD v2为教学超限手牌预留分页行；`ui.voyage-hud`资产仍对应同�
 木筏 v2：初始 3×2 中两格是左侧装饰筏根，四格为逻辑筏格；装饰不进入 GameState，水线/泡沫/雾/镜头包含筏根。model.raft-state v2，scene.voyage v11。详见 docs/raft-state-models.md。
 
 ## Blender 木筏模块（当前默认）
+
+2026-10-17 装饰格 2 木桶落地修复 v6：`model.raft.module.root-decor` 的 16 块桶板与两道金属箍整体下移 0.34m，桶底从模块局部 y=0.50m 移到 0.16m 甲板面。原 v005 Blender 源保留，运行 GLB 通过 `tools/repair_root_barrel_float.py` 作确定性导出后修复；重新导出原模型后需运行该脚本。坐标选择有源 hash 和顶点数校验。资产登记保留此修复来源；源链、复建命令与 GPU 证据见 [木桶修复记录](../asset-sources/raft-barrel-v6/README.md)。
 
 model.raft.module.deck-intact / deck-damaged / root-decor / lamp / filter / planter / medkit / crossbow / spearRack 分别映射同名 GLB，源为 asset-sources/raft-blender-v1/raft_modules_v001.blend。倒角、UV、法线及 PBR 基色在 Blender 中完成，湿木、发光开关和状态标签归运行时。每个 GLB 的 hash、来源、单位、依赖登记于 manifest，实例共享源网格，状态私有材质按 source+状态缓存。重新建模使用 tools/build_blender_raft.py（本机 Blender），再执行 register_blender_raft.py / register_raft_state.py / register_toon_ocean.py；check_blender_raft.py 检查导出完整性。原文件保持不变，不重新生成或覆盖原木筏源。
 
@@ -214,3 +238,22 @@ model.raft.module.deck-intact / deck-damaged / root-decor / lamp / filter / plan
 ### 2026-10-17 战斗四大面板
 
 用户附件 `deep_surge_ui_panels (1).zip` 的四张 PNG 原样归档于 `asset-sources/battle-ui-panels-v1/`，运行副本为 `battle_ui/panels_v1/`。稳定 ID 为 `texture.battle.panel.monster`、`intent`、`preview`、`log`（后面三项共用 `texture.battle.panel.` 前缀）与适配器 `ui.battle.panels`。`tools/register_battle_panels.py` 登记源、版本、SHA256、原图尺寸、依赖与运行映射。原图像素保持不变，无新规则随机；原生深色圆底与控件随四面板等比适配。只应用四个大板块。验证见 [战斗四面板](../evidence/battle-panels-verification.md)。
+2026-10-17：新增项目自绘 SVG 图标 ui.camera.reset-icon，路径 assets/icons/camera-reset.svg，版本1。运行映射为 voyage_hud.gd 的 ResetRaftView 圆形按钮，来源、SHA256 和依赖登记在 manifest.json；无外部素材。
+
+
+### 2026-10-17 UI 组件迁入主工程
+
+HUD 控件统一位于 `presentation/hud/`，五张 HUD 图片位于 `assets/ui/hud/`；可缩放按钮场景为 `scenes/ui/tarot_button.tscn`，配套 PNG/SVG 位于 `assets/ui/buttons/`。原运行 `addons/` 目录已删除。现有 HUD AssetId 保留并更新路径、版本与 hash，按钮场景及十张图片补登记为 `ui.buttons.tarot` 和 `texture.ui.tarot.*`。按钮素材只可追溯至迁移前项目文件，上游许可证未记录；原始 HUD 包继续保存在 `asset-sources/`。所有图片像素和脚本 UID 保留。Godot 导入、迁移组件实例化及 GPU `CLEAN HUD` 检查通过；全量资产清单仍有六个既有 hash 不匹配，详情见 [迁移验证记录](../evidence/ui-main-project-migration-verification.md)。
+
+2026-10-17：正式新增 `ui.hand.stack-backplate`（`presentation/card_stack.gd`），复用 `ui.card.front` 生成向左露出的独立装饰后层，无新位图。`ui.hand.fan`、`ui.hand.layout`、`ui.item-card`、`ui.hand.stack-quantity`、`ui.settings-panel` 的版本、依赖、当前源hash同步；本地设置新增hover_mode。重新登记仍使用 `tools/register_nautical_hud.py`。
+
+2026-10-17：配方图标新增 `card.shieldRack`、`card.generator`、`card.fishingNet`、`card.crate`，透明 PNG 位于 `assets/icons/recipes/`。由 `tools/render_recipe_icons.gd` 使用对应已有 `model.raft.module.*` 离线渲染，无模型修改；清单登记来源、版本、依赖与 SHA-256。其余配方复用现有 `card.*` 图片。
+
+2026-10-17：`ui.settlement` v5 取消探索分数 `/ 100` 和最多4项说明，改为不封顶；无新增图片或依赖，脚本SHA-256已更新。评分版本 `settlement-score-v2`，见[验证记录](../evidence/settlement-uncapped-verification.md)。
+
+2026-10-17：`ui.settlement` v6 将五类结算详情统一改为完整内容纵向滚动，移除分页按钮与页码；依赖不变，源脚本SHA-256同步更新。见[滚动详情验证](../evidence/settlement-scroll-verification.md)。
+
+
+### 2026-10-17 首页背景替换（带边框视频）
+
+当前首页使用用户提供的 `深潮_月下灯塔与远航帆船_去水印_2x超分2K_带边框.mp4`，运行资源为 `assets/title_ui/lighthouse_loop.ogv`（2560×1440、16:9、约5.09秒、Theora q7、静音循环）及同源首帧。完整画面等比居中，未覆盖区域纯黑，不裁剪画面。视频已含边框及Logo，移除独立 `TitleFrame`、透明Logo与圆形挡板实例，避免重复叠加；六个菜单按钮与设置入口保留。旧边框和Logo文件仅保留作历史资产。稳定AssetId沿用，来源、版本、依赖、映射和SHA-256由 `tools/register_title_v3.py` 更新。

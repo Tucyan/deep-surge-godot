@@ -1,0 +1,1 @@
+main.tscn 当前直接使用 flow_app.gd；工作区已有大量未提交修改。新增 bootstrap 避免改动现有 flow_app。用户素材五幕十句，PNG 比例不同；以等比完整显示。首次标记独立 user://opening-intro.cfg，不改变游戏存档。

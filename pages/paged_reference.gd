@@ -82,14 +82,63 @@ func category_bar(categories: Dictionary, default_id: String) -> String:
 	return category
 
 func encyclopedia() -> void:
-	heading("图鉴","只显示已经发现的内容。")
+	name = "Encyclopedia"
+	W.text(self,"图鉴",30,W.GOLD)
 	selected_table = category_bar({"cards":"卡牌","enemies":"怪物","relics":"藏品","endings":"结局"},"cards")
 	var ids: Array = ending_names().keys() if selected_table == "endings" else catalog.table(selected_table).keys()
-	var names := {}
-	for id in ids:
-		if discovered(id): names[id] = ending_names()[id] if selected_table == "endings" else catalog.entry(selected_table,id).name
-		else: names[id] = "尚未发现 · %02d" % (ids.find(id)+1)
-	list_body(ids,names,Callable(self,"encyclopedia_detail"))
+	body = HBoxContainer.new(); body.size_flags_vertical = Control.SIZE_EXPAND_FILL; add_child(body)
+	body.add_theme_constant_override("separation",18)
+	var left := VBoxContainer.new(); left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	left.size_flags_stretch_ratio = 1.8; body.add_child(left)
+	var grid := W.grid(left,3); grid.name = "EncyclopediaGrid"
+	grid.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	var pages := maxi(1,ceili(float(ids.size())/6.0))
+	var index := clampi(int(context.ui_state.get("list_page",0)),0,pages-1)
+	var visible_ids: Array = ids.slice(index*6,index*6+6)
+	var selected: String = context.ui_state.get("selected_id","")
+	if selected not in visible_ids: selected = str(visible_ids[0]) if not visible_ids.is_empty() else ""
+	for id in visible_ids: encyclopedia_card(grid,str(id),ids.find(id)+1,str(id)==selected)
+	# Keep the final page's card proportions identical to the preceding pages.
+	for unused in range(6-visible_ids.size()):
+		var space := Control.new(); space.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		space.size_flags_horizontal = Control.SIZE_EXPAND_FILL; space.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		grid.add_child(space)
+	var footer := HBoxContainer.new(); footer.alignment = BoxContainer.ALIGNMENT_CENTER; left.add_child(footer)
+	pager(footer,index,pages)
+	detail = W.panel(body); detail.name = "EncyclopediaDetail"
+	detail.get_parent().size_flags_stretch_ratio = 1.0
+	if selected != "": encyclopedia_detail(selected)
+	else: W.text(detail,"当前没有可显示的内容。",18,W.MUTED)
+
+func encyclopedia_art(id: String) -> String:
+	if not discovered(id) or selected_table == "endings": return "ui.card.back"
+	return {"cards":"card.","enemies":"enemy.","relics":"relic."}[selected_table]+id
+
+func encyclopedia_card(grid: GridContainer, id: String, number: int, selected: bool) -> void:
+	var title: String = "尚未发现 · %02d" % number
+	if discovered(id): title = ending_names()[id] if selected_table == "endings" else catalog.entry(selected_table,id).name
+	var card := Button.new(); card.name = "EncyclopediaCard_"+id
+	card.set_meta("entry_id",id); card.accessibility_name = title
+	card.custom_minimum_size = Vector2(0,120)
+	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL; card.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	for state in ["normal","hover","pressed","focus"]:
+		var style := StyleBoxFlat.new()
+		style.bg_color = Color("143B83") if state in ["hover","pressed"] else Color("08224B")
+		style.border_color = W.GOLD if selected else Color("536b87")
+		if state == "focus": style.border_color = Color("F6EBDA")
+		style.set_border_width_all(2 if selected or state == "focus" else 1)
+		style.set_corner_radius_all(4); card.add_theme_stylebox_override(state,style)
+	grid.add_child(card); card.pressed.connect(func(): request("selected_id",id))
+	var margin := MarginContainer.new(); margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	card.add_child(margin); margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	for edge in ["left","right","top","bottom"]: margin.add_theme_constant_override("margin_"+edge,12)
+	var column := VBoxContainer.new(); column.mouse_filter = Control.MOUSE_FILTER_IGNORE; margin.add_child(column)
+	W.art(column,assets,encyclopedia_art(id),54,false)
+	var cover: TextureRect = column.get_child(0); cover.name = "Cover"
+	cover.size_flags_vertical = Control.SIZE_EXPAND_FILL; cover.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var label := W.text(column,title,18,W.GOLD if selected else W.INK); label.name = "EntryTitle"
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER; label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	label.autowrap_mode = TextServer.AUTOWRAP_OFF; label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 
 func ending_names() -> Dictionary:
 	return {"survived":"灯火未熄","withdrawn":"离开潮眼","true":"回声归航","dead":"沉入深潮","mad":"迷失潮声","abandon":"返回岸边"}
@@ -100,20 +149,26 @@ func discovered(id: String) -> bool:
 	return prefix+id in context.profile.discovered
 
 func encyclopedia_detail(id: String) -> void:
-	if not discovered(id):
-		W.art(detail,assets,"ui.card.back",190,false)
-		W.text(detail,"尚未发现",28,W.MUTED)
-		W.text(detail,"在航程中发现后解锁详情。",20,W.MUTED)
-		return
-	if selected_table == "endings":
-		W.text(detail,ending_names()[id],28,W.GOLD)
-		W.text(detail,"这段航程的结果已经记录。",20)
-		return
-	var data: Dictionary = catalog.entry(selected_table,id)
-	W.text(detail,data.name,28,W.GOLD)
-	var prefix: String = {"cards":"card.","enemies":"enemy.","relics":"relic."}[selected_table]
-	W.art(detail,assets,prefix+id,130)
-	W.text(detail,data.get("description",data.get("intent","")),20)
+	W.art(detail,assets,encyclopedia_art(id),100,discovered(id) and selected_table != "endings")
+	var image: TextureRect = detail.get_child(0); image.name = "DetailImage"
+	image.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	var known := discovered(id)
+	var data: Dictionary = catalog.entry(selected_table,id) if known and selected_table != "endings" else {}
+	var title: String = ending_names()[id] if known and selected_table == "endings" else data.get("name","尚未发现")
+	W.text(detail,title,24,W.GOLD if known else W.MUTED)
+	var tab: String = context.ui_state.get("encyclopedia_tab","description")
+	var tabs := HBoxContainer.new(); detail.add_child(tabs)
+	var story := W.button(tabs,"故事",func(): request("encyclopedia_tab","story"),tab=="story")
+	story.name = "EncyclopediaStoryTab"
+	var description := W.button(tabs,"说明",func(): request("encyclopedia_tab","description"),tab!="story")
+	description.name = "EncyclopediaDescriptionTab"
+	var copy := "在航程中发现后解锁详情。"
+	if known:
+		if tab == "story": copy = data.get("story","故事内容暂未收录。")
+		elif selected_table == "endings": copy = "这段航程的结果已经记录。"
+		else: copy = str(data.get("description",data.get("intent","暂无说明。")))
+	var text := W.text(detail,copy,18,W.INK if known else W.MUTED)
+	text.name = "DetailCopy"; text.custom_minimum_size.y = 96
 
 func meta_page() -> void:
 	heading("局外商店","涌潮点 %d%s" % [context.profile.points," · 活动航程中，购买锁定" if context.active else ""])

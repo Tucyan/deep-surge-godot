@@ -11,7 +11,8 @@ func shot(id: String) -> void:
 	await settle()
 	root.get_texture().get_image().save_png("res://evidence/title-v3-"+id+".png")
 func run() -> void:
-	app=load("res://scenes/main.tscn").instantiate(); app.persistence=false; root.add_child(app)
+	app=load("res://flow_app.gd").new(); app.persistence=false
+	app.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT); root.add_child(app)
 	app.display_settings.free_aspect=true; app.apply_display_settings(false)
 	await settle()
 	var before: Dictionary=app.session.snapshot()

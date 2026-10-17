@@ -27,6 +27,8 @@ var local_panel := ""
 var reset_hand_visual := false
 var ui_state := {"hand_page":0,"list_page":0,"selected_id":"","category":"","card":"","battle_selection":"","craft_tab":"craft","transmute_target":"wood","transmute_uids":"","transmute_count":1}
 var event_target_surface: Node3D
+var story_gallery = preload("res://adapters/story_gallery_store.gd").new()
+var story_replay: Control
 
 func _ready() -> void:
 	theme = W.theme()
@@ -43,7 +45,10 @@ func _ready() -> void:
 	if persistence:
 		display_settings.load_preferences()
 		display_settings.apply_window(get_window())
+		story_gallery.load_archive()
+	_capture_story_gallery()
 	world_view.motion=display_settings.motion
+	world_view.set_camera_mode(display_settings.camera_mode)
 	world_view.camera_controls.locked=display_settings.view_locked
 	world_view.camera_orbit_button=display_settings.camera_orbit_button
 	world_view.camera_pan_button=display_settings.camera_pan_button
@@ -61,7 +66,9 @@ func _update_world_framing() -> void:
 	var frame:=layout.find_child("VoyageOperationFrame",true,false)
 	var tray:=layout.find_child("VoyageHandTray",true,false)
 	if frame==null or tray==null: return
-	var top:=196.0
+	var heading:=layout.find_child("VoyageEnvironmentNames",true,false) as Control
+	if heading==null: return
+	var top: float=heading.global_position.y+heading.size.y-global_position.y+16.0
 	var right: float=frame.global_position.x-global_position.x-18.0
 	var bottom: float=tray.global_position.y-global_position.y-58.0
 	var safe:=Rect2(Vector2(24,top),Vector2(maxf(200,right-24),maxf(160,bottom-top)))
@@ -97,6 +104,13 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			world_view.reset_camera_view(); get_viewport().set_input_as_handled()
 
 func handle_ui(action: String, value: String = "") -> void:
+	if action == "recall_story":
+		_open_story_review(value); return
+	if action=="camera_toggle":
+		display_settings.camera_mode="top" if display_settings.camera_mode=="oblique" else "oblique"
+		world_view.set_camera_mode(display_settings.camera_mode)
+		if persistence: display_settings.save_preferences()
+		render(); return
 	if action=="camera_reset":
 		world_view.reset_camera_view(); return
 	if action=="event_target":
@@ -115,6 +129,7 @@ func handle_ui(action: String, value: String = "") -> void:
 		"list_page": ui_state.list_page = maxi(0,int(value)); ui_state.selected_id = ""
 		"selected_id": ui_state.selected_id = value
 		"category": ui_state.category = value; ui_state.list_page = 0; ui_state.selected_id = ""
+		"encyclopedia_tab": ui_state.encyclopedia_tab = value
 		"card": ui_state.card = value
 		"craft_tab": ui_state.craft_tab = value
 		"transmute_target": ui_state.transmute_target = value
@@ -144,7 +159,38 @@ func handle_command(command: String, args: Dictionary = {}) -> void:
 		if command == "new":
 			setup_mode = ""; save_blocked = false; hand_layout.order.clear(); world_view.reset_camera_view()
 		if persistence and not save_blocked and not store.write(session.snapshot()): message = store.error
+		_capture_story_gallery()
 	render()
+
+func _capture_story_gallery() -> void:
+	var changed: bool = story_gallery.capture(session.snapshot(), catalog)
+	if persistence and changed: story_gallery.save_archive()
+	if not story_gallery.error.is_empty() and message.is_empty(): message = story_gallery.error
+
+func _open_story_review(id: String) -> void:
+	if local_panel != "recall" or is_instance_valid(story_replay): return
+	var record: Dictionary = story_gallery.entry(id)
+	if record.is_empty(): return
+	var replay = preload("res://presentation/opening_intro.gd").new()
+	replay.name = "StoryReplay"; replay.z_index = 300
+	replay.persist_completion = false
+	replay.exit_label = "返回回廊"
+	if id != "opening":
+		var scenes: Array = []
+		var cover: Texture2D = preload("res://pages/story_gallery.gd").cover(record, assets)
+		for line in record.lines + record.results:
+			scenes.append({"texture":cover,"narration":[line]})
+		if scenes.is_empty(): replay.free(); return
+		replay.playback_data = {"scenes":scenes,"music":"res://assets/opening-intro/music.ogg"}
+	var origin := get_viewport().gui_get_focus_owner()
+	story_replay = replay
+	add_child(replay)
+	var title := W.text(replay.canvas, record.title + (" · 特殊剧情" if record.special else ""), 24, W.GOLD)
+	title.position = Vector2(500, 52); title.size = Vector2(600, 40)
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER; title.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	replay.finished.connect(func():
+		remove_child(replay); replay.queue_free(); story_replay = null
+		if is_instance_valid(origin): origin.grab_focus())
 
 func page(id: String, parent: Node, view: Dictionary) -> Control:
 	var result: Control = PAGES[id].new()
@@ -173,12 +219,12 @@ func render() -> void:
 	view.hand_layout = hand_layout
 	view.ui_scale = display_settings.ui_scale
 	view.camera_help = display_settings.camera_help()
+	view.camera_mode = display_settings.camera_mode
 	if view.has("hand"):
 		var arranged: Array=hand_layout.build(view.hand)
 		hand_layout.order.clear()
 		for group in arranged: hand_layout.order.append_array(group.stack_uids)
 	var report: Dictionary = view.get("settlement",{}) if view.screen=="game" and view.phase in ["finished","chapterComplete"] else {}
-	if local_panel=="recall" and not session.last_settlement.is_empty(): report=session.last_settlement.duplicate(true)
 	world_view.visible=report.is_empty()
 	if not report.is_empty():
 		if is_instance_valid(title_backdrop): title_backdrop.hide()
@@ -217,10 +263,8 @@ func render() -> void:
 		var event_content:=preload("res://presentation/hud_frame.gd").new(); event_content.name="NodeEventFrame"; event_surface.add_child(event_content)
 		event_content.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		event_content.anchor_left=1.0; event_content.anchor_top=0.0
-		event_content.offset_left=-356; event_content.offset_top=200
-		event_content.offset_right=-24; event_content.offset_bottom=-302
-		if display_settings.ui_scale>1.0:
-			event_content.offset_top=182; event_content.offset_bottom=-280
+		event_content.offset_left=-352; event_content.offset_top=108
+		event_content.offset_right=-24; event_content.offset_bottom=-316
 		var event_style: StyleBoxFlat=PAGES.game.compact_style()
 		event_style.content_margin_top=14; event_style.content_margin_bottom=12
 		event_content.add_theme_stylebox_override("panel",event_style)
@@ -236,8 +280,10 @@ func render() -> void:
 		inset.anchor_left = 0.12; inset.anchor_right = 0.88; inset.anchor_top = 0.10; inset.anchor_bottom = 0.77
 		if panel_id in ["battle","raft"]:
 			inset.anchor_left=0.035; inset.anchor_right=0.965; inset.anchor_top=0.035; inset.anchor_bottom=0.965
-		if panel_id in ["craft","shop","build"]:
+		if panel_id in ["craft","shop","build","encyclopedia"]:
 			inset.anchor_left=0; inset.anchor_right=1; inset.anchor_top=0; inset.anchor_bottom=1
+		if panel_id == "recall":
+			inset.anchor_left=0.035; inset.anchor_right=0.965; inset.anchor_top=0.035; inset.anchor_bottom=0.965
 		if panel_id=="settings":
 			inset.anchor_left=0.5; inset.anchor_right=0.5; inset.anchor_top=0.04; inset.anchor_bottom=0.96
 			var panel_width:=minf(700.0,size.x-40.0)
@@ -245,6 +291,10 @@ func render() -> void:
 		host.add_child(inset)
 		var dialog := W.panel(inset)
 		var surface: PanelContainer=dialog.get_parent(); surface.name="ModalSurface"
+		if panel_id == "recall":
+			var gallery_style: StyleBoxFlat = surface.get_theme_stylebox("panel").duplicate()
+			gallery_style.bg_color = Color("0b1b24")
+			surface.add_theme_stylebox_override("panel", gallery_style)
 		if panel_id=="settings": W.text(dialog,"设置",28,W.GOLD)
 		if not message.is_empty(): W.text(dialog,message,17,Color("ecb49a"))
 		if panel_id in ["help","settings","recall"]: local_content(dialog,panel_id,view)
@@ -252,6 +302,24 @@ func render() -> void:
 		W.corner_close(surface,func():
 			if local_panel != "": local_panel = ""; render()
 			else: handle_command("close"))
+		if panel_id in ["craft", "build"]:
+			var help := Button.new()
+			help.name = "CraftHelpButton"; help.text = "?"
+			help.accessibility_name = "工作台说明"; help.tooltip_text = "工作台说明"
+			surface.get_node("CloseOverlay").add_child(help)
+			help.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+			help.offset_left = -104; help.offset_right = -60
+			help.offset_top = 0; help.offset_bottom = 44
+			help.custom_minimum_size = Vector2(44, 44)
+			help.add_theme_font_size_override("font_size", 26)
+			for state in ["normal", "hover", "pressed", "focus"]:
+				var style := StyleBoxFlat.new()
+				style.bg_color = Color("203d49") if state in ["hover", "pressed"] else Color("0c1d26")
+				style.border_color = W.GOLD if state in ["hover", "focus"] else Color("8b9a9e")
+				style.set_border_width_all(2); style.set_corner_radius_all(22)
+				help.add_theme_stylebox_override(state, style)
+			help.pressed.connect(current_page.show_workbench_help)
+
 	elif not message.is_empty():
 		var label := W.text(host,message,18,Color("efb395"))
 		label.position = Vector2(28,200); label.size = Vector2(580,60)
@@ -268,11 +336,10 @@ func render() -> void:
 
 func local_content(parent: Node, id: String, view: Dictionary) -> void:
 	if id == "recall":
-		W.text(parent,"回溯潮涌",32,W.GOLD)
-		if view.profile.endings.is_empty(): W.text(parent,"尚无已记录的航程结局。",20)
-		else:
-			for ending in view.profile.endings:
-				W.text(parent,{"survived":"灯火未熄","withdrawn":"离开潮眼","dead":"沉入深潮","mad":"迷失潮声","abandon":"返回岸边"}.get(ending,ending),20)
+		var gallery = preload("res://pages/story_gallery.gd").new()
+		parent.add_child(gallery)
+		gallery.replay_requested.connect(func(story_id: String): handle_ui("recall_story", story_id))
+		gallery.setup(story_gallery.entries(), assets)
 	elif id == "help":
 		W.text(parent,"航行须知",32,W.GOLD)
 		for line in ["出发支付一次食水与SAN航耗，抵达后进入准备。","准备与收尾共享基地AP；制造消耗AP，设备安装不消耗AP。","事件先读文字，再作选择；战斗和商店结束后返回剧情。","轮末处理筏格老化与超限整理；下一轮开始时设备生产。","事件自动显示在航行画面，完成当前事件后才能再次导航。"]: W.text(parent,line,20)
@@ -288,6 +355,8 @@ func confirm_abandon() -> void:
 	dialog.dialog_text = "放弃当前航程并按已完成节点结算？"
 	dialog.title = "放弃航程"
 	add_child(dialog)
+	for button in [dialog.get_ok_button(), dialog.get_cancel_button()]:
+		W.TextButtonArt.apply(button)
 	dialog.confirmed.connect(func(): handle_command("abandon"); dialog.queue_free())
 	dialog.canceled.connect(func(): dialog.queue_free())
 	dialog.popup_centered()

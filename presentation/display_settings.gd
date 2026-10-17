@@ -13,6 +13,7 @@ var free_aspect := false
 var fullscreen := false
 var motion := true
 var view_locked := false
+var camera_mode := "oblique"
 var camera_orbit_button := MOUSE_BUTTON_RIGHT
 var camera_pan_button := MOUSE_BUTTON_LEFT
 var camera_reset_key := KEY_R
@@ -51,6 +52,8 @@ func load_preferences() -> void:
 	fullscreen=not mobile and config.get_value("display","fullscreen",false)==true
 	motion=config.get_value("display","motion",true)==true
 	view_locked=config.get_value("display","view_locked",false)==true
+	var mode_value=config.get_value("display","camera_mode","oblique")
+	camera_mode=mode_value if mode_value in ["oblique","top"] else "oblique"
 	var orbit_value=config.get_value("display","camera_orbit_button",MOUSE_BUTTON_RIGHT)
 	var pan_value=config.get_value("display","camera_pan_button",MOUSE_BUTTON_LEFT)
 	if orbit_value is int and pan_value is int and orbit_value in CAMERA_MOUSE_BUTTONS and pan_value in CAMERA_MOUSE_BUTTONS and orbit_value!=pan_value:
@@ -63,7 +66,7 @@ func load_preferences() -> void:
 	fps_limit=fps_value if fps_value is int and fps_value in FRAME_RATES else 60
 func save_preferences() -> Error:
 	var config:=ConfigFile.new()
-	for key in ["ui_scale","quality","resolution","free_aspect","fullscreen","motion","view_locked","camera_orbit_button","camera_pan_button","camera_reset_key","fps_limit"]: config.set_value("display",key,get(key))
+	for key in ["ui_scale","quality","resolution","free_aspect","fullscreen","motion","view_locked","camera_mode","camera_orbit_button","camera_pan_button","camera_reset_key","fps_limit"]: config.set_value("display",key,get(key))
 	return config.save(path)
 func apply_window(window: Window, change_mode: bool = true) -> void:
 	window.content_scale_factor=ui_scale
