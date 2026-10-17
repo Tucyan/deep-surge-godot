@@ -1,5 +1,11 @@
 # Android APK 导出
 
+2026-10-18 基于当前工作区重新导出 Windows 与 Android 测试包：
+
+- Windows Release：`builds/windows/DeepSurge.exe`，x86_64，内嵌 PCK，253060784 字节；SHA256 `4E01B69DCD6C3ABE3DD1E0A6DF3ABC94592821153B41C6786AD07D0225315517`。使用 `--headless --quit-after 3` 启动检查通过。
+- Android Debug：`builds/android/deep-surge-v0.2-debug.apk`，200659408 字节；SHA256 `A9BFEB46E3475DF575FE28396D6C586F96B91948AA660EB06206936BBA5DF491`。Godot 调试密钥签名，v2/v3 与 ZIP CRC 校验通过；包含 ARM64、ARMv7 游戏数据。未在真机安装运行。
+- Android 元数据为 `com.tucyan.deepsurge`、versionCode 2、versionName 0.2、最低 API 24、目标 API 36。导出时 Godot 提示项目未指定图标，使用模板默认图标。
+
 2026-10-15 UI 缩放错位修复包：`builds/android/deep-surge-v0.2-ui-alignment-fix-debug.apk`。场景纹理始终铺满，调整 UI/清晰度不再缩放场景占位。导出、签名及 CRC 通过，GPU 10 组位置测试通过，未真机验证。见[错位修复验证](../evidence/ui-alignment-verification.md)。
 
 2026-10-15 显示设置测试包：`builds/android/deep-surge-v0.2-display-settings-debug.apk`，含首页设置、默认 125% 手机 UI 和三档清晰度。导出、v2/v3 签名、ZIP CRC 与新增脚本检查通过，未在手机安装验证。完整记录见[显示设置验证](../evidence/display-settings-verification.md)。下文原包保留。
