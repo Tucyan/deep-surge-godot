@@ -479,10 +479,6 @@ static func next_voyage(ctx) -> void:
 			ctx.log_text("新手教程完成：你已经走完一次完整的航行循环。")
 			ctx.finish("tutorial")
 			return
-		if s.mode == "story":
-			s.phase = "chapterComplete"; ctx.panel = ""
-			ctx.log_text("第一层结束；保留章节成果，第二层尚未开放。")
-			return
 		ctx.finish("survived" if s.boss_defeated else "withdrawn")
 		return
 	s.voyage += 1; s.phase = "navigation"; s.node = {}; s.battle = {}; s.encounter = {}; ctx.panel = ""

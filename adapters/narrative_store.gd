@@ -41,16 +41,22 @@ func list_saves() -> Array:
 		var id := file.trim_suffix(".json")
 		if not _valid_id(id): continue
 		var data = _read_json(path_of(id))
-		if not data is Dictionary or int(data.get("schema", 0)) != 1: continue
+		if not data is Dictionary or data.get("schema") != 1 or not data.get("state") is Dictionary:
+			result.append({"id":id, "label":id + "（损坏，原文件已保留）", "updated_at":0, "beats":0, "affinity":{}, "active":false, "paired":false})
+			continue
 		var state: Dictionary = data.get("state", {})
-		var affinity: Dictionary = state.get("affinity", {})
+		var affinity: Dictionary = state.get("affinity", {}) if state.get("affinity", {}) is Dictionary else {}
+		var game: Dictionary = data.get("gameplay", {}) if data.get("gameplay", {}) is Dictionary else {}
+		var game_state: Dictionary = game.get("state", {}) if game.get("state", {}) is Dictionary else {}
+		var beats: Array = state.get("applied_beats", []) if state.get("applied_beats", []) is Array else []
 		result.append({
 			"id": id,
 			"label": str(data.get("label", id)),
-			"updated_at": int(data.get("updated_at", 0)),
-			"beats": state.get("applied_beats", []).size(),
+			"updated_at": int(data.updated_at) if data.get("updated_at") is float or data.get("updated_at") is int else 0,
+			"beats": beats.size(),
 			"affinity": affinity.duplicate(true),
-			"active": id == _active
+			"active": id == _active,
+			"paired": data.get("chapter", "") == "chapter1" and data.get("version", "") == "chapter1-local-v1" and game_state.get("mode", "") == "story"
 		})
 	result.sort_custom(func(a, b): return int(a.updated_at) > int(b.updated_at))
 	return result

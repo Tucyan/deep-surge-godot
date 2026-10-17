@@ -1,0 +1,523 @@
+{
+  "schema_version": 1,
+  "id": "chapter1.n10",
+  "title": "第一章 · 节点 10/11",
+  "imported_chapter1": true,
+  "entry": "n10_intro_p0355_0",
+  "nodes": [
+    {
+      "id": "n10_intro_p0355_0",
+      "text": "【第 10 回合 / 节点 10｜调查之夜（5/9）：大阻断前夕的死寂】",
+      "source_block_id": "p0355",
+      "source_offset": 0,
+      "next": "n10_intro_p0356_0"
+    },
+    {
+      "id": "n10_intro_p0356_0",
+      "text": "入夜前的灰潮分队主船。海面诡异地平息下来，没有风浪，只有凝固成近乎实体般黏稠的灰雾死死包裹着船体。空气安静得可怕。",
+      "source_block_id": "p0356",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n10_intro_p0356_58"
+    },
+    {
+      "id": "n10_intro_p0356_58",
+      "text": "【剧情提示】：请选择今晚的行动方向。",
+      "source_block_id": "p0356",
+      "source_offset": 58,
+      "display_override": true,
+      "next": "n10_intro_p0357_0"
+    },
+    {
+      "id": "n10_intro_p0357_0",
+      "text": "旁白：",
+      "source_block_id": "p0357",
+      "source_offset": 0,
+      "next": "n10_intro_p0357_4"
+    },
+    {
+      "id": "n10_intro_p0357_4",
+      "text": "这是第 11 节点大阻断发生前最后一个看似平稳的夜晚。浓重的灰雾压得人喘不过气，时间仿佛在这片海域失去了意义。每个人都能感觉到，某种无法言喻的剧变正在平静的表面下积聚，随时准备将整艘船撕碎。",
+      "source_block_id": "p0357",
+      "source_offset": 4,
+      "next": "n10_intro_p0357_100"
+    },
+    {
+      "id": "n10_intro_p0357_100",
+      "text": "（系统提示：请选择今晚的主要行动）",
+      "source_block_id": "p0357",
+      "source_offset": 100,
+      "next": "n10_intro_end"
+    },
+    {
+      "id": "n10_intro_end",
+      "text": "请选择接下来的行动。",
+      "system_text": true,
+      "narrative_effects": [],
+      "choices": [
+        {
+          "id": "n10_rest",
+          "text": "【抉择 A】回到允许逗留的角落【休息】（累计三次休息将进入坏结局）。",
+          "next": "n10_rest_p0361_0",
+          "source_block_id": "p0358",
+          "condition": {},
+          "narrative_effects": [],
+          "display_override": true
+        },
+        {
+          "id": "n10_investigate",
+          "text": "【抉择 B】强打精神，在船内【深入调查】（把握大阻断前最后的机会，搜寻核心证据）。",
+          "next": "n10_investigate_p0364_0",
+          "source_block_id": "p0359",
+          "condition": {},
+          "narrative_effects": []
+        }
+      ]
+    },
+    {
+      "id": "n10_rest_p0361_0",
+      "text": "【选择 A：休息（通用休息机制）】",
+      "source_block_id": "p0361",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n10_rest_p0362_0"
+    },
+    {
+      "id": "n10_rest_p0362_0",
+      "text": "旁白：",
+      "source_block_id": "p0362",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n10_rest_p0362_4"
+    },
+    {
+      "id": "n10_rest_p0362_4",
+      "text": "你疲惫地缩在角落里闭上双眼。虽然肉体得到了喘息，但耳边那如影随形的门轴共振声却愈发清晰……",
+      "source_block_id": "p0362",
+      "source_offset": 4,
+      "display_override": true,
+      "next": "n10_rest_p0362_50"
+    },
+    {
+      "id": "n10_rest_p0362_50",
+      "text": "【剧情记录】：本夜选择休息，未获得线索。累计三次休息将进入坏结局。",
+      "source_block_id": "p0362",
+      "source_offset": 50,
+      "display_override": true,
+      "next": "n10_rest_end"
+    },
+    {
+      "id": "n10_rest_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "rest",
+          "key": "RestCount",
+          "value": 1
+        }
+      ],
+      "next": "n10_outro_p0374_0",
+      "rest_redirect": "be03_p0218_0"
+    },
+    {
+      "id": "n10_investigate_p0364_0",
+      "text": "【选择 B：深入调查（行动展开）】",
+      "source_block_id": "p0364",
+      "source_offset": 0,
+      "next": "n10_investigate_p0365_0"
+    },
+    {
+      "id": "n10_investigate_p0365_0",
+      "text": "旁白：",
+      "source_block_id": "p0365",
+      "source_offset": 0,
+      "next": "n10_investigate_p0365_4"
+    },
+    {
+      "id": "n10_investigate_p0365_4",
+      "text": "你强忍着脑海中的刺痛与疲惫站起身来。死寂的夜幕下，危机正悄然蔓延。今晚你想去哪里调查？",
+      "source_block_id": "p0365",
+      "source_offset": 4,
+      "next": "n10_investigate_end"
+    },
+    {
+      "id": "n10_investigate_end",
+      "text": "请选择接下来的行动。",
+      "system_text": true,
+      "narrative_effects": [],
+      "choices": [
+        {
+          "id": "n10_report",
+          "text": "【调查选项 1】前往指挥室外廊【向塞琳同步芮安的情报】",
+          "next": "n10_report_p0369_0",
+          "source_block_id": "p0366",
+          "condition": {
+            "clue_unlocked": "C-3"
+          },
+          "narrative_effects": []
+        },
+        {
+          "id": "n10_chisel",
+          "text": "【调查选项 2】携带骨凿【重返底舱封门区展开临界测量】",
+          "next": "n10_chisel_p0371_0",
+          "source_block_id": "p0367",
+          "condition": {
+            "has_item": "老海妖骨凿"
+          },
+          "narrative_effects": []
+        },
+        {
+          "id": "return_to_rest",
+          "text": "返回休息",
+          "system_text": true,
+          "next": "n10_rest_p0361_0"
+        }
+      ]
+    },
+    {
+      "id": "n10_report_p0369_0",
+      "text": "【子分支 1：向塞琳同步芮安的情报（暗潮博弈）】",
+      "source_block_id": "p0369",
+      "source_offset": 0,
+      "next": "n10_report_p0370_0"
+    },
+    {
+      "id": "n10_report_p0370_0",
+      "text": "【场景】：指挥室外廊。昏暗的风灯在无风的夜里死寂地挂着，塞琳正凭栏凝视着浓稠如墨的灰雾。",
+      "source_block_id": "p0370",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n10_report_p0370_45"
+    },
+    {
+      "id": "n10_report_p0370_45",
+      "text": "旁白：",
+      "source_block_id": "p0370",
+      "source_offset": 45,
+      "display_override": true,
+      "next": "n10_report_p0370_49"
+    },
+    {
+      "id": "n10_report_p0370_49",
+      "text": "你快步走上前去，将第 9 夜在甲板临时物资堆旁亲眼所见的一切——芮安藏匿的螺旋图腾金属薄片、以及她将标记放入淡水滤桶夹层的过程，向塞琳事无巨细地进行了汇报。",
+      "source_block_id": "p0370",
+      "source_offset": 49,
+      "display_override": true,
+      "next": "n10_report_p0370_128"
+    },
+    {
+      "id": "n10_report_p0370_128",
+      "text": "塞琳：（听完汇报后，握着银刀的手指因发力而关节发白，眼神冷冽如冰）",
+      "source_block_id": "p0370",
+      "source_offset": 128,
+      "display_override": true,
+      "next": "n10_report_p0370_162"
+    },
+    {
+      "id": "n10_report_p0370_162",
+      "text": "“……螺旋图腾？你确定上面是交织的细齿？”",
+      "source_block_id": "p0370",
+      "source_offset": 162,
+      "display_override": true,
+      "next": "n10_report_p0370_184"
+    },
+    {
+      "id": "n10_report_p0370_184",
+      "text": "（她从怀里掏出一张破旧的皮质图纸比对，语气冰冷刺骨）",
+      "source_block_id": "p0370",
+      "source_offset": 184,
+      "display_override": true,
+      "next": "n10_report_p0370_211"
+    },
+    {
+      "id": "n10_report_p0370_211",
+      "text": "“那不是学者船队的标志，也不是什么海盗或巫术教派。那是‘印记追寻者’的信标……这群疯子一直在各条航线上暗中搜寻遗物，甚至不惜祭祀整条船！芮安这个混蛋，居然把手伸到了分队的淡水里！”",
+      "source_block_id": "p0370",
+      "source_offset": 211,
+      "display_override": true,
+      "next": "n10_report_p0370_302"
+    },
+    {
+      "id": "n10_report_p0370_302",
+      "text": "旁白：",
+      "source_block_id": "p0370",
+      "source_offset": 302,
+      "display_override": true,
+      "next": "n10_report_p0370_306"
+    },
+    {
+      "id": "n10_report_p0370_306",
+      "text": "塞琳转过身死死盯着你，眼神中的怀疑与戒备彻底消散，取而代之的是极致的郑重。",
+      "source_block_id": "p0370",
+      "source_offset": 306,
+      "display_override": true,
+      "next": "n10_report_p0370_344"
+    },
+    {
+      "id": "n10_report_p0370_344",
+      "text": "塞琳：“你救了全船人的命，新来的。今晚之后，下层的空间可能会彻底乱掉，常规的指南针和眼睛都靠不住了。”",
+      "source_block_id": "p0370",
+      "source_offset": 344,
+      "display_override": true,
+      "next": "n10_report_p0370_396"
+    },
+    {
+      "id": "n10_report_p0370_396",
+      "text": "（塞琳从风衣内侧解下一枚用某种古老黄铜与黑色兽骨打造的奇形罗盘，重重拍在你的掌心里）",
+      "source_block_id": "p0370",
+      "source_offset": 396,
+      "display_override": true,
+      "next": "n10_report_p0370_439"
+    },
+    {
+      "id": "n10_report_p0370_439",
+      "text": "“拿着这个【学者骨质罗盘】。它不受磁极和重力错乱的干扰，能在折叠的空间里为你指明方向。记住，大阻断要来了，活下去！”",
+      "source_block_id": "p0370",
+      "source_offset": 439,
+      "display_override": true,
+      "next": "n10_report_p0370_498"
+    },
+    {
+      "id": "n10_report_p0370_498",
+      "text": "· 【获得线索】：线索 C-4《暗流信标与分队暗鬼》（本档线索：证实后勤管事芮安为内鬼，其背后的“印记追寻者”势力正试图干预航线与引导异变；塞琳信任度 +4；获得关键道具【学者骨质罗盘】）。",
+      "source_block_id": "p0370",
+      "source_offset": 498,
+      "display_override": true,
+      "next": "n10_report_p0370_594"
+    },
+    {
+      "id": "n10_report_p0370_594",
+      "text": "【剧情进度】：第10节点；当前章节共11节点。",
+      "source_block_id": "p0370",
+      "source_offset": 594,
+      "display_override": true,
+      "next": "n10_report_end"
+    },
+    {
+      "id": "n10_report_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "clue",
+          "key": "C-4"
+        },
+        {
+          "action": "affinity",
+          "key": "celine",
+          "value": 4
+        },
+        {
+          "action": "item",
+          "key": "学者骨质罗盘"
+        }
+      ],
+      "next": "n10_outro_p0374_0"
+    },
+    {
+      "id": "n10_chisel_p0371_0",
+      "text": "【子分支 2：重返底舱封门区】",
+      "source_block_id": "p0371",
+      "source_offset": 0,
+      "next": "n10_chisel_p0372_0"
+    },
+    {
+      "id": "n10_chisel_p0372_0",
+      "text": "【场景】：幽暗死寂的下层封锁区。那面封死的橡木墙在灰雾的渗入下散发着枯竭的石料气息。",
+      "source_block_id": "p0372",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n10_chisel_p0372_43"
+    },
+    {
+      "id": "n10_chisel_p0372_43",
+      "text": "旁白：",
+      "source_block_id": "p0372",
+      "source_offset": 43,
+      "display_override": true,
+      "next": "n10_chisel_p0372_47"
+    },
+    {
+      "id": "n10_chisel_p0372_47",
+      "text": "你掏出从老木匠柯尔处获得的【老海妖骨凿】，将尖锐的骨端对准了被拧成螺旋状的橡木纹理，用力划了下去！",
+      "source_block_id": "p0372",
+      "source_offset": 47,
+      "display_override": true,
+      "next": "n10_chisel_p0372_97"
+    },
+    {
+      "id": "n10_chisel_p0372_97",
+      "text": "神奇的一幕发生了——骨凿划过之处，原本死寂退行的木料仿佛受到了剧烈刺激般纷纷避开，在坚硬的船壁上被生生“逼”出了一道半尺宽的真实物理缝隙！",
+      "source_block_id": "p0372",
+      "source_offset": 97,
+      "display_override": true,
+      "next": "n10_chisel_p0372_167"
+    },
+    {
+      "id": "n10_chisel_p0372_167",
+      "text": "缝隙后面没有海水倒灌，而是透出了一股古老、干燥、带有陈年石灰与墓穴气息的微光。",
+      "source_block_id": "p0372",
+      "source_offset": 167,
+      "display_override": true,
+      "next": "n10_chisel_p0372_207"
+    },
+    {
+      "id": "n10_chisel_p0372_207",
+      "text": "你凑近缝隙向内看去，瞳孔瞬间收缩至针尖大小——那后面根本不是大海，而是一条正在缓慢与整艘船的走廊发生重叠并轨的【？？？】！",
+      "source_block_id": "p0372",
+      "source_offset": 207,
+      "display_override": true,
+      "next": "n10_chisel_p0372_269"
+    },
+    {
+      "id": "n10_chisel_p0372_269",
+      "text": "在大长廊尽头，那扇雕刻着繁复螺旋暗纹的怪门此时并未完全关紧，而是虚掩着一条细缝！",
+      "source_block_id": "p0372",
+      "source_offset": 269,
+      "display_override": true,
+      "next": "n10_chisel_p0372_310"
+    },
+    {
+      "id": "n10_chisel_p0372_310",
+      "text": "一只惨白、缺少指甲的年轻手掌正死死扣在门框边缘，指节因用力而发青——那是哈克的手！",
+      "source_block_id": "p0372",
+      "source_offset": 310,
+      "display_override": true,
+      "next": "n10_chisel_p0372_352"
+    },
+    {
+      "id": "n10_chisel_p0372_352",
+      "text": "而在虚掩之门后面的长廊深处，密密麻麻地站满了身穿各个世代水手服饰、面容如同融化蜡油般模糊扭曲的人形轮廓！它们静静地立在阴影里，所有的“脸”都齐刷刷地朝向缝隙外的你！",
+      "source_block_id": "p0372",
+      "source_offset": 352,
+      "display_override": true,
+      "next": "n10_chisel_p0372_435"
+    },
+    {
+      "id": "n10_chisel_p0372_435",
+      "text": "旁白：",
+      "source_block_id": "p0372",
+      "source_offset": 435,
+      "display_override": true,
+      "next": "n10_chisel_p0372_439"
+    },
+    {
+      "id": "n10_chisel_p0372_439",
+      "text": "你猛地抽回骨凿，缝隙瞬间弥合。你按着狂跳的胸口，冷汗湿透了衣背。这扇门不是独立的空间，它是一座桥梁，异变空间正与这条船彻底并轨，怪门随时都会完全打开！",
+      "source_block_id": "p0372",
+      "source_offset": 439,
+      "display_override": true,
+      "next": "n10_chisel_p0372_515"
+    },
+    {
+      "id": "n10_chisel_p0372_515",
+      "text": "· 【获得线索】：线索 A-4《并轨的长廊与虚掩之门》（本档线索：证实异化空间并非独立隔间，而是多重时空长廊与本船正在发生物理并轨，怪门即将彻底敞开）。",
+      "source_block_id": "p0372",
+      "source_offset": 515,
+      "display_override": true,
+      "next": "n10_chisel_p0372_592"
+    },
+    {
+      "id": "n10_chisel_p0372_592",
+      "text": "【剧情进度】：第10节点；当前章节共11节点。",
+      "source_block_id": "p0372",
+      "source_offset": 592,
+      "display_override": true,
+      "next": "n10_chisel_end"
+    },
+    {
+      "id": "n10_chisel_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "clue",
+          "key": "A-4"
+        }
+      ],
+      "next": "n10_outro_p0374_0"
+    },
+    {
+      "id": "n10_outro_p0374_0",
+      "text": "【第 10 回合 / 节点结算】",
+      "source_block_id": "p0374",
+      "source_offset": 0,
+      "next": "n10_outro_p0375_0"
+    },
+    {
+      "id": "n10_outro_p0375_0",
+      "text": "【当前任务面板更新】：",
+      "source_block_id": "p0375",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n10_outro_p0375_12"
+    },
+    {
+      "id": "n10_outro_p0375_12",
+      "text": "· 限时任务：《不合理的门扉与消失者》",
+      "source_block_id": "p0375",
+      "source_offset": 12,
+      "display_override": true,
+      "next": "n10_outro_p0375_32"
+    },
+    {
+      "id": "n10_outro_p0375_32",
+      "text": "【剧情进度】：第10节点；当前章节共11节点。",
+      "source_block_id": "p0375",
+      "source_offset": 32,
+      "display_override": true,
+      "next": "n10_outro_p0375_56"
+    },
+    {
+      "id": "n10_outro_p0375_56",
+      "text": "【关键节点警告：第 11 节点入夜后，走廊空间将彻底错位阻断，部分舱室将永久无法按照常规路径到达！】",
+      "source_block_id": "p0375",
+      "source_offset": 56,
+      "display_override": true,
+      "next": "n10_outro_end"
+    },
+    {
+      "id": "n10_outro_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": []
+    },
+    {
+      "id": "be03_p0218_0",
+      "text": "💀 【BAD END 3：沉溺于甜饴之梦】（累计 3 次休息触发）",
+      "source_block_id": "p0218",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "be03_p0218_34"
+    },
+    {
+      "id": "be03_p0218_34",
+      "text": "· 结局演出：致幻的死鱼发酵甜香彻底漫过理智。你梦见自己沉入温暖舒适的金色蜜海，肉体与骨髓像方糖般在沸腾的体液中发酵融解，与老旧海船的橡木龙骨永久粘合在一起，成为了船底的新养分。",
+      "source_block_id": "p0218",
+      "source_offset": 34,
+      "display_override": true,
+      "next": "be03_p0218_124"
+    },
+    {
+      "id": "be03_p0218_124",
+      "text": "· 解锁信息：“沉沦于虚假的安宁，不过是加速被深渊消化的过程。理智的崩解，始于对香甜梦境的妥协。”",
+      "source_block_id": "p0218",
+      "source_offset": 124,
+      "display_override": true,
+      "next": "be03_end"
+    },
+    {
+      "id": "be03_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "ending",
+          "key": "BAD_END_3"
+        }
+      ],
+      "ending": "bad_end_3"
+    }
+  ]
+}

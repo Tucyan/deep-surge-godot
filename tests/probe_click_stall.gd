@@ -32,6 +32,6 @@ func run():
 	for i in range(3):
 		await measure("motion_setting_%d" % i,func():
 			app.display_settings.motion=not app.display_settings.motion
-			app.apply_display_settings(false))
+			app.apply_display_settings(false, false))
 	app.queue_free(); await process_frame
 	print("CLICK STALL DIAGNOSTIC: %s" % ("PASS" if failures==0 else "FAIL")); quit(failures)

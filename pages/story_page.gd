@@ -198,7 +198,15 @@ func _refresh() -> void:
 	var options: Array = node.get("choices", [])
 	for i in range(options.size()):
 		var choice: Dictionary = options[i]
-		var button := _button(choice_root, choice.text, Vector2(996, 586 - options.size() * 76 + i * 76), Vector2(538, 70))
+		var imported: bool = player._story.get("imported_chapter1", false)
+		var button := _button(choice_root, choice.text,
+			Vector2(850, 610 - options.size() * 110 + i * 110) if imported else Vector2(996, 586 - options.size() * 76 + i * 76),
+			Vector2(684, 104) if imported else Vector2(538, 70))
+		if imported:
+			button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+			button.add_theme_font_size_override("font_size", 20)
+		button.disabled = choice.get("disabled", false)
+		button.tooltip_text = str(choice.get("disabled_reason", ""))
 		button.pressed.connect(choose.bind(choice.id))
 		choice_buttons.append(button)
 	next_button.disabled = view.status != "playing" or not options.is_empty()

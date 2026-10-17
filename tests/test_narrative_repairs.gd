@@ -16,7 +16,7 @@ func _init() -> void:
 
 func run() -> void:
 	var content := Content.new()
-	check(content.load_content(), "content loads")
+	check(content.load_content(true), "content loads")
 	var app = load("res://scenes/main.tscn").instantiate()
 	app.persistence = false
 	root.add_child(app)
@@ -24,6 +24,8 @@ func run() -> void:
 	var directory := "user://narrative-repairs-" + str(Time.get_ticks_usec())
 	var store := Store.new(directory)
 	app.narrative_store = store
+	app.narrative_content = content
+	app.narrative = Narrative.new(content)
 	check(app.create_narrative("A"), "create original save")
 	var original_id := store.active_id()
 	var original: Dictionary = app.narrative.export_data()

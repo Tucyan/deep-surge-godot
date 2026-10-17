@@ -1,22 +1,87 @@
 {
   "schema": 1,
-  "id": "L1",
-  "version": "narr-l1-v2",
-  "length": 15,
+  "id": "chapter1",
+  "version": "chapter1-local-v1",
+  "length": 11,
   "beats": [
-    {"id": "L1-B03", "after_voyage": 3, "scene": "L1.s03"},
-    {"id": "L1-B06", "after_voyage": 6, "scene": "L1.s06"},
-    {"id": "L1-B09", "after_voyage": 9, "scene": "L1.s09"},
-    {"id": "L1-B12-close", "after_voyage": 12, "scene": "L1.s12", "priority": 10, "requires_affinity": {"leader": 12}},
-    {"id": "L1-B12-far", "after_voyage": 12, "scene": "L1.s12b", "priority": 0},
-    {"id": "L1-B15", "after_voyage": 15, "scene": "L1.finale", "at": "chapterComplete"}
+    {
+      "id": "C1-N01",
+      "after_voyage": 1,
+      "scene": "chapter1.n01",
+      "before_voyage": true
+    },
+    {
+      "id": "C1-N02",
+      "after_voyage": 2,
+      "scene": "chapter1.n02",
+      "before_voyage": true
+    },
+    {
+      "id": "C1-N03",
+      "after_voyage": 3,
+      "scene": "chapter1.n03",
+      "before_voyage": true
+    },
+    {
+      "id": "C1-N04",
+      "after_voyage": 4,
+      "scene": "chapter1.n04",
+      "before_voyage": true
+    },
+    {
+      "id": "C1-N05",
+      "after_voyage": 5,
+      "scene": "chapter1.n05",
+      "before_voyage": true
+    },
+    {
+      "id": "C1-N06",
+      "after_voyage": 6,
+      "scene": "chapter1.n06",
+      "before_voyage": true
+    },
+    {
+      "id": "C1-N07",
+      "after_voyage": 7,
+      "scene": "chapter1.n07",
+      "before_voyage": true
+    },
+    {
+      "id": "C1-N08",
+      "after_voyage": 8,
+      "scene": "chapter1.n08",
+      "before_voyage": true
+    },
+    {
+      "id": "C1-N09",
+      "after_voyage": 9,
+      "scene": "chapter1.n09",
+      "before_voyage": true
+    },
+    {
+      "id": "C1-N10",
+      "after_voyage": 10,
+      "scene": "chapter1.n10",
+      "before_voyage": true
+    },
+    {
+      "id": "C1-N11",
+      "after_voyage": 11,
+      "scene": "chapter1.n11",
+      "before_voyage": true
+    }
   ],
   "scene_files": [
-    "res://narrative/content/scenes/l1_s03.json",
-    "res://narrative/content/scenes/l1_s06.json",
-    "res://narrative/content/scenes/l1_s09.json",
-    "res://narrative/content/scenes/l1_s12.json",
-    "res://narrative/content/scenes/l1_s12b.json",
-    "res://narrative/content/scenes/l1_finale.json"
+    "res://narrative/content/scenes/chapter1_01.json",
+    "res://narrative/content/scenes/chapter1_02.json",
+    "res://narrative/content/scenes/chapter1_03.json",
+    "res://narrative/content/scenes/chapter1_04.json",
+    "res://narrative/content/scenes/chapter1_05.json",
+    "res://narrative/content/scenes/chapter1_06.json",
+    "res://narrative/content/scenes/chapter1_07.json",
+    "res://narrative/content/scenes/chapter1_08.json",
+    "res://narrative/content/scenes/chapter1_09.json",
+    "res://narrative/content/scenes/chapter1_10.json",
+    "res://narrative/content/scenes/chapter1_11.json"
   ]
 }

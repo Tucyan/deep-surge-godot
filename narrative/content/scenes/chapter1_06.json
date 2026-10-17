@@ -1,0 +1,800 @@
+{
+  "schema_version": 1,
+  "id": "chapter1.n06",
+  "title": "第一章 · 节点 06/11",
+  "imported_chapter1": true,
+  "entry": "n06_intro_p0175_0",
+  "nodes": [
+    {
+      "id": "n06_intro_p0175_0",
+      "text": "【第 6 回合 / 节点 06｜调查之夜（1/9）：初显端倪】",
+      "source_block_id": "p0175",
+      "source_offset": 0,
+      "next": "n06_intro_p0176_0"
+    },
+    {
+      "id": "n06_intro_p0176_0",
+      "text": "【场景】：夜幕低垂，灰潮分队主船下层甲板与走廊。白天的暴风雨逐渐停歇，沉闷的海浪撞击着外层木舷。昏黄的桐油防风灯在过道上微微摇晃，投下忽明忽暗的斑驳阴影。",
+      "source_block_id": "p0176",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n06_intro_p0176_78"
+    },
+    {
+      "id": "n06_intro_p0176_78",
+      "text": "【剧情提示】：请选择今晚的行动方向。",
+      "source_block_id": "p0176",
+      "source_offset": 78,
+      "display_override": true,
+      "next": "n06_intro_p0178_0"
+    },
+    {
+      "id": "n06_intro_p0178_0",
+      "text": "旁白：",
+      "source_block_id": "p0178",
+      "source_offset": 0,
+      "next": "n06_intro_p0178_4"
+    },
+    {
+      "id": "n06_intro_p0178_4",
+      "text": "哈克失踪的第一天过去了。整艘船上的气氛压抑得令人窒息。水手们彼此交谈的声音压得极低，每当你从过道走过，背后总能感觉到涅德那带着仇恨与戒备的目光，以及芮安冷冰冰的巡视。",
+      "source_block_id": "p0178",
+      "source_offset": 4,
+      "next": "n06_intro_p0178_88"
+    },
+    {
+      "id": "n06_intro_p0178_88",
+      "text": "今晚是你自证清白的第一个夜晚。经过一整天的颠簸，你的体力所剩无几，但时间同样不等人。",
+      "source_block_id": "p0178",
+      "source_offset": 88,
+      "next": "n06_intro_p0178_131"
+    },
+    {
+      "id": "n06_intro_p0178_131",
+      "text": "（系统提示：请选择今晚的主要行动）",
+      "source_block_id": "p0178",
+      "source_offset": 131,
+      "next": "n06_intro_end"
+    },
+    {
+      "id": "n06_intro_end",
+      "text": "请选择接下来的行动。",
+      "system_text": true,
+      "narrative_effects": [],
+      "choices": [
+        {
+          "id": "n06_rest",
+          "text": "【抉择 A】回到允许逗留的下层角落【休息】",
+          "next": "n06_rest_p0184_0",
+          "source_block_id": "p0180",
+          "condition": {},
+          "narrative_effects": [],
+          "display_override": true
+        },
+        {
+          "id": "n06_investigate",
+          "text": "【抉择 B】强打精神，在下层舱室展开【深入调查】",
+          "next": "n06_investigate_p0189_0",
+          "source_block_id": "p0181",
+          "condition": {},
+          "narrative_effects": []
+        }
+      ]
+    },
+    {
+      "id": "n06_rest_p0184_0",
+      "text": "【选择 A：休息（安眠与噩梦）】",
+      "source_block_id": "p0184",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n06_rest_p0185_0"
+    },
+    {
+      "id": "n06_rest_p0185_0",
+      "text": "旁白：",
+      "source_block_id": "p0185",
+      "source_offset": 0,
+      "next": "n06_rest_p0185_4"
+    },
+    {
+      "id": "n06_rest_p0185_4",
+      "text": "连续数日的漂流与搏斗已经将你的肉体逼到了极限。你很清楚，如果在疲惫中贸然乱闯，一旦遭遇危险你甚至连拔出武器的力气都没有。",
+      "source_block_id": "p0185",
+      "source_offset": 4,
+      "next": "n06_rest_p0185_65"
+    },
+    {
+      "id": "n06_rest_p0185_65",
+      "text": "你缩在下层杂物堆旁用木箱拼成的临时角落，扯过那条散发着粗糙盐腥味的旧毛毯，闭上了双眼。疲惫如铅块般拉拽着你的意识，迅速沉入黑暗……",
+      "source_block_id": "p0185",
+      "source_offset": 65,
+      "next": "n06_rest_p0185_131"
+    },
+    {
+      "id": "n06_rest_p0185_131",
+      "text": "（画面泛起如同老旧胶片受潮般的灰黑杂波，低沉诡异的音效混杂着海水涌动的轰鸣。）",
+      "source_block_id": "p0185",
+      "source_offset": 131,
+      "next": "n06_rest_p0185_171"
+    },
+    {
+      "id": "n06_rest_p0185_171",
+      "text": "在梦里，你并没有躺在木箱上。你发现自己独自站在那条幽暗死寂的走廊尽头。没有风灯，只有那扇雕刻着繁复螺旋纹路的深褐色大门。门把手的金属环扣正以极其缓慢的频率转动着，发出让人牙酸的“喀……喀……”声。",
+      "source_block_id": "p0185",
+      "source_offset": 171,
+      "next": "n06_rest_p0185_270"
+    },
+    {
+      "id": "n06_rest_p0185_270",
+      "text": "更清晰的呢喃声直接钻进你的头颅内部，仿佛有人贴在你的耳膜后吹气：",
+      "source_block_id": "p0185",
+      "source_offset": 270,
+      "next": "n06_rest_p0185_303"
+    },
+    {
+      "id": "n06_rest_p0185_303",
+      "text": "“……快进来了……木板挡不住海水……你早就该进来了……”",
+      "source_block_id": "p0185",
+      "source_offset": 303,
+      "next": "n06_rest_p0185_332"
+    },
+    {
+      "id": "n06_rest_p0185_332",
+      "text": "暗红色的腥臭海水从门缝下方咕嘟嘟地涌出，哈克苍白浮肿的面孔在门板木纹的螺旋中若隐若现……",
+      "source_block_id": "p0185",
+      "source_offset": 332,
+      "next": "n06_rest_p0186_0"
+    },
+    {
+      "id": "n06_rest_p0186_0",
+      "text": "旁白：",
+      "source_block_id": "p0186",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n06_rest_p0186_4"
+    },
+    {
+      "id": "n06_rest_p0186_4",
+      "text": "“呼——！！”你浑身冷汗地猛然惊醒，大口喘息，心脏在胸腔里剧烈狂跳。透过舷窗缝隙，灰白色的曙光已经悄然破开海雾。黎明到了。",
+      "source_block_id": "p0186",
+      "source_offset": 4,
+      "display_override": true,
+      "next": "n06_rest_p0186_66"
+    },
+    {
+      "id": "n06_rest_p0186_66",
+      "text": "【剧情记录】：本夜选择休息，未获得线索。累计三次休息将进入坏结局。",
+      "source_block_id": "p0186",
+      "source_offset": 66,
+      "display_override": true,
+      "next": "n06_rest_end"
+    },
+    {
+      "id": "n06_rest_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "rest",
+          "key": "RestCount",
+          "value": 1
+        }
+      ],
+      "rest_redirect": "be03_p0218_0"
+    },
+    {
+      "id": "n06_investigate_p0189_0",
+      "text": "【选择 B：深入调查（行动展开）】",
+      "source_block_id": "p0189",
+      "source_offset": 0,
+      "next": "n06_investigate_p0190_0"
+    },
+    {
+      "id": "n06_investigate_p0190_0",
+      "text": "旁白：",
+      "source_block_id": "p0190",
+      "source_offset": 0,
+      "next": "n06_investigate_p0190_4"
+    },
+    {
+      "id": "n06_investigate_p0190_4",
+      "text": "你咬紧牙关，咽下喉咙里泛起的干涩与疲惫。塞琳的通牒悬在头顶，每一分每一秒都关乎你的生死。你站起身，悄无声息地避开甲板巡逻的视线，开始搜寻蛛丝马迹。",
+      "source_block_id": "p0190",
+      "source_offset": 4,
+      "next": "n06_investigate_p0190_78"
+    },
+    {
+      "id": "n06_investigate_p0190_78",
+      "text": "（系统提示：请选择今晚的调查目标）",
+      "source_block_id": "p0190",
+      "source_offset": 78,
+      "next": "n06_investigate_end"
+    },
+    {
+      "id": "n06_investigate_end",
+      "text": "请选择接下来的行动。",
+      "system_text": true,
+      "narrative_effects": [],
+      "choices": [
+        {
+          "id": "n06_corridor",
+          "text": "【调查分支 1】重返事发走廊",
+          "next": "n06_corridor_p0197_0",
+          "source_block_id": "p0192",
+          "condition": {},
+          "narrative_effects": []
+        },
+        {
+          "id": "n06_hack",
+          "text": "【调查分支 2】搜查哈克的私人物品",
+          "next": "n06_hack_intro_p0199_0",
+          "source_block_id": "p0193",
+          "condition": {},
+          "narrative_effects": []
+        },
+        {
+          "id": "n06_celine",
+          "text": "【调查分支 3】前往指挥室外廊寻找塞琳",
+          "next": "n06_celine_p0207_0",
+          "source_block_id": "p0194",
+          "condition": {},
+          "narrative_effects": []
+        }
+      ]
+    },
+    {
+      "id": "n06_corridor_p0197_0",
+      "text": "【子分支 1：重返事发走廊】",
+      "source_block_id": "p0197",
+      "source_offset": 0,
+      "next": "n06_corridor_p0198_0"
+    },
+    {
+      "id": "n06_corridor_p0198_0",
+      "text": "【场景】：死寂幽暗的下层过道，仅有一盏接触不良、忽明忽暗的黄铜吊灯在风浪中微微晃荡。",
+      "source_block_id": "p0198",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n06_corridor_p0198_43"
+    },
+    {
+      "id": "n06_corridor_p0198_43",
+      "text": "旁白：",
+      "source_block_id": "p0198",
+      "source_offset": 43,
+      "display_override": true,
+      "next": "n06_corridor_p0198_47"
+    },
+    {
+      "id": "n06_corridor_p0198_47",
+      "text": "白天的喧闹退去，这片走廊静得能听见船底木板受压呻吟的细碎动静。那面木墙立在拐角尽头。老柯尔钉下的八根十二寸粗铁钉依然死死咬在橡木里，钉帽上涂着防漏桐油胶。",
+      "source_block_id": "p0198",
+      "source_offset": 47,
+      "display_override": true,
+      "next": "n06_corridor_p0198_125"
+    },
+    {
+      "id": "n06_corridor_p0198_125",
+      "text": "但你一走近，迎面扑来的不是木头的腐味，而是一股极度干燥、甚至带有古老纸页与石料粉尘的枯竭气息——在终年潮湿咸腥的海船底部，这种干燥本身就是一种尖锐的异常。",
+      "source_block_id": "p0198",
+      "source_offset": 125,
+      "display_override": true,
+      "next": "n06_corridor_p0198_203"
+    },
+    {
+      "id": "n06_corridor_p0198_203",
+      "text": "你俯下身，顺着铁钉与门框缝隙寸寸查验。",
+      "source_block_id": "p0198",
+      "source_offset": 203,
+      "display_override": true,
+      "next": "n06_corridor_p0198_223"
+    },
+    {
+      "id": "n06_corridor_p0198_223",
+      "text": "【视觉与触觉特写】：",
+      "source_block_id": "p0198",
+      "source_offset": 223,
+      "display_override": true,
+      "next": "n06_corridor_p0198_234"
+    },
+    {
+      "id": "n06_corridor_p0198_234",
+      "text": "当你将手掌贴上封死的橡木板时，异样的触感让你背脊发麻。指尖下的木纹在“移动”。不是活物的蠕动，而是原本顺畅平直的橡木纹理，在靠近中心铁钉的区域被生生拧成了一个微不可查的螺旋状涡流。就像这块实心木头曾在某一瞬间被某种力量像融化的蜡油一样剧烈搅",
+      "source_block_id": "p0198",
+      "source_offset": 234,
+      "display_override": true,
+      "next": "n06_corridor_p0198_354"
+    },
+    {
+      "id": "n06_corridor_p0198_354",
+      "text": "拌过。",
+      "source_block_id": "p0198",
+      "source_offset": 354,
+      "display_override": true,
+      "next": "n06_corridor_p0198_358"
+    },
+    {
+      "id": "n06_corridor_p0198_358",
+      "text": "你掏出白天搜集到的一枚生锈细铁丝，顺着最底部一根铁钉的边缘缝隙探了进去。按常理，十二寸的铁钉穿透船壁，外面就是几十米深的海水，缝隙里本该渗水。但铁丝穿过去的瞬间，没有水滴，只有一声极其微弱的碰击声——“铛……”",
+      "source_block_id": "p0198",
+      "source_offset": 358,
+      "display_override": true,
+      "next": "n06_corridor_p0198_464"
+    },
+    {
+      "id": "n06_corridor_p0198_464",
+      "text": "不是木头，也不是海水空泡。铁丝尖端触碰到了某种平整、坚硬、冰冷的金属或石质平面。更可怕的是，当你把铁丝拔出来时，原本冰凉的细铁丝竟变得滚烫，尖端挂着一层薄薄的、尚未干透的暗金色漆屑。",
+      "source_block_id": "p0198",
+      "source_offset": 464,
+      "display_override": true,
+      "next": "n06_corridor_p0198_556"
+    },
+    {
+      "id": "n06_corridor_p0198_556",
+      "text": "老柯尔的声音突然在背后幽幽响起：“后生，别再往里捅了。”",
+      "source_block_id": "p0198",
+      "source_offset": 556,
+      "display_override": true,
+      "next": "n06_corridor_p0198_585"
+    },
+    {
+      "id": "n06_corridor_p0198_585",
+      "text": "【人物交互：老木匠柯尔】",
+      "source_block_id": "p0198",
+      "source_offset": 585,
+      "display_override": true,
+      "next": "n06_corridor_p0198_598"
+    },
+    {
+      "id": "n06_corridor_p0198_598",
+      "text": "老木匠不知道什么时候站在了走廊拐角的阴影里，手里提着一把老旧的木锉，脸色在昏黄的灯光下比死人还要惨白。",
+      "source_block_id": "p0198",
+      "source_offset": 598,
+      "display_override": true,
+      "next": "n06_corridor_p0198_650"
+    },
+    {
+      "id": "n06_corridor_p0198_650",
+      "text": "柯尔：“我干了四十五年木工，哪块木头吃过几颗钉子、吸过多少海水，老头子我拿鼻子一闻就知道。十天前这面墙撞上暗礁，是我亲手拿八根长钉封死的。那时它后面就是龙骨，龙骨外面就是海浪。”",
+      "source_block_id": "p0198",
+      "source_offset": 650,
+      "display_override": true,
+      "next": "n06_corridor_p0198_740"
+    },
+    {
+      "id": "n06_corridor_p0198_740",
+      "text": "（老木匠颤巍巍地伸出满是老茧的手，摸了摸那扭曲成螺旋状的木纹，眼神里满是恐惧与茫然）",
+      "source_block_id": "p0198",
+      "source_offset": 740,
+      "display_override": true,
+      "next": "n06_corridor_p0198_783"
+    },
+    {
+      "id": "n06_corridor_p0198_783",
+      "text": "柯尔：“……但现在，这块木头在‘退行’。它里面的年轮反着长了。这面墙不是门，它是一层结痂。那扇门……是在试图从我们这条船的伤口里挤出来。”",
+      "source_block_id": "p0198",
+      "source_offset": 783,
+      "display_override": true,
+      "next": "n06_corridor_p0198_853"
+    },
+    {
+      "id": "n06_corridor_p0198_853",
+      "text": "· 【获得线索】：线索 A-1《伤口与结痂》（本档线索：老木匠柯尔的证词与物理证据：门并非凭空制造空间，而是寄生在船体受创修补的薄弱处；门后不是海水，而是某种异质实体的投影正在向内侵蚀）。",
+      "source_block_id": "p0198",
+      "source_offset": 853,
+      "display_override": true,
+      "next": "n06_corridor_p0198_948"
+    },
+    {
+      "id": "n06_corridor_p0198_948",
+      "text": "【剧情进度】：第06节点；当前章节共11节点。",
+      "source_block_id": "p0198",
+      "source_offset": 948,
+      "display_override": true,
+      "next": "n06_corridor_end"
+    },
+    {
+      "id": "n06_corridor_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "clue",
+          "key": "A-1"
+        }
+      ],
+      "next": "n06_outro_p0209_0"
+    },
+    {
+      "id": "n06_hack_intro_p0199_0",
+      "text": "【调查分支 2：搜查哈克的私人物品】",
+      "source_block_id": "p0199",
+      "source_offset": 0,
+      "next": "n06_hack_intro_p0200_0"
+    },
+    {
+      "id": "n06_hack_intro_p0200_0",
+      "text": "【场景】：水手下层生活舱。十多张悬挂的吊床在阴暗潮湿的空间里随船晃荡，鼾声与汗酸味混杂在一起。",
+      "source_block_id": "p0200",
+      "source_offset": 0,
+      "next": "n06_hack_intro_p0200_48"
+    },
+    {
+      "id": "n06_hack_intro_p0200_48",
+      "text": "旁白：",
+      "source_block_id": "p0200",
+      "source_offset": 48,
+      "next": "n06_hack_intro_p0200_52"
+    },
+    {
+      "id": "n06_hack_intro_p0200_52",
+      "text": "你轻手轻脚地摸到属于哈克的铺位旁。然而还没等你伸手，一道壮硕的黑影突然从旁边的木桶后猛地站起！",
+      "source_block_id": "p0200",
+      "source_offset": 52,
+      "next": "n06_hack_intro_p0200_100"
+    },
+    {
+      "id": "n06_hack_intro_p0200_100",
+      "text": "涅德：（手里紧紧握着一把剥皮短刀，眼球布满血丝，压低嗓子低吼）",
+      "source_block_id": "p0200",
+      "source_offset": 100,
+      "next": "n06_hack_intro_p0200_132"
+    },
+    {
+      "id": "n06_hack_intro_p0200_132",
+      "text": "“我就知道你会来。你这狗杂种还敢动哈克的东西？！”",
+      "source_block_id": "p0200",
+      "source_offset": 132,
+      "next": "n06_hack_intro_p0200_158"
+    },
+    {
+      "id": "n06_hack_intro_p0200_158",
+      "text": "【冲突抉择】：",
+      "source_block_id": "p0200",
+      "source_offset": 158,
+      "next": "n06_hack_intro_end"
+    },
+    {
+      "id": "n06_hack_intro_end",
+      "text": "请选择接下来的行动。",
+      "system_text": true,
+      "narrative_effects": [],
+      "choices": [
+        {
+          "id": "n06_ned_a",
+          "text": "选项 A：“塞琳允许我自证清白。如果你想让哈克白白送命，就尽管大喊把全船人叫醒。”",
+          "next": "n06_ned_a_p0202_0",
+          "source_block_id": "p0201",
+          "condition": {},
+          "narrative_effects": []
+        },
+        {
+          "id": "n06_ned_b",
+          "text": "选项 B：“我不是来偷东西的。哈克昨晚开门前有些不对劲，他生前有没有异常？”",
+          "next": "n06_ned_b_p0204_0",
+          "source_block_id": "p0203",
+          "condition": {},
+          "narrative_effects": []
+        }
+      ]
+    },
+    {
+      "id": "n06_ned_a_p0202_0",
+      "text": "> 涅德握刀的手青筋暴跳，死死瞪着你数秒，最终狠狠啐了一口，咬牙退到两米外：“老子就在这盯着你。要是你敢偷拿一个子儿，我立刻用鱼叉扎烂你的喉咙。”（涅德好感度 +1）",
+      "source_block_id": "p0202",
+      "source_offset": 0,
+      "next": "n06_ned_a_end"
+    },
+    {
+      "id": "n06_ned_a_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "affinity",
+          "key": "ned",
+          "value": 1
+        }
+      ],
+      "next": "n06_hack_finish_p0205_0"
+    },
+    {
+      "id": "n06_ned_b_p0204_0",
+      "text": "> 涅德脸色一变，眼神闪过一丝惊悸，嘴硬道：“……哈克好得很！除了……除了这几天老是念叨什么‘听见妹妹在叫他’……但他妹妹五年前早就没了！”（涅德好感度 +3）",
+      "source_block_id": "p0204",
+      "source_offset": 0,
+      "next": "n06_ned_b_end"
+    },
+    {
+      "id": "n06_ned_b_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "affinity",
+          "key": "ned",
+          "value": 3
+        }
+      ],
+      "next": "n06_hack_finish_p0205_0"
+    },
+    {
+      "id": "n06_hack_finish_p0205_0",
+      "text": "旁白：",
+      "source_block_id": "p0205",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n06_hack_finish_p0205_4"
+    },
+    {
+      "id": "n06_hack_finish_p0205_4",
+      "text": "趁着涅德愣神的空隙，你飞快翻开了哈克的草席枕头。草席下方的底板上，赫然用生锈铁钉歪歪扭扭地刻着几十道密集的划痕；而在划痕中心，刻着一个与那扇门边缘一模一样的——螺旋纹印记！在枕头底下，你还摸出了一本日记，上面是哈克稚嫩凌乱的字迹：",
+      "source_block_id": "p0205",
+      "source_offset": 4,
+      "display_override": true,
+      "next": "n06_hack_finish_p0205_120"
+    },
+    {
+      "id": "n06_hack_finish_p0205_120",
+      "text": "“……第 3 天，隔壁那间空仓里又有人在敲木板。声音很轻。他们说隔壁外面就是海，不可能有人。但我真的听见了，那不是敲木头，是有人在从海里敲我们的船底……”",
+      "source_block_id": "p0205",
+      "source_offset": 120,
+      "display_override": true,
+      "next": "n06_hack_finish_p0205_198"
+    },
+    {
+      "id": "n06_hack_finish_p0205_198",
+      "text": "· 【获得线索】：线索 B-1《受惊者的刻印与日记》（本档线索：哈克在失踪前至少 3 天就已被异常盯上，他能听到常人听不到的异响，并在无意识间刻下了怪门的标志）。",
+      "source_block_id": "p0205",
+      "source_offset": 198,
+      "display_override": true,
+      "next": "n06_hack_finish_p0205_280"
+    },
+    {
+      "id": "n06_hack_finish_p0205_280",
+      "text": "【剧情进度】：第06节点；当前章节共11节点。",
+      "source_block_id": "p0205",
+      "source_offset": 280,
+      "display_override": true,
+      "next": "n06_hack_finish_end"
+    },
+    {
+      "id": "n06_hack_finish_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "clue",
+          "key": "B-1"
+        }
+      ],
+      "next": "n06_outro_p0209_0"
+    },
+    {
+      "id": "n06_celine_p0207_0",
+      "text": "【调查分支 3：前往指挥室外廊寻找塞琳】",
+      "source_block_id": "p0207",
+      "source_offset": 0,
+      "next": "n06_celine_p0208_0"
+    },
+    {
+      "id": "n06_celine_p0208_0",
+      "text": "【场景】：在指挥室下方的露天露台，塞琳正独自倚靠在锈蚀的铁质栏杆旁，打磨她的银质小刀。",
+      "source_block_id": "p0208",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n06_celine_p0208_44"
+    },
+    {
+      "id": "n06_celine_p0208_44",
+      "text": "塞琳：（没有回头，仅凭脚步声便察觉了你的到来）",
+      "source_block_id": "p0208",
+      "source_offset": 44,
+      "display_override": true,
+      "next": "n06_celine_p0208_68"
+    },
+    {
+      "id": "n06_celine_p0208_68",
+      "text": "“大半夜不在木箱上装死，跑到这上面来吹冷风……你以为你脖子上的绳套解开了么？”",
+      "source_block_id": "p0208",
+      "source_offset": 68,
+      "display_override": true,
+      "next": "n06_celine_p0208_108"
+    },
+    {
+      "id": "n06_celine_p0208_108",
+      "text": "主角：“昨晚涅德冲动时说漏了嘴。他说‘更别提那块贤……’，接着你打断了他。这艘船不只是普通的巡航分队，你们到底在运送什么，或者在寻找什么？”",
+      "source_block_id": "p0208",
+      "source_offset": 108,
+      "display_override": true,
+      "next": "n06_celine_p0208_179"
+    },
+    {
+      "id": "n06_celine_p0208_179",
+      "text": "塞琳：（磨刀的动作猛然停滞，转过头来，夜色中那双锐利的眼眸透着危险的寒光）",
+      "source_block_id": "p0208",
+      "source_offset": 179,
+      "display_override": true,
+      "next": "n06_celine_p0208_217"
+    },
+    {
+      "id": "n06_celine_p0208_217",
+      "text": "“……有些词，在海里念出来是会招来祸害的。你很有胆量，但聪明过头的人死得最快。我只能告诉你：学者船队有自己的使命，我们航行的这片海域底下，沉睡着远古潮序留下的‘知识’，也有某些不可名状的遗骸。主船队半个月前失踪的人，也是在维修水密隔舱时凭空",
+      "source_block_id": "p0208",
+      "source_offset": 217,
+      "display_override": true,
+      "next": "n06_celine_p0208_337"
+    },
+    {
+      "id": "n06_celine_p0208_337",
+      "text": "没的。”",
+      "source_block_id": "p0208",
+      "source_offset": 337,
+      "display_override": true,
+      "next": "n06_celine_p0208_342"
+    },
+    {
+      "id": "n06_celine_p0208_342",
+      "text": "塞琳：（塞琳收起银刀，深深看了你一眼）",
+      "source_block_id": "p0208",
+      "source_offset": 342,
+      "display_override": true,
+      "next": "n06_celine_p0208_362"
+    },
+    {
+      "id": "n06_celine_p0208_362",
+      "text": "“老学者说过，‘当门开始在活人面前具象，说明海里的东西正在寻找容器’。这些理论还不是现在的我可以知道的，我只负责带这支分队活着回去。新来的，证明你不是那个招来灾祸的‘容器’，想办法把哈克找回来，或者找到是谁干的。否则，到第 15 个节点汇合",
+      "source_block_id": "p0208",
+      "source_offset": 362,
+      "display_override": true,
+      "next": "n06_celine_p0208_482"
+    },
+    {
+      "id": "n06_celine_p0208_482",
+      "text": "时，不用等老学者发话，我亲手把你推下去。”",
+      "source_block_id": "p0208",
+      "source_offset": 482,
+      "display_override": true,
+      "next": "n06_celine_p0208_504"
+    },
+    {
+      "id": "n06_celine_p0208_504",
+      "text": "· 【获得线索】：线索 C-1《学者的古训与过往失踪》（本档线索）",
+      "source_block_id": "p0208",
+      "source_offset": 504,
+      "display_override": true,
+      "next": "n06_celine_p0208_538"
+    },
+    {
+      "id": "n06_celine_p0208_538",
+      "text": "· 【角色好感/信任度变动】：塞琳信任度 +2",
+      "source_block_id": "p0208",
+      "source_offset": 538,
+      "display_override": true,
+      "next": "n06_celine_p0208_562"
+    },
+    {
+      "id": "n06_celine_p0208_562",
+      "text": "【剧情进度】：第06节点；当前章节共11节点。",
+      "source_block_id": "p0208",
+      "source_offset": 562,
+      "display_override": true,
+      "next": "n06_celine_end"
+    },
+    {
+      "id": "n06_celine_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "clue",
+          "key": "C-1"
+        },
+        {
+          "action": "affinity",
+          "key": "celine",
+          "value": 2
+        }
+      ],
+      "next": "n06_outro_p0209_0"
+    },
+    {
+      "id": "n06_outro_p0209_0",
+      "text": "旁白：",
+      "source_block_id": "p0209",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n06_outro_p0209_4"
+    },
+    {
+      "id": "n06_outro_p0209_4",
+      "text": "铅灰色的天光从东方的海平面泛起，第一只海鸟发出尖厉凄清的啼鸣。虽然疑云未散，但你终于有了些头绪。你悄无声息地退回自己的木筏旁，晨风刺骨，但你的脑海中已经拼凑出了第一批线索。",
+      "source_block_id": "p0209",
+      "source_offset": 4,
+      "display_override": true,
+      "next": "n06_outro_p0209_91"
+    },
+    {
+      "id": "n06_outro_p0209_91",
+      "text": "【当前任务面板更新】：",
+      "source_block_id": "p0209",
+      "source_offset": 91,
+      "display_override": true,
+      "next": "n06_outro_p0209_103"
+    },
+    {
+      "id": "n06_outro_p0209_103",
+      "text": "· 限时任务：《不合理的门扉与消失者》",
+      "source_block_id": "p0209",
+      "source_offset": 103,
+      "display_override": true,
+      "next": "n06_outro_p0209_123"
+    },
+    {
+      "id": "n06_outro_p0209_123",
+      "text": "【剧情进度】：第06节点；当前章节共11节点。",
+      "source_block_id": "p0209",
+      "source_offset": 123,
+      "display_override": true,
+      "next": "n06_outro_p0209_147"
+    },
+    {
+      "id": "n06_outro_p0209_147",
+      "text": "· 已掌握的线索可在设置的剧情页查看。",
+      "source_block_id": "p0209",
+      "source_offset": 147,
+      "display_override": true,
+      "next": "n06_outro_p0209_167"
+    },
+    {
+      "id": "n06_outro_p0209_167",
+      "text": "· 塞琳信任度状态：观察中（根据此前第 5 回合选项与今晚行动累计）。",
+      "source_block_id": "p0209",
+      "source_offset": 167,
+      "display_override": true,
+      "next": "n06_outro_end"
+    },
+    {
+      "id": "n06_outro_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": []
+    },
+    {
+      "id": "be03_p0218_0",
+      "text": "💀 【BAD END 3：沉溺于甜饴之梦】（累计 3 次休息触发）",
+      "source_block_id": "p0218",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "be03_p0218_34"
+    },
+    {
+      "id": "be03_p0218_34",
+      "text": "· 结局演出：致幻的死鱼发酵甜香彻底漫过理智。你梦见自己沉入温暖舒适的金色蜜海，肉体与骨髓像方糖般在沸腾的体液中发酵融解，与老旧海船的橡木龙骨永久粘合在一起，成为了船底的新养分。",
+      "source_block_id": "p0218",
+      "source_offset": 34,
+      "display_override": true,
+      "next": "be03_p0218_124"
+    },
+    {
+      "id": "be03_p0218_124",
+      "text": "· 解锁信息：“沉沦于虚假的安宁，不过是加速被深渊消化的过程。理智的崩解，始于对香甜梦境的妥协。”",
+      "source_block_id": "p0218",
+      "source_offset": 124,
+      "display_override": true,
+      "next": "be03_end"
+    },
+    {
+      "id": "be03_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "ending",
+          "key": "BAD_END_3"
+        }
+      ],
+      "ending": "bad_end_3"
+    }
+  ]
+}

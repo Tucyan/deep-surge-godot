@@ -37,7 +37,7 @@ func run() -> void:
 	check(id.begins_with("nar-"), "attached save has a stored id")
 
 	# First checkpoint: three completed voyages, now navigating to the fourth.
-	app.session.state.voyage = 4
+	app.session.state.voyage = 1
 	app.session.state.phase = "navigation"
 	app._maybe_story()
 	await process_frame
@@ -51,7 +51,7 @@ func run() -> void:
 
 	# Drive the page to completion using its public commands.
 	var guard := 0
-	while app.narrative_playing and guard < 60:
+	while app.narrative_playing and guard < 1000:
 		var page = app.narrative_overlay
 		if page.body.visible_characters != -1:
 			page.advance()
@@ -64,14 +64,14 @@ func run() -> void:
 		await process_frame
 		guard += 1
 	check(not app.narrative_playing, "closed after the scene completed")
-	check(app.narrative.applied_beats().has("L1-B03"), "first beat recorded exactly once")
+	check(app.narrative.applied_beats().has("C1-N01"), "first beat recorded exactly once")
 	check(app.narrative.applied_count() == 1, "no duplicate beats were applied")
-	check(int(app.narrative.affinity().get("leader", 0)) > 0, "affinity persisted from the chosen option")
+	check(app.narrative.affinity().is_empty(), "first salvage choice does not change trust or gameplay")
 
 	# The narrative save is independent from the gameplay save.
 	var reloaded = load("res://narrative/narrative_session.gd").new(app.narrative_content)
 	check(reloaded.load_data(app.narrative_store.read(id)), "narrative save reads back from disk")
-	check(reloaded.applied_beats().has("L1-B03"), "applied beat survives the round trip")
+	check(reloaded.applied_beats().has("C1-N01"), "applied beat survives the round trip")
 	check(int(reloaded.affinity().get("leader", 0)) == int(app.narrative.affinity().get("leader", 0)), "affinity survives the round trip")
 
 	# A reopened checkpoint is not replayed; the next one opens instead.
@@ -80,12 +80,12 @@ func run() -> void:
 	check(not app.narrative_playing, "already applied beat never reopens")
 
 	# Sixth checkpoint opens once the game reports six completed voyages.
-	app.session.state.voyage = 7
+	app.session.state.voyage = 6
 	app.session.state.phase = "navigation"
 	app._maybe_story()
 	await process_frame
 	check(app.narrative_playing, "next beat opens at its own checkpoint")
-	check(app.narrative.current_beat.get("id", "") == "L1-B06", "opened beat matches the schedule")
+	check(app.narrative.current_beat.get("id", "") == "C1-N06", "opened beat matches the schedule")
 	app._close_narrative()
 
 	# UI entry points render without touching the game.

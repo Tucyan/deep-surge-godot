@@ -26,7 +26,7 @@ func run() -> void:
 	var Session = load("res://narrative/narrative_session.gd")
 	var Store = load("res://adapters/narrative_store.gd")
 	var content = Content.new()
-	check(content.load_content(), "narrative content loads: " + content.error)
+	check(content.load_content(true), "narrative content loads: " + content.error)
 	if content.length == 0:
 		print("NARRATIVE: %d checks, %d failures" % [total, failures])
 		quit(1)

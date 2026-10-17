@@ -1,0 +1,379 @@
+{
+  "archive_sha256": "9a64b6c66a611f321bcf0245ff6ac2e278eccaf83fbf70126aeaef16dc401814",
+  "clue_catalog": {
+    "A-1": {
+      "id": "A-1",
+      "title": "伤口与结痂",
+      "source_block_id": "p0198",
+      "persistence": "meta",
+      "description_source": "p0198"
+    },
+    "B-1": {
+      "id": "B-1",
+      "title": "受惊者的刻印与日记",
+      "source_block_id": "p0205",
+      "persistence": "meta",
+      "description_source": "p0205"
+    },
+    "C-1": {
+      "id": "C-1",
+      "title": "学者的古训与过往失踪",
+      "source_block_id": "p0208",
+      "persistence": "meta",
+      "description_source": "p0208"
+    },
+    "B-2": {
+      "id": "B-2",
+      "title": "位置错乱与逆流遗物",
+      "source_block_id": "p0226",
+      "persistence": "meta",
+      "description_source": "p0226"
+    },
+    "C-2": {
+      "id": "C-2",
+      "title": "受蚀者的计数律",
+      "source_block_id": "p0233",
+      "persistence": "meta",
+      "description_source": "p0233"
+    },
+    "A-3": {
+      "id": "A-3",
+      "title": "侵蚀核心的投影规律",
+      "source_block_id": "p0269",
+      "persistence": "meta",
+      "description_source": "p0269"
+    },
+    "B-3": {
+      "id": "B-3",
+      "title": "死掉的木材与逆转物质",
+      "source_block_id": "p0295",
+      "persistence": "meta",
+      "description_source": "p0295"
+    },
+    "B-4": {
+      "id": "B-4",
+      "title": "抹除存在的认知侵蚀",
+      "source_block_id": "p0334",
+      "persistence": "meta",
+      "description_source": "p0334"
+    },
+    "C-3": {
+      "id": "C-3",
+      "title": "芮安的秘密信物与异常流向",
+      "source_block_id": "p0340",
+      "persistence": "meta",
+      "description_source": "p0340"
+    },
+    "C-4": {
+      "id": "C-4",
+      "title": "暗流信标与分队暗鬼",
+      "source_block_id": "p0370",
+      "persistence": "meta",
+      "description_source": "p0370"
+    },
+    "A-4": {
+      "id": "A-4",
+      "title": "并轨的长廊与虚掩之门",
+      "source_block_id": "p0372",
+      "persistence": "meta",
+      "description_source": "p0372"
+    },
+    "C-5": {
+      "id": "C-5",
+      "title": "神隐与同化的本质",
+      "source_block_id": "p0398",
+      "persistence": "meta",
+      "description_source": "p0398"
+    },
+    "A-5": {
+      "id": "A-5",
+      "title": "门扉扎根的龙骨锚点",
+      "source_block_id": "p0404",
+      "persistence": "meta",
+      "description_source": "p0404"
+    }
+  },
+  "ignored_gameplay_effects": [
+    {
+      "action": "delta_status",
+      "key": "生命值",
+      "scope": "run",
+      "value": -5,
+      "source_block_id": "p0019"
+    },
+    {
+      "action": "delta_status",
+      "key": "饱食度",
+      "scope": "run",
+      "value": -10,
+      "source_block_id": "p0019"
+    },
+    {
+      "action": "delta_status",
+      "key": "口渴值",
+      "scope": "run",
+      "value": -10,
+      "source_block_id": "p0019"
+    },
+    {
+      "action": "delta_status",
+      "key": "SAN",
+      "scope": "run",
+      "value": -10,
+      "source_block_id": "p0021"
+    },
+    {
+      "action": "grant_item",
+      "key": "废铁",
+      "scope": "run",
+      "value": 2,
+      "source_block_id": "p0016"
+    },
+    {
+      "action": "grant_item",
+      "key": "木头",
+      "scope": "inventory",
+      "value": 1,
+      "source_block_id": "p0017"
+    },
+    {
+      "action": "grant_item",
+      "key": "绳子",
+      "scope": "inventory",
+      "value": 1,
+      "source_block_id": "p0017"
+    },
+    {
+      "action": "grant_item",
+      "key": "布料",
+      "scope": "inventory",
+      "value": 1,
+      "source_block_id": "p0017"
+    },
+    {
+      "action": "delta_meta",
+      "key": "周目轮回点",
+      "scope": "meta",
+      "value": 1,
+      "source_block_id": "p0076"
+    },
+    {
+      "action": "delta_meta",
+      "key": "周目轮回点",
+      "scope": "meta",
+      "value": 1,
+      "source_block_id": "p0166"
+    },
+    {
+      "action": "delta_status",
+      "key": "生命值",
+      "scope": "run",
+      "value": 5,
+      "source_block_id": "p0186"
+    },
+    {
+      "action": "delta_status",
+      "key": "饱食度",
+      "scope": "run",
+      "value": -10,
+      "source_block_id": "p0186"
+    },
+    {
+      "action": "delta_status",
+      "key": "口渴值",
+      "scope": "run",
+      "value": -10,
+      "source_block_id": "p0186"
+    },
+    {
+      "action": "delta_meta",
+      "key": "周目轮回点",
+      "scope": "meta",
+      "value": 1,
+      "source_block_id": "p0218"
+    },
+    {
+      "action": "delta_status",
+      "key": "生命值",
+      "scope": "run",
+      "value": 10,
+      "source_block_id": "p0217"
+    },
+    {
+      "action": "delta_status",
+      "key": "SAN",
+      "scope": "run",
+      "value": 10,
+      "source_block_id": "p0217"
+    },
+    {
+      "action": "delta_status",
+      "key": "饱食度",
+      "scope": "run",
+      "value": -10,
+      "source_block_id": "p0217"
+    },
+    {
+      "action": "delta_status",
+      "key": "口渴值",
+      "scope": "run",
+      "value": -10,
+      "source_block_id": "p0217"
+    },
+    {
+      "action": "delta_meta",
+      "key": "周目轮回点",
+      "scope": "meta",
+      "value": 1,
+      "source_block_id": "p0218"
+    },
+    {
+      "action": "delta_status",
+      "key": "生命值",
+      "scope": "run",
+      "value": 10,
+      "source_block_id": "p0261"
+    },
+    {
+      "action": "delta_status",
+      "key": "SAN",
+      "scope": "run",
+      "value": 10,
+      "source_block_id": "p0261"
+    },
+    {
+      "action": "delta_status",
+      "key": "饱食度",
+      "scope": "run",
+      "value": -10,
+      "source_block_id": "p0261"
+    },
+    {
+      "action": "delta_status",
+      "key": "口渴值",
+      "scope": "run",
+      "value": -10,
+      "source_block_id": "p0261"
+    },
+    {
+      "action": "grant_card",
+      "key": "食物",
+      "scope": "run",
+      "source_block_id": "p0269",
+      "note": "原稿未指定数量/卡牌ID，请程序按资产配置，不擅自设定。"
+    },
+    {
+      "action": "delta_meta",
+      "key": "周目轮回点",
+      "scope": "meta",
+      "value": 1,
+      "source_block_id": "p0218"
+    },
+    {
+      "action": "delta_status",
+      "key": "生命值",
+      "scope": "run",
+      "value": 10,
+      "source_block_id": "p0312"
+    },
+    {
+      "action": "delta_status",
+      "key": "SAN",
+      "scope": "run",
+      "value": 10,
+      "source_block_id": "p0312"
+    },
+    {
+      "action": "delta_status",
+      "key": "饱食度",
+      "scope": "run",
+      "value": -10,
+      "source_block_id": "p0312"
+    },
+    {
+      "action": "delta_status",
+      "key": "口渴值",
+      "scope": "run",
+      "value": -10,
+      "source_block_id": "p0312"
+    },
+    {
+      "action": "delta_meta",
+      "key": "周目轮回点",
+      "scope": "meta",
+      "value": 1,
+      "source_block_id": "p0218"
+    },
+    {
+      "action": "delta_status",
+      "key": "生命值",
+      "scope": "run",
+      "value": 10,
+      "source_block_id": "p0362"
+    },
+    {
+      "action": "delta_status",
+      "key": "SAN",
+      "scope": "run",
+      "value": 10,
+      "source_block_id": "p0362"
+    },
+    {
+      "action": "delta_status",
+      "key": "饱食度",
+      "scope": "run",
+      "value": -10,
+      "source_block_id": "p0362"
+    },
+    {
+      "action": "delta_status",
+      "key": "口渴值",
+      "scope": "run",
+      "value": -10,
+      "source_block_id": "p0362"
+    },
+    {
+      "action": "delta_meta",
+      "key": "周目轮回点",
+      "scope": "meta",
+      "value": 1,
+      "source_block_id": "p0218"
+    },
+    {
+      "action": "delta_status",
+      "key": "生命值",
+      "scope": "run",
+      "value": 10,
+      "source_block_id": "p0388"
+    },
+    {
+      "action": "delta_status",
+      "key": "SAN",
+      "scope": "run",
+      "value": 10,
+      "source_block_id": "p0388"
+    },
+    {
+      "action": "delta_status",
+      "key": "饱食度",
+      "scope": "run",
+      "value": -10,
+      "source_block_id": "p0388"
+    },
+    {
+      "action": "delta_status",
+      "key": "口渴值",
+      "scope": "run",
+      "value": -10,
+      "source_block_id": "p0388"
+    },
+    {
+      "action": "delta_meta",
+      "key": "周目轮回点",
+      "scope": "meta",
+      "value": 1,
+      "source_block_id": "p0218"
+    }
+  ],
+  "policy": "Local gameplay wins; imported numbers/materials/cards/meta rewards remain text only. Quest items and clues are narrative-only. No node12-15 or old campaign/night rules."
+}

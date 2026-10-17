@@ -1,0 +1,923 @@
+{
+  "schema_version": 1,
+  "id": "chapter1.n05",
+  "title": "第一章 · 节点 05/11",
+  "imported_chapter1": true,
+  "entry": "n05_incident_p0080_0",
+  "nodes": [
+    {
+      "id": "n05_incident_p0080_0",
+      "text": "【第 5 回合 / 节点 05｜不合理的门扉：哈克之夜】",
+      "source_block_id": "p0080",
+      "source_offset": 0,
+      "next": "n05_incident_p0081_0"
+    },
+    {
+      "id": "n05_incident_p0081_0",
+      "text": "【场景】：入夜，灰潮分队下层生活舱走廊。昏黄的风灯随着船体规律晃动，空气中弥漫着桐油、咸鱼与潮湿木板的味道。",
+      "source_block_id": "p0081",
+      "source_offset": 0,
+      "next": "n05_incident_p0081_55"
+    },
+    {
+      "id": "n05_incident_p0081_55",
+      "text": "【登场角色】：哈克（年轻水手，戴着褪色无檐便帽，脸上长着雀斑，手里提着半桶清洗甲板的淡水与毛刷）。",
+      "source_block_id": "p0081",
+      "source_offset": 55,
+      "next": "n05_incident_p0083_0"
+    },
+    {
+      "id": "n05_incident_p0083_0",
+      "text": "旁白：",
+      "source_block_id": "p0083",
+      "source_offset": 0,
+      "next": "n05_incident_p0083_4"
+    },
+    {
+      "id": "n05_incident_p0083_4",
+      "text": "借着晚饭时间，你完成了在分队的第一次登记。按照塞琳的吩咐，年轻水手哈克负责带你熟悉下层公共区，并顺便去后勤储物室取一条属于你的粗麻毛毯。",
+      "source_block_id": "p0083",
+      "source_offset": 4,
+      "next": "n05_incident_p0085_0"
+    },
+    {
+      "id": "n05_incident_p0085_0",
+      "text": "哈克：（一边走一边喋喋不休地擦汗）",
+      "source_block_id": "p0085",
+      "source_offset": 0,
+      "next": "n05_incident_p0085_18"
+    },
+    {
+      "id": "n05_incident_p0085_18",
+      "text": "“……所以说，你走大运了，新人。塞琳头儿虽然严厉，但比主船队那些老古董好相处得多。要是换了净化派那帮疯子，见到你这副满身海腥味的样子，早把你当不洁之物扔进柴堆烧了。”",
+      "source_block_id": "p0085",
+      "source_offset": 18,
+      "next": "n05_incident_p0087_0"
+    },
+    {
+      "id": "n05_incident_p0087_0",
+      "text": "旁白：",
+      "source_block_id": "p0087",
+      "source_offset": 0,
+      "next": "n05_incident_p0087_4"
+    },
+    {
+      "id": "n05_incident_p0087_4",
+      "text": "你感觉船舱里到处都是人在说话。但是仔细听却听不清内容。",
+      "source_block_id": "p0087",
+      "source_offset": 4,
+      "next": "n05_incident_p0089_0"
+    },
+    {
+      "id": "n05_incident_p0089_0",
+      "text": "主角：“这里一直这么吵吗？”",
+      "source_block_id": "p0089",
+      "source_offset": 0,
+      "next": "n05_incident_p0091_0"
+    },
+    {
+      "id": "n05_incident_p0091_0",
+      "text": "哈克：“今晚风浪小，算安稳的了！喏，前面转角过去就是备用仓储室，拿了毛毯你就赶快回去睡……咦？”",
+      "source_block_id": "p0091",
+      "source_offset": 0,
+      "next": "n05_incident_p0092_0"
+    },
+    {
+      "id": "n05_incident_p0092_0",
+      "text": "旁白：",
+      "source_block_id": "p0092",
+      "source_offset": 0,
+      "next": "n05_incident_p0092_4"
+    },
+    {
+      "id": "n05_incident_p0092_4",
+      "text": "走廊转角处，出现了一扇门。哈克并没有停下脚步，只是打了个哈欠伸手推向门把手。但就在你转过走廊、视线落在那扇门上的瞬间——你的瞳孔骤然收缩，整条脊椎泛起一股针扎般的寒意！",
+      "source_block_id": "p0092",
+      "source_offset": 4,
+      "next": "n05_incident_p0092_89"
+    },
+    {
+      "id": "n05_incident_p0092_89",
+      "text": "那绝不是这艘用粗糙橡木、铁皮钉条拼凑出的走私级海船该有的门！门框呈现出一种死寂冰冷的深褐色，边缘雕刻着极其繁复、让人注视稍久便头晕目眩的螺旋暗纹；门把手是一只由未知暗沉金属铸造的异形环扣，光洁得没有一丝海上常见的锈迹，仿佛它来自某座深埋地下",
+      "source_block_id": "p0092",
+      "source_offset": 89,
+      "next": "n05_incident_p0092_209"
+    },
+    {
+      "id": "n05_incident_p0092_209",
+      "text": "、或者浸泡在另一个维度的古典宅邸。",
+      "source_block_id": "p0092",
+      "source_offset": 209,
+      "next": "n05_incident_p0094_0"
+    },
+    {
+      "id": "n05_incident_p0094_0",
+      "text": "主角：（下意识失声喊道）“等一下！哈克，别碰那扇门！”",
+      "source_block_id": "p0094",
+      "source_offset": 0,
+      "next": "n05_incident_p0096_0"
+    },
+    {
+      "id": "n05_incident_p0096_0",
+      "text": "旁白：",
+      "source_block_id": "p0096",
+      "source_offset": 0,
+      "next": "n05_incident_p0096_4"
+    },
+    {
+      "id": "n05_incident_p0096_4",
+      "text": "你知道了……那不是有人在窃窃私语，是门……",
+      "source_block_id": "p0096",
+      "source_offset": 4,
+      "next": "n05_incident_p0096_26"
+    },
+    {
+      "id": "n05_incident_p0096_26",
+      "text": "门在说话。",
+      "source_block_id": "p0096",
+      "source_offset": 26,
+      "next": "n05_incident_p0098_0"
+    },
+    {
+      "id": "n05_incident_p0098_0",
+      "text": "哈克：（手已经搭在冰冷的把手上，回过头一脸茫然）",
+      "source_block_id": "p0098",
+      "source_offset": 0,
+      "next": "n05_incident_p0098_25"
+    },
+    {
+      "id": "n05_incident_p0098_25",
+      "text": "“啊？怎么了？不就是储藏杂物的储物室吗……门把手今天怎么这么凉……”",
+      "source_block_id": "p0098",
+      "source_offset": 25,
+      "next": "n05_incident_p0100_0"
+    },
+    {
+      "id": "n05_incident_p0100_0",
+      "text": "旁白：",
+      "source_block_id": "p0100",
+      "source_offset": 0,
+      "next": "n05_incident_p0100_4"
+    },
+    {
+      "id": "n05_incident_p0100_4",
+      "text": "“咔哒。”一声清脆、极其怪异的机括咬合声响起。哈克推开了门。门后并没有堆放的缆绳和毛毯，在你的眼里，门后是一片翻涌着浓重灰白雾气的深渊，甚至隐隐传来的某种极远处水流倒灌的轰鸣。但在哈克眼中，他似乎只看到了普通的地板，他嘴里还在嘟囔着“老木匠",
+      "source_block_id": "p0100",
+      "source_offset": 4,
+      "next": "n05_incident_p0100_124"
+    },
+    {
+      "id": "n05_incident_p0100_124",
+      "text": "又乱堆木桶”，便极其自然地迈步跨了进去。",
+      "source_block_id": "p0100",
+      "source_offset": 124,
+      "next": "n05_incident_p0102_0"
+    },
+    {
+      "id": "n05_incident_p0102_0",
+      "text": "主角：“哈克！！”",
+      "source_block_id": "p0102",
+      "source_offset": 0,
+      "next": "n05_incident_p0104_0"
+    },
+    {
+      "id": "n05_incident_p0104_0",
+      "text": "旁白：",
+      "source_block_id": "p0104",
+      "source_offset": 0,
+      "next": "n05_incident_p0104_4"
+    },
+    {
+      "id": "n05_incident_p0104_4",
+      "text": "门的声音还在响——",
+      "source_block_id": "p0104",
+      "source_offset": 4,
+      "next": "n05_incident_p0104_14"
+    },
+    {
+      "id": "n05_incident_p0104_14",
+      "text": "进来进来进来进来进来进来进来进来进来进来进来进来进来进来进来进来进来进来进来进来进来进来进来进来进来进来进来进来进来进来进来进来进来进来",
+      "source_block_id": "p0104",
+      "source_offset": 14,
+      "next": "n05_incident_p0104_83"
+    },
+    {
+      "id": "n05_incident_p0104_83",
+      "text": "你猛冲上前，一把抓住门框试图拉住他！然而，就在哈克整个身子没入雾气的刹那——",
+      "source_block_id": "p0104",
+      "source_offset": 83,
+      "next": "n05_incident_p0104_122"
+    },
+    {
+      "id": "n05_incident_p0104_122",
+      "text": "“砰！！”",
+      "source_block_id": "p0104",
+      "source_offset": 122,
+      "next": "n05_incident_p0104_128"
+    },
+    {
+      "id": "n05_incident_p0104_128",
+      "text": "大门在没有任何外力的情况下重重回弹合拢！（画面震动）沉闷的回音在死寂的走廊里炸响。",
+      "source_block_id": "p0104",
+      "source_offset": 128,
+      "next": "n05_incident_p0105_0"
+    },
+    {
+      "id": "n05_incident_p0105_0",
+      "text": "旁白：",
+      "source_block_id": "p0105",
+      "source_offset": 0,
+      "next": "n05_incident_p0105_4"
+    },
+    {
+      "id": "n05_incident_p0105_4",
+      "text": "你剧烈喘息，心脏狂跳，伸手一把抓住金属环扣猛力一拉！",
+      "source_block_id": "p0105",
+      "source_offset": 4,
+      "next": "n05_incident_p0105_31"
+    },
+    {
+      "id": "n05_incident_p0105_31",
+      "text": "门把手变了。原本冰冷精致的古典暗纹金属环扣消失了，变成了粗糙生锈的铁把手。",
+      "source_block_id": "p0105",
+      "source_offset": 31,
+      "next": "n05_incident_p0105_69"
+    },
+    {
+      "id": "n05_incident_p0105_69",
+      "text": "门轴发出“吱呀”一声酸涩的惨叫被你扯开——",
+      "source_block_id": "p0105",
+      "source_offset": 69,
+      "next": "n05_incident_p0105_91"
+    },
+    {
+      "id": "n05_incident_p0105_91",
+      "text": "没有储物室。没有浓雾。没有哈克。",
+      "source_block_id": "p0105",
+      "source_offset": 91,
+      "next": "n05_incident_p0105_108"
+    },
+    {
+      "id": "n05_incident_p0105_108",
+      "text": "门后紧紧贴着整整齐齐、用粗大铁钉封死的实心厚橡木船板！木板缝隙里甚至还塞着防漏水的油膏。那后面，本该就是船壳外冰冷万丈的大海！",
+      "source_block_id": "p0105",
+      "source_offset": 108,
+      "next": "n05_incident_p0107_0"
+    },
+    {
+      "id": "n05_incident_p0107_0",
+      "text": "主角：“……这不可能……人呢？！”",
+      "source_block_id": "p0107",
+      "source_offset": 0,
+      "next": "n05_incident_p0109_0"
+    },
+    {
+      "id": "n05_incident_p0109_0",
+      "text": "？？？：“你在干什么？！”",
+      "source_block_id": "p0109",
+      "source_offset": 0,
+      "next": "n05_incident_p0109_14"
+    },
+    {
+      "id": "n05_incident_p0109_14",
+      "text": "旁白：",
+      "source_block_id": "p0109",
+      "source_offset": 14,
+      "next": "n05_incident_p0109_18"
+    },
+    {
+      "id": "n05_incident_p0109_18",
+      "text": "一声怒喝突然从走廊另一头炸开。塞琳手按短刃快步冲来，身后跟着两名持械的水手，面带戒备与震惊。",
+      "source_block_id": "p0109",
+      "source_offset": 18,
+      "next": "n05_incident_p0112_0"
+    },
+    {
+      "id": "n05_incident_p0112_0",
+      "text": "塞琳：“刚才那声巨响是怎么回事？哈克呢？我明明叫他带你取物资！”",
+      "source_block_id": "p0112",
+      "source_offset": 0,
+      "next": "n05_incident_p0114_0"
+    },
+    {
+      "id": "n05_incident_p0114_0",
+      "text": "水手 A：“头儿！哈克的水桶和毛刷丢在地上……人不见了！”",
+      "source_block_id": "p0114",
+      "source_offset": 0,
+      "next": "n05_incident_p0116_0"
+    },
+    {
+      "id": "n05_incident_p0116_0",
+      "text": "旁白：",
+      "source_block_id": "p0116",
+      "source_offset": 0,
+      "next": "n05_incident_p0116_4"
+    },
+    {
+      "id": "n05_incident_p0116_4",
+      "text": "塞琳锐利的目光如刀锋般刺向背靠着死木门的你，拔出腰间短刃，刀尖直指你的咽喉。",
+      "source_block_id": "p0116",
+      "source_offset": 4,
+      "next": "n05_incident_p0116_43"
+    },
+    {
+      "id": "n05_incident_p0116_43",
+      "text": "塞琳：“新来的。一分钟前哈克还在走廊里说话。现在人去哪了？你对这扇封死的挡水舱壁做了什么？！”",
+      "source_block_id": "p0116",
+      "source_offset": 43,
+      "next": "n05_incident_p0118_0"
+    },
+    {
+      "id": "n05_incident_p0118_0",
+      "text": "【第一阶段强制特殊任务开启】",
+      "source_block_id": "p0118",
+      "source_offset": 0,
+      "next": "n05_incident_p0119_0"
+    },
+    {
+      "id": "n05_incident_p0119_0",
+      "text": "任务名称：《不合理的门扉与消失者》",
+      "source_block_id": "p0119",
+      "source_offset": 0,
+      "next": "n05_incident_p0120_0"
+    },
+    {
+      "id": "n05_incident_p0120_0",
+      "text": "当前目标：在塞琳与全船水手的猜忌下洗清嫌疑，并在局势彻底失控前，找寻哈克与那扇“只有你能看见的怪门”的真相。",
+      "source_block_id": "p0120",
+      "source_offset": 0,
+      "next": "n05_incident_p0121_0"
+    },
+    {
+      "id": "n05_incident_p0121_0",
+      "text": "剧情调查将在第06～11节点展开。",
+      "source_block_id": "p0121",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n05_incident_p0122_0"
+    },
+    {
+      "id": "n05_incident_p0122_0",
+      "text": "关联角色：塞琳、哈克",
+      "source_block_id": "p0122",
+      "source_offset": 0,
+      "next": "n05_incident_p0125_0"
+    },
+    {
+      "id": "n05_incident_p0125_0",
+      "text": "【对峙与审讯：命悬一线的抉择】",
+      "source_block_id": "p0125",
+      "source_offset": 0,
+      "next": "n05_incident_p0126_0"
+    },
+    {
+      "id": "n05_incident_p0126_0",
+      "text": "【登场角色】：",
+      "source_block_id": "p0126",
+      "source_offset": 0,
+      "next": "n05_incident_p0126_8"
+    },
+    {
+      "id": "n05_incident_p0126_8",
+      "text": "· 塞琳（分队负责人，短刃抵喉，眼神如鹰隼般锐利审视）",
+      "source_block_id": "p0126",
+      "source_offset": 8,
+      "next": "n05_incident_p0126_36"
+    },
+    {
+      "id": "n05_incident_p0126_36",
+      "text": "· 涅德（性格暴躁冲动的水手，手持鱼叉，双眼发红）",
+      "source_block_id": "p0126",
+      "source_offset": 36,
+      "next": "n05_incident_p0126_62"
+    },
+    {
+      "id": "n05_incident_p0126_62",
+      "text": "· 柯尔（满脸沧桑的老木匠，腰间挂着木工斧与量尺）",
+      "source_block_id": "p0126",
+      "source_offset": 62,
+      "next": "n05_incident_p0126_88"
+    },
+    {
+      "id": "n05_incident_p0126_88",
+      "text": "· 芮安（后勤管事，冷静排外，持切肉斩骨短刀）",
+      "source_block_id": "p0126",
+      "source_offset": 88,
+      "next": "n05_incident_p0128_0"
+    },
+    {
+      "id": "n05_incident_p0128_0",
+      "text": "涅德",
+      "source_block_id": "p0128",
+      "source_offset": 0,
+      "next": "n05_incident_p0128_3"
+    },
+    {
+      "id": "n05_incident_p0128_3",
+      "text": "（猛地上前一步，鱼叉直指主角）",
+      "source_block_id": "p0128",
+      "source_offset": 3,
+      "next": "n05_incident_p0128_19"
+    },
+    {
+      "id": "n05_incident_p0128_19",
+      "text": "\"头儿！别跟他废话！哈克是我同乡的兄弟，刚才就这混蛋跟哈克在一起！肯定是这个来历不明的漂流者把哈克推下海了！\"",
+      "source_block_id": "p0128",
+      "source_offset": 19,
+      "next": "n05_incident_p0129_0"
+    },
+    {
+      "id": "n05_incident_p0129_0",
+      "text": "芮安：（手持一把沉重的带倒钩切肉斩骨短刀，眼神冰冷警惕）",
+      "source_block_id": "p0129",
+      "source_offset": 0,
+      "next": "n05_incident_p0129_29"
+    },
+    {
+      "id": "n05_incident_p0129_29",
+      "text": "“我就说过不能随便收留外人。船上物资本来就紧缺，现在连水手都莫名消失了。塞琳，按规矩办吧，把他绑起来扔进底舱。”",
+      "source_block_id": "p0129",
+      "source_offset": 29,
+      "next": "n05_incident_p0131_0"
+    },
+    {
+      "id": "n05_incident_p0131_0",
+      "text": "塞琳",
+      "source_block_id": "p0131",
+      "source_offset": 0,
+      "next": "n05_incident_p0131_3"
+    },
+    {
+      "id": "n05_incident_p0131_3",
+      "text": "（刀尖纹丝未动，距离你的颈部只有半寸，声音冰冷刺骨）",
+      "source_block_id": "p0131",
+      "source_offset": 3,
+      "next": "n05_incident_p0131_30"
+    },
+    {
+      "id": "n05_incident_p0131_30",
+      "text": "\"闭嘴，都给我退后两步。\"常人无法企及的镇定中带着不容置疑的威严。",
+      "source_block_id": "p0131",
+      "source_offset": 30,
+      "next": "n05_incident_p0131_64"
+    },
+    {
+      "id": "n05_incident_p0131_64",
+      "text": "（她死死盯着你的眼睛）",
+      "source_block_id": "p0131",
+      "source_offset": 64,
+      "next": "n05_incident_p0131_76"
+    },
+    {
+      "id": "n05_incident_p0131_76",
+      "text": "\"我给你一次解释的机会，新来的。十秒钟。说，哈克到底去哪了？这扇封死的门到底怎么回事？\"",
+      "source_block_id": "p0131",
+      "source_offset": 76,
+      "next": "n05_incident_p0133_0"
+    },
+    {
+      "id": "n05_incident_p0133_0",
+      "text": "【关键抉择点：如何面对塞琳的质问？】",
+      "source_block_id": "p0133",
+      "source_offset": 0,
+      "next": "n05_incident_end"
+    },
+    {
+      "id": "n05_incident_end",
+      "text": "请选择接下来的行动。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "flag",
+          "key": "不合理的门扉与消失者"
+        }
+      ],
+      "choices": [
+        {
+          "id": "n05_truth",
+          "text": "【分支选项 A：如实招供（直述不可名状的异象）】",
+          "next": "n05_truth_p0137_0",
+          "source_block_id": "p0136",
+          "condition": {},
+          "narrative_effects": []
+        },
+        {
+          "id": "n05_reason",
+          "text": "【分支选项 B：冷静分析，指出客观破绽（智性应对）】",
+          "next": "n05_reason_p0147_0",
+          "source_block_id": "p0146",
+          "condition": {},
+          "narrative_effects": []
+        },
+        {
+          "id": "n05_fight",
+          "text": "【分支选项 C：激烈抗拒，拔刀自卫（对抗路线）】",
+          "next": "n05_fight_p0154_0",
+          "source_block_id": "p0153",
+          "condition": {},
+          "narrative_effects": []
+        }
+      ]
+    },
+    {
+      "id": "n05_truth_p0137_0",
+      "text": "主角：“哈克自己开门走进去的！就在刚才，这扇门根本不是木板，门上有暗金色的古怪花纹，甚至还在低语叫人进去！门后全都是浓雾和水声！哈克一跨进去门就关上了，我再拉开就变成了这副鬼样子！”",
+      "source_block_id": "p0137",
+      "source_offset": 0,
+      "next": "n05_truth_p0139_0"
+    },
+    {
+      "id": "n05_truth_p0139_0",
+      "text": "涅德：“哈？！你在把全船人当傻子耍吗？！这扇门本来就只是装饰的木板。十天前触礁进水后更是就被老柯尔用粗铁钉焊死了！哪来的花纹？哪来的低语和浓雾？！”",
+      "source_block_id": "p0139",
+      "source_offset": 0,
+      "next": "n05_truth_p0140_0"
+    },
+    {
+      "id": "n05_truth_p0140_0",
+      "text": "老木匠柯尔：（走上前蹲下身，抚摸门框与铁钉，摇头叹气）",
+      "source_block_id": "p0140",
+      "source_offset": 0,
+      "next": "n05_truth_p0140_28"
+    },
+    {
+      "id": "n05_truth_p0140_28",
+      "text": "“小伙子，老头子我亲手打的八根十二寸铁钉，上面的桐油胶连裂纹都没有。门背后就是龙骨和外舷甲板，再往外一寸就是几百米深的冰冷海水，根本没有房间。”",
+      "source_block_id": "p0140",
+      "source_offset": 28,
+      "next": "n05_truth_p0141_0"
+    },
+    {
+      "id": "n05_truth_p0141_0",
+      "text": "塞琳：（目光在你的瞳孔、手指与微微颤抖的肩膀上停滞了数秒。以她在死人堆里滚出来的直觉，面前的人并没有说谎时瞳孔收缩与游离的痕迹，反而是极致的惊骇。）",
+      "source_block_id": "p0141",
+      "source_offset": 0,
+      "next": "n05_truth_p0141_75"
+    },
+    {
+      "id": "n05_truth_p0141_75",
+      "text": "“……够了，涅德。他没有撒谎，或者说，他确信自己看到了那些东西。”",
+      "source_block_id": "p0141",
+      "source_offset": 75,
+      "next": "n05_truth_p0142_0"
+    },
+    {
+      "id": "n05_truth_p0142_0",
+      "text": "涅德：“头儿？！你相信这个外人吗？本来他一个人漂在海上来历不明就很可疑了，更别提那块贤……”",
+      "source_block_id": "p0142",
+      "source_offset": 0,
+      "next": "n05_truth_p0142_47"
+    },
+    {
+      "id": "n05_truth_p0142_47",
+      "text": "塞琳：“够了，你这蠢货！”（震动）",
+      "source_block_id": "p0142",
+      "source_offset": 47,
+      "next": "n05_truth_p0143_0"
+    },
+    {
+      "id": "n05_truth_p0143_0",
+      "text": "塞琳：“如果他真想害哈克，不会弄出这么大的响动把自己堵在死角里，更没本事在几秒内把一个大活人蒸发干净还不留下一点血迹。”",
+      "source_block_id": "p0143",
+      "source_offset": 0,
+      "next": "n05_truth_p0144_0"
+    },
+    {
+      "id": "n05_truth_p0144_0",
+      "text": "【分支结算 A】：",
+      "source_block_id": "p0144",
+      "source_offset": 0,
+      "next": "n05_truth_p0144_10"
+    },
+    {
+      "id": "n05_truth_p0144_10",
+      "text": "· 塞琳收刀入鞘，塞琳信任度：+3。",
+      "source_block_id": "p0144",
+      "source_offset": 10,
+      "next": "n05_truth_p0144_29"
+    },
+    {
+      "id": "n05_truth_p0144_29",
+      "text": "· 塞琳力排众议给予调查权限，但后勤管事芮安极度反感，下令限制主角进入核心功能舱。",
+      "source_block_id": "p0144",
+      "source_offset": 29,
+      "next": "n05_truth_end"
+    },
+    {
+      "id": "n05_truth_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "affinity",
+          "key": "celine",
+          "value": 3
+        },
+        {
+          "action": "flag",
+          "key": "restricted_core_cabin"
+        }
+      ],
+      "next": "n05_continue_p0169_0"
+    },
+    {
+      "id": "n05_reason_p0147_0",
+      "text": "主角：（强迫自己压住紊乱的呼吸，目光不闪不避迎上塞琳的短刃）",
+      "source_block_id": "p0147",
+      "source_offset": 0,
+      "next": "n05_reason_p0147_31"
+    },
+    {
+      "id": "n05_reason_p0147_31",
+      "text": "“如果我袭击了他，地上为什么连一滴血都没有？看看地上的水桶——水满着，毛刷浸在水里，连泼洒出来的水花都没有！如果是搏斗或推搡，怎么可能不碰翻水桶？”",
+      "source_block_id": "p0147",
+      "source_offset": 31,
+      "next": "n05_reason_p0148_0"
+    },
+    {
+      "id": "n05_reason_p0148_0",
+      "text": "老木匠柯尔：（凑近查看水桶，点头沉声道）",
+      "source_block_id": "p0148",
+      "source_offset": 0,
+      "next": "n05_reason_p0148_21"
+    },
+    {
+      "id": "n05_reason_p0148_21",
+      "text": "“……确实。哈克是急躁性子，要是被人袭击，水桶早踢翻了。桶里的水面连晃动都没止住，人是瞬间‘没’了的。”",
+      "source_block_id": "p0148",
+      "source_offset": 21,
+      "next": "n05_reason_p0149_0"
+    },
+    {
+      "id": "n05_reason_p0149_0",
+      "text": "塞琳：（缓缓将短刃收回腰间，眼神中闪过一丝凝重与罕见的锐芒）",
+      "source_block_id": "p0149",
+      "source_offset": 0,
+      "next": "n05_reason_p0149_31"
+    },
+    {
+      "id": "n05_reason_p0149_31",
+      "text": "“你比我想象的要冷静得多，新来的。在这片海里，太慌张的人活不长，但太敏锐的人往往死得最诡异。”",
+      "source_block_id": "p0149",
+      "source_offset": 31,
+      "next": "n05_reason_p0149_79"
+    },
+    {
+      "id": "n05_reason_p0149_79",
+      "text": "“老柯尔，把这片走廊隔离起来，挂警示铃。芮安，清点哈克的铺位。”",
+      "source_block_id": "p0149",
+      "source_offset": 79,
+      "next": "n05_reason_p0150_0"
+    },
+    {
+      "id": "n05_reason_p0150_0",
+      "text": "塞琳：（缓缓将短刃收回腰间，眼神中闪过一丝凝重与罕见的锐芒）",
+      "source_block_id": "p0150",
+      "source_offset": 0,
+      "next": "n05_reason_p0150_31"
+    },
+    {
+      "id": "n05_reason_p0150_31",
+      "text": "\"你比我想象的要冷静得多，新来的。在这片海里，太慌张的人活不长，但太敏锐的人往往死得最诡异。\"",
+      "source_block_id": "p0150",
+      "source_offset": 31,
+      "next": "n05_reason_p0150_79"
+    },
+    {
+      "id": "n05_reason_p0150_79",
+      "text": "\"老柯尔，把这片走廊隔离起来，挂警示铃。芮安，清点哈克的铺位。\"",
+      "source_block_id": "p0150",
+      "source_offset": 79,
+      "next": "n05_reason_p0151_0"
+    },
+    {
+      "id": "n05_reason_p0151_0",
+      "text": "【分支结算 B】：",
+      "source_block_id": "p0151",
+      "source_offset": 0,
+      "next": "n05_reason_p0151_10"
+    },
+    {
+      "id": "n05_reason_p0151_10",
+      "text": "· 塞琳信任度：+5。",
+      "source_block_id": "p0151",
+      "source_offset": 10,
+      "next": "n05_reason_p0151_22"
+    },
+    {
+      "id": "n05_reason_p0151_22",
+      "text": "· 获得全船员的审慎认可，塞琳私下允许主角协助调查。",
+      "source_block_id": "p0151",
+      "source_offset": 22,
+      "next": "n05_reason_end"
+    },
+    {
+      "id": "n05_reason_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "affinity",
+          "key": "celine",
+          "value": 5
+        }
+      ],
+      "next": "n05_continue_p0169_0"
+    },
+    {
+      "id": "n05_fight_p0154_0",
+      "text": "主角：（猛地拨开塞琳的刀，反手拔出腰间的武器退后半步）",
+      "source_block_id": "p0154",
+      "source_offset": 0,
+      "next": "n05_fight_p0154_28"
+    },
+    {
+      "id": "n05_fight_p0154_28",
+      "text": "“把刀拿开！你们的人自己失踪了，就想找人顶罪？！我没做过的事情，别想往我头上扣！”",
+      "source_block_id": "p0154",
+      "source_offset": 28,
+      "next": "n05_fight_p0155_0"
+    },
+    {
+      "id": "n05_fight_p0155_0",
+      "text": "涅德：“他拔武器了！这混蛋果然有鬼！！”",
+      "source_block_id": "p0155",
+      "source_offset": 0,
+      "next": "n05_fight_p0156_0"
+    },
+    {
+      "id": "n05_fight_p0156_0",
+      "text": "芮安：“杀了他！！”",
+      "source_block_id": "p0156",
+      "source_offset": 0,
+      "next": "n05_fight_p0157_0"
+    },
+    {
+      "id": "n05_fight_p0157_0",
+      "text": "旁白：",
+      "source_block_id": "p0157",
+      "source_offset": 0,
+      "next": "n05_fight_p0157_4"
+    },
+    {
+      "id": "n05_fight_p0157_4",
+      "text": "狭窄的走廊里瞬间爆发了刺耳的混乱！“砰！！”涅德狂吼着挺着鱼叉横扫而来，老木匠柯尔也抄起木工斧封死了退路！你狼狈招架，在这群久经风浪的老水手面前，狭窄的空间却彻底封死了你的生路。塞琳的身影犹如鬼魅般，手肘精准而狠戾地重重砸在你的后颈上！",
+      "source_block_id": "p0157",
+      "source_offset": 4,
+      "next": "n05_fight_p0158_0"
+    },
+    {
+      "id": "n05_fight_p0158_0",
+      "text": "【眼前一黑，剧痛袭来】……",
+      "source_block_id": "p0158",
+      "source_offset": 0,
+      "next": "n05_fight_p0160_0"
+    },
+    {
+      "id": "n05_fight_p0160_0",
+      "text": "【场景切至：深夜甲板】",
+      "source_block_id": "p0160",
+      "source_offset": 0,
+      "next": "n05_fight_p0161_0"
+    },
+    {
+      "id": "n05_fight_p0161_0",
+      "text": "冰冷的海浪不断拍打着船舷。你的双手被麻绳反绑，嘴里塞着块破布，浑身是伤地被扔在甲板边缘。塞琳站在暴风雨中，面无表情地看着你。",
+      "source_block_id": "p0161",
+      "source_offset": 0,
+      "next": "n05_fight_p0162_0"
+    },
+    {
+      "id": "n05_fight_p0162_0",
+      "text": "塞琳：“不管哈克去了哪里，船队不能容忍一条随时会咬人的疯狗。海上的规矩，我们救了你一命，现在收回。扔下去。”",
+      "source_block_id": "p0162",
+      "source_offset": 0,
+      "next": "n05_fight_p0164_0"
+    },
+    {
+      "id": "n05_fight_p0164_0",
+      "text": "旁白：",
+      "source_block_id": "p0164",
+      "source_offset": 0,
+      "next": "n05_fight_p0164_4"
+    },
+    {
+      "id": "n05_fight_p0164_4",
+      "text": "涅德手中的利刃毫不留情地斩断了连接着你那艘单薄木筏的粗缆绳。沉重的落水声。你被狠狠丢回了翻滚着黑色巨浪的冰冷大海中。此时你已没有多余的淡水和食物，没有武器，绑着双手的绳索将你与破烂的木筏连在一起。灰潮分队的风灯在巨浪后迅速缩成微弱的橙黄光点",
+      "source_block_id": "p0164",
+      "source_offset": 4,
+      "next": "n05_fight_p0164_124"
+    },
+    {
+      "id": "n05_fight_p0164_124",
+      "text": "，最终被无边无际的灰雾彻底吞没。",
+      "source_block_id": "p0164",
+      "source_offset": 124,
+      "next": "n05_fight_p0164_141"
+    },
+    {
+      "id": "n05_fight_p0164_141",
+      "text": "与此同时，被吞没的还有你的生路。寒潮在半夜爆发了。海面下，那些在白天被主船引擎声震慑的深海巨影，循着血腥味破水而出，密密麻麻的复眼在黑暗中亮起……",
+      "source_block_id": "p0164",
+      "source_offset": 141,
+      "next": "n05_fight_p0166_0"
+    },
+    {
+      "id": "n05_fight_p0166_0",
+      "text": "💀 【BAD END 2：被驱逐的漂流死者】",
+      "source_block_id": "p0166",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n05_fight_p0166_23"
+    },
+    {
+      "id": "n05_fight_p0166_23",
+      "text": "· 结局说明：在信任崩盘的绝境下选择了暴力对抗，被灰潮分队斩断缆绳逐入狂暴的涌潮中。在没有航标与物资的黑夜里，你成为了深海异化生命的腹中餐。",
+      "source_block_id": "p0166",
+      "source_offset": 23,
+      "display_override": true,
+      "next": "n05_fight_p0166_94"
+    },
+    {
+      "id": "n05_fight_p0166_94",
+      "text": "· 解锁信息：老学者似乎在冥冥中记录下了这段暴躁与短视的记忆片段……",
+      "source_block_id": "p0166",
+      "source_offset": 94,
+      "display_override": true,
+      "next": "n05_fight_end"
+    },
+    {
+      "id": "n05_fight_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "ending",
+          "key": "BAD_END_2"
+        }
+      ],
+      "ending": "bad_end_2"
+    },
+    {
+      "id": "n05_continue_p0169_0",
+      "text": "【主线继续推进条件（若存活并选择 A 或 B）】",
+      "source_block_id": "p0169",
+      "source_offset": 0,
+      "next": "n05_continue_p0170_0"
+    },
+    {
+      "id": "n05_continue_p0170_0",
+      "text": "塞琳",
+      "source_block_id": "p0170",
+      "source_offset": 0,
+      "next": "n05_continue_p0170_3"
+    },
+    {
+      "id": "n05_continue_p0170_3",
+      "text": "（背对着那扇诡异的木门，对主角下达最后通牒）",
+      "source_block_id": "p0170",
+      "source_offset": 3,
+      "next": "n05_continue_p0170_26"
+    },
+    {
+      "id": "n05_continue_p0170_26",
+      "text": "\"听着，新来的。不管你看见了什么，哈克是在你眼皮底下没的。从现在开始，你只有 9 天时间。\"",
+      "source_block_id": "p0170",
+      "source_offset": 26,
+      "next": "n05_continue_p0170_73"
+    },
+    {
+      "id": "n05_continue_p0170_73",
+      "text": "\"9 个夜晚。如果到第 15 个节点航线汇合前，你不能找回哈克，或者拿不出能说服全船人的证据——\"",
+      "source_block_id": "p0170",
+      "source_offset": 73,
+      "next": "n05_continue_p0170_123"
+    },
+    {
+      "id": "n05_continue_p0170_123",
+      "text": "\"我会亲自把你绑在龙骨底下，当抵御海怪的诱饵。现在，滚回你的木筏上去待命！\"",
+      "source_block_id": "p0170",
+      "source_offset": 123,
+      "next": "n05_continue_p0172_0"
+    },
+    {
+      "id": "n05_continue_p0172_0",
+      "text": "【剧情提示】：接下来每个节点先进行剧情抉择，再继续航行。",
+      "source_block_id": "p0172",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n05_continue_end"
+    },
+    {
+      "id": "n05_continue_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "flag",
+          "key": "night_investigation_open"
+        }
+      ]
+    }
+  ]
+}

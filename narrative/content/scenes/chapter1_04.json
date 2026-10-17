@@ -1,0 +1,339 @@
+{
+  "schema_version": 1,
+  "id": "chapter1.n04",
+  "title": "第一章 · 节点 04/11",
+  "imported_chapter1": true,
+  "entry": "n04_intro_p0056_0",
+  "nodes": [
+    {
+      "id": "n04_intro_p0056_0",
+      "text": "【第 4 回合 / 节点 04｜灰潮分队：带刺的橄榄枝】",
+      "source_block_id": "p0056",
+      "source_offset": 0,
+      "next": "n04_intro_p0057_0"
+    },
+    {
+      "id": "n04_intro_p0057_0",
+      "text": "【场景】：那艘被称作“灰潮”的中型船只减速停在百米开外。一艘由两名水手划动的坚固小艇破浪靠近，停在主角木筏五米处，保持着极强的警戒距离。",
+      "source_block_id": "p0057",
+      "source_offset": 0,
+      "next": "n04_intro_p0057_69"
+    },
+    {
+      "id": "n04_intro_p0057_69",
+      "text": "【立绘登场】：塞琳站在小艇船头。（衣着干练耐磨的风衣短靴，手腕缠着紧绷的皮护臂，发型是精神利落的短发。日晒的健康肤色，神色冷峻果断，腰间别着把泛着银光的短刃。）",
+      "source_block_id": "p0057",
+      "source_offset": 69,
+      "next": "n04_intro_p0059_0"
+    },
+    {
+      "id": "n04_intro_p0059_0",
+      "text": "塞琳：（打量着主角与满是血迹的木筏，眼中闪过一丝锐利的审视，随即微微颔首）",
+      "source_block_id": "p0059",
+      "source_offset": 0,
+      "next": "n04_intro_p0059_38"
+    },
+    {
+      "id": "n04_intro_p0059_38",
+      "text": "“能靠几根破木头宰掉一头‘？？？潜者’……你比一般漂到这里的死鬼硬气多了。”",
+      "source_block_id": "p0059",
+      "source_offset": 38,
+      "next": "n04_intro_p0061_0"
+    },
+    {
+      "id": "n04_intro_p0061_0",
+      "text": "塞琳：“把手放在我能看到的地方。我们是学者船队麾下的灰潮分队，我是这里的负责人，塞琳。”",
+      "source_block_id": "p0061",
+      "source_offset": 0,
+      "next": "n04_intro_p0063_0"
+    },
+    {
+      "id": "n04_intro_p0063_0",
+      "text": "旁白",
+      "source_block_id": "p0063",
+      "source_offset": 0,
+      "next": "n04_intro_p0063_3"
+    },
+    {
+      "id": "n04_intro_p0063_3",
+      "text": "小艇上的水手放下一只密封竹筒和一小包干粮，推到你的木筏旁。竹筒里晃动着清澈干净的淡水声，那是你几天来未曾见过的澄澈。",
+      "source_block_id": "p0063",
+      "source_offset": 3,
+      "next": "n04_intro_p0065_0"
+    },
+    {
+      "id": "n04_intro_p0065_0",
+      "text": "主角：“你们……想从我这里得到什么？”",
+      "source_block_id": "p0065",
+      "source_offset": 0,
+      "next": "n04_intro_p0067_0"
+    },
+    {
+      "id": "n04_intro_p0067_0",
+      "text": "塞琳：“清醒，我喜欢和能听懂话的人打交道。”",
+      "source_block_id": "p0067",
+      "source_offset": 0,
+      "next": "n04_intro_p0067_23"
+    },
+    {
+      "id": "n04_intro_p0067_23",
+      "text": "（塞琳抱起手臂，语气公事公办却不失温度）",
+      "source_block_id": "p0067",
+      "source_offset": 23,
+      "next": "n04_intro_p0067_44"
+    },
+    {
+      "id": "n04_intro_p0067_44",
+      "text": "“海上的规矩很简单：我们的人不够，需要能干活的帮手，你没有足够的资源，需要庇护。但你现在还不是我们的船员，船队有规矩，不可能随随便便放个底细不明的陌生人进核心舱。”",
+      "source_block_id": "p0067",
+      "source_offset": 44,
+      "next": "n04_intro_p0069_0"
+    },
+    {
+      "id": "n04_intro_p0069_0",
+      "text": "塞琳：“我的提议是：白天，你用绳索挂缆跟在船侧，继续打理你自己的木筏，我们负责领航和抵御大浪；晚上，允许你上主船的下层甲板休息、交易或者接点零工。但需要我们的人看着你，想真正留下来，就拿出本事让大家信任你。听懂了吗？”",
+      "source_block_id": "p0069",
+      "source_offset": 0,
+      "next": "n04_intro_end"
+    },
+    {
+      "id": "n04_intro_end",
+      "text": "请选择接下来的行动。",
+      "system_text": true,
+      "narrative_effects": [],
+      "choices": [
+        {
+          "id": "n04_join",
+          "text": "【选项 A】“公平的交易。我答应你。”",
+          "next": "n04_join_reply_p0071_20",
+          "source_block_id": "p0071",
+          "condition": {},
+          "narrative_effects": [
+            {
+              "action": "flag",
+              "key": "joined_grey_tide"
+            }
+          ]
+        },
+        {
+          "id": "n04_refuse",
+          "text": "【选项 B】“如果我不愿意呢？”",
+          "next": "n04_refuse_reply_p0072_17",
+          "source_block_id": "p0072",
+          "condition": {},
+          "narrative_effects": []
+        }
+      ]
+    },
+    {
+      "id": "be01_p0073_0",
+      "text": "【BAD END 1：无期限的海】（第 4 回合选项 B 触发）",
+      "source_block_id": "p0073",
+      "source_offset": 0,
+      "next": "be01_p0074_0"
+    },
+    {
+      "id": "be01_p0074_0",
+      "text": "塞琳：（神色平淡，甚至带着一丝看死人般的漠然）",
+      "source_block_id": "p0074",
+      "source_offset": 0,
+      "next": "be01_p0074_24"
+    },
+    {
+      "id": "be01_p0074_24",
+      "text": "“海上的路是你自己选的。既然不想挂缆，那你就留着这些水和面包，祝你在明天的涌潮里别被大鱼吞了。选择权在你。”",
+      "source_block_id": "p0074",
+      "source_offset": 24,
+      "next": "be01_p0074_79"
+    },
+    {
+      "id": "be01_p0074_79",
+      "text": "（塞琳抬手示意水手倒桨收艇。灰潮分队没有再看你一眼，蒸汽引擎发出低沉的轰鸣，小艇迅速收归主船舷侧。那艘巨大的混动海船劈开铅灰色的浪涛加速驶离，桅杆上微弱的橘黄风灯在海风中闪烁了几下，最终被远方的灰雾彻底吞没。）",
+      "source_block_id": "p0074",
+      "source_offset": 79,
+      "next": "be01_p0075_0"
+    },
+    {
+      "id": "be01_p0075_0",
+      "text": "旁白：",
+      "source_block_id": "p0075",
+      "source_offset": 0,
+      "next": "be01_p0075_4"
+    },
+    {
+      "id": "be01_p0075_4",
+      "text": "人类文明最后一点温度与柴油味迅速消散在风里。铅灰色的海面上，又只剩下了你和这几根嘎吱作响的烂木头。",
+      "source_block_id": "p0075",
+      "source_offset": 4,
+      "next": "be01_p0075_54"
+    },
+    {
+      "id": "be01_p0075_54",
+      "text": "你以为凭借手里的淡水和面包能熬过下一个白天。但你低估了这片海的残忍。",
+      "source_block_id": "p0075",
+      "source_offset": 54,
+      "next": "be01_p0075_89"
+    },
+    {
+      "id": "be01_p0075_89",
+      "text": "没有大船在前方劈开涌浪，入夜后，平静的海面突然开始毫无征兆地剧烈抽搐——涌潮提前爆发了。",
+      "source_block_id": "p0075",
+      "source_offset": 89,
+      "next": "be01_p0075_134"
+    },
+    {
+      "id": "be01_p0075_134",
+      "text": "令人骨髓发冷的空洞吸水声从水底深处层层卷起。",
+      "source_block_id": "p0075",
+      "source_offset": 134,
+      "next": "be01_p0075_157"
+    },
+    {
+      "id": "be01_p0075_157",
+      "text": "那不是普通的暗流。木筏下的海水仿佛在一瞬间被抽成了真空，旋即翻卷出三米多高的黑色断头巨浪！",
+      "source_block_id": "p0075",
+      "source_offset": 157,
+      "next": "be01_p0075_203"
+    },
+    {
+      "id": "be01_p0075_203",
+      "text": "“咔嚓！！”",
+      "source_block_id": "p0075",
+      "source_offset": 203,
+      "next": "be01_p0075_210"
+    },
+    {
+      "id": "be01_p0075_210",
+      "text": "伴随着木料崩裂的脆响，你苦心拼装的滤水器与简易土盆被巨浪瞬间拍成齑粉。绑扎木筏的麻绳被崩断，几根圆木在翻滚的漩涡里四散解体。",
+      "source_block_id": "p0075",
+      "source_offset": 210,
+      "next": "be01_p0075_273"
+    },
+    {
+      "id": "be01_p0075_273",
+      "text": "你被砸入刺骨冰冷的海水深处。喉咙灌入又苦又涩的液体，胸腔像被巨石狠狠碾压。",
+      "source_block_id": "p0075",
+      "source_offset": 273,
+      "next": "be01_p0075_311"
+    },
+    {
+      "id": "be01_p0075_311",
+      "text": "在窒息与冰冷的深海里，你竭力睁开双眼——",
+      "source_block_id": "p0075",
+      "source_offset": 311,
+      "next": "be01_p0075_332"
+    },
+    {
+      "id": "be01_p0075_332",
+      "text": "漆黑的水下，并不只有死寂。借着水面漏下的微弱病态日光，你看到无数条泛着幽绿荧光的巨大触须在黑暗深处如林木般舒展交错。那些半透明的肉质吸盘里，密密麻麻地嵌满了正在齐刷刷转动的人类眼球与复眼。",
+      "source_block_id": "p0075",
+      "source_offset": 332,
+      "next": "be01_p0075_427"
+    },
+    {
+      "id": "be01_p0075_427",
+      "text": "它们在看你。",
+      "source_block_id": "p0075",
+      "source_offset": 427,
+      "next": "be01_p0075_434"
+    },
+    {
+      "id": "be01_p0075_434",
+      "text": "那些在第 3 回合出现过的诡异低语、那些被遗忘的记忆，在这一刻化作无法遏制的剧烈头痛，像成千上万根钢针顺着你的神经疯狂刺入脑髓。你的理智如落入盐水的冰块般迅速溶解瓦解。",
+      "source_block_id": "p0075",
+      "source_offset": 434,
+      "next": "be01_p0075_519"
+    },
+    {
+      "id": "be01_p0075_519",
+      "text": "一只冰冷、巨大的粘腻触手无声无息地缠上了你的脚踝，紧接着是第二根、第三根……像摇篮一样温柔而不可抗拒地将你拖向那片永不见天日的铅灰色海沟。",
+      "source_block_id": "p0075",
+      "source_offset": 519,
+      "next": "be01_p0076_0"
+    },
+    {
+      "id": "be01_p0076_0",
+      "text": "💀 【BAD END 1：无期限的海】",
+      "source_block_id": "p0076",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "be01_p0076_20"
+    },
+    {
+      "id": "be01_p0076_20",
+      "text": "· 结局说明：你拒绝了灰潮分队的庇护，选择在这片未知的绝望之海中独自硬撑。涌潮以不可抗力撕碎了你的生存工具，深海的捕食者接管了你的归宿。在这座没有墓碑的大海深处，你成为了不可名状生态中又一缕冰冷残渣。",
+      "source_block_id": "p0076",
+      "source_offset": 20,
+      "display_override": true,
+      "next": "be01_p0076_121"
+    },
+    {
+      "id": "be01_p0076_121",
+      "text": "· 解锁信息：警惕警惕，深海从不宽恕傲慢与孤立……",
+      "source_block_id": "p0076",
+      "source_offset": 121,
+      "display_override": true,
+      "next": "be01_end"
+    },
+    {
+      "id": "be01_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "ending",
+          "key": "BAD_END_1"
+        }
+      ],
+      "ending": "bad_end_1"
+    },
+    {
+      "id": "n04_joined_p0077_0",
+      "text": "（若在第 4 回合选择选项 A）",
+      "source_block_id": "p0077",
+      "source_offset": 0,
+      "next": "n04_joined_p0077_17"
+    },
+    {
+      "id": "n04_joined_p0077_17",
+      "text": "旁白：",
+      "source_block_id": "p0077",
+      "source_offset": 17,
+      "next": "n04_joined_p0077_21"
+    },
+    {
+      "id": "n04_joined_p0077_21",
+      "text": "缆绳拉直了。大船的破浪声在前，你的小木筏第一次不再像无根浮萍般在怒海中打转。你看着船舷上那些忙碌的水手身影，心中升起了一丝久违的安定感。",
+      "source_block_id": "p0077",
+      "source_offset": 21,
+      "next": "n04_joined_p0077_90"
+    },
+    {
+      "id": "n04_joined_p0077_90",
+      "text": "——但你并不知道，这片看似能够安睡的安全之所，即将撕开另一张面孔。",
+      "source_block_id": "p0077",
+      "source_offset": 90,
+      "next": "n04_joined_end"
+    },
+    {
+      "id": "n04_joined_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": []
+    },
+    {
+      "id": "n04_join_reply_p0071_20",
+      "text": "> 塞琳眉梢微挑：“很好，爽快。把缆绳系牢，今晚日落后，甲板见。”（加入船队，进入节点05）",
+      "source_block_id": "p0071",
+      "source_offset": 20,
+      "next": "n04_joined_p0077_0"
+    },
+    {
+      "id": "n04_refuse_reply_p0072_17",
+      "text": "> 塞琳神色平淡：“那你就留着这些水和面包，祝你在明天的涌潮里别被大鱼吞了。选择权在你。”（走向 BAD END 1）",
+      "source_block_id": "p0072",
+      "source_offset": 17,
+      "next": "be01_p0073_0"
+    }
+  ]
+}

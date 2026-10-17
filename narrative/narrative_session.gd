@@ -2,6 +2,7 @@ extends RefCounted
 ## Narrative save state and commands. Independent from GameSession:
 ## reads no game state and writes no gameplay value.
 const Schedule = preload("res://narrative/narrative_schedule.gd")
+const ChapterEffects = preload("res://narrative/chapter1_effects.gd")
 
 const SAVE_SCHEMA := 1
 const AFFINITY_MIN := 0
@@ -35,6 +36,7 @@ func new_save(label: String) -> void:
 		"created_at": stamp,
 		"updated_at": stamp,
 		"state": {
+			"items": [], "clues": [], "rest_count": 0, "ending": "",
 			"affinity": {},
 			"flags": {},
 			"applied_beats": [],
@@ -47,10 +49,23 @@ func new_save(label: String) -> void:
 	}
 
 func load_data(save: Variant) -> bool:
-	if not save is Dictionary or int(save.get("schema", 0)) != SAVE_SCHEMA:
+	if not save is Dictionary or save.get("schema") != SAVE_SCHEMA:
 		return _fail("剧情存档版本无效")
 	var state: Variant = save.get("state")
 	if not state is Dictionary: return _fail("剧情存档缺少状态")
+	for key in ["affinity", "flags", "prefs", "cursor"]:
+		if not state.get(key, {}) is Dictionary: return _fail("剧情存档字段损坏：" + key)
+	for key in ["items", "clues", "applied_beats", "skipped_beats", "seen_scenes", "choices"]:
+		if not state.get(key, []) is Array: return _fail("剧情存档字段损坏：" + key)
+		if key != "choices":
+			for value in state.get(key, []):
+				if not value is String: return _fail("剧情存档列表损坏：" + key)
+	for key in state.get("affinity", {}):
+		if not content._is_int(state.affinity[key]): return _fail("剧情好感度损坏")
+	if not content._is_int(state.get("rest_count", 0)): return _fail("剧情休息计数损坏")
+	if not save.get("gameplay", {}) is Dictionary: return _fail("剧情航程存档损坏")
+	for key in ["created_at", "updated_at"]:
+		if not content._is_int(save.get(key, 0)): return _fail("剧情存档时间损坏")
 	# A different narrative version is readable: unknown applied beats are ignored,
 	# and scenes always come from the current content.
 	var affinity := {}
@@ -80,7 +95,12 @@ func load_data(save: Variant) -> bool:
 		"label": str(save.get("label", "剧情存档")),
 		"created_at": int(save.get("created_at", 0)),
 		"updated_at": int(save.get("updated_at", 0)),
+		"gameplay": save.get("gameplay", {}).duplicate(true),
 		"state": {
+			"items": state.get("items", []).duplicate(),
+			"clues": state.get("clues", []).duplicate(),
+			"rest_count": maxi(0, int(state.get("rest_count", 0))),
+			"ending": str(state.get("ending", "")),
 			"affinity": affinity,
 			"flags": flags,
 			"applied_beats": applied,
@@ -98,10 +118,25 @@ func load_data(save: Variant) -> bool:
 func export_data() -> Dictionary:
 	return data.duplicate(true)
 
+## Reject mismatched paired slots instead of silently skipping an earlier node.
+## Only the voyage/phase projection crosses the narrative boundary.
+func matches_run_projection(voyage: int, phase: String) -> bool:
+	if content.chapter != "chapter1": return true
+	var applied := applied_beats()
+	for id in applied:
+		if content.beat(str(id)).is_empty(): return false
+	for beat in content.beats:
+		var number := int(beat.after_voyage)
+		if number < voyage and not applied.has(str(beat.id)): return false
+		if number > voyage and applied.has(str(beat.id)): return false
+		if number == voyage and phase != "navigation" and not applied.has(str(beat.id)): return false
+	return true
+
 ## Resolves the next due checkpoint. Condition-failed variants are recorded as
 ## skipped so a later checkpoint can never resurrect them.
 func next_beat(voyage: int, phase: String) -> Dictionary:
 	if data.is_empty(): return {}
+	if str(data.state.get("ending", "")) != "": return {}
 	var decision: Dictionary = Schedule.evaluate(content, data.state.applied_beats, data.state.skipped_beats, affinity(), voyage, phase)
 	if decision.has("skip"):
 		for id in decision.skip:
@@ -112,6 +147,8 @@ func next_beat(voyage: int, phase: String) -> Dictionary:
 ## Filtered scene for the player: options the current affection does not allow
 ## are removed. Content validation guarantees at least one unconditional option.
 func prepare_scene() -> Dictionary:
+	if current_scene.get("imported_chapter1", false):
+		return ChapterEffects.prepare(current_scene, data.state)
 	var scene: Dictionary = current_scene.duplicate(true)
 	for node in scene.get("nodes", []):
 		if node.get("choices", []).is_empty(): continue
@@ -146,6 +183,12 @@ func finish(result: Dictionary) -> Dictionary:
 	# Choices were displayed using the affinity at scene entry, before any of
 	# this result's rewards. Forged results must obey that same eligibility.
 	var eligible_affinity := affinity()
+	if current_scene.get("imported_chapter1", false):
+		var resolved := ChapterEffects.resolve(prepare_scene(), result)
+		if resolved.has("error"):
+			error = resolved.error
+			return changes
+		ChapterEffects.apply_effects(data.state, resolved.effects, changes)
 	for entry in result.get("choices", []):
 		if not entry is Dictionary: continue
 		var choice := _choice(_node(str(entry.get("node_id", ""))), str(entry.get("choice_id", "")))

@@ -75,7 +75,7 @@ func create(view: Dictionary, with_background: bool = true) -> void:
 		b.texture_normal=dark[i]; b.texture_hover=light[i]; b.texture_pressed=light[i]; b.texture_focused=light[i]
 		var hit_mask:=BitMap.new(); hit_mask.create_from_image_alpha(dark[i].get_image(),0.15)
 		b.texture_click_mask=hit_mask
-		b.disabled=(i==0 and view.active) or (i==1 and not view.has_run)
+		b.disabled=i==1 and not view.has_run and not view.get("has_story_saves", false)
 		if b.disabled:
 			b.modulate=Color(0.62,0.66,0.72,0.75)
 			b.tooltip_text="已有航程，请继续游戏" if i==0 else "暂无可继续的存档"

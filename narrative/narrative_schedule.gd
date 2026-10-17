@@ -13,6 +13,12 @@ static func completed_voyages(voyage: int, phase: String, length: int) -> int:
 
 ## Returns {} (nothing due), {"beat": beat} or {"skip": [ids]}.
 static func evaluate(content, applied: Array, skipped: Array, affinity: Dictionary, voyage: int, phase: String) -> Dictionary:
+	if content.chapter == "chapter1":
+		if phase != "navigation": return {}
+		for beat in content.beats:
+			if int(beat.after_voyage) == voyage and not applied.has(str(beat.id)):
+				return {"beat": beat}
+		return {}
 	var done := completed_voyages(voyage, phase, content.length)
 	if done < 0: return {}
 	var groups := {}

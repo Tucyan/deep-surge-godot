@@ -1,0 +1,226 @@
+{
+  "p0014": {
+    "text": "（请选择接下来的剧情行动。）",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0016": {
+    "text": "【选项 A】探身伸手去拽那块生锈的废铁。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0017": {
+    "text": "【选项 B】用断桨将那一捆木头和帆布划近。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0019": {
+    "text": "（无论选择哪一项，主角艰难地将第一批物资拖上木筏，手掌被粗糙的木刺与盐壳磨出血痕。）",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0021": {
+    "text": "旁白：\n木筏勉强吃住了重量。你喘息着靠在绑扎处的绳结旁，看着掌心渗出的暗红血迹滴入海水，瞬间被灰色的大海吞没。天边那轮苍白病态的日光正在迅速沉落。夜幕降临了，四面八方只剩下一望无际的黑暗与海水。这是你醒来后第一个夜晚。无处可去，也不知道何处是“陆地”。只能死死抓住身下仅有的浮木，任由冰冷的潮水推着你漂向未知的海域。\n你隐约觉得好像有什么东西正在盯着你。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0031": {
+    "text": "【航行提示】：制造、安装与食水使用，请在航行界面按当前规则操作。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0041": {
+    "text": "（你握紧手边的武器，准备迎接水下的阴影。）",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0045": {
+    "text": "【剧情演出】：进攻与招架。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0076": {
+    "text": "💀 【BAD END 1：无期限的海】\n· 结局说明：你拒绝了灰潮分队的庇护，选择在这片未知的绝望之海中独自硬撑。涌潮以不可抗力撕碎了你的生存工具，深海的捕食者接管了你的归宿。在这座没有墓碑的大海深处，你成为了不可名状生态中又一缕冰冷残渣。\n· 解锁信息：警惕警惕，深海从不宽恕傲慢与孤立……",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0121": {
+    "text": "剧情调查将在第06～11节点展开。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0166": {
+    "text": "💀 【BAD END 2：被驱逐的漂流死者】\n· 结局说明：在信任崩盘的绝境下选择了暴力对抗，被灰潮分队斩断缆绳逐入狂暴的涌潮中。在没有航标与物资的黑夜里，你成为了深海异化生命的腹中餐。\n· 解锁信息：老学者似乎在冥冥中记录下了这段暴躁与短视的记忆片段……",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0172": {
+    "text": "【剧情提示】：接下来每个节点先进行剧情抉择，再继续航行。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0176": {
+    "text": "【场景】：夜幕低垂，灰潮分队主船下层甲板与走廊。白天的暴风雨逐渐停歇，沉闷的海浪撞击着外层木舷。昏黄的桐油防风灯在过道上微微摇晃，投下忽明忽暗的斑驳阴影。\n【剧情提示】：请选择今晚的行动方向。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0180": {
+    "text": "【抉择 A】回到允许逗留的下层角落【休息】",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0184": {
+    "text": "【选择 A：休息（安眠与噩梦）】",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0186": {
+    "text": "旁白：\n“呼——！！”你浑身冷汗地猛然惊醒，大口喘息，心脏在胸腔里剧烈狂跳。透过舷窗缝隙，灰白色的曙光已经悄然破开海雾。黎明到了。\n【剧情记录】：本夜选择休息，未获得线索。累计三次休息将进入坏结局。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0198": {
+    "text": "【场景】：死寂幽暗的下层过道，仅有一盏接触不良、忽明忽暗的黄铜吊灯在风浪中微微晃荡。\n旁白：\n白天的喧闹退去，这片走廊静得能听见船底木板受压呻吟的细碎动静。那面木墙立在拐角尽头。老柯尔钉下的八根十二寸粗铁钉依然死死咬在橡木里，钉帽上涂着防漏桐油胶。\n但你一走近，迎面扑来的不是木头的腐味，而是一股极度干燥、甚至带有古老纸页与石料粉尘的枯竭气息——在终年潮湿咸腥的海船底部，这种干燥本身就是一种尖锐的异常。\n你俯下身，顺着铁钉与门框缝隙寸寸查验。\n【视觉与触觉特写】：\n当你将手掌贴上封死的橡木板时，异样的触感让你背脊发麻。指尖下的木纹在“移动”。不是活物的蠕动，而是原本顺畅平直的橡木纹理，在靠近中心铁钉的区域被生生拧成了一个微不可查的螺旋状涡流。就像这块实心木头曾在某一瞬间被某种力量像融化的蜡油一样剧烈搅拌过。\n你掏出白天搜集到的一枚生锈细铁丝，顺着最底部一根铁钉的边缘缝隙探了进去。按常理，十二寸的铁钉穿透船壁，外面就是几十米深的海水，缝隙里本该渗水。但铁丝穿过去的瞬间，没有水滴，只有一声极其微弱的碰击声——“铛……”\n不是木头，也不是海水空泡。铁丝尖端触碰到了某种平整、坚硬、冰冷的金属或石质平面。更可怕的是，当你把铁丝拔出来时，原本冰凉的细铁丝竟变得滚烫，尖端挂着一层薄薄的、尚未干透的暗金色漆屑。\n老柯尔的声音突然在背后幽幽响起：“后生，别再往里捅了。”\n【人物交互：老木匠柯尔】\n老木匠不知道什么时候站在了走廊拐角的阴影里，手里提着一把老旧的木锉，脸色在昏黄的灯光下比死人还要惨白。\n柯尔：“我干了四十五年木工，哪块木头吃过几颗钉子、吸过多少海水，老头子我拿鼻子一闻就知道。十天前这面墙撞上暗礁，是我亲手拿八根长钉封死的。那时它后面就是龙骨，龙骨外面就是海浪。”\n（老木匠颤巍巍地伸出满是老茧的手，摸了摸那扭曲成螺旋状的木纹，眼神里满是恐惧与茫然）\n柯尔：“……但现在，这块木头在‘退行’。它里面的年轮反着长了。这面墙不是门，它是一层结痂。那扇门……是在试图从我们这条船的伤口里挤出来。”\n· 【获得线索】：线索 A-1《伤口与结痂》（本档线索：老木匠柯尔的证词与物理证据：门并非凭空制造空间，而是寄生在船体受创修补的薄弱处；门后不是海水，而是某种异质实体的投影正在向内侵蚀）。\n【剧情进度】：第06节点；当前章节共11节点。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0205": {
+    "text": "旁白：\n趁着涅德愣神的空隙，你飞快翻开了哈克的草席枕头。草席下方的底板上，赫然用生锈铁钉歪歪扭扭地刻着几十道密集的划痕；而在划痕中心，刻着一个与那扇门边缘一模一样的——螺旋纹印记！在枕头底下，你还摸出了一本日记，上面是哈克稚嫩凌乱的字迹：\n“……第 3 天，隔壁那间空仓里又有人在敲木板。声音很轻。他们说隔壁外面就是海，不可能有人。但我真的听见了，那不是敲木头，是有人在从海里敲我们的船底……”\n· 【获得线索】：线索 B-1《受惊者的刻印与日记》（本档线索：哈克在失踪前至少 3 天就已被异常盯上，他能听到常人听不到的异响，并在无意识间刻下了怪门的标志）。\n【剧情进度】：第06节点；当前章节共11节点。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0208": {
+    "text": "【场景】：在指挥室下方的露天露台，塞琳正独自倚靠在锈蚀的铁质栏杆旁，打磨她的银质小刀。\n塞琳：（没有回头，仅凭脚步声便察觉了你的到来）\n“大半夜不在木箱上装死，跑到这上面来吹冷风……你以为你脖子上的绳套解开了么？”\n主角：“昨晚涅德冲动时说漏了嘴。他说‘更别提那块贤……’，接着你打断了他。这艘船不只是普通的巡航分队，你们到底在运送什么，或者在寻找什么？”\n塞琳：（磨刀的动作猛然停滞，转过头来，夜色中那双锐利的眼眸透着危险的寒光）\n“……有些词，在海里念出来是会招来祸害的。你很有胆量，但聪明过头的人死得最快。我只能告诉你：学者船队有自己的使命，我们航行的这片海域底下，沉睡着远古潮序留下的‘知识’，也有某些不可名状的遗骸。主船队半个月前失踪的人，也是在维修水密隔舱时凭空没的。”\n塞琳：（塞琳收起银刀，深深看了你一眼）\n“老学者说过，‘当门开始在活人面前具象，说明海里的东西正在寻找容器’。这些理论还不是现在的我可以知道的，我只负责带这支分队活着回去。新来的，证明你不是那个招来灾祸的‘容器’，想办法把哈克找回来，或者找到是谁干的。否则，到第 15 个节点汇合时，不用等老学者发话，我亲手把你推下去。”\n· 【获得线索】：线索 C-1《学者的古训与过往失踪》（本档线索）\n· 【角色好感/信任度变动】：塞琳信任度 +2\n【剧情进度】：第06节点；当前章节共11节点。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0209": {
+    "text": "旁白：\n铅灰色的天光从东方的海平面泛起，第一只海鸟发出尖厉凄清的啼鸣。虽然疑云未散，但你终于有了些头绪。你悄无声息地退回自己的木筏旁，晨风刺骨，但你的脑海中已经拼凑出了第一批线索。\n【当前任务面板更新】：\n· 限时任务：《不合理的门扉与消失者》\n【剧情进度】：第06节点；当前章节共11节点。\n· 已掌握的线索可在设置的剧情页查看。\n· 塞琳信任度状态：观察中（根据此前第 5 回合选项与今晚行动累计）。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0211": {
+    "text": "【场景】：深夜，灰潮分队主船下层舱室。海水无休止地拍打着厚重的船壳，发出如钝器击打肉体般的闷响。昏暗的悬挂油灯在剧烈晃动中将人的影子撕扯得怪诞拉长。空气中除了老旧木板与桐油的霉味外，不知何时开始弥散开一股极不自然的气味——像死鱼内脏在高温下发酵，又混杂着某种熟透腐烂果实的异样甜香。\n【剧情提示】：请选择今晚的行动方向。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0213": {
+    "text": "【抉择 A】 回到舱内【休息】（累计三次休息将进入坏结局）。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0216": {
+    "text": "【选择 A：休息（通用休息机制与 BE-3 判定）】",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0217": {
+    "text": "旁白\n连日的厮杀、恐惧与饥渴让你的骨头都泛起沉重的酸痛。你缩在允许停靠的角落，紧裹着那条粗麻毛毯闭上了双眼。\n在似睡非睡的混沌中，一阵沉重、尖锐的“嘎吱……嘎吱……”门轴转动声伴随着杂乱的低语在颅腔深处不断回响。\n【剧情记录】：本夜选择休息，未获得线索。累计三次休息将进入坏结局。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0218": {
+    "text": "💀 【BAD END 3：沉溺于甜饴之梦】（累计 3 次休息触发）\n· 结局演出：致幻的死鱼发酵甜香彻底漫过理智。你梦见自己沉入温暖舒适的金色蜜海，肉体与骨髓像方糖般在沸腾的体液中发酵融解，与老旧海船的橡木龙骨永久粘合在一起，成为了船底的新养分。\n· 解锁信息：“沉沦于虚假的安宁，不过是加速被深渊消化的过程。理智的崩解，始于对香甜梦境的妥协。”",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0226": {
+    "text": "芮安：（突然停步，斩骨短刀猛地横在胸前，倒钩指向木箱阴影）\n\"出来吧。老鼠的味道，我从三米外就闻到了。\"\n旁白\n你缓步走出，摊开双手展示无凶器，并冷静剖析：“别动手，芮安管事。如果我真想破坏物资，不会空手站在这里。哈克的遗物出现在这里，说明异变正在侵蚀仓储室，杀了我也解决不了粮食发霉变甜的问题。”\n芮安：（刀尖在距离你胸口半尺处停住，斜眼瞟向那只水滴逆流的木桶，脸颊抽搐，冷哼一声收刀）\n“……牙尖嘴利。记着，今晚我没见过你。敢把这里的异样在下层乱传，我会用这把斩骨刀亲自把你放血剁碎，扔去喂深海的鱼！”\n【获得线索】：\n线索 B-2《位置错乱与逆流遗物》（本档线索：哈克失踪遗物诡异跨越封锁重现，且伴随反重力液体逆流现象，证实异化空间存在物理规则紊乱与物体位置置换）。\n【剧情进度】：第07节点；当前章节共11节点。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0233": {
+    "text": "主角：（冷静剖析）\"这不是你的错，涅德。哈克的精神早已被渗透，但只要我们理清规律，就不会被门迷惑。\"（涅德呼吸渐趋平缓，对主角敌意显著减弱）\n【获得线索】：\n线索 C-2《受蚀者的计数律》（本档线索：哈克失踪前念诵的“九门童谣”揭示了空间门扉打开的周期与总数计数律；涅德好感上升）。\n【剧情进度】：第07节点；当前章节共11节点。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0236": {
+    "text": "旁白\n当第二天的晨曦破开海面浓雾时，今夜的惊心动魄暂时告一段落。\n虽然船舱内的死鱼与甜香并未散去，但你手中的线索已经拼凑出了令人胆寒的真相图景。\n【系统结算】：\n· 第 07 节点（第 2 晚调查）结束。\n【剧情进度】：第07节点；当前章节共11节点。\n· 请准备迎接入夜后的第 08 节点挑战。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0239": {
+    "text": "【场景】：入夜前夕，灰潮分队主船下层生活区与主甲板。海风尖啸，灰雾弥漫。\n【剧情提示】：请选择今晚的行动方向。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0256": {
+    "text": "【抉择 A】 回到木筏角落【休息】（累计三次休息将进入坏结局）。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0260": {
+    "text": "【选择 A：休息】",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0261": {
+    "text": "旁白：闭上双眼，门轴转动声与低语在颅腔深处回响。\n【剧情记录】：本夜选择休息，未获得线索。累计三次休息将进入坏结局。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0269": {
+    "text": "旁白：挂着警示铜铃的封锁木栅栏前。深夜的走廊冷风呼啸，塞琳独自倚着栏杆，指尖灵活地转动着银质短刃，眉眼间透着掩饰不住的疲惫。\n你避开巡逻水手的视线，停在封锁线三步开外。你没有试图强行跨越栅栏，而是蹲下身，捡起一块木炭，在干燥的船板上画出了三个层层包裹的同心圆。\n主角：“塞琳，看看这个。今晚物品错位和重力倾斜并不是随机发生的乱象。”\n塞琳：（转刀的手指微微一顿，锐利的目光扫向地板上的图案，冷哼一声）\n“哦？那些被吓破胆的蠢货都在喊是水鬼作祟，你倒是有新发现？”\n主角：（用炭条点在内圈与边缘节点上）\n“从受损木墙为圆心算起，铺位缩窄、铁钩错位，以及铅坠倾斜的区域……正好呈每隔七英尺向外扩散的几何波纹。重力不是变了，而是被破损木墙后面的某种东西像漩涡一样朝内牵引。”\n塞琳：（呼吸瞬间一凝，瞳孔微微收缩，死死盯着地板上的算式与同心圆。以她在海上闯荡多年的经验，立刻意识到这绝非凭空瞎编）\n“七英尺……七的倍数。老学者曾经提到过古潮序的波幅周期……”\n（她深深吸了一口气，将银刀收回腰间，看向你的眼神中原本的戒备与冷漠被一种前所未有的凝重与认可所取代）\n“你比我想象的还要敏锐，新来的。那些只知道拔刀乱砍的蠢货连一根毛都没看出来。”\n旁白：\n塞琳从风衣口袋里摸出一小块用油纸包裹的风干鹿肉塞进你手里\n塞琳：“补充点体力。今晚过后下层会更乱，听到三长一短的敲击声就回“灰雾”，自己人不会对你动手。继续查下去，我想知道那个‘圆心’到底想把整艘船拖去哪里。”\n· 【获得线索】：线索 A-3《侵蚀核心的投影规律》（本档线索：异化扩散具备严格的七英尺同心圆几何波纹规律；塞琳信任度 +3）。\n【剧情进度】：第08节点；当前章节共11节点。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0296": {
+    "text": "【剧情进度】：第08节点；当前章节共11节点。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0300": {
+    "text": "【当前任务面板更新】：\n· 限时任务：《不合理的门扉与消失者》\n【剧情进度】：第08节点；当前章节共11节点。\n· 节点预警：第 11 节点将发生“走廊空间错位（通道无法到达）”严重异化，请提前做好调查路线规划与物资准备。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0303": {
+    "text": "【场景】：入夜后的灰潮分队主船下层生活区与主甲板。海风如厉鬼般呜咽，铅灰色的夜幕低垂。\n【剧情提示】：请选择今晚的行动方向。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0308": {
+    "text": "【抉择 A】回到允许逗留的角落【休息】（累计三次休息将进入坏结局）。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0311": {
+    "text": "【选择 A：休息】",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0312": {
+    "text": "旁白：闭上双眼，门轴转动声与低语在颅腔深处回响。\n【剧情记录】：本夜选择休息，未获得线索。累计三次休息将进入坏结局。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0334": {
+    "text": "旁白：\n你猛地推开墙面，额头渗出大片冷汗。残酷的真相如同一把利刃穿透了你的思绪：\n那扇异象怪门不仅在物理层面吞噬活人的肉体与所处空间，更在概念与世界法则层面，顺着时间线一点点抹去失踪者存在于世上的现实痕迹！\n那些被吞噬的人，其衣服、物品、花名册记录，乃至旁人记忆中的名字，都会随着空间的弥合而发生逻辑修补与认知裂痕。哈克绝不是第一个受害者，在他之前，早已不知有多少名水手被这扇门悄无声息地抹抹抹除！\n· 【获得线索】：线索 B-4《抹除存在的认知侵蚀》（本档线索：被门吞噬的人与其所占据的空间会被世界规则逐步抹除，现实记忆会随之发生认知修正与修正裂痕）。\n【剧情进度】：第09节点；当前章节共11节点。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0340": {
+    "text": "你强忍住呼吸，紧紧伏在湿透的帆布堆后按兵不动。\n只见芮安熟练地将淡水滤桶顶部的密封盖撬开一道缝隙，动作精准而迅速地将那块刻有螺旋图腾的金属薄片嵌入了滤桶夹层的活性炭网深处。\n在合上桶盖的瞬间，她脱力般地扶着木桶，在狂风暴雨中低声喃喃自语：\n“……不能再留在这艘船上了……这群疯子根本不知道自己运的是什么……必须把标记做在水里……”\n你牢牢记下了金属薄片的特征与所在滤桶的编号，未打草惊蛇，悄然顺着暗影退回了安全区域。\n· 【获得线索】：线索 C-3《芮安的秘密信物与异常流向》（本档线索：后勤管事芮安掌握某种神秘信物，并试图通过淡水设施将其引入物资循环，目的不明）。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0353": {
+    "text": "【当前任务面板更新】：\n· 限时任务：《不合理的门扉与消失者》\n【剧情进度】：第09节点；当前章节共11节点。\n· 节点预警：第 11 节点将发生“走廊彻底阻断（通道无法到达）”严重空间错位，请提前规划调查路线！",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0356": {
+    "text": "入夜前的灰潮分队主船。海面诡异地平息下来，没有风浪，只有凝固成近乎实体般黏稠的灰雾死死包裹着船体。空气安静得可怕。\n【剧情提示】：请选择今晚的行动方向。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0358": {
+    "text": "【抉择 A】回到允许逗留的角落【休息】（累计三次休息将进入坏结局）。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0361": {
+    "text": "【选择 A：休息（通用休息机制）】",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0362": {
+    "text": "旁白：\n你疲惫地缩在角落里闭上双眼。虽然肉体得到了喘息，但耳边那如影随形的门轴共振声却愈发清晰……\n【剧情记录】：本夜选择休息，未获得线索。累计三次休息将进入坏结局。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0370": {
+    "text": "【场景】：指挥室外廊。昏暗的风灯在无风的夜里死寂地挂着，塞琳正凭栏凝视着浓稠如墨的灰雾。\n旁白：\n你快步走上前去，将第 9 夜在甲板临时物资堆旁亲眼所见的一切——芮安藏匿的螺旋图腾金属薄片、以及她将标记放入淡水滤桶夹层的过程，向塞琳事无巨细地进行了汇报。\n塞琳：（听完汇报后，握着银刀的手指因发力而关节发白，眼神冷冽如冰）\n“……螺旋图腾？你确定上面是交织的细齿？”\n（她从怀里掏出一张破旧的皮质图纸比对，语气冰冷刺骨）\n“那不是学者船队的标志，也不是什么海盗或巫术教派。那是‘印记追寻者’的信标……这群疯子一直在各条航线上暗中搜寻遗物，甚至不惜祭祀整条船！芮安这个混蛋，居然把手伸到了分队的淡水里！”\n旁白：\n塞琳转过身死死盯着你，眼神中的怀疑与戒备彻底消散，取而代之的是极致的郑重。\n塞琳：“你救了全船人的命，新来的。今晚之后，下层的空间可能会彻底乱掉，常规的指南针和眼睛都靠不住了。”\n（塞琳从风衣内侧解下一枚用某种古老黄铜与黑色兽骨打造的奇形罗盘，重重拍在你的掌心里）\n“拿着这个【学者骨质罗盘】。它不受磁极和重力错乱的干扰，能在折叠的空间里为你指明方向。记住，大阻断要来了，活下去！”\n· 【获得线索】：线索 C-4《暗流信标与分队暗鬼》（本档线索：证实后勤管事芮安为内鬼，其背后的“印记追寻者”势力正试图干预航线与引导异变；塞琳信任度 +4；获得关键道具【学者骨质罗盘】）。\n【剧情进度】：第10节点；当前章节共11节点。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0372": {
+    "text": "【场景】：幽暗死寂的下层封锁区。那面封死的橡木墙在灰雾的渗入下散发着枯竭的石料气息。\n旁白：\n你掏出从老木匠柯尔处获得的【老海妖骨凿】，将尖锐的骨端对准了被拧成螺旋状的橡木纹理，用力划了下去！\n神奇的一幕发生了——骨凿划过之处，原本死寂退行的木料仿佛受到了剧烈刺激般纷纷避开，在坚硬的船壁上被生生“逼”出了一道半尺宽的真实物理缝隙！\n缝隙后面没有海水倒灌，而是透出了一股古老、干燥、带有陈年石灰与墓穴气息的微光。\n你凑近缝隙向内看去，瞳孔瞬间收缩至针尖大小——那后面根本不是大海，而是一条正在缓慢与整艘船的走廊发生重叠并轨的【？？？】！\n在大长廊尽头，那扇雕刻着繁复螺旋暗纹的怪门此时并未完全关紧，而是虚掩着一条细缝！\n一只惨白、缺少指甲的年轻手掌正死死扣在门框边缘，指节因用力而发青——那是哈克的手！\n而在虚掩之门后面的长廊深处，密密麻麻地站满了身穿各个世代水手服饰、面容如同融化蜡油般模糊扭曲的人形轮廓！它们静静地立在阴影里，所有的“脸”都齐刷刷地朝向缝隙外的你！\n旁白：\n你猛地抽回骨凿，缝隙瞬间弥合。你按着狂跳的胸口，冷汗湿透了衣背。这扇门不是独立的空间，它是一座桥梁，异变空间正与这条船彻底并轨，怪门随时都会完全打开！\n· 【获得线索】：线索 A-4《并轨的长廊与虚掩之门》（本档线索：证实异化空间并非独立隔间，而是多重时空长廊与本船正在发生物理并轨，怪门即将彻底敞开）。\n【剧情进度】：第10节点；当前章节共11节点。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0375": {
+    "text": "【当前任务面板更新】：\n· 限时任务：《不合理的门扉与消失者》\n【剧情进度】：第10节点；当前章节共11节点。\n【关键节点警告：第 11 节点入夜后，走廊空间将彻底错位阻断，部分舱室将永久无法按照常规路径到达！】",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0378": {
+    "text": "【场景】：深夜，灰潮分队主船下层走廊至甲板交界处。木料撕裂的爆响此起彼伏，走廊如同被怪力拧转的麻花，欧几里得几何彻底崩塌：原本通往储物舱的通道直立翻转成了九十度直插向上的死角，而地板木板裂开后露出的不是底舱积水，而是另一间完全颠倒悬挂在头顶的水手宿舍！狂暴的冷风与带有石料粉尘的阴风在错位的缝隙中尖啸穿梭。\n【环境音】：粗大橡木龙骨被无形巨力生生折断的刺耳呻吟声、断裂舱壁深处传来的水手失控尖叫与呼救回音、门轴低频震颤的嗡鸣。\n【剧情提示】：请选择今晚的行动方向。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0384": {
+    "text": "【抉择 A】在甲板临时安全区【休息】（累计三次休息将进入坏结局）。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0387": {
+    "text": "【选择 A：休息】",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0388": {
+    "text": "旁白：\n你背靠着坚硬冰冷的甲板木桶闭上双眼。然而，门轴生涩摩擦的轰鸣声几乎直接在你的头盖骨内部疯狂震颤，空气中的死鱼甜香浓得让人反胃窒息。\n【剧情记录】：本夜选择休息，未获得线索。累计三次休息将进入坏结局。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0398": {
+    "text": "主角：\n（后背冷汗涔涔，终于明白哈克到底遭遇了什么）\n“原来……被门吞进去的人，并没有死在哪个房间里。他们是失去了身为‘人’的现实锚点，变成了门本身的一部分！”\n· 【获得线索】：线索 C-5《神隐与同化的本质》（本档线索：揭示门后超自然侵蚀的底层世界观，受害者并未物理死亡，而是概念被剥离同化为门后投影；明确对抗并轨需要非生体死骨媒介）。\n【剧情进度】：第11节点；当前章节共11节点。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0404": {
+    "text": "老木匠柯尔：\n（揉着摔伤的肋骨，剧烈喘息着，眼中泛着行将就木的决然）\n“后生，你救了老头子这条残命……老朽活了这把年纪，终于想明白了！”\n“十天前撞暗礁时，外层龙骨断了三根，是我用老橡木包铁打的桩。这扇门……它不是飘在海上的幽灵，它必须依托船体的受损伤口才能‘降生’！”\n（柯尔用力抓住你的手腕，指向底舱最深处）\n“要彻底破坏门与这艘船的并轨，光在门外封板子全他*是自欺欺人！必须下到底舱龙骨最底部，找到门最初扎根的‘锚点龙骨’，用死骨生生把它从龙骨上凿断！！”\n· 【获得关键道具】：【避水海兽獠牙护符】（剧情道具）。\n· 【获得线索】：线索 A-5《门扉扎根的龙骨锚点》（本档线索：老木匠柯尔道出破除并轨的终极物理机制——必须潜入龙骨底部拔除空间根系；涅德与柯尔结为主角的绝对生死同盟）。\n【剧情进度】：第11节点；当前章节共11节点。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  },
+  "p0407": {
+    "text": "【剧情进度】：当前提供的正文到第11节点为止，后续调查剧情尚未提供。",
+    "reason": "Local gameplay, per-slot clues and 11-node scope override imported system annotations."
+  }
+}

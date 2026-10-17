@@ -1,0 +1,21 @@
+{
+  "source_file": "《深潮》第一章剧本（第1-5回合共通线） (3).docx",
+  "original_paragraphs": 408,
+  "new_docx_paragraphs": 408,
+  "text_unchanged": true,
+  "original_sha256": "c31591b4e9329ef7124499094e34345eb9ba4f7ec3433af60bea1deb0f2abc7d",
+  "formatted_sha256": "c31591b4e9329ef7124499094e34345eb9ba4f7ec3433af60bea1deb0f2abc7d",
+  "scenes_count": 56,
+  "clues_count": 13,
+  "unique_source_paragraphs_assigned_once": true,
+  "source_content_warnings": [
+    "filename says node 1-5; cover says 1-6; body contains nodes 1-11",
+    "node 12-15 and deadline outcome absent",
+    "repeated lines in node 05 branch B kept exactly",
+    "[cite: 11] in node 08 is kept exactly",
+    "node 06 rest gains +5 HP, later rests +10 HP+10 SAN, not silently normalized",
+    "unwritten prerequisite/fallback for node 10 and 11 item-dependent paths",
+    "BE4 unlock lacks explicit loop point reward",
+    "node 07 summary and choice consequences have possible contradictions; no edits"
+  ]
+}

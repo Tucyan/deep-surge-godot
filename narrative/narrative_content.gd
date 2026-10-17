@@ -14,11 +14,12 @@ var chapter := ""
 var version := ""
 var length := 0
 
-func load_content() -> bool:
+func load_content(legacy_demo: bool = false) -> bool:
 	error = ""
 	characters.clear(); scenes.clear(); beats.clear()
-	if not _load_characters(): return false
-	for path in CHAPTER_FILES:
+	chapter = ""; version = ""; length = 0
+	if not _load_characters("res://narrative/content/demo_characters.json" if legacy_demo else CHARACTERS_PATH): return false
+	for path in (["res://narrative/content/demo_chapter_l1.json"] if legacy_demo else CHAPTER_FILES):
 		if not _load_chapter(path): return false
 	beats.sort_custom(func(a, b): return int(a.after_voyage) < int(b.after_voyage))
 	for beat in beats:
@@ -48,8 +49,8 @@ func affinity_level(id: String, value: int) -> String:
 		if value >= int(level.get("min", 0)): label = str(level.get("label", ""))
 	return label
 
-func _load_characters() -> bool:
-	var data = _read_json(CHARACTERS_PATH)
+func _load_characters(path: String) -> bool:
+	var data = _read_json(path)
 	if not data is Dictionary or int(data.get("schema", 0)) != 1:
 		return _fail("角色表格式错误")
 	var list: Variant = data.get("characters")

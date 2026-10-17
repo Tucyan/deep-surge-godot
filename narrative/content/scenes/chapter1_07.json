@@ -1,0 +1,551 @@
+{
+  "schema_version": 1,
+  "id": "chapter1.n07",
+  "title": "第一章 · 节点 07/11",
+  "imported_chapter1": true,
+  "entry": "n07_intro_p0210_0",
+  "nodes": [
+    {
+      "id": "n07_intro_p0210_0",
+      "text": "【第 7 回合 / 节点 07｜调查之夜（2/9）：暗流与异味】",
+      "source_block_id": "p0210",
+      "source_offset": 0,
+      "next": "n07_intro_p0211_0"
+    },
+    {
+      "id": "n07_intro_p0211_0",
+      "text": "【场景】：深夜，灰潮分队主船下层舱室。海水无休止地拍打着厚重的船壳，发出如钝器击打肉体般的闷响。昏暗的悬挂油灯在剧烈晃动中将人的影子撕扯得怪诞拉长。空气中除了老旧木板与桐油的霉味外，不知何时开始弥散开一股极不自然的气味——像死鱼内脏在高温下",
+      "source_block_id": "p0211",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n07_intro_p0211_120"
+    },
+    {
+      "id": "n07_intro_p0211_120",
+      "text": "发酵，又混杂着某种熟透腐烂果实的异样甜香。",
+      "source_block_id": "p0211",
+      "source_offset": 120,
+      "display_override": true,
+      "next": "n07_intro_p0211_142"
+    },
+    {
+      "id": "n07_intro_p0211_142",
+      "text": "【剧情提示】：请选择今晚的行动方向。",
+      "source_block_id": "p0211",
+      "source_offset": 142,
+      "display_override": true,
+      "next": "n07_intro_p0212_0"
+    },
+    {
+      "id": "n07_intro_p0212_0",
+      "text": "旁白",
+      "source_block_id": "p0212",
+      "source_offset": 0,
+      "next": "n07_intro_p0212_3"
+    },
+    {
+      "id": "n07_intro_p0212_3",
+      "text": "哈克的离奇蒸发犹如一团洗不掉的阴云，死死笼罩在灰潮分队的每一个角落。",
+      "source_block_id": "p0212",
+      "source_offset": 3,
+      "next": "n07_intro_p0212_38"
+    },
+    {
+      "id": "n07_intro_p0212_38",
+      "text": "走廊里擦肩而过的水手们不再打招呼，而是警惕地按着腰间的刀柄，用布满血丝的眼睛死死盯防着旁人的后背。",
+      "source_block_id": "p0212",
+      "source_offset": 38,
+      "next": "n07_intro_p0212_88"
+    },
+    {
+      "id": "n07_intro_p0212_88",
+      "text": "后勤管事芮安手持那把沉重带倒钩的切肉斩骨短刀，近乎苛刻地封锁了所有食物和淡水的出入仓；而水手涅德则像一头受惊的野兽，提着鱼叉在甲板与走廊间徘徊。",
+      "source_block_id": "p0212",
+      "source_offset": 88,
+      "next": "n07_intro_p0212_161"
+    },
+    {
+      "id": "n07_intro_p0212_161",
+      "text": "空气中那股死鱼内脏发酵混杂着熟透腐烂果实的甜香越来越重，你很清楚，随着时间推移，这股怀疑与恐惧只会越积越深，直到将所有人吞噬。",
+      "source_block_id": "p0212",
+      "source_offset": 161,
+      "next": "n07_intro_end"
+    },
+    {
+      "id": "n07_intro_end",
+      "text": "请选择接下来的行动。",
+      "system_text": true,
+      "narrative_effects": [],
+      "choices": [
+        {
+          "id": "n07_rest",
+          "text": "【抉择 A】 回到舱内【休息】（累计三次休息将进入坏结局）。",
+          "next": "n07_rest_p0216_0",
+          "source_block_id": "p0213",
+          "condition": {},
+          "narrative_effects": [],
+          "display_override": true
+        },
+        {
+          "id": "n07_investigate",
+          "text": "【抉择 B】 强打精神，在船内【深入调查】（抓紧珍贵的夜间时限，搜寻哈克失踪与异种侵蚀的真凭实据）。",
+          "next": "n07_investigate_p0219_0",
+          "source_block_id": "p0214",
+          "condition": {},
+          "narrative_effects": []
+        }
+      ]
+    },
+    {
+      "id": "n07_rest_p0216_0",
+      "text": "【选择 A：休息（通用休息机制与 BE-3 判定）】",
+      "source_block_id": "p0216",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n07_rest_p0217_0"
+    },
+    {
+      "id": "n07_rest_p0217_0",
+      "text": "旁白",
+      "source_block_id": "p0217",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n07_rest_p0217_3"
+    },
+    {
+      "id": "n07_rest_p0217_3",
+      "text": "连日的厮杀、恐惧与饥渴让你的骨头都泛起沉重的酸痛。你缩在允许停靠的角落，紧裹着那条粗麻毛毯闭上了双眼。",
+      "source_block_id": "p0217",
+      "source_offset": 3,
+      "display_override": true,
+      "next": "n07_rest_p0217_55"
+    },
+    {
+      "id": "n07_rest_p0217_55",
+      "text": "在似睡非睡的混沌中，一阵沉重、尖锐的“嘎吱……嘎吱……”门轴转动声伴随着杂乱的低语在颅腔深处不断回响。",
+      "source_block_id": "p0217",
+      "source_offset": 55,
+      "display_override": true,
+      "next": "n07_rest_p0217_107"
+    },
+    {
+      "id": "n07_rest_p0217_107",
+      "text": "【剧情记录】：本夜选择休息，未获得线索。累计三次休息将进入坏结局。",
+      "source_block_id": "p0217",
+      "source_offset": 107,
+      "display_override": true,
+      "next": "n07_rest_end"
+    },
+    {
+      "id": "n07_rest_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "rest",
+          "key": "RestCount",
+          "value": 1
+        }
+      ],
+      "next": "n07_outro_p0235_0",
+      "rest_redirect": "be03_p0218_0"
+    },
+    {
+      "id": "n07_investigate_p0219_0",
+      "text": "【选择 B：深入调查（行动展开）】",
+      "source_block_id": "p0219",
+      "source_offset": 0,
+      "next": "n07_investigate_p0220_0"
+    },
+    {
+      "id": "n07_investigate_p0220_0",
+      "text": "旁白",
+      "source_block_id": "p0220",
+      "source_offset": 0,
+      "next": "n07_investigate_p0220_3"
+    },
+    {
+      "id": "n07_investigate_p0220_3",
+      "text": "空气中那股死鱼与甜香交织的怪异气味像是一根无形的针，不断刺痛着你的神经。",
+      "source_block_id": "p0220",
+      "source_offset": 3,
+      "next": "n07_investigate_p0220_40"
+    },
+    {
+      "id": "n07_investigate_p0220_40",
+      "text": "理智告诉你，在这艘船彻底被未知的异变蚕食前，你必须拿到有力的证据。",
+      "source_block_id": "p0220",
+      "source_offset": 40,
+      "next": "n07_investigate_p0220_74"
+    },
+    {
+      "id": "n07_investigate_p0220_74",
+      "text": "你裹紧衣物，悄无声息地滑出隐蔽角，融入了昏暗的走廊阴影中。",
+      "source_block_id": "p0220",
+      "source_offset": 74,
+      "next": "n07_investigate_p0220_104"
+    },
+    {
+      "id": "n07_investigate_p0220_104",
+      "text": "今晚你想去哪里调查？",
+      "source_block_id": "p0220",
+      "source_offset": 104,
+      "next": "n07_investigate_end"
+    },
+    {
+      "id": "n07_investigate_end",
+      "text": "请选择接下来的行动。",
+      "system_text": true,
+      "narrative_effects": [],
+      "choices": [
+        {
+          "id": "n07_storage",
+          "text": "【调查选项 1】 摸索前往【后勤仓储室】，探查异常气味的源头并暗中观察管事芮安。",
+          "next": "n07_storage_p0224_0",
+          "source_block_id": "p0221",
+          "condition": {},
+          "narrative_effects": []
+        },
+        {
+          "id": "n07_lookout",
+          "text": "【调查选项 2】 登上夜色笼罩的【甲板水手值夜哨位】，寻找精神高度紧张的水手涅德。",
+          "next": "n07_lookout_p0227_0",
+          "source_block_id": "p0222",
+          "condition": {},
+          "narrative_effects": []
+        }
+      ]
+    },
+    {
+      "id": "n07_storage_p0224_0",
+      "text": "【子分支 1：后勤仓储室与芮安】",
+      "source_block_id": "p0224",
+      "source_offset": 0,
+      "next": "n07_storage_p0225_0"
+    },
+    {
+      "id": "n07_storage_p0225_0",
+      "text": "【场景】：主船底层后勤仓储室外围。这里毫无通风可言，空气沉闷得令人窒息。堆叠如山的高大木箱与沉重酒桶将狭窄的空间切割成数个死角，桐油灯投下大片狰狞阴影。",
+      "source_block_id": "p0225",
+      "source_offset": 0,
+      "next": "n07_storage_p0225_77"
+    },
+    {
+      "id": "n07_storage_p0225_77",
+      "text": "旁白",
+      "source_block_id": "p0225",
+      "source_offset": 77,
+      "next": "n07_storage_p0225_80"
+    },
+    {
+      "id": "n07_storage_p0225_80",
+      "text": "你贴着冰冷潮湿的木箱挪动脚步。越靠近仓储室核心，死鱼发酵混杂腐烂甜香的气味就越刺鼻。",
+      "source_block_id": "p0225",
+      "source_offset": 80,
+      "next": "n07_storage_p0225_123"
+    },
+    {
+      "id": "n07_storage_p0225_123",
+      "text": "透过木桶缝隙，你看到了后勤管事芮安。她单手提灯，另一只手紧握着适合在狭窄舱室砍杀的冷兵器——沉重带倒钩的切肉斩骨短刀，刀锋泛着令人胆寒的暗蓝光泽。",
+      "source_block_id": "p0225",
+      "source_offset": 123,
+      "next": "n07_storage_p0225_197"
+    },
+    {
+      "id": "n07_storage_p0225_197",
+      "text": "在芮安面前密封的硬木饼干箱顶部，赫然摆放着一只粗劣木桶与秃头毛刷——那是哈克失踪前用来擦洗走廊的遗物，白天明明已被老柯尔锁入器物箱，此刻却诡异出现在这里！",
+      "source_block_id": "p0225",
+      "source_offset": 197,
+      "next": "n07_storage_p0225_275"
+    },
+    {
+      "id": "n07_storage_p0225_275",
+      "text": "木桶边缘湿润，桶壁挂着黄色水珠。惊悚的是，顺着桶壁流下的水滴并没有滴落，而是在某种逆转引力下，沿着木桶外壁反向向上流淌，蒸发在空气中散发出浓郁甜香！毛刷鬃毛也在自主蠕动吸收空气。",
+      "source_block_id": "p0225",
+      "source_offset": 275,
+      "next": "n07_storage_p0226_0"
+    },
+    {
+      "id": "n07_storage_p0226_0",
+      "text": "芮安：（突然停步，斩骨短刀猛地横在胸前，倒钩指向木箱阴影）",
+      "source_block_id": "p0226",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n07_storage_p0226_30"
+    },
+    {
+      "id": "n07_storage_p0226_30",
+      "text": "\"出来吧。老鼠的味道，我从三米外就闻到了。\"",
+      "source_block_id": "p0226",
+      "source_offset": 30,
+      "display_override": true,
+      "next": "n07_storage_p0226_53"
+    },
+    {
+      "id": "n07_storage_p0226_53",
+      "text": "旁白",
+      "source_block_id": "p0226",
+      "source_offset": 53,
+      "display_override": true,
+      "next": "n07_storage_p0226_56"
+    },
+    {
+      "id": "n07_storage_p0226_56",
+      "text": "你缓步走出，摊开双手展示无凶器，并冷静剖析：“别动手，芮安管事。如果我真想破坏物资，不会空手站在这里。哈克的遗物出现在这里，说明异变正在侵蚀仓储室，杀了我也解决不了粮食发霉变甜的问题。”",
+      "source_block_id": "p0226",
+      "source_offset": 56,
+      "display_override": true,
+      "next": "n07_storage_p0226_150"
+    },
+    {
+      "id": "n07_storage_p0226_150",
+      "text": "芮安：（刀尖在距离你胸口半尺处停住，斜眼瞟向那只水滴逆流的木桶，脸颊抽搐，冷哼一声收刀）",
+      "source_block_id": "p0226",
+      "source_offset": 150,
+      "display_override": true,
+      "next": "n07_storage_p0226_195"
+    },
+    {
+      "id": "n07_storage_p0226_195",
+      "text": "“……牙尖嘴利。记着，今晚我没见过你。敢把这里的异样在下层乱传，我会用这把斩骨刀亲自把你放血剁碎，扔去喂深海的鱼！”",
+      "source_block_id": "p0226",
+      "source_offset": 195,
+      "display_override": true,
+      "next": "n07_storage_p0226_254"
+    },
+    {
+      "id": "n07_storage_p0226_254",
+      "text": "【获得线索】：",
+      "source_block_id": "p0226",
+      "source_offset": 254,
+      "display_override": true,
+      "next": "n07_storage_p0226_262"
+    },
+    {
+      "id": "n07_storage_p0226_262",
+      "text": "线索 B-2《位置错乱与逆流遗物》（本档线索：哈克失踪遗物诡异跨越封锁重现，且伴随反重力液体逆流现象，证实异化空间存在物理规则紊乱与物体位置置换）。",
+      "source_block_id": "p0226",
+      "source_offset": 262,
+      "display_override": true,
+      "next": "n07_storage_p0226_337"
+    },
+    {
+      "id": "n07_storage_p0226_337",
+      "text": "【剧情进度】：第07节点；当前章节共11节点。",
+      "source_block_id": "p0226",
+      "source_offset": 337,
+      "display_override": true,
+      "next": "n07_storage_end"
+    },
+    {
+      "id": "n07_storage_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "clue",
+          "key": "B-2"
+        }
+      ],
+      "next": "n07_outro_p0235_0"
+    },
+    {
+      "id": "n07_lookout_p0227_0",
+      "text": "【子分支 2：甲板值夜哨位与涅德】",
+      "source_block_id": "p0227",
+      "source_offset": 0,
+      "next": "n07_lookout_p0228_0"
+    },
+    {
+      "id": "n07_lookout_p0228_0",
+      "text": "【场景】：夜色下的甲板值夜哨位。冷风暴雨呼啸着撕扯帆索，冰冷咸湿的海水不时拍击船舷溅起大片白浪。夜海如同一头漆黑怪兽，吞噬着一切微光。",
+      "source_block_id": "p0228",
+      "source_offset": 0,
+      "next": "n07_lookout_p0229_0"
+    },
+    {
+      "id": "n07_lookout_p0229_0",
+      "text": "听到脚步声，水手涅德猛地挺起鱼叉，看到是你后，眼里的凶狠迅速被近乎崩溃的惶恐所取代。",
+      "source_block_id": "p0229",
+      "source_offset": 0,
+      "next": "n07_lookout_p0230_0"
+    },
+    {
+      "id": "n07_lookout_p0230_0",
+      "text": "涅德：（一把扯住你的衣领拉入阴影，声音发抖）\"新来的……老子快被逼疯了。你老实告诉我，你看到的门……里面真有水声和低语？！\"",
+      "source_block_id": "p0230",
+      "source_offset": 0,
+      "next": "n07_lookout_p0231_0"
+    },
+    {
+      "id": "n07_lookout_p0231_0",
+      "text": "主角：\"我没必要骗你。哈克自己走进去的，他在门外停顿的时候，显然已经把门后当成了普通储物室。\"",
+      "source_block_id": "p0231",
+      "source_offset": 0,
+      "next": "n07_lookout_p0232_0"
+    },
+    {
+      "id": "n07_lookout_p0232_0",
+      "text": "涅德：（脸色惨白，手背青筋直跳）\"他*的……头儿说的没错，哈克早就中邪了！四天前他值哨时，就好几次趴在甲板上耳朵贴着木头听声音，嘴里反反复复念一首古怪童谣：‘一进一出，门框不长木；九门全都开，贤者踩浪来……’我骂他，他却冲我笑说隔壁屋子好大",
+      "source_block_id": "p0232",
+      "source_offset": 0,
+      "next": "n07_lookout_p0232_120"
+    },
+    {
+      "id": "n07_lookout_p0232_120",
+      "text": "不用挤宿舍了……我们船下层哪来的隔壁大屋子啊！\"",
+      "source_block_id": "p0232",
+      "source_offset": 120,
+      "next": "n07_lookout_p0233_0"
+    },
+    {
+      "id": "n07_lookout_p0233_0",
+      "text": "主角：（冷静剖析）\"这不是你的错，涅德。哈克的精神早已被渗透，但只要我们理清规律，就不会被门迷惑。\"（涅德呼吸渐趋平缓，对主角敌意显著减弱）",
+      "source_block_id": "p0233",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n07_lookout_p0233_71"
+    },
+    {
+      "id": "n07_lookout_p0233_71",
+      "text": "【获得线索】：",
+      "source_block_id": "p0233",
+      "source_offset": 71,
+      "display_override": true,
+      "next": "n07_lookout_p0233_79"
+    },
+    {
+      "id": "n07_lookout_p0233_79",
+      "text": "线索 C-2《受蚀者的计数律》（本档线索：哈克失踪前念诵的“九门童谣”揭示了空间门扉打开的周期与总数计数律；涅德好感上升）。",
+      "source_block_id": "p0233",
+      "source_offset": 79,
+      "display_override": true,
+      "next": "n07_lookout_p0233_142"
+    },
+    {
+      "id": "n07_lookout_p0233_142",
+      "text": "【剧情进度】：第07节点；当前章节共11节点。",
+      "source_block_id": "p0233",
+      "source_offset": 142,
+      "display_override": true,
+      "next": "n07_lookout_end"
+    },
+    {
+      "id": "n07_lookout_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "clue",
+          "key": "C-2"
+        }
+      ],
+      "next": "n07_outro_p0235_0"
+    },
+    {
+      "id": "n07_outro_p0235_0",
+      "text": "【第 7 回合 / 结算】",
+      "source_block_id": "p0235",
+      "source_offset": 0,
+      "next": "n07_outro_p0236_0"
+    },
+    {
+      "id": "n07_outro_p0236_0",
+      "text": "旁白",
+      "source_block_id": "p0236",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n07_outro_p0236_3"
+    },
+    {
+      "id": "n07_outro_p0236_3",
+      "text": "当第二天的晨曦破开海面浓雾时，今夜的惊心动魄暂时告一段落。",
+      "source_block_id": "p0236",
+      "source_offset": 3,
+      "display_override": true,
+      "next": "n07_outro_p0236_33"
+    },
+    {
+      "id": "n07_outro_p0236_33",
+      "text": "虽然船舱内的死鱼与甜香并未散去，但你手中的线索已经拼凑出了令人胆寒的真相图景。",
+      "source_block_id": "p0236",
+      "source_offset": 33,
+      "display_override": true,
+      "next": "n07_outro_p0236_73"
+    },
+    {
+      "id": "n07_outro_p0236_73",
+      "text": "【系统结算】：",
+      "source_block_id": "p0236",
+      "source_offset": 73,
+      "display_override": true,
+      "next": "n07_outro_p0236_81"
+    },
+    {
+      "id": "n07_outro_p0236_81",
+      "text": "· 第 07 节点（第 2 晚调查）结束。",
+      "source_block_id": "p0236",
+      "source_offset": 81,
+      "display_override": true,
+      "next": "n07_outro_p0236_103"
+    },
+    {
+      "id": "n07_outro_p0236_103",
+      "text": "【剧情进度】：第07节点；当前章节共11节点。",
+      "source_block_id": "p0236",
+      "source_offset": 103,
+      "display_override": true,
+      "next": "n07_outro_p0236_127"
+    },
+    {
+      "id": "n07_outro_p0236_127",
+      "text": "· 请准备迎接入夜后的第 08 节点挑战。",
+      "source_block_id": "p0236",
+      "source_offset": 127,
+      "display_override": true,
+      "next": "n07_outro_end"
+    },
+    {
+      "id": "n07_outro_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": []
+    },
+    {
+      "id": "be03_p0218_0",
+      "text": "💀 【BAD END 3：沉溺于甜饴之梦】（累计 3 次休息触发）",
+      "source_block_id": "p0218",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "be03_p0218_34"
+    },
+    {
+      "id": "be03_p0218_34",
+      "text": "· 结局演出：致幻的死鱼发酵甜香彻底漫过理智。你梦见自己沉入温暖舒适的金色蜜海，肉体与骨髓像方糖般在沸腾的体液中发酵融解，与老旧海船的橡木龙骨永久粘合在一起，成为了船底的新养分。",
+      "source_block_id": "p0218",
+      "source_offset": 34,
+      "display_override": true,
+      "next": "be03_p0218_124"
+    },
+    {
+      "id": "be03_p0218_124",
+      "text": "· 解锁信息：“沉沦于虚假的安宁，不过是加速被深渊消化的过程。理智的崩解，始于对香甜梦境的妥协。”",
+      "source_block_id": "p0218",
+      "source_offset": 124,
+      "display_override": true,
+      "next": "be03_end"
+    },
+    {
+      "id": "be03_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "ending",
+          "key": "BAD_END_3"
+        }
+      ],
+      "ending": "bad_end_3"
+    }
+  ]
+}

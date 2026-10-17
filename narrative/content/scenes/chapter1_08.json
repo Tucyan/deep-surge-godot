@@ -1,0 +1,691 @@
+{
+  "schema_version": 1,
+  "id": "chapter1.n08",
+  "title": "第一章 · 节点 08/11",
+  "imported_chapter1": true,
+  "entry": "n08_intro_p0238_0",
+  "nodes": [
+    {
+      "id": "n08_intro_p0238_0",
+      "text": "【第 8 回合 / 节点 08｜公共异动：物品全面错位（调查之夜 3/9）】",
+      "source_block_id": "p0238",
+      "source_offset": 0,
+      "next": "n08_intro_p0239_0"
+    },
+    {
+      "id": "n08_intro_p0239_0",
+      "text": "【场景】：入夜前夕，灰潮分队主船下层生活区与主甲板。海风尖啸，灰雾弥漫。",
+      "source_block_id": "p0239",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n08_intro_p0239_37"
+    },
+    {
+      "id": "n08_intro_p0239_37",
+      "text": "【剧情提示】：请选择今晚的行动方向。",
+      "source_block_id": "p0239",
+      "source_offset": 37,
+      "display_override": true,
+      "next": "n08_intro_p0241_0"
+    },
+    {
+      "id": "n08_intro_p0241_0",
+      "text": "旁白：",
+      "source_block_id": "p0241",
+      "source_offset": 0,
+      "next": "n08_intro_p0241_4"
+    },
+    {
+      "id": "n08_intro_p0241_4",
+      "text": "换班时分，一阵尖锐的争吵声撕裂了下层舱室。发生的尽是些令人毛骨悚然的细微错位：",
+      "source_block_id": "p0241",
+      "source_offset": 4,
+      "next": "n08_intro_p0241_44"
+    },
+    {
+      "id": "n08_intro_p0241_44",
+      "text": "水手们发现铺位间距不知何时整体缩短了近半尺，过道两侧钉死了数年的木牌与铁钩位置对不上，留下了新鲜却干燥的旧痕。",
+      "source_block_id": "p0241",
+      "source_offset": 44,
+      "next": "n08_intro_p0241_100"
+    },
+    {
+      "id": "n08_intro_p0241_100",
+      "text": "原本锁在指挥室重型铁柜深处的航海仪发条与齿轮，诡异地散落在了水手的靴子里。",
+      "source_block_id": "p0241",
+      "source_offset": 100,
+      "next": "n08_intro_p0241_138"
+    },
+    {
+      "id": "n08_intro_p0241_138",
+      "text": "最致命的是老木匠柯尔用来校准水平的黄铜垂线铅坠——在毫无风浪的瞬间，铅坠无视重力，朝向受损舱壁方向死死倾斜了数度！",
+      "source_block_id": "p0241",
+      "source_offset": 138,
+      "next": "n08_intro_p0241_196"
+    },
+    {
+      "id": "n08_intro_p0241_196",
+      "text": "水手们的心理防线彻底崩溃，拔出刀具互相对峙起哄。",
+      "source_block_id": "p0241",
+      "source_offset": 196,
+      "next": "n08_intro_p0242_0"
+    },
+    {
+      "id": "n08_intro_p0242_0",
+      "text": "水手们发现下层生活舱原本宽敞的铺位间距不知何时缩短了近半尺，侧着身子才能挤入。",
+      "source_block_id": "p0242",
+      "source_offset": 0,
+      "next": "n08_intro_p0243_0"
+    },
+    {
+      "id": "n08_intro_p0243_0",
+      "text": "过道两侧按榫卯钉死了数年的木牌与铁钩位置对不上，留下一道道新鲜却干燥的旧痕。",
+      "source_block_id": "p0243",
+      "source_offset": 0,
+      "next": "n08_intro_p0244_0"
+    },
+    {
+      "id": "n08_intro_p0244_0",
+      "text": "更诡异的是，原本由塞琳亲自锁在指挥室重型铁柜深处的备用航海仪发条与齿轮，竟然完好无损地散落在了数个水手的靴子里。",
+      "source_block_id": "p0244",
+      "source_offset": 0,
+      "next": "n08_intro_p0244_57"
+    },
+    {
+      "id": "n08_intro_p0244_57",
+      "text": "长期神经紧绷的水手们彻底崩溃，拔出刀具对周边的人审视起来。",
+      "source_block_id": "p0244",
+      "source_offset": 57,
+      "next": "n08_intro_p0246_0"
+    },
+    {
+      "id": "n08_intro_p0246_0",
+      "text": "水手甲：（拔出剥皮小刀狂吼）“见鬼了！重力都变了！明天我们就会嵌进木头里！”",
+      "source_block_id": "p0246",
+      "source_offset": 0,
+      "next": "n08_intro_p0248_0"
+    },
+    {
+      "id": "n08_intro_p0248_0",
+      "text": "塞琳手持短刃快步冲入过道，凌厉抬脚将带头起哄的水手狠狠踹翻在地，反手短刃“飞刀”出手，刀尖擦着水手耳侧半寸直直钉入木板中，立威当场！",
+      "source_block_id": "p0248",
+      "source_offset": 0,
+      "next": "n08_intro_p0250_0"
+    },
+    {
+      "id": "n08_intro_p0250_0",
+      "text": "塞琳：",
+      "source_block_id": "p0250",
+      "source_offset": 0,
+      "next": "n08_intro_p0250_4"
+    },
+    {
+      "id": "n08_intro_p0250_4",
+      "text": "“全部闭嘴！退守甲板外层！柯尔带人钉死三道舱门；芮安清点物资，隔离受影响区域！”",
+      "source_block_id": "p0250",
+      "source_offset": 4,
+      "next": "n08_intro_p0250_45"
+    },
+    {
+      "id": "n08_intro_p0250_45",
+      "text": "塞琳果断划定隔离带，强行按住了哗变，但恐惧已在整艘船里生根发芽。",
+      "source_block_id": "p0250",
+      "source_offset": 45,
+      "next": "n08_intro_p0251_0"
+    },
+    {
+      "id": "n08_intro_p0251_0",
+      "text": "但，这真的彻底解决了不安的人心吗？",
+      "source_block_id": "p0251",
+      "source_offset": 0,
+      "next": "n08_intro_p0253_0"
+    },
+    {
+      "id": "n08_intro_p0253_0",
+      "text": "【夜间行动抉择】",
+      "source_block_id": "p0253",
+      "source_offset": 0,
+      "next": "n08_intro_p0254_0"
+    },
+    {
+      "id": "n08_intro_p0254_0",
+      "text": "旁白：今晚是第 3 个调查夜晚。请选择行动：",
+      "source_block_id": "p0254",
+      "source_offset": 0,
+      "next": "n08_intro_end"
+    },
+    {
+      "id": "n08_intro_end",
+      "text": "请选择接下来的行动。",
+      "system_text": true,
+      "narrative_effects": [],
+      "choices": [
+        {
+          "id": "n08_rest",
+          "text": "【抉择 A】 回到木筏角落【休息】（累计三次休息将进入坏结局）。",
+          "next": "n08_rest_p0260_0",
+          "source_block_id": "p0256",
+          "condition": {},
+          "narrative_effects": [],
+          "display_override": true
+        },
+        {
+          "id": "n08_investigate",
+          "text": "【抉择 B】 在全船警戒下【深入调查】（趁乱探寻空间与物品错位的核心逻辑）。",
+          "next": "n08_investigate_p0264_0",
+          "source_block_id": "p0257",
+          "condition": {},
+          "narrative_effects": []
+        }
+      ]
+    },
+    {
+      "id": "n08_rest_p0260_0",
+      "text": "【选择 A：休息】",
+      "source_block_id": "p0260",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n08_rest_p0261_0"
+    },
+    {
+      "id": "n08_rest_p0261_0",
+      "text": "旁白：闭上双眼，门轴转动声与低语在颅腔深处回响。",
+      "source_block_id": "p0261",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n08_rest_p0261_25"
+    },
+    {
+      "id": "n08_rest_p0261_25",
+      "text": "【剧情记录】：本夜选择休息，未获得线索。累计三次休息将进入坏结局。",
+      "source_block_id": "p0261",
+      "source_offset": 25,
+      "display_override": true,
+      "next": "n08_rest_end"
+    },
+    {
+      "id": "n08_rest_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "rest",
+          "key": "RestCount",
+          "value": 1
+        }
+      ],
+      "next": "n08_outro_p0299_0",
+      "rest_redirect": "be03_p0218_0"
+    },
+    {
+      "id": "n08_investigate_p0264_0",
+      "text": "【选择 B：深入调查（行动展开）】",
+      "source_block_id": "p0264",
+      "source_offset": 0,
+      "next": "n08_investigate_p0265_0"
+    },
+    {
+      "id": "n08_investigate_p0265_0",
+      "text": "今晚你想去哪里调查？",
+      "source_block_id": "p0265",
+      "source_offset": 0,
+      "next": "n08_investigate_end"
+    },
+    {
+      "id": "n08_investigate_end",
+      "text": "请选择接下来的行动。",
+      "system_text": true,
+      "narrative_effects": [],
+      "choices": [
+        {
+          "id": "n08_celine",
+          "text": "【调查选项 1】 前往封锁区边缘，与独自巡查的塞琳接触。",
+          "next": "n08_celine_p0268_0",
+          "source_block_id": "p0266",
+          "condition": {},
+          "narrative_effects": []
+        },
+        {
+          "id": "n08_kohl",
+          "text": "【调查选项 2】 潜入老木匠柯尔的工作间，查验那些发生异质变化的木料。",
+          "next": "n08_kohl_p0271_0",
+          "source_block_id": "p0267",
+          "condition": {},
+          "narrative_effects": []
+        }
+      ]
+    },
+    {
+      "id": "n08_celine_p0268_0",
+      "text": "【子分支 1：封锁区边缘与塞琳的秘密试探】",
+      "source_block_id": "p0268",
+      "source_offset": 0,
+      "next": "n08_celine_p0269_0"
+    },
+    {
+      "id": "n08_celine_p0269_0",
+      "text": "旁白：挂着警示铜铃的封锁木栅栏前。深夜的走廊冷风呼啸，塞琳独自倚着栏杆，指尖灵活地转动着银质短刃，眉眼间透着掩饰不住的疲惫。",
+      "source_block_id": "p0269",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n08_celine_p0269_63"
+    },
+    {
+      "id": "n08_celine_p0269_63",
+      "text": "你避开巡逻水手的视线，停在封锁线三步开外。你没有试图强行跨越栅栏，而是蹲下身，捡起一块木炭，在干燥的船板上画出了三个层层包裹的同心圆。",
+      "source_block_id": "p0269",
+      "source_offset": 63,
+      "display_override": true,
+      "next": "n08_celine_p0269_131"
+    },
+    {
+      "id": "n08_celine_p0269_131",
+      "text": "主角：“塞琳，看看这个。今晚物品错位和重力倾斜并不是随机发生的乱象。”",
+      "source_block_id": "p0269",
+      "source_offset": 131,
+      "display_override": true,
+      "next": "n08_celine_p0269_167"
+    },
+    {
+      "id": "n08_celine_p0269_167",
+      "text": "塞琳：（转刀的手指微微一顿，锐利的目光扫向地板上的图案，冷哼一声）",
+      "source_block_id": "p0269",
+      "source_offset": 167,
+      "display_override": true,
+      "next": "n08_celine_p0269_201"
+    },
+    {
+      "id": "n08_celine_p0269_201",
+      "text": "“哦？那些被吓破胆的蠢货都在喊是水鬼作祟，你倒是有新发现？”",
+      "source_block_id": "p0269",
+      "source_offset": 201,
+      "display_override": true,
+      "next": "n08_celine_p0269_232"
+    },
+    {
+      "id": "n08_celine_p0269_232",
+      "text": "主角：（用炭条点在内圈与边缘节点上）",
+      "source_block_id": "p0269",
+      "source_offset": 232,
+      "display_override": true,
+      "next": "n08_celine_p0269_251"
+    },
+    {
+      "id": "n08_celine_p0269_251",
+      "text": "“从受损木墙为圆心算起，铺位缩窄、铁钩错位，以及铅坠倾斜的区域……正好呈每隔七英尺向外扩散的几何波纹。重力不是变了，而是被破损木墙后面的某种东西像漩涡一样朝内牵引。”",
+      "source_block_id": "p0269",
+      "source_offset": 251,
+      "display_override": true,
+      "next": "n08_celine_p0269_335"
+    },
+    {
+      "id": "n08_celine_p0269_335",
+      "text": "塞琳：（呼吸瞬间一凝，瞳孔微微收缩，死死盯着地板上的算式与同心圆。以她在海上闯荡多年的经验，立刻意识到这绝非凭空瞎编）",
+      "source_block_id": "p0269",
+      "source_offset": 335,
+      "display_override": true,
+      "next": "n08_celine_p0269_395"
+    },
+    {
+      "id": "n08_celine_p0269_395",
+      "text": "“七英尺……七的倍数。老学者曾经提到过古潮序的波幅周期……”",
+      "source_block_id": "p0269",
+      "source_offset": 395,
+      "display_override": true,
+      "next": "n08_celine_p0269_426"
+    },
+    {
+      "id": "n08_celine_p0269_426",
+      "text": "（她深深吸了一口气，将银刀收回腰间，看向你的眼神中原本的戒备与冷漠被一种前所未有的凝重与认可所取代）",
+      "source_block_id": "p0269",
+      "source_offset": 426,
+      "display_override": true,
+      "next": "n08_celine_p0269_477"
+    },
+    {
+      "id": "n08_celine_p0269_477",
+      "text": "“你比我想象的还要敏锐，新来的。那些只知道拔刀乱砍的蠢货连一根毛都没看出来。”",
+      "source_block_id": "p0269",
+      "source_offset": 477,
+      "display_override": true,
+      "next": "n08_celine_p0269_517"
+    },
+    {
+      "id": "n08_celine_p0269_517",
+      "text": "旁白：",
+      "source_block_id": "p0269",
+      "source_offset": 517,
+      "display_override": true,
+      "next": "n08_celine_p0269_521"
+    },
+    {
+      "id": "n08_celine_p0269_521",
+      "text": "塞琳从风衣口袋里摸出一小块用油纸包裹的风干鹿肉塞进你手里",
+      "source_block_id": "p0269",
+      "source_offset": 521,
+      "display_override": true,
+      "next": "n08_celine_p0269_550"
+    },
+    {
+      "id": "n08_celine_p0269_550",
+      "text": "塞琳：“补充点体力。今晚过后下层会更乱，听到三长一短的敲击声就回“灰雾”，自己人不会对你动手。继续查下去，我想知道那个‘圆心’到底想把整艘船拖去哪里。”",
+      "source_block_id": "p0269",
+      "source_offset": 550,
+      "display_override": true,
+      "next": "n08_celine_p0269_627"
+    },
+    {
+      "id": "n08_celine_p0269_627",
+      "text": "· 【获得线索】：线索 A-3《侵蚀核心的投影规律》（本档线索：异化扩散具备严格的七英尺同心圆几何波纹规律；塞琳信任度 +3）。",
+      "source_block_id": "p0269",
+      "source_offset": 627,
+      "display_override": true,
+      "next": "n08_celine_p0269_692"
+    },
+    {
+      "id": "n08_celine_p0269_692",
+      "text": "【剧情进度】：第08节点；当前章节共11节点。",
+      "source_block_id": "p0269",
+      "source_offset": 692,
+      "display_override": true,
+      "next": "n08_celine_end"
+    },
+    {
+      "id": "n08_celine_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "clue",
+          "key": "A-3"
+        },
+        {
+          "action": "affinity",
+          "key": "celine",
+          "value": 3
+        }
+      ],
+      "next": "n08_outro_p0299_0"
+    },
+    {
+      "id": "n08_kohl_p0271_0",
+      "text": "【子分支 2（老柯尔的木工房与逆转之物）】",
+      "source_block_id": "p0271",
+      "source_offset": 0,
+      "next": "n08_kohl_p0272_0"
+    },
+    {
+      "id": "n08_kohl_p0272_0",
+      "text": "底舱转角处的老木匠工作间。这里本该充斥着刨花清香与桐油气味，但此刻却弥漫着一股刺鼻的死水腥味与陈年海泥的腐败气息。   ",
+      "source_block_id": "p0272",
+      "source_offset": 0,
+      "next": "n08_kohl_p0273_0"
+    },
+    {
+      "id": "n08_kohl_p0273_0",
+      "text": "老木匠柯尔瘫坐在工作台下的一堆碎木料里，双手死死抱住膝盖，浑身像打摆子一样剧烈颤抖。一盏昏暗的油灯倒扣在地上，油渍浸透了图纸。   ",
+      "source_block_id": "p0273",
+      "source_offset": 0,
+      "next": "n08_kohl_p0274_0"
+    },
+    {
+      "id": "n08_kohl_p0274_0",
+      "text": "主角：",
+      "source_block_id": "p0274",
+      "source_offset": 0,
+      "next": "n08_kohl_p0275_0"
+    },
+    {
+      "id": "n08_kohl_p0275_0",
+      "text": "（推开虚掩的木门，跨过散落一地的角尺与锯条）",
+      "source_block_id": "p0275",
+      "source_offset": 0,
+      "next": "n08_kohl_p0276_0"
+    },
+    {
+      "id": "n08_kohl_p0276_0",
+      "text": "“柯尔师傅？你还好吗？”",
+      "source_block_id": "p0276",
+      "source_offset": 0,
+      "next": "n08_kohl_p0277_0"
+    },
+    {
+      "id": "n08_kohl_p0277_0",
+      "text": "柯尔：",
+      "source_block_id": "p0277",
+      "source_offset": 0,
+      "next": "n08_kohl_p0278_0"
+    },
+    {
+      "id": "n08_kohl_p0278_0",
+      "text": "（如同受惊的刺猬般猛地抬起头，满脸是被冷汗浸湿的灰白胡须，指甲缝里全是一团团灰黑色的烂泥）   ",
+      "source_block_id": "p0278",
+      "source_offset": 0,
+      "next": "n08_kohl_p0279_0"
+    },
+    {
+      "id": "n08_kohl_p0279_0",
+      "text": "“别过来！别踩那些木头！它们不是木头……它们活过来了，又死回去了！！”   ",
+      "source_block_id": "p0279",
+      "source_offset": 0,
+      "next": "n08_kohl_p0280_0"
+    },
+    {
+      "id": "n08_kohl_p0280_0",
+      "text": "旁白：",
+      "source_block_id": "p0280",
+      "source_offset": 0,
+      "next": "n08_kohl_p0281_0"
+    },
+    {
+      "id": "n08_kohl_p0281_0",
+      "text": "你顺着他惊恐的指尖，走向墙角那只平时用来存放高阶修船备件的铁皮封边木箱。   ",
+      "source_block_id": "p0281",
+      "source_offset": 0,
+      "next": "n08_kohl_p0282_0"
+    },
+    {
+      "id": "n08_kohl_p0282_0",
+      "text": "那是灰潮船队从陆地遗迹中搜集来的百年老橡木板，质地坚如钢铁，专门用于应急更换龙骨骨架。",
+      "source_block_id": "p0282",
+      "source_offset": 0,
+      "next": "n08_kohl_p0283_0"
+    },
+    {
+      "id": "n08_kohl_p0283_0",
+      "text": "但当你揭开木箱盖板的瞬间，一股带着亿万年沉寂冰冷的死气扑面而来——",
+      "source_block_id": "p0283",
+      "source_offset": 0,
+      "next": "n08_kohl_p0284_0"
+    },
+    {
+      "id": "n08_kohl_p0284_0",
+      "text": "木箱内部整整齐齐码放的坚硬橡木板，此刻全部失去了纤维与纹理！   ",
+      "source_block_id": "p0284",
+      "source_offset": 0,
+      "next": "n08_kohl_p0285_0"
+    },
+    {
+      "id": "n08_kohl_p0285_0",
+      "text": "它们退化成了一种湿冷、软烂、泛着死灰色的胶状海石与贝壳化石碎渣。你伸手抓起一把，坚硬的木板竟然像捏烂的豆腐一样从指缝中挤出，伴随着细碎石粉落下的，还有无数早已灭绝的微小古海洋虫类的甲壳残片！   ",
+      "source_block_id": "p0285",
+      "source_offset": 0,
+      "next": "n08_kohl_p0286_0"
+    },
+    {
+      "id": "n08_kohl_p0286_0",
+      "text": "主角：",
+      "source_block_id": "p0286",
+      "source_offset": 0,
+      "next": "n08_kohl_p0287_0"
+    },
+    {
+      "id": "n08_kohl_p0287_0",
+      "text": "“木头被‘还原’成了它变成化石前的海底淤泥？！”",
+      "source_block_id": "p0287",
+      "source_offset": 0,
+      "next": "n08_kohl_p0288_0"
+    },
+    {
+      "id": "n08_kohl_p0288_0",
+      "text": "柯尔：",
+      "source_block_id": "p0288",
+      "source_offset": 0,
+      "next": "n08_kohl_p0289_0"
+    },
+    {
+      "id": "n08_kohl_p0289_0",
+      "text": "（眼泪从皱纹密布的眼角淌下，声音里充满了行将就木的绝望）   ",
+      "source_block_id": "p0289",
+      "source_offset": 0,
+      "next": "n08_kohl_p0290_0"
+    },
+    {
+      "id": "n08_kohl_p0290_0",
+      "text": "“老头子我年轻时，在更老的一批跑船人嘴里听过……有些海域沉睡着‘时间的漏斗’。”   ",
+      "source_block_id": "p0290",
+      "source_offset": 0,
+      "next": "n08_kohl_p0291_0"
+    },
+    {
+      "id": "n08_kohl_p0291_0",
+      "text": "“一旦被那东西黏上，周围的东西就不会按照现在的规矩活。年轻的人会突然长出老人斑，而死掉的木材……会退回几万年前的海底礁石！”  ",
+      "source_block_id": "p0291",
+      "source_offset": 0,
+      "next": "n08_kohl_p0292_0"
+    },
+    {
+      "id": "n08_kohl_p0292_0",
+      "text": "（老木匠颤抖着从怀里摸出一柄用未知黑色兽骨打磨的骨质小凿子，塞进你手里）",
+      "source_block_id": "p0292",
+      "source_offset": 0,
+      "next": "n08_kohl_p0293_0"
+    },
+    {
+      "id": "n08_kohl_p0293_0",
+      "text": "“后生，这船上的木头靠不住了。它们正在被门后面的时间消化。拿着这个……这是老海妖的骨头磨的，只有没被植物与泥土污染过的死骨，才不会被那扇门里的力量腐蚀……哈克回不来了，这条船快要变成一块大石头沉进去了！！”   ",
+      "source_block_id": "p0293",
+      "source_offset": 0,
+      "next": "n08_kohl_p0294_0"
+    },
+    {
+      "id": "n08_kohl_p0294_0",
+      "text": "【获得线索】：",
+      "source_block_id": "p0294",
+      "source_offset": 0,
+      "next": "n08_kohl_p0295_0"
+    },
+    {
+      "id": "n08_kohl_p0295_0",
+      "text": "线索 B-3《死掉的木材与逆转物质》（获得关键道具【老海妖骨凿】；确认异常具有局域时间与物质退行的侵蚀特性，普通木铁材料在核心区将逐渐失效，必须依靠异质非生体材料才能进行有效对抗）[cite: 11]。",
+      "source_block_id": "p0295",
+      "source_offset": 0,
+      "next": "n08_kohl_p0296_0"
+    },
+    {
+      "id": "n08_kohl_p0296_0",
+      "text": "【剧情进度】：第08节点；当前章节共11节点。",
+      "source_block_id": "p0296",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n08_kohl_end"
+    },
+    {
+      "id": "n08_kohl_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "clue",
+          "key": "B-3"
+        },
+        {
+          "action": "item",
+          "key": "老海妖骨凿"
+        }
+      ],
+      "next": "n08_outro_p0299_0"
+    },
+    {
+      "id": "n08_outro_p0299_0",
+      "text": "【第 8 回合 / 节点结算】",
+      "source_block_id": "p0299",
+      "source_offset": 0,
+      "next": "n08_outro_p0300_0"
+    },
+    {
+      "id": "n08_outro_p0300_0",
+      "text": "【当前任务面板更新】：",
+      "source_block_id": "p0300",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n08_outro_p0300_12"
+    },
+    {
+      "id": "n08_outro_p0300_12",
+      "text": "· 限时任务：《不合理的门扉与消失者》",
+      "source_block_id": "p0300",
+      "source_offset": 12,
+      "display_override": true,
+      "next": "n08_outro_p0300_32"
+    },
+    {
+      "id": "n08_outro_p0300_32",
+      "text": "【剧情进度】：第08节点；当前章节共11节点。",
+      "source_block_id": "p0300",
+      "source_offset": 32,
+      "display_override": true,
+      "next": "n08_outro_p0300_56"
+    },
+    {
+      "id": "n08_outro_p0300_56",
+      "text": "· 节点预警：第 11 节点将发生“走廊空间错位（通道无法到达）”严重异化，请提前做好调查路线规划与物资准备。",
+      "source_block_id": "p0300",
+      "source_offset": 56,
+      "display_override": true,
+      "next": "n08_outro_end"
+    },
+    {
+      "id": "n08_outro_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": []
+    },
+    {
+      "id": "be03_p0218_0",
+      "text": "💀 【BAD END 3：沉溺于甜饴之梦】（累计 3 次休息触发）",
+      "source_block_id": "p0218",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "be03_p0218_34"
+    },
+    {
+      "id": "be03_p0218_34",
+      "text": "· 结局演出：致幻的死鱼发酵甜香彻底漫过理智。你梦见自己沉入温暖舒适的金色蜜海，肉体与骨髓像方糖般在沸腾的体液中发酵融解，与老旧海船的橡木龙骨永久粘合在一起，成为了船底的新养分。",
+      "source_block_id": "p0218",
+      "source_offset": 34,
+      "display_override": true,
+      "next": "be03_p0218_124"
+    },
+    {
+      "id": "be03_p0218_124",
+      "text": "· 解锁信息：“沉沦于虚假的安宁，不过是加速被深渊消化的过程。理智的崩解，始于对香甜梦境的妥协。”",
+      "source_block_id": "p0218",
+      "source_offset": 124,
+      "display_override": true,
+      "next": "be03_end"
+    },
+    {
+      "id": "be03_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "ending",
+          "key": "BAD_END_3"
+        }
+      ],
+      "ending": "bad_end_3"
+    }
+  ]
+}

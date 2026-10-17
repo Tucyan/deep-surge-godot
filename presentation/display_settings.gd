@@ -36,6 +36,7 @@ func set_camera_mouse_binding(action: String, button: int) -> bool:
 func reset_camera_bindings() -> void:
 	camera_orbit_button=MOUSE_BUTTON_RIGHT; camera_pan_button=MOUSE_BUTTON_LEFT; camera_reset_key=KEY_R
 func camera_help() -> String:
+	if mobile: return "单指旋转，双指缩放；点击复位恢复视角"
 	return "%s旋转，%s水平平移，滚轮缩放；%s平滑复位" % [mouse_button_name(camera_orbit_button),mouse_button_name(camera_pan_button),OS.get_keycode_string(camera_reset_key)]
 func load_preferences() -> void:
 	var config:=ConfigFile.new()

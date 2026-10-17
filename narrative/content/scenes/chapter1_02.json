@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "id": "chapter1.n02",
+  "title": "第一章 · 节点 02/11",
+  "imported_chapter1": true,
+  "entry": "n02_p0024_0",
+  "nodes": [
+    {
+      "id": "n02_p0024_0",
+      "text": "【第 2 回合 / 节点 02｜海上的生计：滤水与培土】",
+      "source_block_id": "p0024",
+      "source_offset": 0,
+      "next": "n02_p0025_0"
+    },
+    {
+      "id": "n02_p0025_0",
+      "text": "【场景】：清晨微光破晓，海面升起了浓浓的灰色雾气。",
+      "source_block_id": "p0025",
+      "source_offset": 0,
+      "next": "n02_p0025_26"
+    },
+    {
+      "id": "n02_p0025_26",
+      "text": "【角色状态】：喉咙干渴如火烧，胃部由于空腹泛起痉挛。",
+      "source_block_id": "p0025",
+      "source_offset": 26,
+      "next": "n02_p0027_0"
+    },
+    {
+      "id": "n02_p0027_0",
+      "text": "旁白：",
+      "source_block_id": "p0027",
+      "source_offset": 0,
+      "next": "n02_p0027_4"
+    },
+    {
+      "id": "n02_p0027_4",
+      "text": "喉咙里像是卡了一把粗沙。四周全都是水，你却不敢喝下一口，海水和你隐约印象里的大海似乎不同，你几乎直觉地感到，这水里有种熟悉的危险的气息。……想活下去，就必须改造脚下这具随时可能散架的木筏。",
+      "source_block_id": "p0027",
+      "source_offset": 4,
+      "next": "n02_p0029_0"
+    },
+    {
+      "id": "n02_p0029_0",
+      "text": "旁白：",
+      "source_block_id": "p0029",
+      "source_offset": 0,
+      "next": "n02_p0029_4"
+    },
+    {
+      "id": "n02_p0029_4",
+      "text": "你清理出昨天捞起的材料。记忆虽然丢失了，但你的手指在触碰到这些废料时，却熟练得不可思议——就像你好像经历过这一切。",
+      "source_block_id": "p0029",
+      "source_offset": 4,
+      "next": "n02_p0031_0"
+    },
+    {
+      "id": "n02_p0031_0",
+      "text": "【航行提示】：制造、安装与食水使用，请在航行界面按当前规则操作。",
+      "source_block_id": "p0031",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n02_p0033_0"
+    },
+    {
+      "id": "n02_p0033_0",
+      "text": "旁白：",
+      "source_block_id": "p0033",
+      "source_offset": 0,
+      "next": "n02_p0033_4"
+    },
+    {
+      "id": "n02_p0033_4",
+      "text": "胃里的绞痛暂时缓解了。你抬头望向海面，水雾慢慢散开，露出了远处海面上漂浮的怪异黑影——那不是死物，海流的涌动有些反常，某些阴影正在水面下几米深处悄然梭巡。",
+      "source_block_id": "p0033",
+      "source_offset": 4,
+      "next": "n02_end"
+    },
+    {
+      "id": "n02_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": []
+    }
+  ]
+}

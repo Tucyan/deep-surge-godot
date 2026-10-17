@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "id": "chapter1.n01",
+  "title": "第一章 · 节点 01/11",
+  "imported_chapter1": true,
+  "entry": "n01_p0007_0",
+  "nodes": [
+    {
+      "id": "n01_p0007_0",
+      "text": "【第 1 回合 / 节点 01｜漂流者：浮木与残渣】",
+      "source_block_id": "p0007",
+      "source_offset": 0,
+      "next": "n01_p0008_0"
+    },
+    {
+      "id": "n01_p0008_0",
+      "text": "【场景】：阴郁泛灰的海面，四下无岛，只有起伏不定的死寂波浪。镜头聚焦在一张由几根发黑圆木与麻绳粗劣绑扎的破旧木筏上。",
+      "source_block_id": "p0008",
+      "source_offset": 0,
+      "next": "n01_p0008_59"
+    },
+    {
+      "id": "n01_p0008_59",
+      "text": "【环境音】：海水拍击木筏的湿冷水声、风卷过空旷海面的低鸣。",
+      "source_block_id": "p0008",
+      "source_offset": 59,
+      "next": "n01_p0010_0"
+    },
+    {
+      "id": "n01_p0010_0",
+      "text": "旁白：",
+      "source_block_id": "p0010",
+      "source_offset": 0,
+      "next": "n01_p0010_4"
+    },
+    {
+      "id": "n01_p0010_4",
+      "text": "海水是铅灰色的，像融化了又未凝固的金属。你咳出一口带着苦腥味的涩沫，胸腔里的钝痛提醒你——你还活着。但除了残存的呼吸，你的脑海中空无一物。没有名字，没有来历。你只能依靠本能活下去。",
+      "source_block_id": "p0010",
+      "source_offset": 4,
+      "next": "n01_p0012_0"
+    },
+    {
+      "id": "n01_p0012_0",
+      "text": "旁白：",
+      "source_block_id": "p0012",
+      "source_offset": 0,
+      "next": "n01_p0012_4"
+    },
+    {
+      "id": "n01_p0012_4",
+      "text": "海风送来一丝腐烂与铁锈的气味。在不远处的浪尖上，几样漂浮物正随着暗流打转：一堆生锈废铁、几根烂了的木头被绳子勉强连着，以及半截浸水的帆布。如果放任它们漂走，你可能撑不过今晚的落日。",
+      "source_block_id": "p0012",
+      "source_offset": 4,
+      "next": "n01_p0014_0"
+    },
+    {
+      "id": "n01_p0014_0",
+      "text": "（请选择接下来的剧情行动。）",
+      "source_block_id": "p0014",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n01_end"
+    },
+    {
+      "id": "n01_end",
+      "text": "请选择接下来的行动。",
+      "system_text": true,
+      "narrative_effects": [],
+      "choices": [
+        {
+          "id": "n01_scrap",
+          "text": "【选项 A】探身伸手去拽那块生锈的废铁。",
+          "next": "n01_post_p0019_0",
+          "source_block_id": "p0016",
+          "condition": {},
+          "narrative_effects": [],
+          "display_override": true
+        },
+        {
+          "id": "n01_wood",
+          "text": "【选项 B】用断桨将那一捆木头和帆布划近。",
+          "next": "n01_post_p0019_0",
+          "source_block_id": "p0017",
+          "condition": {},
+          "narrative_effects": [],
+          "display_override": true
+        }
+      ]
+    },
+    {
+      "id": "n01_post_p0019_0",
+      "text": "（无论选择哪一项，主角艰难地将第一批物资拖上木筏，手掌被粗糙的木刺与盐壳磨出血痕。）",
+      "source_block_id": "p0019",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n01_post_p0021_0"
+    },
+    {
+      "id": "n01_post_p0021_0",
+      "text": "旁白：",
+      "source_block_id": "p0021",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n01_post_p0021_4"
+    },
+    {
+      "id": "n01_post_p0021_4",
+      "text": "木筏勉强吃住了重量。你喘息着靠在绑扎处的绳结旁，看着掌心渗出的暗红血迹滴入海水，瞬间被灰色的大海吞没。天边那轮苍白病态的日光正在迅速沉落。夜幕降临了，四面八方只剩下一望无际的黑暗与海水。这是你醒来后第一个夜晚。无处可去，也不知道何处是“陆地",
+      "source_block_id": "p0021",
+      "source_offset": 4,
+      "display_override": true,
+      "next": "n01_post_p0021_124"
+    },
+    {
+      "id": "n01_post_p0021_124",
+      "text": "”。只能死死抓住身下仅有的浮木，任由冰冷的潮水推着你漂向未知的海域。",
+      "source_block_id": "p0021",
+      "source_offset": 124,
+      "display_override": true,
+      "next": "n01_post_p0021_159"
+    },
+    {
+      "id": "n01_post_p0021_159",
+      "text": "你隐约觉得好像有什么东西正在盯着你。",
+      "source_block_id": "p0021",
+      "source_offset": 159,
+      "display_override": true,
+      "next": "n01_post_end"
+    },
+    {
+      "id": "n01_post_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": []
+    }
+  ]
+}

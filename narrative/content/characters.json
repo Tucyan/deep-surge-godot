@@ -2,27 +2,59 @@
   "schema": 1,
   "characters": [
     {
-      "id": "leader",
-      "name": "沈岚",
-      "role": "分队领队",
-      "portrait_key": "char.leader",
+      "id": "celine",
+      "name": "塞琳",
       "levels": [
-        {"min": 0, "label": "戒备"},
-        {"min": 25, "label": "同行"},
-        {"min": 50, "label": "信任"},
-        {"min": 75, "label": "托付"}
+        {
+          "min": 0,
+          "label": "初识"
+        },
+        {
+          "min": 5,
+          "label": "信任"
+        }
       ]
     },
     {
-      "id": "carpenter",
-      "name": "阿棠",
-      "role": "分队木匠",
-      "portrait_key": "char.carpenter",
+      "id": "ned",
+      "name": "涅德",
       "levels": [
-        {"min": 0, "label": "生疏"},
-        {"min": 25, "label": "搭手"},
-        {"min": 50, "label": "默契"},
-        {"min": 75, "label": "共谋"}
+        {
+          "min": 0,
+          "label": "初识"
+        },
+        {
+          "min": 5,
+          "label": "信任"
+        }
+      ]
+    },
+    {
+      "id": "kohl",
+      "name": "柯尔",
+      "levels": [
+        {
+          "min": 0,
+          "label": "初识"
+        },
+        {
+          "min": 5,
+          "label": "信任"
+        }
+      ]
+    },
+    {
+      "id": "ryan",
+      "name": "芮安",
+      "levels": [
+        {
+          "min": 0,
+          "label": "初识"
+        },
+        {
+          "min": 5,
+          "label": "信任"
+        }
       ]
     }
   ]

@@ -1,0 +1,706 @@
+{
+  "schema_version": 1,
+  "id": "chapter1.n09",
+  "title": "第一章 · 节点 09/11",
+  "imported_chapter1": true,
+  "entry": "n09_intro_p0302_0",
+  "nodes": [
+    {
+      "id": "n09_intro_p0302_0",
+      "text": "【第 9 回合 / 节点 09｜调查之夜（4/9）：被吞噬的铺位】",
+      "source_block_id": "p0302",
+      "source_offset": 0,
+      "next": "n09_intro_p0303_0"
+    },
+    {
+      "id": "n09_intro_p0303_0",
+      "text": "【场景】：入夜后的灰潮分队主船下层生活区与主甲板。海风如厉鬼般呜咽，铅灰色的夜幕低垂。",
+      "source_block_id": "p0303",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n09_intro_p0303_44"
+    },
+    {
+      "id": "n09_intro_p0303_44",
+      "text": "【剧情提示】：请选择今晚的行动方向。",
+      "source_block_id": "p0303",
+      "source_offset": 44,
+      "display_override": true,
+      "next": "n09_intro_p0304_0"
+    },
+    {
+      "id": "n09_intro_p0304_0",
+      "text": "旁白：",
+      "source_block_id": "p0304",
+      "source_offset": 0,
+      "next": "n09_intro_p0304_4"
+    },
+    {
+      "id": "n09_intro_p0304_4",
+      "text": "深渊的侵蚀并未因塞琳的强硬手段而停歇，反而以更加诡异的形式在暗处蔓延。",
+      "source_block_id": "p0304",
+      "source_offset": 4,
+      "next": "n09_intro_p0304_40"
+    },
+    {
+      "id": "n09_intro_p0304_40",
+      "text": "下层生活区受损木墙周边的侵蚀波纹再次向外推进。今晚被吞噬的不仅是小物件——第七张水手铺位连同其厚重的木质床架完全凭空消失了！原位置变成了一块粗糙未打磨的实心橡木船壳，严丝合缝得仿佛这里从未有过床位。",
+      "source_block_id": "p0304",
+      "source_offset": 40,
+      "next": "n09_intro_p0304_140"
+    },
+    {
+      "id": "n09_intro_p0304_140",
+      "text": "更惊悚的是水手们之间的对话。大家围在那块实心墙面旁，对那张铺位原本属于谁产生了可怕的记忆分歧：有人坚称生活区一直只有六张床；有人模糊记得那里睡过一个叫“拉维”的年轻人，但翻遍船员花名册，根本找不着这个名字。",
+      "source_block_id": "p0304",
+      "source_offset": 140,
+      "next": "n09_intro_p0304_244"
+    },
+    {
+      "id": "n09_intro_p0304_244",
+      "text": "面对失控的态势，塞琳果断下令将部分关键干粮、淡水桶与急用工具紧急转移至露天甲板，并划出禁区：任何人不得单独进入下层受损中段！",
+      "source_block_id": "p0304",
+      "source_offset": 244,
+      "next": "n09_intro_p0306_0"
+    },
+    {
+      "id": "n09_intro_p0306_0",
+      "text": "【夜间行动抉择】",
+      "source_block_id": "p0306",
+      "source_offset": 0,
+      "next": "n09_intro_p0307_0"
+    },
+    {
+      "id": "n09_intro_p0307_0",
+      "text": "旁白：限时任务倒计时逼近，恐惧在人群中发酵。今晚你想采取什么行动？",
+      "source_block_id": "p0307",
+      "source_offset": 0,
+      "next": "n09_intro_end"
+    },
+    {
+      "id": "n09_intro_end",
+      "text": "请选择接下来的行动。",
+      "system_text": true,
+      "narrative_effects": [],
+      "choices": [
+        {
+          "id": "n09_rest",
+          "text": "【抉择 A】回到允许逗留的角落【休息】（累计三次休息将进入坏结局）。",
+          "next": "n09_rest_p0311_0",
+          "source_block_id": "p0308",
+          "condition": {},
+          "narrative_effects": [],
+          "display_override": true
+        },
+        {
+          "id": "n09_investigate",
+          "text": "【抉择 B】强打精神，在舱内【深入调查】（抓住珍贵时限，探寻空间吞噬与记忆抹除的真相）。",
+          "next": "n09_investigate_p0314_0",
+          "source_block_id": "p0309",
+          "condition": {},
+          "narrative_effects": []
+        }
+      ]
+    },
+    {
+      "id": "n09_rest_p0311_0",
+      "text": "【选择 A：休息】",
+      "source_block_id": "p0311",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n09_rest_p0312_0"
+    },
+    {
+      "id": "n09_rest_p0312_0",
+      "text": "旁白：闭上双眼，门轴转动声与低语在颅腔深处回响。",
+      "source_block_id": "p0312",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n09_rest_p0312_25"
+    },
+    {
+      "id": "n09_rest_p0312_25",
+      "text": "【剧情记录】：本夜选择休息，未获得线索。累计三次休息将进入坏结局。",
+      "source_block_id": "p0312",
+      "source_offset": 25,
+      "display_override": true,
+      "next": "n09_rest_end"
+    },
+    {
+      "id": "n09_rest_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "rest",
+          "key": "RestCount",
+          "value": 1
+        }
+      ],
+      "next": "n09_outro_p0352_0",
+      "rest_redirect": "be03_p0218_0"
+    },
+    {
+      "id": "n09_investigate_p0314_0",
+      "text": "【选择 B：深入调查（行动展开）】",
+      "source_block_id": "p0314",
+      "source_offset": 0,
+      "next": "n09_investigate_p0315_0"
+    },
+    {
+      "id": "n09_investigate_p0315_0",
+      "text": "今晚你想去哪里调查？",
+      "source_block_id": "p0315",
+      "source_offset": 0,
+      "next": "n09_investigate_end"
+    },
+    {
+      "id": "n09_investigate_end",
+      "text": "请选择接下来的行动。",
+      "system_text": true,
+      "narrative_effects": [],
+      "choices": [
+        {
+          "id": "n09_berth",
+          "text": "【调查选项 1】 前往生活区隔离线，调查【消失的床铺与水手的记忆裂痕】。",
+          "next": "n09_berth_p0319_0",
+          "source_block_id": "p0316",
+          "condition": {},
+          "narrative_effects": []
+        },
+        {
+          "id": "n09_ryan",
+          "text": "【调查选项 2】 潜入露天甲板，查看【临时物资堆与后勤管事芮安】。",
+          "next": "n09_ryan_intro_p0335_0",
+          "source_block_id": "p0317",
+          "condition": {},
+          "narrative_effects": []
+        }
+      ]
+    },
+    {
+      "id": "n09_berth_p0319_0",
+      "text": "【子分支 1：消失的床铺与水手的记忆裂痕】",
+      "source_block_id": "p0319",
+      "source_offset": 0,
+      "next": "n09_berth_p0320_0"
+    },
+    {
+      "id": "n09_berth_p0320_0",
+      "text": "旁白",
+      "source_block_id": "p0320",
+      "source_offset": 0,
+      "next": "n09_berth_p0321_0"
+    },
+    {
+      "id": "n09_berth_p0321_0",
+      "text": "深夜，生活区隔离线边缘。死寂与冻骨的冰冷顺着橡木船壳蔓延，空气中弥漫着压抑至极的绝望。",
+      "source_block_id": "p0321",
+      "source_offset": 0,
+      "next": "n09_berth_p0322_0"
+    },
+    {
+      "id": "n09_berth_p0322_0",
+      "text": "几名水手紧紧围缩在昏暗摇晃的防风灯下，脸色惨白如纸，额角青筋暴起，因极度恐惧而爆发着歇斯底里的争吵。",
+      "source_block_id": "p0322",
+      "source_offset": 0,
+      "next": "n09_berth_p0323_0"
+    },
+    {
+      "id": "n09_berth_p0323_0",
+      "text": "水手甲：（双手死死掐住自己的头发，眼球布满血丝，声音因尖锐而显得扭曲变形）",
+      "source_block_id": "p0323",
+      "source_offset": 0,
+      "next": "n09_berth_p0323_38"
+    },
+    {
+      "id": "n09_berth_p0323_38",
+      "text": "“疯了……全他妈疯了！老子在这条破船上睡了三年！天天躺在这排最后一个位置！这里本来就只有六张床！哪来的第七张？！你们少在这里装神弄鬼吓唬人！”",
+      "source_block_id": "p0323",
+      "source_offset": 38,
+      "next": "n09_berth_p0324_0"
+    },
+    {
+      "id": "n09_berth_p0324_0",
+      "text": "水手乙：（全身如筛糠般剧烈抖动，手指颤抖着从怀里掏出一张沾满咸汗与鱼油的皱巴借据，又疯狂地翻动着一本边缘发霉的空白花名册）",
+      "source_block_id": "p0324",
+      "source_offset": 0,
+      "next": "n09_berth_p0324_62"
+    },
+    {
+      "id": "n09_berth_p0324_62",
+      "text": "“不对……这绝不对！上周！上周三！明明有个叫‘拉维’的小子和我对牌值夜！",
+      "source_block_id": "p0324",
+      "source_offset": 62,
+      "next": "n09_berth_p0325_0"
+    },
+    {
+      "id": "n09_berth_p0325_0",
+      "text": "他还欠我半包风干烟草，这里白纸黑字写着他的签字！",
+      "source_block_id": "p0325",
+      "source_offset": 0,
+      "next": "n09_berth_p0326_0"
+    },
+    {
+      "id": "n09_berth_p0326_0",
+      "text": "可为什么……为什么花名册上没有这个名字？！他的铺位呢？！他的行囊箱子呢？！为什么全不见了？！连这面墙……都连成一整块了啊！！”",
+      "source_block_id": "p0326",
+      "source_offset": 0,
+      "next": "n09_berth_p0327_0"
+    },
+    {
+      "id": "n09_berth_p0327_0",
+      "text": "旁白：",
+      "source_block_id": "p0327",
+      "source_offset": 0,
+      "next": "n09_berth_p0327_4"
+    },
+    {
+      "id": "n09_berth_p0327_4",
+      "text": "水手乙嚎啕大哭起来，将那张借据撕成粉碎。",
+      "source_block_id": "p0327",
+      "source_offset": 4,
+      "next": "n09_berth_p0328_0"
+    },
+    {
+      "id": "n09_berth_p0328_0",
+      "text": "你趁着水手们陷入认知崩溃与狂乱交加之际，猫着腰悄无声息地贴近了那块原本属于“第七张床铺”的橡木船壳。",
+      "source_block_id": "p0328",
+      "source_offset": 0,
+      "next": "n09_berth_p0328_51"
+    },
+    {
+      "id": "n09_berth_p0328_51",
+      "text": "你缓缓抬起手掌，将指尖抚上原本该搁置木质床架的墙面。",
+      "source_block_id": "p0328",
+      "source_offset": 51,
+      "next": "n09_berth_p0329_0"
+    },
+    {
+      "id": "n09_berth_p0329_0",
+      "text": "眼前的木纹平滑完整得近乎诡异——没有榫卯剥离的破口，没有钉孔，甚至连拼接的缝隙都荡然无存！",
+      "source_block_id": "p0329",
+      "source_offset": 0,
+      "next": "n09_berth_p0330_0"
+    },
+    {
+      "id": "n09_berth_p0330_0",
+      "text": "这块木墙生来就是一整块实心橡木。",
+      "source_block_id": "p0330",
+      "source_offset": 0,
+      "next": "n09_berth_p0330_17"
+    },
+    {
+      "id": "n09_berth_p0330_17",
+      "text": "更令你背脊发凉的是它的温度。",
+      "source_block_id": "p0330",
+      "source_offset": 17,
+      "next": "n09_berth_p0331_0"
+    },
+    {
+      "id": "n09_berth_p0331_0",
+      "text": "在闷热潮湿的海船底层，这块墙面摸上去竟如同冻死多日的冰冷尸体，透着一股不属于活物世界的阴寒。",
+      "source_block_id": "p0331",
+      "source_offset": 0,
+      "next": "n09_berth_p0332_0"
+    },
+    {
+      "id": "n09_berth_p0332_0",
+      "text": "你深深吸了一口气，将耳朵紧紧贴在冰冷死寂的木板上——",
+      "source_block_id": "p0332",
+      "source_offset": 0,
+      "next": "n09_berth_p0332_27"
+    },
+    {
+      "id": "n09_berth_p0332_27",
+      "text": "刹那间，一阵阵悠远而宏大的深海回音轰然冲入你的颅腔！",
+      "source_block_id": "p0332",
+      "source_offset": 27,
+      "next": "n09_berth_p0333_0"
+    },
+    {
+      "id": "n09_berth_p0333_0",
+      "text": "那是成百上千吨冰冷海水在狭窄管道中剧烈倒灌、抽吸的闷响。而在那水流轰鸣的深处，竟夹杂着重重叠叠、令人发毛的呼号与哭喊叫唤！",
+      "source_block_id": "p0333",
+      "source_offset": 0,
+      "next": "n09_berth_p0333_62"
+    },
+    {
+      "id": "n09_berth_p0333_62",
+      "text": "“……救救我……好冷……水进来了……”",
+      "source_block_id": "p0333",
+      "source_offset": 62,
+      "next": "n09_berth_p0333_82"
+    },
+    {
+      "id": "n09_berth_p0333_82",
+      "text": "“……拉维……我是拉维啊……”",
+      "source_block_id": "p0333",
+      "source_offset": 82,
+      "next": "n09_berth_p0333_98"
+    },
+    {
+      "id": "n09_berth_p0333_98",
+      "text": "在这交织着无数陌生死者哀号的嘈杂重音中，你猛地捕捉到了一个熟悉而绝望的抽噎声——那是哈克！他在门后凄惨地哭泣、抠打着木板！",
+      "source_block_id": "p0333",
+      "source_offset": 98,
+      "next": "n09_berth_p0334_0"
+    },
+    {
+      "id": "n09_berth_p0334_0",
+      "text": "旁白：",
+      "source_block_id": "p0334",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n09_berth_p0334_4"
+    },
+    {
+      "id": "n09_berth_p0334_4",
+      "text": "你猛地推开墙面，额头渗出大片冷汗。残酷的真相如同一把利刃穿透了你的思绪：",
+      "source_block_id": "p0334",
+      "source_offset": 4,
+      "display_override": true,
+      "next": "n09_berth_p0334_41"
+    },
+    {
+      "id": "n09_berth_p0334_41",
+      "text": "那扇异象怪门不仅在物理层面吞噬活人的肉体与所处空间，更在概念与世界法则层面，顺着时间线一点点抹去失踪者存在于世上的现实痕迹！",
+      "source_block_id": "p0334",
+      "source_offset": 41,
+      "display_override": true,
+      "next": "n09_berth_p0334_104"
+    },
+    {
+      "id": "n09_berth_p0334_104",
+      "text": "那些被吞噬的人，其衣服、物品、花名册记录，乃至旁人记忆中的名字，都会随着空间的弥合而发生逻辑修补与认知裂痕。哈克绝不是第一个受害者，在他之前，早已不知有多少名水手被这扇门悄无声息地抹抹抹除！",
+      "source_block_id": "p0334",
+      "source_offset": 104,
+      "display_override": true,
+      "next": "n09_berth_p0334_200"
+    },
+    {
+      "id": "n09_berth_p0334_200",
+      "text": "· 【获得线索】：线索 B-4《抹除存在的认知侵蚀》（本档线索：被门吞噬的人与其所占据的空间会被世界规则逐步抹除，现实记忆会随之发生认知修正与修正裂痕）。",
+      "source_block_id": "p0334",
+      "source_offset": 200,
+      "display_override": true,
+      "next": "n09_berth_p0334_278"
+    },
+    {
+      "id": "n09_berth_p0334_278",
+      "text": "【剧情进度】：第09节点；当前章节共11节点。",
+      "source_block_id": "p0334",
+      "source_offset": 278,
+      "display_override": true,
+      "next": "n09_berth_end"
+    },
+    {
+      "id": "n09_berth_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "clue",
+          "key": "B-4"
+        }
+      ],
+      "next": "n09_outro_p0352_0"
+    },
+    {
+      "id": "n09_ryan_intro_p0335_0",
+      "text": "【子分支 2：临时露天物资堆与后勤管事芮安】",
+      "source_block_id": "p0335",
+      "source_offset": 0,
+      "next": "n09_ryan_intro_p0336_0"
+    },
+    {
+      "id": "n09_ryan_intro_p0336_0",
+      "text": "【场景】：夜色笼罩下的主甲板临时物资防线。凄风苦雨呼啸着横扫过露天甲板，怒涛如巨兽般拍击船舷，将刺骨的咸湿海水溅起数米之高。冰冷的雨水与海水交织，顺着防风帆布不间断地滴落。",
+      "source_block_id": "p0336",
+      "source_offset": 0,
+      "next": "n09_ryan_intro_p0337_0"
+    },
+    {
+      "id": "n09_ryan_intro_p0337_0",
+      "text": "旁白：",
+      "source_block_id": "p0337",
+      "source_offset": 0,
+      "next": "n09_ryan_intro_p0337_4"
+    },
+    {
+      "id": "n09_ryan_intro_p0337_4",
+      "text": "你屏住呼吸，猫着腰借着大水桶与帆布堆的阴影掩护，一步步向甲板中央潜行。",
+      "source_block_id": "p0337",
+      "source_offset": 4,
+      "next": "n09_ryan_intro_p0337_40"
+    },
+    {
+      "id": "n09_ryan_intro_p0337_40",
+      "text": "昏黄摇曳的风灯下，后勤管事芮安正独自一人立于雨中。她面容紧绷，眼神如鹰隼般警惕地环顾着空无一人的四下。在确认没有巡逻水手靠近后，她颤抖着伸手摸入湿透的衣襟内侧，取出了一块只有半个掌心大小的薄金属片。",
+      "source_block_id": "p0337",
+      "source_offset": 40,
+      "next": "n09_ryan_intro_p0337_140"
+    },
+    {
+      "id": "n09_ryan_intro_p0337_140",
+      "text": "透过雨幕与风灯的微光，你清晰地看到那块小金属片边缘泛着诡异的暗金光泽，上面赫然刻着一道由密密麻麻细齿交织而成的扭曲螺旋图腾！",
+      "source_block_id": "p0337",
+      "source_offset": 140,
+      "next": "n09_ryan_intro_p0338_0"
+    },
+    {
+      "id": "n09_ryan_intro_p0338_0",
+      "text": "【行动抉择与剧情分支】：今晚你决定采取何种方式应对？",
+      "source_block_id": "p0338",
+      "source_offset": 0,
+      "next": "n09_ryan_intro_end"
+    },
+    {
+      "id": "n09_ryan_intro_end",
+      "text": "请选择接下来的行动。",
+      "system_text": true,
+      "narrative_effects": [],
+      "choices": [
+        {
+          "id": "n09_watch",
+          "text": "【选择 1：暗中观察】",
+          "next": "n09_watch_p0340_0",
+          "source_block_id": "p0339",
+          "condition": {},
+          "narrative_effects": []
+        },
+        {
+          "id": "n09_confront",
+          "text": "【选择 2：出面交涉】",
+          "next": "n09_confront_p0342_0",
+          "source_block_id": "p0341",
+          "condition": {},
+          "narrative_effects": []
+        }
+      ]
+    },
+    {
+      "id": "n09_watch_p0340_0",
+      "text": "你强忍住呼吸，紧紧伏在湿透的帆布堆后按兵不动。",
+      "source_block_id": "p0340",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n09_watch_p0340_24"
+    },
+    {
+      "id": "n09_watch_p0340_24",
+      "text": "只见芮安熟练地将淡水滤桶顶部的密封盖撬开一道缝隙，动作精准而迅速地将那块刻有螺旋图腾的金属薄片嵌入了滤桶夹层的活性炭网深处。",
+      "source_block_id": "p0340",
+      "source_offset": 24,
+      "display_override": true,
+      "next": "n09_watch_p0340_87"
+    },
+    {
+      "id": "n09_watch_p0340_87",
+      "text": "在合上桶盖的瞬间，她脱力般地扶着木桶，在狂风暴雨中低声喃喃自语：",
+      "source_block_id": "p0340",
+      "source_offset": 87,
+      "display_override": true,
+      "next": "n09_watch_p0340_120"
+    },
+    {
+      "id": "n09_watch_p0340_120",
+      "text": "“……不能再留在这艘船上了……这群疯子根本不知道自己运的是什么……必须把标记做在水里……”",
+      "source_block_id": "p0340",
+      "source_offset": 120,
+      "display_override": true,
+      "next": "n09_watch_p0340_166"
+    },
+    {
+      "id": "n09_watch_p0340_166",
+      "text": "你牢牢记下了金属薄片的特征与所在滤桶的编号，未打草惊蛇，悄然顺着暗影退回了安全区域。",
+      "source_block_id": "p0340",
+      "source_offset": 166,
+      "display_override": true,
+      "next": "n09_watch_p0340_209"
+    },
+    {
+      "id": "n09_watch_p0340_209",
+      "text": "· 【获得线索】：线索 C-3《芮安的秘密信物与异常流向》（本档线索：后勤管事芮安掌握某种神秘信物，并试图通过淡水设施将其引入物资循环，目的不明）。",
+      "source_block_id": "p0340",
+      "source_offset": 209,
+      "display_override": true,
+      "next": "n09_watch_end"
+    },
+    {
+      "id": "n09_watch_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "clue",
+          "key": "C-3"
+        }
+      ],
+      "next": "n09_outro_p0352_0"
+    },
+    {
+      "id": "n09_confront_p0342_0",
+      "text": "“深夜雨这么大，芮安管事还在给淡水桶‘加料’么？”",
+      "source_block_id": "p0342",
+      "source_offset": 0,
+      "next": "n09_confront_p0343_0"
+    },
+    {
+      "id": "n09_confront_p0343_0",
+      "text": "你踩着湿滑的木板缓缓走出阴影。",
+      "source_block_id": "p0343",
+      "source_offset": 0,
+      "next": "n09_confront_p0344_0"
+    },
+    {
+      "id": "n09_confront_p0344_0",
+      "text": "芮安如同一只受惊的暴怒雌豹般瞬间转身！她眼中只剩冰冷至极的杀意。",
+      "source_block_id": "p0344",
+      "source_offset": 0,
+      "next": "n09_confront_p0345_0"
+    },
+    {
+      "id": "n09_confront_p0345_0",
+      "text": "“唰”的一声，她反手拔出了那把沉重带倒钩的斩骨短刀，还没等你反应过来，锋利的",
+      "source_block_id": "p0345",
+      "source_offset": 0,
+      "next": "n09_confront_p0346_0"
+    },
+    {
+      "id": "n09_confront_p0346_0",
+      "text": "尖刀瞬间撕破雨幕，利刃刺入皮肉。",
+      "source_block_id": "p0346",
+      "source_offset": 0,
+      "next": "n09_confront_p0347_0"
+    },
+    {
+      "id": "n09_confront_p0347_0",
+      "text": "剧痛瞬间淹没了理智，你抽搐着倒在湿滑的甲板上，鲜血狂喷。",
+      "source_block_id": "p0347",
+      "source_offset": 0,
+      "next": "n09_confront_p0348_0"
+    },
+    {
+      "id": "n09_confront_p0348_0",
+      "text": "芮安面无表情地拔出短刀，顺势一脚将你濒死的躯体踢出了船舷！",
+      "source_block_id": "p0348",
+      "source_offset": 0,
+      "next": "n09_confront_p0349_0"
+    },
+    {
+      "id": "n09_confront_p0349_0",
+      "text": "你重重落入翻滚着黑色巨浪的冰冷夜海中，暴雨和怒涛迅速淹没了你的口鼻与意识……",
+      "source_block_id": "p0349",
+      "source_offset": 0,
+      "next": "n09_confront_p0350_0"
+    },
+    {
+      "id": "n09_confront_p0350_0",
+      "text": "【BAD END 4：暴雨中的灭口者】",
+      "source_block_id": "p0350",
+      "source_offset": 0,
+      "next": "n09_confront_p0350_20"
+    },
+    {
+      "id": "n09_confront_p0350_20",
+      "text": "· 解锁信息：老学者在虚空中叹息：“贪婪与鲁莽往往是探寻真相路上最致命的毒药……”",
+      "source_block_id": "p0350",
+      "source_offset": 20,
+      "next": "n09_confront_end"
+    },
+    {
+      "id": "n09_confront_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "ending",
+          "key": "BAD_END_4"
+        }
+      ],
+      "ending": "bad_end_4"
+    },
+    {
+      "id": "n09_outro_p0352_0",
+      "text": "【第 9 回合 / 节点结算】",
+      "source_block_id": "p0352",
+      "source_offset": 0,
+      "next": "n09_outro_p0353_0"
+    },
+    {
+      "id": "n09_outro_p0353_0",
+      "text": "【当前任务面板更新】：",
+      "source_block_id": "p0353",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n09_outro_p0353_12"
+    },
+    {
+      "id": "n09_outro_p0353_12",
+      "text": "· 限时任务：《不合理的门扉与消失者》",
+      "source_block_id": "p0353",
+      "source_offset": 12,
+      "display_override": true,
+      "next": "n09_outro_p0353_32"
+    },
+    {
+      "id": "n09_outro_p0353_32",
+      "text": "【剧情进度】：第09节点；当前章节共11节点。",
+      "source_block_id": "p0353",
+      "source_offset": 32,
+      "display_override": true,
+      "next": "n09_outro_p0353_56"
+    },
+    {
+      "id": "n09_outro_p0353_56",
+      "text": "· 节点预警：第 11 节点将发生“走廊彻底阻断（通道无法到达）”严重空间错位，请提前规划调查路线！",
+      "source_block_id": "p0353",
+      "source_offset": 56,
+      "display_override": true,
+      "next": "n09_outro_end"
+    },
+    {
+      "id": "n09_outro_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": []
+    },
+    {
+      "id": "be03_p0218_0",
+      "text": "💀 【BAD END 3：沉溺于甜饴之梦】（累计 3 次休息触发）",
+      "source_block_id": "p0218",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "be03_p0218_34"
+    },
+    {
+      "id": "be03_p0218_34",
+      "text": "· 结局演出：致幻的死鱼发酵甜香彻底漫过理智。你梦见自己沉入温暖舒适的金色蜜海，肉体与骨髓像方糖般在沸腾的体液中发酵融解，与老旧海船的橡木龙骨永久粘合在一起，成为了船底的新养分。",
+      "source_block_id": "p0218",
+      "source_offset": 34,
+      "display_override": true,
+      "next": "be03_p0218_124"
+    },
+    {
+      "id": "be03_p0218_124",
+      "text": "· 解锁信息：“沉沦于虚假的安宁，不过是加速被深渊消化的过程。理智的崩解，始于对香甜梦境的妥协。”",
+      "source_block_id": "p0218",
+      "source_offset": 124,
+      "display_override": true,
+      "next": "be03_end"
+    },
+    {
+      "id": "be03_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "ending",
+          "key": "BAD_END_3"
+        }
+      ],
+      "ending": "bad_end_3"
+    }
+  ]
+}

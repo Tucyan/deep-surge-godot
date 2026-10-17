@@ -108,6 +108,8 @@ func build() -> void:
 			send("play", {"uid": card.uid})
 	)
 	fan.activated.connect(func(card):play_card(card))
+	fan.inspected.connect(func(card):
+		if card.definition.kind=="resource": select_value("resource_uid",str(card.uid)))
 
 func selection() -> Dictionary:
 	var raw: String=str(context.get("ui_state",{}).get("battle_selection","{}"))

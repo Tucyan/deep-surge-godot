@@ -5,6 +5,8 @@ const NarrativeMenu = preload("res://pages/narrative_menu.gd")
 
 static func build(parent: Node, app: Control, view: Dictionary) -> void:
 	var prefs = app.display_settings
+	var notice:=W.text(parent,app.message,14,Color("ecb49a"))
+	notice.name="SettingsNotice"; notice.visible=not app.message.is_empty()
 	var compact := app.size.y<780
 	if compact: parent.add_theme_constant_override("separation",6)
 	var current_tab: String = app.settings_tab if app.settings_tab in ["display", "game", "narrative"] else "display"
@@ -51,7 +53,13 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 	content_area.name = "SettingsContentArea"
 	content_area.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	content_area.add_theme_constant_override("separation", 6)
-	parent.add_child(content_area)
+	if prefs.mobile:
+		var scroll := ScrollContainer.new()
+		scroll.name = "MobileSettingsScroll"
+		scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+		parent.add_child(scroll); scroll.add_child(content_area)
+	else: parent.add_child(content_area)
 
 	var display_box := VBoxContainer.new()
 	display_box.name = "DisplayTabContent"
@@ -116,7 +124,7 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 	fps.select(Display.FRAME_RATES.find(prefs.fps_limit))
 	fps.item_selected.connect(func(idx):
 		prefs.fps_limit = Display.FRAME_RATES[idx]
-		app.apply_display_settings.call_deferred(false)
+		app.apply_display_settings.call_deferred(false, false)
 	)
 	display_box.add_child(make_row("帧率限制 (FPS Cap)", "限制游戏最大渲染帧率，降低功耗与发热", fps, 160))
 
@@ -139,7 +147,7 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 		quality.select(prefs.quality)
 		quality.item_selected.connect(func(idx):
 			prefs.quality = idx
-			app.apply_display_settings.call_deferred(false)
+			app.apply_display_settings.call_deferred(false, false)
 		)
 		display_box.add_child(make_row("画面清晰度 (Quality)", "调整海面与场景渲染质量，文字与UI保持清晰", quality, 160))
 	else:
@@ -173,39 +181,44 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 	toggle.button_pressed = prefs.motion
 	toggle.toggled.connect(func(enabled):
 		prefs.motion = enabled
-		app.apply_display_settings.call_deferred(false)
+		app.apply_display_settings.call_deferred(false, false)
 	)
 	display_box.add_child(make_row("海面与木筏动效 (Motion)", "开启后海面波浪与木筏随潮晃动；关闭可提升性能", toggle, 130))
 	var camera_row:=HBoxContainer.new()
 	var view_lock:=CheckButton.new(); view_lock.name="ViewLockToggle"; view_lock.text="锁定视角"
 	view_lock.button_pressed=prefs.view_locked; camera_row.add_child(view_lock)
 	view_lock.toggled.connect(func(enabled):
-		prefs.view_locked=enabled; app.apply_display_settings.call_deferred(false))
+		prefs.view_locked=enabled; app.apply_display_settings.call_deferred(false, false))
 	var camera_reset:=W.button(camera_row,"复位",func():app.world_view.reset_camera_view())
 	camera_reset.name="SettingsResetRaftView"
 	W.UtilityButtonArt.apply(camera_reset, "reset", false)
-	game_box.add_child(make_row("视角锁定",prefs.camera_help(),camera_row,210))
-	var mouse_bindings:=HBoxContainer.new()
-	for action in ["orbit","pan"]:
-		var column:=VBoxContainer.new(); mouse_bindings.add_child(column)
-		W.text(column,"旋转" if action=="orbit" else "平移",12,W.MUTED)
-		var picker:=OptionButton.new(); column.add_child(picker)
-		picker.name="CameraOrbitBinding" if action=="orbit" else "CameraPanBinding"
-		for button in Display.CAMERA_MOUSE_BUTTONS: picker.add_item(Display.mouse_button_name(button),button)
-		picker.select(Display.CAMERA_MOUSE_BUTTONS.find(prefs.camera_orbit_button if action=="orbit" else prefs.camera_pan_button))
-		picker.item_selected.connect(func(index):
-			prefs.set_camera_mouse_binding(action,Display.CAMERA_MOUSE_BUTTONS[index]); app.apply_display_settings.call_deferred(false))
-	game_box.add_child(make_row("视角鼠标按键","同键自动互换；左键单击仍可操作筏格",mouse_bindings,210))
-	var reset_keys:=HBoxContainer.new()
-	var reset_key:=W.button(reset_keys,OS.get_keycode_string(prefs.camera_reset_key),func():
-		app.camera_binding_capture=true
-		var button=app.find_child("CameraResetBinding",true,false)
-		if button!=null: button.text="按下新键…")
-	reset_key.name="CameraResetBinding"; reset_key.custom_minimum_size.x=110
-	var defaults:=W.button(reset_keys,"恢复默认",func():
-		prefs.reset_camera_bindings(); app.apply_display_settings.call_deferred(false))
-	defaults.name="CameraBindingDefaults"
-	game_box.add_child(make_row("视角复位快捷键","点击后按字母、数字或F键；Esc取消",reset_keys,210))
+	var camera_help_row:=make_row("视角锁定", "触控设备可用单指拖动视角" if prefs.mobile else prefs.camera_help(), camera_row, 210)
+	camera_help_row.name="CameraHelpRow"; game_box.add_child(camera_help_row)
+	if prefs.mobile:
+		var touch_hint := W.text(game_box, "触控操作：单指拖动视角，双指缩放；点击筏格查看操作。", 14, W.MUTED)
+		touch_hint.name = "MobileCameraHint"
+	else:
+		var mouse_bindings:=HBoxContainer.new()
+		for action in ["orbit","pan"]:
+			var column:=VBoxContainer.new(); mouse_bindings.add_child(column)
+			W.text(column,"旋转" if action=="orbit" else "平移",12,W.MUTED)
+			var picker:=OptionButton.new(); column.add_child(picker)
+			picker.name="CameraOrbitBinding" if action=="orbit" else "CameraPanBinding"
+			for button in Display.CAMERA_MOUSE_BUTTONS: picker.add_item(Display.mouse_button_name(button),button)
+			picker.select(Display.CAMERA_MOUSE_BUTTONS.find(prefs.camera_orbit_button if action=="orbit" else prefs.camera_pan_button))
+			picker.item_selected.connect(func(index):
+				prefs.set_camera_mouse_binding(action,Display.CAMERA_MOUSE_BUTTONS[index]); app.apply_display_settings.call_deferred(false, false))
+		game_box.add_child(make_row("视角鼠标按键","同键自动互换；左键单击仍可操作筏格",mouse_bindings,210))
+		var reset_keys:=HBoxContainer.new()
+		var reset_key:=W.button(reset_keys,OS.get_keycode_string(prefs.camera_reset_key),func():
+			app.camera_binding_capture=true
+			var button=app.find_child("CameraResetBinding",true,false)
+			if button!=null: button.text="按下新键…")
+		reset_key.name="CameraResetBinding"; reset_key.custom_minimum_size.x=110
+		var defaults:=W.button(reset_keys,"恢复默认",func():
+			prefs.reset_camera_bindings(); app.apply_display_settings.call_deferred(false, false))
+		defaults.name="CameraBindingDefaults"
+		game_box.add_child(make_row("视角复位快捷键","点击后按字母、数字或F键；Esc取消",reset_keys,210))
 
 	# --- TAB 2: 游戏偏好 ---
 	# Row 1: 自动理牌
@@ -219,7 +232,7 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 			app.hand_layout.order.clear()
 		if app.persistence and app.hand_layout.save_preferences() != OK:
 			app.message = "手牌设置保存失败"
-		app.render.call_deferred()
+		app.refresh_hand_preferences.call_deferred()
 	)
 	game_box.add_child(make_row("自动理牌 (Auto-Sort)", "抽牌与整理时按卡牌类型与稀有度自动排序手牌", opt_sort, 130))
 
@@ -232,7 +245,7 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 		app.hand_layout.stack_resources = enabled
 		if app.persistence and app.hand_layout.save_preferences() != OK:
 			app.message = "手牌设置保存失败"
-		app.render.call_deferred()
+		app.refresh_hand_preferences.call_deferred()
 	)
 	game_box.add_child(make_row("资源合并显示 (叠牌)", "同种基础资源达到 4 张时自动合并为单格显示，减少拥挤", opt_stack, 130))
 
@@ -242,8 +255,8 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 	hover_picker.item_selected.connect(func(index):
 		app.hand_layout.hover_mode=app.hand_layout.HOVER_MODES[index]
 		if app.persistence and app.hand_layout.save_preferences()!=OK: app.message="手牌设置保存失败"
-		app.render.call_deferred())
-	game_box.add_child(make_row("手牌悬停方式","排开遮挡：让右侧牌让位；图层上浮：仅将主卡显示到上层",hover_picker,150))
+		app.refresh_hand_preferences.call_deferred())
+	game_box.add_child(make_row("触牌展开方式" if prefs.mobile else "手牌悬停方式","排开遮挡：让右侧牌让位；图层上浮：仅将主卡显示到上层",hover_picker,150))
 
 	# Row 3: 游戏操作与手势提示卡片
 	var tip_card := PanelContainer.new()
@@ -267,7 +280,11 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 	tip_vbox.add_child(tip_title)
 
 	var tip_body := Label.new()
-	tip_body.text = "· 手牌长按 0.2 秒后可自由拖动排序；调整后将保存用户排序，新抽卡牌仍按自动理牌归类。\n· 双击手牌中的装备卡可自动安装到木筏空格，合并升级需 1 AP。\n· 战斗中双击最右侧的「攻击」或「防御」卡牌可直接以当前组合快速迎击。"
+	tip_body.name = "HandGestureHelp"
+	if prefs.mobile:
+		tip_body.text = "· 轻点查看卡牌；战斗中轻点选择材料与招式。\n· 按住 0.05 秒，向上滑出手牌区后松开使用；滑回区内取消出牌，横向拖动可排序。\n· 装备拖到完好空格安装，同类设备可合并升级；燃料拖到灯上。无效目标不消耗。\n· 战斗中拖出攻击/防御或战术牌直接确认当前组合；AP不足或组合无效时不会出牌。"
+	else:
+		tip_body.text = "· 手牌长按 0.2 秒后可自由拖动排序；调整后将保存用户排序，新抽卡牌仍按自动理牌归类。\n· 双击手牌中的装备卡可自动安装到木筏空格，合并升级需 1 AP。\n· 战斗中双击最右侧的「攻击」或「防御」卡牌可直接以当前组合快速迎击。"
 	tip_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	tip_body.add_theme_font_size_override("font_size", 12)
 	tip_body.add_theme_color_override("font_color", Color("9ab0be"))
@@ -330,6 +347,9 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 
 		var vp_hint := Label.new()
 		vp_hint.text = "当前航行中，可安全暂停返回主页，或放弃航程结算"
+		if prefs.mobile:
+			vp_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+			vp_hint.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		vp_hint.add_theme_font_size_override("font_size", 12)
 		vp_hint.add_theme_color_override("font_color", Color("8ca1b0"))
 		vp_header.add_child(vp_hint)
@@ -361,6 +381,38 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 			W.TextButtonArt.apply(abandon_btn)
 			abandon_btn.set_meta("surge_danger", true)
 			abandon_btn.add_theme_color_override("font_color", Color("f09d92"))
+	if prefs.mobile: adapt_touch_controls(parent)
+
+static func adapt_touch_controls(node: Node) -> void:
+	if node is BaseButton or node is Slider:
+		node.custom_minimum_size.y = maxf(node.custom_minimum_size.y,44)
+	if node is Label and node.get_theme_font_size("font_size") < 14:
+		node.add_theme_font_size_override("font_size",14)
+	for child in node.get_children(): adapt_touch_controls(child)
+
+static func sync_controls(app: Control) -> void:
+	# select() and set_pressed_no_signal() do not re-enter preference callbacks.
+	var prefs=app.display_settings
+	var fps=app.find_child("FrameRateLimit",true,false)
+	if is_instance_valid(fps): fps.select(Display.FRAME_RATES.find(prefs.fps_limit))
+	var quality=app.find_child("MobileQuality",true,false)
+	if is_instance_valid(quality): quality.select(prefs.quality)
+	for item in [["MotionToggle",prefs.motion],["ViewLockToggle",prefs.view_locked]]:
+		var toggle=app.find_child(item[0],true,false)
+		if is_instance_valid(toggle): toggle.set_pressed_no_signal(item[1])
+	var notice=app.find_child("SettingsNotice",true,false)
+	if is_instance_valid(notice): notice.text=app.message; notice.visible=not app.message.is_empty()
+	for item in [["CameraOrbitBinding",prefs.camera_orbit_button],["CameraPanBinding",prefs.camera_pan_button]]:
+		var picker=app.find_child(item[0],true,false)
+		if is_instance_valid(picker): picker.select(Display.CAMERA_MOUSE_BUTTONS.find(item[1]))
+	var reset=app.find_child("CameraResetBinding",true,false)
+	if is_instance_valid(reset): reset.text="按下新键…" if app.camera_binding_capture else OS.get_keycode_string(prefs.camera_reset_key)
+	var reset_view=app.find_child("ResetRaftView",true,false)
+	if is_instance_valid(reset_view): reset_view.tooltip_text="视角复位\n"+prefs.camera_help()
+	var help_row=app.find_child("CameraHelpRow",true,false)
+	if is_instance_valid(help_row) and not prefs.mobile:
+		var hint=help_row.find_child("RowHint",true,false)
+		if is_instance_valid(hint): hint.text=prefs.camera_help()
 
 static func make_row(title_text: String, hint_text: String, control: Control, control_width: float = 160.0) -> PanelContainer:
 	var panel := PanelContainer.new()
@@ -393,6 +445,7 @@ static func make_row(title_text: String, hint_text: String, control: Control, co
 
 	if hint_text != "":
 		var h_lbl := Label.new()
+		h_lbl.name="RowHint"
 		h_lbl.text = hint_text
 		h_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		h_lbl.add_theme_font_size_override("font_size", 12)

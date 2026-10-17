@@ -12,7 +12,7 @@ func build() -> void:
 func _title_action(id: String, title: Control) -> void:
 	match id:
 		"start": select_mode(title)
-		"continue": send("resume")
+		"continue": select_mode(title)
 		"journal": send("panel",{"id":"encyclopedia"})
 		"shop": send("panel",{"id":"meta_shop"})
 		"recall": request("local_panel","recall")
@@ -26,4 +26,6 @@ func select_mode(title: Control) -> void:
 		center.queue_free(); title.composition.visible=true
 		request("narrative_choose",""))
 	W.button(box,"挑战模式",func(): request("setup","challenge"))
+	if context.get("mode", "") in ["challenge", "tutorial"] and context.get("active", false):
+		W.button(box,"返回当前航程",func(): send("resume"))
 	W.corner_close(box.get_parent(),func(): center.queue_free(); title.composition.visible=true)

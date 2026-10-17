@@ -1,10 +1,12 @@
 # Deep Surge 文档索引
 
+资源卡查看与常用设置的局部刷新修复及GPU/回归结果见 [点击卡顿修复验证](../evidence/partial-refresh-fix-verification.md)（含旧轨迹跳过与回廊退出日志说明）。
+
 导航候选/出发按钮的卡顿诊断与分阶段修复方案见 [导航按钮卡顿修复方案 v1](superpowers/plans/2026-10-18-navigation-stall-repair.md)（已测量，未实施修复）。
 
 首页按钮在宽屏、窄高窗口及 100%/125% UI 缩放下的布局修正见[首页按钮比例验证](../evidence/title-layout-verification.md)。
 
-剧情已改为独立层：每 3 站触发、只受好感度影响，剧情档与玩法存档分离。契约见 [剧情层与剧情存档](narrative-and-save.md)。旧剧情模式与剧情回廊已删除。
+剧情模式现为独立入口：固定 11 个节点、每个节点都有剧情，玩法部分复用本机挑战规则；选择挑战模式时不提供剧情新建/读档。剧情与玩法使用配对存档，导入冲突以本机规则为准。契约见 [剧情层与剧情存档](narrative-and-save.md)。旧剧情回廊仍按 [剧情回廊](story-gallery.md) 的临时恢复范围只读运行。
 
 首次进入的五幕世界观序章（逐字狸语与 BGM）见 [opening-intro.md](opening-intro.md)，验证见 [opening-intro-verification.md](../evidence/opening-intro-verification.md)。
 

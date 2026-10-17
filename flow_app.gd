@@ -58,6 +58,9 @@ func _ready() -> void:
 		saved = store.read()
 		if not store.error.is_empty(): message = store.error; save_blocked = true
 		elif not saved.is_empty() and not session.restore(saved): message = session.error; save_blocked = true
+		# Legacy files remain intact. Only tutorial resumes through this old store;
+		# story runs are loaded explicitly from their paired slot after mode choice.
+		if session.state.get("mode", "") != "tutorial": session.state = {}
 	if persistence:
 		meta.read_meta()
 		if not meta.error.is_empty() and message.is_empty(): message = meta.error
@@ -98,7 +101,7 @@ func _update_world_framing() -> void:
 	var safe:=Rect2(Vector2(24,top),Vector2(maxf(200,right-24),maxf(160,bottom-top)))
 	world_view.set_framing_rect(Rect2(safe.position/size,safe.size/size))
 
-func apply_display_settings(change_mode: bool = true) -> void:
+func apply_display_settings(change_mode: bool = true, rebuild_ui: bool = true) -> void:
 	var focused:=get_viewport().gui_get_focus_owner()
 	var restore_slider_focus: bool=is_instance_valid(focused) and focused.name=="UIScale"
 	display_settings.apply_window(get_window(),change_mode)
@@ -108,8 +111,18 @@ func apply_display_settings(change_mode: bool = true) -> void:
 	world_view.camera_pan_button=display_settings.camera_pan_button
 	if persistence and display_settings.save_preferences()!=OK: message="显示设置保存失败"
 	update_render_resolution.call_deferred()
+	if not rebuild_ui:
+		preload("res://presentation/settings_panel.gd").sync_controls(self)
+		return
 	render()
 	if restore_slider_focus: _restore_scale_focus.call_deferred()
+
+func refresh_hand_preferences() -> void:
+	if local_panel=="settings" and is_instance_valid(current_page) and current_page.has_method("refresh_hand_preferences"):
+		current_page.refresh_hand_preferences()
+		disable_buttons(current_page)
+		preload("res://presentation/settings_panel.gd").sync_controls(self)
+	else: render()
 
 func _restore_scale_focus() -> void:
 	var slider:=layout.find_child("UIScale",true,false)
@@ -119,9 +132,9 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if not event is InputEventKey or not event.pressed or event.echo: return
 	if camera_binding_capture:
 		if event.keycode==KEY_ESCAPE:
-			camera_binding_capture=false; render()
+			camera_binding_capture=false; preload("res://presentation/settings_panel.gd").sync_controls(self)
 		elif not event.ctrl_pressed and not event.alt_pressed and not event.meta_pressed and display_settings.valid_camera_reset_key(int(event.keycode)):
-			display_settings.camera_reset_key=int(event.keycode); camera_binding_capture=false; apply_display_settings(false)
+			display_settings.camera_reset_key=int(event.keycode); camera_binding_capture=false; apply_display_settings(false,false)
 		get_viewport().set_input_as_handled(); return
 	if not event.ctrl_pressed and not event.alt_pressed and not event.meta_pressed and event.keycode==display_settings.camera_reset_key:
 		if is_instance_valid(world_view) and world_view.camera_input_enabled:
@@ -161,7 +174,12 @@ func handle_ui(action: String, value: String = "") -> void:
 		"selected_id": ui_state.selected_id = value
 		"category": ui_state.category = value; ui_state.list_page = 0; ui_state.selected_id = ""
 		"encyclopedia_tab": ui_state.encyclopedia_tab = value
-		"card": ui_state.card = value
+		"card":
+			# Viewing a hand card is presentation state only. The hand already owns
+			# its hover/description visuals; rebuilding the entire HUD here caused a
+			# visible 3D stall and replaced otherwise unchanged scene instances.
+			ui_state.card = value
+			return
 		"craft_tab": ui_state.craft_tab = value
 		"transmute_target": ui_state.transmute_target = value
 		"transmute_uids": ui_state.transmute_uids = value
@@ -193,10 +211,24 @@ func _visible_candidate(visit_id: String) -> bool:
 ## Presentation fields shared by the full render and the partial refresh paths.
 func hud_view() -> Dictionary:
 	var view: Dictionary = session.view()
+	view.has_story_saves = narrative_store != null and not narrative_store.list_saves().is_empty()
 	view.setup_mode = setup_mode
 	view.ui_state = ui_state.duplicate(true)
 	view.hand_layout = hand_layout
 	view.ui_scale = display_settings.ui_scale
+	view.mobile = display_settings.mobile
+	if view.mobile and not view.get("tutorial_hint",{}).is_empty():
+		var mobile_hints := {
+			"install1":"按住『滤水器』0.05秒，拖到完好空筏格松开安装（0 AP）；1级每2个后续航行轮产1张淡水，破损时暂停。",
+			"discard1":"按住可弃手牌0.05秒，向上拖出手牌区松开弃置，直到容量达标；再结算食水各扣30。",
+			"discard2":"按住可弃手牌0.05秒，向上拖出手牌区松开弃置至容量达标。保留贝币用于交易，滑回手牌区取消。",
+			"attack2a":"按住『矛击』0.05秒，向上拖出手牌区松开：1 AP、3点伤害，用后移除。",
+			"attack2b":"按住『矛击』0.05秒，向上拖出手牌区松开击败敌人；保留贝币用于交易。"
+		}
+		var lesson_id: String=str(view.tutorial_hint.get("id",""))
+		if mobile_hints.has(lesson_id):
+			view.tutorial_hint.text=mobile_hints[lesson_id]
+			view.tutorial_reason=mobile_hints[lesson_id]
 	view.camera_help = display_settings.camera_help()
 	view.camera_mode = display_settings.camera_mode
 	view.meta = meta.snapshot()
@@ -211,6 +243,15 @@ func handle_command(command: String, args: Dictionary = {}) -> void:
 	if command == "new" and not meta.unlocked(str(args.get("difficulty","standard"))):
 		message = "该难度尚未解锁：" + meta.unlock_requirement(str(args.get("difficulty","standard")))
 		render(); return
+	if command == "new" and args.get("mode", "") == "story":
+		_start_story_run(args)
+		return
+	var previous_session: RefCounted = null
+	if command == "new" and args.get("mode", "") == "challenge" and session.state.get("mode", "") == "story":
+		previous_session = session
+		var fresh := Session.new(catalog)
+		fresh.profile = session.profile.duplicate(true)
+		session = fresh
 	reset_hand_visual = command == "new"
 	var old_panel: String = session.panel
 	var old_phase: String = session.phase()
@@ -220,6 +261,7 @@ func handle_command(command: String, args: Dictionary = {}) -> void:
 	var old_cells: String = JSON.stringify(session.state.get("cells",[]))
 	if not session.dispatch(command,args):
 		message = session.error
+		if previous_session != null: session = previous_session
 	else:
 		message = ""
 		local_panel = ""
@@ -237,7 +279,8 @@ func handle_command(command: String, args: Dictionary = {}) -> void:
 			var picked := str(args.get("difficulty",""))
 			if picked != "" and picked != "tutorial":
 				meta.set_last_difficulty(picked); meta.write_meta()
-		if persistence and not save_blocked and not store.write(session.snapshot()): message = store.error
+		if session.state.get("mode", "") == "story": save_narrative_quiet()
+		_persist_profile()
 		_sync_meta_progress()
 		# Ordinary departure into preparation: update the regions that changed instead
 		# of rebuilding the whole page. Every other transition keeps the full path.
@@ -269,6 +312,17 @@ func _sync_meta_progress() -> void:
 		if message == "": message = "新手教程完成；返回首页开始正式航程。"
 	if (changed or not meta.error.is_empty()) and not meta.write_meta(): message = meta.error
 
+## Challenge/story persistence stores shared purchases and rewards, never a
+## resumable run. Story run state belongs exclusively to its paired slot.
+func _persist_profile() -> bool:
+	if not persistence or save_blocked: return true
+	var payload: Dictionary = session.snapshot()
+	if session.state.get("mode", "") != "tutorial": payload.state = {}
+	if not store.write(payload):
+		message = store.error
+		return false
+	return true
+
 ## Refresh only the HUD regions that a normal departure changed, then let the world
 ## decide from its own signatures whether the raft and destination markers move.
 func update_after_departure() -> bool:
@@ -291,14 +345,13 @@ func _init_narrative() -> void:
 	if not narrative_content.load_content():
 		message = "剧情内容载入失败：" + narrative_content.error
 	narrative = NarrativeSession.new(narrative_content)
-	if not persistence: return
-	var active: String = narrative_store.active_id()
-	if active == "": return
-	var saved: Dictionary = narrative_store.read(active)
-	if saved.is_empty(): return
-	if not narrative.load_data(saved): message = narrative.error
+	# No implicit attachment on startup. Mode selection is the only load entry.
 
 func _apply_pending_narrative() -> void:
+	if str(session.state.get("mode", "")) != "story":
+		narrative.clear()
+		pending_narrative = {}
+		return
 	var mode := str(pending_narrative.get("mode", ""))
 	if mode == "": return
 	if str(session.state.get("mode", "")) != "story":
@@ -311,9 +364,57 @@ func _apply_pending_narrative() -> void:
 	pending_narrative = {}
 
 func pick_narrative(id: String) -> void:
-	pending_narrative = {"mode":"attach", "id":id}
-	local_panel = ""
-	handle_ui("setup", "story")
+	load_story_run(id)
+
+## Prepare the entire new run and slot before replacing any active memory.
+func _start_story_run(args: Dictionary) -> void:
+	if pending_narrative.get("mode", "") != "new":
+		local_panel = "narrative"; setup_mode = ""; render(); return
+	if args.get("difficulty", "") == "tutorial":
+		message = "剧情模式请选择正式航程难度"; render(); return
+	var candidate := Session.new(catalog)
+	candidate.profile = session.profile.duplicate(true)
+	if not candidate.dispatch("new", args):
+		message = candidate.error; render(); return
+	var story := NarrativeSession.new(narrative_content)
+	story.new_save(str(pending_narrative.get("label", "")))
+	var payload: Dictionary = story.export_data()
+	payload.gameplay = candidate.snapshot()
+	var id: String = narrative_store.create_id()
+	if not narrative_store.write(id, payload):
+		message = narrative_store.error; render(); return
+	session = candidate; narrative = story
+	pending_narrative = {}; setup_mode = ""; local_panel = ""; save_blocked = false
+	message = ""; hand_layout.order.clear(); ui_state.nav_select = ""
+	world_view.reset_camera_view()
+	meta.set_last_difficulty(str(args.get("difficulty", "standard")))
+	if persistence and not meta.write_meta(): message = meta.error
+	_persist_profile()
+	render(); _maybe_story()
+
+func load_story_run(id: String) -> bool:
+	var payload: Dictionary = narrative_store.read(id)
+	if payload.get("chapter", "") != "chapter1" or payload.get("version", "") != narrative_content.version or not payload.get("gameplay") is Dictionary:
+		message = "此剧情档不含兼容的11节点航程；原档已保留，请新建剧情档。"
+		render(); return false
+	var game := Session.new(catalog)
+	var story := NarrativeSession.new(narrative_content)
+	if not game.restore(payload.gameplay) or game.state.get("mode", "") != "story" or int(game.state.get("length", 0)) != 11:
+		message = "剧情航程存档无效，已保留原文件。"; render(); return false
+	if not story.load_data(payload):
+		message = story.error; render(); return false
+	if not story.matches_run_projection(int(game.state.voyage), game.phase()):
+		message = "剧情与航程节点不一致，已保留原文件。"; render(); return false
+	if not narrative_store.set_active(id):
+		message = narrative_store.error; render(); return false
+	# Profile is shared meta progress, not rewound by loading an older run slot.
+	game.profile = session.profile.duplicate(true)
+	game.screen = "game"; game.panel = game.event_panel()
+	session = game; narrative = story
+	setup_mode = ""; local_panel = ""; pending_narrative = {}; message = ""
+	hand_layout.order.clear(); ui_state.nav_select = ""; world_view.reset_camera_view()
+	render(); _maybe_story()
+	return true
 
 func pick_new_narrative(label: String) -> void:
 	pending_narrative = {"mode":"new", "label":label}
@@ -321,9 +422,8 @@ func pick_new_narrative(label: String) -> void:
 	handle_ui("setup", "story")
 
 func pick_no_narrative() -> void:
-	pending_narrative = {"mode":"none"}
-	local_panel = ""
-	handle_ui("setup", "story")
+	message = "剧情模式必须选择新建或读取剧情档。"
+	local_panel = "narrative"; setup_mode = ""; render()
 
 func attach_narrative(id: String) -> bool:
 	if id == "" or narrative == null: return false
@@ -374,7 +474,9 @@ func save_narrative_quiet() -> bool:
 	if narrative == null or not narrative.has_save(): return true
 	var id: String = narrative_store.active_id()
 	if id == "": id = narrative_store.create_id()
-	if not narrative_store.write(id, narrative.export_data()):
+	var payload: Dictionary = narrative.export_data()
+	if session != null and session.state.get("mode", "") == "story": payload.gameplay = session.snapshot()
+	if not narrative_store.write(id, payload):
 		message = narrative_store.error
 		return false
 	return true
@@ -412,7 +514,17 @@ func _open_narrative(scene: Dictionary) -> void:
 
 func _on_narrative_completed(result: Dictionary) -> void:
 	var changes: Dictionary = narrative.finish(result)
+	if not narrative.error.is_empty():
+		message = narrative.error
+		return
+	if changes.has("ending"):
+		# A narrative bad ending closes this story run through existing settlement.
+		session.finish("story_bad_end")
+		session.state.result_text = "剧情结局：" + str(changes.ending)
+		session.state.settlement = session.Settlement.create(session.state, catalog, "run")
+		session.last_settlement = session.state.settlement.duplicate(true)
 	var saved := save_narrative_quiet()
+	if not _persist_profile(): saved = false
 	_close_narrative()
 	var parts: Array = []
 	for id in changes.get("affinity", {}):
@@ -420,6 +532,7 @@ func _on_narrative_completed(result: Dictionary) -> void:
 		var delta := int(changes.affinity[id])
 		parts.append("%s %s%d" % [narrative_content.character(id).name, "+" if delta > 0 else "", delta])
 	if saved and not parts.is_empty(): message = "好感度：" + "、".join(parts)
+	if saved and changes.has("ending"): message = "剧情结局：" + str(changes.ending)
 	render()
 	_maybe_story()
 
@@ -525,9 +638,8 @@ func render() -> void:
 		# Three columns (illustration | prose | options) share one inset so they stay aligned.
 		var event_body:=Control.new(); event_body.name="NodeEventBodyHost"; event_surface.add_child(event_body)
 		event_body.anchor_left=0.0; event_body.anchor_top=0.0; event_body.anchor_right=1.0; event_body.anchor_bottom=1.0
-		# Reserve a compact hint strip above the event and the AP/hand header below.
-		# Scrollable columns absorb long content instead of growing behind the hand.
-		var story_top: float = 226.0 if view.get("mode","") == "tutorial" else 124.0
+		# Tutorial guidance overlays the heading; event columns retain their full height.
+		var story_top: float = 124.0
 		event_body.offset_left=56; event_body.offset_top=story_top; event_body.offset_right=-56; event_body.offset_bottom=-328
 		page("story",event_body,view)
 	current_page = page("setup" if view.screen == "home" and setup_mode != "" else view.screen,host,view)
@@ -551,10 +663,6 @@ func render() -> void:
 			inset.offset_left=-panel_width*0.5; inset.offset_right=panel_width*0.5
 		host.add_child(inset)
 		var dialog := W.panel(inset)
-		if view.get("mode","")=="tutorial" and panel_id not in ["settings","help","narrative"]:
-			var lesson_space:=Control.new(); lesson_space.custom_minimum_size.y=100
-			lesson_space.mouse_filter=Control.MOUSE_FILTER_IGNORE
-			dialog.add_child(lesson_space)
 		var surface: PanelContainer=dialog.get_parent(); surface.name="ModalSurface"
 		if panel_id == "recall":
 			var gallery_style: StyleBoxFlat = surface.get_theme_stylebox("panel").duplicate()
@@ -602,8 +710,8 @@ func render() -> void:
 	_update_world_framing.call_deferred()
 
 ## Persistent lesson strip. It never takes mouse input, so it guides without
-## blocking the real interface the player is learning. Events and dialogs reserve
-## their own space below the hint; battle panels begin below its bottom edge.
+## blocking the real interface the player is learning. It covers unrelated title
+## regions rather than reserving vertical space in events or modal contents.
 func _add_tutorial_banner(host: Control, view: Dictionary, modal: bool = false) -> void:
 	if view.get("mode","") != "tutorial": return
 	if view.get("screen","") != "game": return
@@ -617,11 +725,16 @@ func _add_tutorial_banner(host: Control, view: Dictionary, modal: bool = false) 
 	var hint_width: float=minf(840.0,size.x-112.0)
 	outer.offset_left = -hint_width*0.5; outer.offset_right = hint_width*0.5
 	if modal:
-		outer.offset_top = 4; outer.offset_bottom = 112
-	elif view.get("phase","") == "battle":
-		outer.offset_top = 96; outer.offset_bottom = 184
+		# The header gap between left-hand tabs and right-hand help/close controls.
+		outer.anchor_left=0; outer.anchor_right=1
+		outer.offset_left=500; outer.offset_right=-144
+		outer.offset_top=4; outer.offset_bottom=76
 	else:
-		outer.offset_top = 122; outer.offset_bottom = 214
+		# Cover the unrelated voyage heading; preserve all current node/battle space.
+		var heading_width: float=minf(600.0,maxf(280.0,(size.x-200.0)*.42-24.0))
+		outer.anchor_left=0; outer.anchor_right=0
+		outer.offset_left=24; outer.offset_right=24+heading_width
+		outer.offset_top=8; outer.offset_bottom=96
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(0.03,0.07,0.09,0.94)
 	style.border_color = W.GOLD; style.set_border_width_all(1); style.set_corner_radius_all(3)
@@ -635,7 +748,10 @@ func _add_tutorial_banner(host: Control, view: Dictionary, modal: bool = false) 
 	outer.add_child(box)
 	var head := W.text(box,"新手教程 · %d/%d · %s" % [int(lesson.get("index",1)),int(lesson.get("total",1)),str(lesson.get("title",""))],18,W.GOLD)
 	head.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var body := W.text(box,str(lesson.get("text","")),16,W.INK)
+	var hint_text: String=str(lesson.get("text",""))
+	if modal and lesson.get("id","")=="craft1":
+		hint_text="选择『制造滤水器』：消耗塑料2、木头1和1 AP。"
+	var body := W.text(box,hint_text,16,W.INK)
 	body.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var detail := str(lesson.get("detail",""))
 	if detail != "":

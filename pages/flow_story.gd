@@ -63,7 +63,7 @@ func build() -> void:
 	options_header = HBoxContainer.new()
 	options_header.name = "NodeEventOptionsHeader"
 	options_header.add_theme_constant_override("separation", 6)
-	options_header.custom_minimum_size.y = 34
+	options_header.custom_minimum_size.y = 44 if context.get("mobile",false) else 34
 	choices_column.add_child(options_header)
 	var prompt := W.text(options_header, "请做出选择", 14, W.MUTED)
 	prompt.name = "NodeEventOptionsHint"
@@ -77,7 +77,7 @@ func build() -> void:
 	cancel_button = build_direct_button(options_header, "取消选择", cancel_preselect)
 	cancel_button.name = "CancelPreselect"
 	cancel_button.tooltip_text = "回到事件说明，不提交选项"
-	cancel_button.custom_minimum_size = Vector2(136, 34)
+	cancel_button.custom_minimum_size = Vector2(136, 44 if context.get("mobile",false) else 34)
 	cancel_button.size_flags_horizontal = Control.SIZE_SHRINK_END
 	cancel_button.add_theme_font_size_override("font_size", 14)
 	options_panel = VBoxContainer.new()
@@ -212,6 +212,7 @@ func event_option(option: Dictionary) -> void:
 	if alternatives.size() > 1:
 		selection = OptionButton.new()
 		selection.name = "NodeEventAlternative"
+		if context.get("mobile",false): selection.custom_minimum_size.y=44
 		selection.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		for item in alternatives: selection.add_item(str(item.label))
 		selection.select(index)

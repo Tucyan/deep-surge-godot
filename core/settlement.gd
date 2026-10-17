@@ -2,7 +2,7 @@ extends RefCounted
 const Stats = preload("res://core/run_statistics.gd")
 const SCORE_VERSION := "settlement-score-v2"
 const REWARD_VERSION := "completed-nodes-v1"
-const OUTCOMES := {"survived":"灯火未熄","true":"回声归航","withdrawn":"离开潮眼","dead":"沉入深潮","mad":"迷失潮声","abandon":"返回岸边","tutorial":"航程入门","A":"成功封闭","B":"付出代价后处理","C":"紧急撤离","SOLO":"独航出口","chapter":"章节完成"}
+const OUTCOMES := {"survived":"灯火未熄","true":"回声归航","withdrawn":"离开潮眼","dead":"沉入深潮","mad":"迷失潮声","abandon":"返回岸边","story_bad_end":"剧情坏结局","tutorial":"航程入门","A":"成功封闭","B":"付出代价后处理","C":"紧急撤离","SOLO":"独航出口","chapter":"章节完成"}
 
 static func rounded(value: float) -> int:
 	# JSON round trips can move exact half points by a few ULPs (e.g. HP10/12).

@@ -19,6 +19,9 @@ func unlocked_ids() -> Array:
 ## Default to the last difficulty the player actually picked. A first-time player
 ## who has not finished the tutorial lands on the tutorial instead.
 func default_difficulty() -> String:
+	if context.setup_mode == "story":
+		var previous := str(context.get("meta", {}).get("last_difficulty", "standard"))
+		return previous if previous != "tutorial" and previous in unlocked_ids() else "standard"
 	var meta: Dictionary = context.get("meta",{})
 	var last: String = str(meta.get("last_difficulty",""))
 	if last != "" and last in unlocked_ids(): return last
@@ -47,7 +50,7 @@ func build() -> void:
 	if picking: resource_picker(center); return
 	var box:=W.panel(center,Vector2(minf(780,get_viewport_rect().size.x-48),0))
 	W.text(box,"新局准备",34,W.GOLD)
-	W.text(box,"新手教程 · 从选牌开始学习航行" if chosen_difficulty=="tutorial" else ("剧情模式 · 第一层15站（测试剧本）" if context.setup_mode=="story" else "挑战模式 · 选择难度、出身与航程种子"),18,W.MUTED)
+	W.text(box,"新手教程 · 从选牌开始学习航行" if chosen_difficulty=="tutorial" else ("剧情模式 · 第一章11节点，每节点均有剧情" if context.setup_mode=="story" else "挑战模式 · 选择难度、出身与航程种子"),18,W.MUTED)
 	W.text(box,"难度",18)
 	var difficulty_choice:=OptionButton.new(); difficulty_choice.name="DifficultyChoice"; box.add_child(difficulty_choice)
 	difficulty_choice.add_item("请选择难度")
@@ -57,6 +60,7 @@ func build() -> void:
 		var locked: bool = id not in unlocked
 		difficulty_choice.add_item(context.difficulties[i].name + (" · 未解锁（%s）" % Difficulty.unlock_requirement(id) if locked else ""))
 		if locked: difficulty_choice.set_item_disabled(i+1,true)
+		if context.setup_mode == "story" and id == "tutorial": difficulty_choice.set_item_disabled(i+1, true)
 	difficulty_choice.select(Difficulty.IDS.find(chosen_difficulty)+1)
 	var tutorial: bool = chosen_difficulty == "tutorial"
 	var description:=W.text(box,"请选择本次航程的难度。",17,W.MUTED); description.name="DifficultyDescription"; description.custom_minimum_size.y=96

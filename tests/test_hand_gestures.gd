@@ -16,19 +16,23 @@ func run():
 	var state=app.session.snapshot(); var count: int=tray.cards.size()
 	check(count<app.session.state.hand.size(),"Default merged resource fan")
 	check(tray.find_children("StackQuantity","Label",true,false).size()>0,"Visible quantity badge")
-	var clicks := []; tray.activated.connect(func(c):clicks.append(c.uid))
+	var clicks := []
+	var observe_click := func(c): clicks.append(c.uid)
+	tray.activated.connect(observe_click)
 	tray.buttons[0].pressed.emit()
 	check(clicks.size()==1,"Keyboard action activates once")
 	await process_frame
 	tray=get_nodes_in_group("hand_fans").filter(func(n):return app.layout.is_ancestor_of(n))[0]
-	clicks.clear(); tray.activated.connect(func(c):clicks.append(c.uid))
+	clicks.clear()
+	if not tray.activated.is_connected(observe_click): tray.activated.connect(observe_click)
 	var point: Vector2=tray.tiles[0].position+Vector2(20,60)
 	pointer(tray,true,point); check(clicks.is_empty(),"Press must wait for release")
 	pointer(tray,false,point); check(clicks.size()==1,"Short release activates exactly one UID")
-	# Short click rebuilds the app: select the replacement hand.
+	# Inspection can preserve the hand node; avoid observing it twice.
 	await process_frame
 	tray=get_nodes_in_group("hand_fans").filter(func(n):return app.layout.is_ancestor_of(n))[0]
-	clicks.clear(); tray.activated.connect(func(c):clicks.append(c.uid))
+	clicks.clear()
+	if not tray.activated.is_connected(observe_click): tray.activated.connect(observe_click)
 	point=tray.tiles[0].position+Vector2(20,60); var moved_uid: String=tray.cards[0].uid
 	pointer(tray,true,point); tray._process(.19)
 	check(not tray.dragging,"Before 0.2 seconds press is not dragging")
@@ -70,7 +74,8 @@ func run():
 	check(app.session.view().capacity==capacity-1,"Stack click discards exactly one physical card")
 	check(not app.session.state.hand.any(func(c):return c.uid==uid),"Discard targets representative UID")
 	check(tray.cards.filter(func(c):return c.id=="wood")[0].stack_count==quantity-1,"Remaining stack refreshes quantity")
-	clicks.clear(); tray.activated.connect(func(c):clicks.append(c.uid))
+	clicks.clear()
+	if not tray.activated.is_connected(observe_click): tray.activated.connect(observe_click)
 	point=tray.tiles[0].position+Vector2(20,60); pointer(tray,true,point); tray._process(.21)
 	var cancel := InputEventKey.new(); cancel.keycode=KEY_ESCAPE; cancel.pressed=true; tray._input(cancel)
 	pointer(tray,false,point)

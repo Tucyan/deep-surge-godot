@@ -1234,8 +1234,8 @@
     "ui.hand.fan": {
       "path": "res://presentation/hand_fan.gd",
       "source": "presentation/hand_fan.gd",
-      "version": 23,
-      "sha256": "8f67e8128e0eec7f378f8202905651f3ce2b81309440204b8f01625541ee3df1",
+      "version": 24,
+      "sha256": "fd2e23c5f5002298e72e9d5c6548078d336471051b3879d68f46c857fb269f0d",
       "dependencies": [
         "ui.hand.border",
         "ui.item-card",
@@ -1244,7 +1244,7 @@
       ],
       "license": "project-authored shader and deterministic procedural ornament; no external artwork",
       "source_hash_verified_on": "2026-10-18",
-      "runtime_mapping": "card height 97 percent of body excluding fixed-height header; hover and selected raise preserve sibling draw order; hover clearance uses visible frame width excluding transparent margins and shadow, threshold 5 percent; no battle-selection requirement or experimental rear layers"
+      "runtime_mapping": "card height 97 percent of body excluding fixed-height header; hover and selected raise preserve sibling draw order; hover clearance uses visible frame width excluding transparent margins and shadow, threshold 5 percent; no battle-selection requirement or experimental rear layers; mobile hold 0.05s and release above hand to use, tap inspect/select, validated battle confirmation; mobile battle selection raises 12px without hover lift so capacity stays visible"
     },
     "model.raft-state": {
       "path": "res://presentation/raft_state_models.gd",
@@ -1486,8 +1486,8 @@
     },
     "ui.hud.voyage-adapter": {
       "path": "res://pages/voyage_hud.gd",
-      "version": 24,
-      "sha256": "2ce578e0dafb8390f755fededad868e0c7c072379dd28574d524065c7860b196",
+      "version": 25,
+      "sha256": "c64f38192d06232aa9618d57478956864e2dcde68d48e710fa80cf1b6f1e3a67",
       "source": [
         "asset-sources/hud-visual-v2/deep_surge_hud_godot4_v2_visual_match.zip",
         "pages/voyage_hud.gd"
@@ -1507,12 +1507,12 @@
       "visual_random": "none",
       "role": "read-only environment names and native hover tooltips; no top decoration plates; navigation dispatch buttons",
       "source_hash_verified_on": "2026-10-18",
-      "runtime_mapping": "unified navigation header; environment strip below heading; parchment hand tray; adaptive operation panel; independent long/round native buttons"
+      "runtime_mapping": "unified navigation header; environment strip below heading; parchment hand tray; adaptive operation panel; independent long/round native buttons; combat hides reset/view-toggle utilities; mobile battle panel left inset 28px reclaims their 100px gutter"
     },
     "ui.hud.story-adapter": {
       "path": "res://pages/flow_story.gd",
-      "version": 4,
-      "sha256": "57317656e83e494127e50041874ca981699938dea4c0506814aa47e1678dcf95",
+      "version": 5,
+      "sha256": "027d1bd8a26e54196ae9bbf5dbd9c8ee4ff669741018a1ee350cf92910c61e34",
       "source": [
         "asset-sources/hud-visual-v2/deep_surge_hud_godot4_v2_visual_match.zip",
         "pages/flow_story.gd"
@@ -1524,7 +1524,8 @@
       "license": "user-supplied HUD package; no explicit upstream license supplied, project adaptations",
       "visual_random": "none",
       "role": "presentation-only; draws current read-only session view; native choices dispatch existing commands",
-      "source_hash_verified_on": "2026-10-18"
+      "source_hash_verified_on": "2026-10-18",
+      "runtime_mapping": "NodeEventBody: mobile fixed 44px options header/cancel and target selectors; three columns and scrollable prose/choices; preselect/cancel are read-only"
     },
     "texture.hud.status-art": {
       "path": "res://assets/ui/hud/status_art.png",
@@ -1858,8 +1859,8 @@
     "ui.title.menu": {
       "path": "res://presentation/title_menu.gd",
       "source": "presentation/title_menu.gd",
-      "version": 9,
-      "sha256": "e4af5bbaf0593ad0a9795512e92de1a4b4cc7b1a60efd2052c7b35adef2c64de",
+      "version": 10,
+      "sha256": "3a99fc7d1c23d11a0acf88d2610c186fba7ba20ac46ed4987dc66424d3b9ccdf",
       "dependencies": [
         "texture.title.01-start-game-dark",
         "texture.title.01-start-game-light",
@@ -1914,8 +1915,8 @@
     "ui.title.home": {
       "path": "res://pages/flow_home.gd",
       "source": "pages/flow_home.gd",
-      "version": 5,
-      "sha256": "b58da28908d2b4586132145d7aeaf775476de61a92aa23af4f95d946510c4aad",
+      "version": 6,
+      "sha256": "fadd348ab077e232ff5938537d4b14a1317b378421e3502a69d36bb837f696a0",
       "dependencies": [
         "ui.title.menu"
       ],
@@ -2037,7 +2038,7 @@
     },
     "ui.story.layout": {
       "path": "res://pages/story_page.gd",
-      "version": 3,
+      "version": 4,
       "source": "plain native Godot controls and system font; no image dependencies",
       "reference_size": [
         1600,
@@ -2045,21 +2046,22 @@
       ],
       "dependencies": [],
       "visual_seed": null,
-      "sha256": "27f5593f9ee769c57a59f7146ddb7ec0286ccf6399324350c59071a23fcb2912",
+      "sha256": "02cd38943dd94a0035d85a6ac02badbff8d70825ec87ab08fde99c009e667b04",
       "source_hash_verified_on": "2026-10-18"
     },
     "ui.node-event.embedded": {
       "path": "res://pages/flow_story.gd",
       "source": "pages/flow_story.gd",
-      "sha256": "57317656e83e494127e50041874ca981699938dea4c0506814aa47e1678dcf95",
-      "version": 6,
+      "sha256": "027d1bd8a26e54196ae9bbf5dbd9c8ee4ff669741018a1ee350cf92910c61e34",
+      "version": 7,
       "dependencies": [
         "res://core/difficulty_rules.gd",
         "res://pages/story_gallery.gd",
         "res://presentation/hud_frame.gd"
       ],
       "presentation": "full-screen translucent backdrop below HUD; three columns (illustration | prose | options) in one inset; options column shows only native buttons under a fixed header row (请做出选择 left, 取消选择 right while preselecting); two-step select then confirm",
-      "source_hash_verified_on": "2026-10-18"
+      "source_hash_verified_on": "2026-10-18",
+      "runtime_mapping": "NodeEventBody: mobile fixed 44px options header/cancel and target selectors; three columns and scrollable prose/choices; preselect/cancel are read-only"
     },
     "texture.voyage.topbar-v1": {
       "path": "res://assets/textures/voyage-topbar-v1.png",
@@ -2092,8 +2094,8 @@
     "ui.hand.capacity-badge": {
       "path": "res://pages/voyage_hud.gd",
       "source": "pages/voyage_hud.gd",
-      "version": 24,
-      "sha256": "2ce578e0dafb8390f755fededad868e0c7c072379dd28574d524065c7860b196",
+      "version": 25,
+      "sha256": "c64f38192d06232aa9618d57478956864e2dcde68d48e710fa80cf1b6f1e3a67",
       "dependencies": [
         "ui.voyage-hud",
         "ui.controls.utility-icons"
@@ -2105,8 +2107,8 @@
     "ui.craft.circle-entry": {
       "path": "res://pages/voyage_hud.gd",
       "source": "pages/voyage_hud.gd",
-      "version": 24,
-      "sha256": "2ce578e0dafb8390f755fededad868e0c7c072379dd28574d524065c7860b196",
+      "version": 25,
+      "sha256": "c64f38192d06232aa9618d57478956864e2dcde68d48e710fa80cf1b6f1e3a67",
       "dependencies": [
         "ui.voyage-hud",
         "ui.hud.nautical-button-art",
@@ -2119,8 +2121,8 @@
     "ui.starting-resources": {
       "path": "res://pages/new_game_setup.gd",
       "source": "pages/new_game_setup.gd",
-      "version": 4,
-      "sha256": "8b3c180225c14a24931cb80282c82e9bbf2a7d202d2bd143d21414fbf75bd59f",
+      "version": 5,
+      "sha256": "af4ec66dc733c9c5e238a7c149dbbb8ea858ff5ab6d5b63ea4bfbccf223a3b13",
       "dependencies": [
         "card.wood",
         "card.iron",
@@ -2185,8 +2187,8 @@
     "ui.settings-panel": {
       "path": "res://presentation/settings_panel.gd",
       "source": "presentation/settings_panel.gd",
-      "version": 10,
-      "sha256": "39ab393b4cc181e47f8f680e37a44ef43740155b110797637757c72527c0a3eb",
+      "version": 11,
+      "sha256": "e66f9a7558a5040bc6cc9d267d01802fc5f2a42549de3b8762eeb202861866af",
       "dependencies": [
         "ui.controls.close",
         "ui.display-preferences",
@@ -2202,19 +2204,19 @@
     "ui.display-preferences": {
       "path": "res://presentation/display_settings.gd",
       "source": "presentation/display_settings.gd",
-      "version": 5,
-      "sha256": "574aed010df5befcaa1f2548bc2d2a6c217d7c6cd4dd3e32cc8a3b2382e2f515",
+      "version": 6,
+      "sha256": "1075d2a5bc705c0ac7b3fcc69fcc962107ed0189502f2292cca832e5dc01ecc1",
       "dependencies": [],
       "role": "persistent UI/window/render settings and immediate engine FPS limit, VSync disabled for selected cap",
       "license": "project-authored procedural UI; reuses existing artwork and theme",
       "visual_random": "none",
-      "source_hash_verified_on": "2026-10-17"
+      "source_hash_verified_on": "2026-10-18"
     },
     "ui.modal-layout": {
       "path": "res://flow_app.gd",
       "source": "flow_app.gd",
-      "version": 12,
-      "sha256": "2584a957415a3d9edae6f1c6fc740d3d1508a5c6b79c894e56a264f69cc327e7",
+      "version": 14,
+      "sha256": "44e4b4cc244fede45e3b025be952381b3f757afee2ad40cc2459471ee6229faf",
       "dependencies": [
         "ui.controls.close",
         "ui.settings-panel",
@@ -2227,13 +2229,14 @@
       "role": "Full-screen crafting, encyclopedia and meta shop; modal X close; home navigation only in settings",
       "license": "project-authored procedural UI; reuses existing artwork and theme",
       "visual_random": "none",
-      "source_hash_verified_on": "2026-10-18"
+      "source_hash_verified_on": "2026-10-18",
+      "runtime_mapping": "Full-screen crafting, encyclopedia and meta shop; modal X close; home navigation only in settings; tutorial combat guidance overlays only upper-left voyage heading, mouse/touch ignored, full-height battle panels retained; mobile lesson and preview instructions describe 0.05s drag-out and end-turn steps; all tutorial node hints overlay voyage heading; node body starts at normal 124px; craft/shop hints overlay header gap x500 to right-144, no 100px reserved content row"
     },
     "ui.battle.equipment": {
       "path": "res://pages/flow_battle.gd",
       "source": "pages/flow_battle.gd",
-      "version": 6,
-      "sha256": "d367a1449bccefe430aee63d113bca7b3e9aa71a7fe3fbb8d8f1312bad737f6d",
+      "version": 7,
+      "sha256": "0c854afd98074d943cf4531ee510188964694151485feb84a1f6bced8b2e9d42",
       "dependencies": [
         "ui.hand.fan",
         "ui.modal-layout",
@@ -2253,7 +2256,7 @@
         "equipment_models": "AssetCatalog stable model.raft.module.* IDs with temporary labelled fallback on load failure",
         "modal_insets": "battle and raft panels 0.035..0.965 anchors"
       },
-      "source_hash_verified_on": "2026-10-17"
+      "source_hash_verified_on": "2026-10-18"
     },
     "model.raft.slot-ghost": {
       "path": "res://assets/models/raft-modules/slot-ghost.glb",
@@ -3104,8 +3107,8 @@
     "ui.battle.salvage": {
       "path": "res://pages/voyage_hud.gd",
       "source": "project-authored/native-Godot-battle-salvage-v14",
-      "version": 24,
-      "sha256": "2ce578e0dafb8390f755fededad868e0c7c072379dd28574d524065c7860b196",
+      "version": 25,
+      "sha256": "c64f38192d06232aa9618d57478956864e2dcde68d48e710fa80cf1b6f1e3a67",
       "dependencies": [
         "res://core/run_rules.gd",
         "res://core/action_query.gd",
@@ -3525,7 +3528,7 @@
       ],
       "dependencies": [],
       "license": "user-supplied artwork; original pixels preserved",
-      "runtime_mapping": "BattleHUDView intent; proportional fit; decoration ignores mouse"
+      "runtime_mapping": "BattleHUDView intent; desktop proportional fit; mobile NinePatch with fixed-size ornaments; original image bytes retained; decoration ignores input"
     },
     "texture.battle.panel.preview": {
       "path": "res://assets/battle_ui/panels_v1/03_bottom_center_panel.png",
@@ -3539,7 +3542,7 @@
       ],
       "dependencies": [],
       "license": "user-supplied artwork; original pixels preserved",
-      "runtime_mapping": "BattleHUDView preview; proportional fit; decoration ignores mouse"
+      "runtime_mapping": "BattleHUDView preview; desktop proportional fit; mobile NinePatch with fixed-size ornaments; original image bytes retained; decoration ignores input"
     },
     "texture.battle.panel.log": {
       "path": "res://assets/battle_ui/panels_v1/04_right_side_panel.png",
@@ -3553,20 +3556,21 @@
       ],
       "dependencies": [],
       "license": "user-supplied artwork; original pixels preserved",
-      "runtime_mapping": "BattleHUDView log; proportional fit; decoration ignores mouse"
+      "runtime_mapping": "BattleHUDView log; desktop proportional fit; mobile NinePatch with fixed-size ornaments; original image bytes retained; decoration ignores input"
     },
     "ui.battle.panels": {
       "path": "res://pages/battle_hud_view.gd",
       "source": "project-authored supplied-panel adapter",
-      "version": 1,
-      "sha256": "56285af3917f0991822d516bf212b62d07b83a0db8856ee4bd348376b0c86b2a",
+      "version": 4,
+      "sha256": "ee88e27c54d809086f8fa30158a3de7f3fde512253f95c1d13bb3652f8d5849c",
       "dependencies": [
         "texture.battle.panel.monster",
         "texture.battle.panel.intent",
         "texture.battle.panel.preview",
         "texture.battle.panel.log"
       ],
-      "runtime_mapping": "monster / intent / preview / combat log; original battle actions and hand retained"
+      "runtime_mapping": "desktop: proportional four-panel composition; mobile: unscaled 18px text, safe region above hand, NinePatch intent/preview/log at 0.65 ornament scale with 128/80/128/48 source margins, fixed preview header and scrollable details, 44px touch targets; combat hides reset/view-toggle utilities; mobile battle panel left inset 28px reclaims their 100px gutter; tutorial combat guidance overlays only upper-left voyage heading, mouse/touch ignored, full-height battle panels retained; mobile lesson and preview instructions describe 0.05s drag-out and end-turn steps",
+      "source_hash_verified_on": "2026-10-18"
     },
     "ui.camera.reset-icon": {
       "path": "res://assets/icons/camera-reset.svg",

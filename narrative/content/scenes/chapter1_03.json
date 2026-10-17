@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "id": "chapter1.n03",
+  "title": "第一章 · 节点 03/11",
+  "imported_chapter1": true,
+  "entry": "n03_p0036_0",
+  "nodes": [
+    {
+      "id": "n03_p0036_0",
+      "text": "【第 3 回合 / 节点 03｜第一次狩猎：水下阴影】",
+      "source_block_id": "p0036",
+      "source_offset": 0,
+      "next": "n03_p0037_0"
+    },
+    {
+      "id": "n03_p0037_0",
+      "text": "【场景】：正午，水色骤然变深，木筏周围的海水咕嘟嘟冒起浑浊的气泡。",
+      "source_block_id": "p0037",
+      "source_offset": 0,
+      "next": "n03_p0037_34"
+    },
+    {
+      "id": "n03_p0037_34",
+      "text": "【环境音】：令人牙酸的刮擦声从木筏底部传来，伴随着甲壳刮撞木料的闷响。",
+      "source_block_id": "p0037",
+      "source_offset": 34,
+      "next": "n03_p0039_0"
+    },
+    {
+      "id": "n03_p0039_0",
+      "text": "旁白：",
+      "source_block_id": "p0039",
+      "source_offset": 0,
+      "next": "n03_p0039_4"
+    },
+    {
+      "id": "n03_p0039_4",
+      "text": "水下有东西盯上了你的浮木。“喀啦……喀啦……”一汁有着绚丽色彩的半透明粘腻触手怪物，猛地将半截躯体扒上了木筏边缘！而你知道，在这片灰海，只有危险的生物才会长得这么显眼……",
+      "source_block_id": "p0039",
+      "source_offset": 4,
+      "next": "n03_p0041_0"
+    },
+    {
+      "id": "n03_p0041_0",
+      "text": "（你握紧手边的武器，准备迎接水下的阴影。）",
+      "source_block_id": "p0041",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n03_p0043_0"
+    },
+    {
+      "id": "n03_p0043_0",
+      "text": "旁白：",
+      "source_block_id": "p0043",
+      "source_offset": 0,
+      "next": "n03_p0043_4"
+    },
+    {
+      "id": "n03_p0043_4",
+      "text": "木筏顿时剧烈倾斜，冰冷的海水漫过了你的脚踝。那状似水母的怪物将他的触手刺了过来！",
+      "source_block_id": "p0043",
+      "source_offset": 4,
+      "next": "n03_p0045_0"
+    },
+    {
+      "id": "n03_p0045_0",
+      "text": "【剧情演出】：进攻与招架。",
+      "source_block_id": "p0045",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n03_p0047_0"
+    },
+    {
+      "id": "n03_p0047_0",
+      "text": "（经过数个回合的狼狈拉锯，你避开它的触手，将手中绑着尖锐碎铁的硬木狠命刺入了怪物节肢的软肉中。）",
+      "source_block_id": "p0047",
+      "source_offset": 0,
+      "next": "n03_p0049_0"
+    },
+    {
+      "id": "n03_p0049_0",
+      "text": "旁白：",
+      "source_block_id": "p0049",
+      "source_offset": 0,
+      "next": "n03_p0049_4"
+    },
+    {
+      "id": "n03_p0049_4",
+      "text": "怪物发出一声类似风箱漏气般的怪鸣，抽搐着滑回海里，留下一截断裂的触手和几团“？？？”的粘稠体液。你瘫坐在湿透的木筏上剧烈喘息，心脏在肋骨后狂跳。",
+      "source_block_id": "p0049",
+      "source_offset": 4,
+      "next": "n03_p0049_77"
+    },
+    {
+      "id": "n03_p0049_77",
+      "text": "……",
+      "source_block_id": "p0049",
+      "source_offset": 77,
+      "next": "n03_p0049_80"
+    },
+    {
+      "id": "n03_p0049_80",
+      "text": "“？？？”是什么？",
+      "source_block_id": "p0049",
+      "source_offset": 80,
+      "next": "n03_p0049_90"
+    },
+    {
+      "id": "n03_p0049_90",
+      "text": "你突然感觉自己的记忆松动了，但又感觉有什么东西在看你。就在这时——",
+      "source_block_id": "p0049",
+      "source_offset": 90,
+      "next": "n03_p0049_124"
+    },
+    {
+      "id": "n03_p0049_124",
+      "text": "“呜——————！！”",
+      "source_block_id": "p0049",
+      "source_offset": 124,
+      "next": "n03_p0049_136"
+    },
+    {
+      "id": "n03_p0049_136",
+      "text": "一声低沉而真实的铜质汽笛声，穿透了漫无边际的海风。",
+      "source_block_id": "p0049",
+      "source_offset": 136,
+      "next": "n03_p0051_0"
+    },
+    {
+      "id": "n03_p0051_0",
+      "text": "主角：“……汽笛？”",
+      "source_block_id": "p0051",
+      "source_offset": 0,
+      "next": "n03_p0053_0"
+    },
+    {
+      "id": "n03_p0053_0",
+      "text": "旁白：",
+      "source_block_id": "p0053",
+      "source_offset": 0,
+      "next": "n03_p0053_4"
+    },
+    {
+      "id": "n03_p0053_4",
+      "text": "你猛地撑起身子。极目远眺，在两海里外起伏的波峰之间，隐约出现了一艘用厚重木料、铁皮与涂料补丁拼装而成的大型帆机混动中型船只。桅杆上挂着防风风灯，橘黄色的光晕在灰暗的海面上格外刺眼。",
+      "source_block_id": "p0053",
+      "source_offset": 4,
+      "next": "n03_p0053_95"
+    },
+    {
+      "id": "n03_p0053_95",
+      "text": "——那是人类的船队。",
+      "source_block_id": "p0053",
+      "source_offset": 95,
+      "next": "n03_end"
+    },
+    {
+      "id": "n03_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": []
+    }
+  ]
+}

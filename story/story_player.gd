@@ -21,6 +21,7 @@ func load_story(data: Variant) -> Dictionary:
 	if not data.get("nodes") is Array or data.nodes.is_empty():
 		return _error("Story nodes required")
 	var index: Dictionary = {}
+	var imported: bool = data.get("imported_chapter1", false)
 	for node in data.nodes:
 		if not node is Dictionary or not node.get("id") is String or node.id.is_empty() or index.has(node.id):
 			return _error("Invalid or duplicate node id")
@@ -45,7 +46,7 @@ func load_story(data: Variant) -> Dictionary:
 			for field in ["id", "text", "next"]:
 				if not choice.get(field) is String or choice[field].is_empty():
 					return _error("Choice id/text/next required")
-			if ids.has(choice.id) or choice.text.length() > 20:
+			if ids.has(choice.id) or choice.text.length() > (120 if imported else 20):
 				return _error("Duplicate choice or choice text too long")
 			if "\n" in choice.text or "\r" in choice.text: return _error("Choice text must be a single paragraph")
 			ids.append(choice.id)
@@ -109,6 +110,7 @@ func choose(choice_id: String) -> Dictionary:
 	if _status != "playing": return _error("Story is not playing")
 	for choice in _nodes[_current].get("choices", []):
 		if choice.id == choice_id:
+			if choice.get("disabled", false): return _error("Choice requirements not met")
 			_history[-1].choice_id = choice.id
 			_history[-1].choice_text = choice.text
 			_choices.append({"node_id":_current, "choice_id":choice.id})

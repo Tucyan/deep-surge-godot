@@ -4,6 +4,7 @@ const W = preload("res://presentation/widgets.gd")
 const CardStack = preload("res://presentation/card_stack.gd")
 const Border = preload("res://presentation/hand_border.gd")
 signal activated(card: Dictionary)
+signal inspected(card: Dictionary)
 signal battle_action_double_clicked(card: Dictionary)
 signal equipment_double_clicked(card: Dictionary)
 signal equipment_dragged(card: Dictionary, point: Vector2)
@@ -18,7 +19,10 @@ var press_point := Vector2.ZERO
 var pointer_point := Vector2.ZERO
 var drop_index := -1
 var touch_index := -1
-const HOLD_SECONDS := 0.2
+const DESKTOP_HOLD_SECONDS := 0.2
+const MOBILE_HOLD_SECONDS := 0.05
+var mobile := false
+var hold_seconds := DESKTOP_HOLD_SECONDS
 var cards: Array = []
 var tiles: Array = []
 var stack_bases: Array = []
@@ -50,6 +54,8 @@ func set_selected_uids(uids: Array) -> void:
 func create(assets: RefCounted, entries: Array, view: Dictionary) -> void:
 	add_to_group("hand_fans")
 	context = view; visual_assets = assets
+	mobile = bool(view.get("mobile", OS.has_feature("mobile")))
+	hold_seconds = MOBILE_HOLD_SECONDS if mobile else DESKTOP_HOLD_SECONDS
 	hand_layout = view.get("hand_layout",preload("res://presentation/hand_layout.gd").new())
 	cards = hand_layout.build(entries)
 	if view.get("phase","") == "battle":
@@ -108,7 +114,9 @@ func create(assets: RefCounted, entries: Array, view: Dictionary) -> void:
 		tile.z_index = 2
 		var disabled: bool = context.phase == "discard" and (card.id in ["punch","pollution"] or tutorial_currency(card))
 		if context.phase == "battle": disabled = card.definition.cost > context.battle.ap
-		tile.create(assets,card,action_name(card),func(): activated.emit(card),120,184,disabled)
+		tile.create(assets,card,action_name(card),func():
+			if mobile: inspected.emit(card)
+			else: activated.emit(card),120,184,disabled)
 		ignore_mouse(tile)
 		var button: Button = tile.get_child(0).get_child(tile.get_child(0).get_child_count()-1)
 		if card.uid == "virtual_action_attack": button.name = "BattleAttack"
@@ -180,6 +188,19 @@ func action_name(card: Dictionary) -> String:
 	if context.phase == "battle" or (context.can_base and card.definition.kind == "survival"): return "使用 · "+card.definition.name
 	return "查看 · "+card.definition.name
 func usage(card: Dictionary) -> String:
+	if not mobile: return desktop_usage(card)
+	if tutorial_currency(card): return "请保留贝币用于接下来的交易，选择其他可弃手牌。"
+	if context.phase == "discard":
+		return "此牌不能主动弃置。" if card.id in ["punch","pollution"] else "按住0.05秒后向上滑出手牌区松开，弃置此牌；滑回取消。"
+	if context.phase == "battle":
+		if card.definition.kind == "resource": return "轻点选择材料，再拖出攻击或防御卡确认组合。"
+		return "按住0.05秒后向上滑出手牌区松开，确认出牌；滑回取消。AP不足或无效组合不会消耗。"
+	if context.can_base and card.definition.kind == "survival": return "按住0.05秒后向上滑出手牌区松开使用；滑回取消。"
+	if card.definition.kind == "equipment": return "按住0.05秒后拖到木筏完好空格安装，或同类1级设备上升级；无效投放不消耗。"
+	if card.id in ["wood","corpse"] and context.can_base: return "按住0.05秒后拖到已安装的灯上松开投入燃料；无效投放不消耗。"
+	return desktop_usage(card).replace("点击", "轻点")
+
+func desktop_usage(card: Dictionary) -> String:
 	if tutorial_currency(card): return "请保留贝币用于接下来的交易，选择其他可弃手牌。"
 	if context.phase == "battle" and card.definition.kind == "resource": return "选择该资源后，再选攻击或格挡；确认前不会消耗。"
 	if card.id in ["wood","corpse"] and context.can_base: return "长按后拖到已安装的灯上松开，投入一份燃料，不消耗 AP；也可用于合成。"
@@ -229,8 +250,9 @@ func arrange() -> void:
 				if overlap/card_face_width >= 0.05 or is_equal_approx(overlap/card_face_width,0.05):
 					x = minf(x+overlap,size.x-card_width)
 		var raise_y := 0.0
-		if i == hovered: raise_y += 14.0
-		if is_selected: raise_y += card_height / 3.0
+		var mobile_battle: bool = mobile and context.get("phase","")=="battle"
+		if i == hovered and not mobile_battle: raise_y += 14.0
+		if is_selected: raise_y += 12.0 if mobile_battle else card_height / 3.0
 		var tile: Control = tiles[i]
 		# ItemCard keeps its authored aspect ratio; scale its fixed base size.
 		tile.size = Vector2(120,184); tile.scale = Vector2.ONE*(card_height/184)
@@ -261,14 +283,19 @@ func place_tip() -> void:
 func _process(delta: float) -> void:
 	if pressed_index>=0:
 		press_time+=delta
-		if not dragging and press_time>=HOLD_SECONDS:
-			if not bool(cards[pressed_index].get("is_fixed_action", false)):
+		if not dragging and press_time>=hold_seconds:
+			if mobile or not bool(cards[pressed_index].get("is_fixed_action", false)):
 				dragging=true; drop_index=pressed_index; tip.hide()
 		if dragging:
-			if raft_draggable(cards[pressed_index]) and context.can_base and pointer_point.y<0:
+			var held_card: Dictionary = cards[pressed_index]
+			var outside_hand := pointer_point.y < 0
+			var can_drag_to_raft: bool = raft_draggable(held_card) and context.can_base
+			var can_drag_to_use: bool = mobile and mobile_drag_playable(held_card)
+			if outside_hand and (can_drag_to_raft or can_drag_to_use):
 				tiles[pressed_index].position=pointer_point-press_point
 				tiles[pressed_index].modulate.a=.62
-				equipment_dragged.emit(cards[pressed_index],global_position+pointer_point)
+				if can_drag_to_raft:
+					equipment_dragged.emit(held_card,global_position+pointer_point)
 			else:
 				tiles[pressed_index].modulate.a=1.0
 				tiles[pressed_index].position=Vector2(clampf(pointer_point.x-press_point.x,context.get("hand_reserved_left",0.0),maxf(0,size.x-card_width)),size.y-card_height-34)
@@ -313,9 +340,9 @@ func _gui_input(event: InputEvent) -> void:
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and touch_index<0:
 		var index := hit_card(event.position)
 		if index>=0:
-			if event.double_click and cards[index].definition.kind=="equipment" and context.can_base:
+			if not mobile and event.double_click and cards[index].definition.kind=="equipment" and context.can_base:
 				accept_event(); equipment_double_clicked.emit(cards[index]); return
-			if event.double_click and context.get("phase","") == "battle":
+			if not mobile and event.double_click and context.get("phase","") == "battle":
 				var c: Dictionary = cards[index]
 				if c.get("is_fixed_action", false) or c.get("uid","") in ["virtual_action_attack", "virtual_action_block"] or c.get("action_id","") in ["attack", "block"]:
 					accept_event()
@@ -352,11 +379,13 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and event.keycode==KEY_ESCAPE:
 		cancel_gesture(); get_viewport().set_input_as_handled(); return
 	if (event is InputEventMouseMotion and touch_index<0) or (event is InputEventScreenDrag and event.index==touch_index):
-		var next_point: Vector2 = (event.position if event is InputEventScreenDrag else event.global_position)-global_position
+		var next_point: Vector2 = get_global_transform().affine_inverse() * (event.position if event is InputEventScreenDrag else event.global_position)
 		if not dragging and next_point.distance_to(tiles[pressed_index].position+press_point)>10:
 			cancel_gesture(); return
 		pointer_point=next_point
 		if dragging:
+			get_viewport().set_input_as_handled()
+			if bool(cards[pressed_index].get("is_fixed_action",false)): return
 			var step: float = base_x[1]-base_x[0] if base_x.size()>1 else card_width
 			var max_drop := cards.size() - 1
 			if context.get("phase","") == "battle": max_drop = maxi(0, cards.size() - 3)
@@ -373,22 +402,41 @@ func _input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 	elif (event is InputEventMouseButton and touch_index<0 and event.button_index==MOUSE_BUTTON_LEFT and not event.pressed) or (event is InputEventScreenTouch and event.index==touch_index and not event.pressed):
 		var index := pressed_index; var was_dragging := dragging; var destination := drop_index
-		var release_point: Vector2 = (event.position if event is InputEventScreenTouch else event.global_position)-global_position
+		var release_point: Vector2 = get_global_transform().affine_inverse() * (event.position if event is InputEventScreenTouch else event.global_position)
 		var held_card: Dictionary=cards[index]
-		var external_drop: bool=was_dragging and context.can_base and raft_draggable(held_card) and release_point.y<0
+		var valid_outside: bool = release_point.y < -12 and release_point.x >= 0 and release_point.x < size.x and get_viewport_rect().has_point(get_global_transform() * release_point)
+		var external_drop: bool=was_dragging and context.can_base and raft_draggable(held_card) and (valid_outside if mobile else release_point.y<0)
+		var mobile_use: bool=was_dragging and mobile and mobile_drag_playable(held_card) and valid_outside
 		cancel_gesture(); get_viewport().set_input_as_handled()
 		if external_drop:
 			equipment_released.emit(held_card,global_position+release_point)
+		elif mobile_use:
+			if context.phase == "battle" and held_card.definition.kind != "resource":
+				battle_action_double_clicked.emit(held_card)
+			else: activated.emit(held_card)
 		elif was_dragging:
+			if mobile and (not Rect2(Vector2.ZERO,size).has_point(release_point) or held_card.get("is_fixed_action",false)): return
 			var max_dest := cards.size() - 1
 			if context.get("phase","") == "battle": max_dest = maxi(0, cards.size() - 3)
 			if destination!=index and destination>=0 and destination <= max_dest:
 				hand_layout.move_group(cards,index,destination); reordered.emit()
 		elif hit_card(release_point)==index and not buttons[index].disabled:
-			activated.emit(cards[index])
+			if mobile: inspected.emit(held_card)
+			else: activated.emit(held_card)
 
 func raft_draggable(card: Dictionary) -> bool:
 	return card.definition.kind=="equipment" or card.id in ["wood","corpse"]
+
+func mobile_drag_playable(card: Dictionary) -> bool:
+	if pressed_index < 0 or pressed_index >= buttons.size() or buttons[pressed_index].disabled:
+		return false
+	if context.get("phase","") == "discard":
+		return not (card.id in ["punch","pollution"] or tutorial_currency(card))
+	if context.get("phase","") == "battle":
+		return true
+	if context.get("can_base",false):
+		return card.definition.kind == "survival" or card.id in ["wood","corpse"]
+	return false
 
 func cancel_gesture() -> void:
 	pressed_index=-1; dragging=false; press_time=0.0; drop_index=-1; touch_index=-1; arrange()

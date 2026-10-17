@@ -11,6 +11,7 @@ var context: Dictionary
 var catalog: RefCounted
 var assets: RefCounted
 var session: RefCounted
+var mobile := false
 
 var selected_action := ""
 var selected_resource_uid := ""
@@ -32,6 +33,7 @@ var confirm_button: Button
 func setup(parent_hud: Control, view: Dictionary, cat: RefCounted, art: RefCounted, sess: RefCounted) -> void:
 	hud = parent_hud
 	context = view
+	mobile = bool(view.get("mobile",false))
 	catalog = cat
 	assets = art
 	session = sess
@@ -59,6 +61,7 @@ func build_ui() -> void:
 	build_monster_panel(monster)
 	build_action_preview_panel(content_area(intent, Vector4(0.06,0.08,0.94,0.87)), content_area(preview, Vector4(0.06,0.08,0.94,0.88)))
 	build_combat_log_panel(content_area(log_panel, Vector4(0.15,0.07,0.91,0.91)))
+	if mobile: adapt_mobile_controls(panel_layout)
 	resized.connect(layout_panels)
 	layout_panels()
 	restore_saved_selection()
@@ -69,14 +72,26 @@ func art_panel(id: String, asset_id: String) -> Control:
 	panel.name = id
 	panel.mouse_filter = MOUSE_FILTER_IGNORE
 	panel_layout.add_child(panel)
-	var art := TextureRect.new()
+	var art: Control
+	if mobile and id != "MonsterPanel":
+		# Keep decorative corners at a stable size while the inner panel expands.
+		var patch := NinePatchRect.new()
+		patch.texture = assets.texture(asset_id)
+		patch.patch_margin_left = 128; patch.patch_margin_right = 128
+		patch.patch_margin_top = 80; patch.patch_margin_bottom = 48
+		patch.scale = Vector2.ONE * 0.65
+		panel.resized.connect(func(): patch.size = panel.size / 0.65)
+		art = patch
+	else:
+		var image := TextureRect.new()
+		image.texture = assets.texture(asset_id)
+		image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		art = image
 	art.name = "PanelArt"
-	art.texture = assets.texture(asset_id)
-	art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	art.mouse_filter = MOUSE_FILTER_IGNORE
-	art.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	panel.add_child(art)
+	if art is TextureRect: art.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	return panel
 
 func content_area(parent: Control, bounds: Vector4) -> MarginContainer:
@@ -86,9 +101,16 @@ func content_area(parent: Control, bounds: Vector4) -> MarginContainer:
 	parent.add_child(area)
 	area.anchor_left = bounds.x; area.anchor_top = bounds.y
 	area.anchor_right = bounds.z; area.anchor_bottom = bounds.w
+	if mobile and parent.name != "MonsterPanel":
+		area.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
+		area.offset_left=24; area.offset_right=-24
+		area.offset_top=14; area.offset_bottom=-14
 	return area
 
 func layout_panels() -> void:
+	if mobile:
+		layout_mobile_panels()
+		return
 	var available := Vector2(maxf(1.0,size.x-64.0), maxf(1.0,size.y-486.0))
 	# Enlarged HUD preferences leave less vertical room between status and hand.
 	# Scale the content with the art below its readable design height.
@@ -102,6 +124,39 @@ func layout_panels() -> void:
 		var panel: Control = panel_layout.get_child(i)
 		panel.position = rects[i].position*fit
 		panel.size = rects[i].size*fit
+
+func layout_mobile_panels() -> void:
+	# Use the space between the status strip and hand instead of scaling text.
+	var top := 112.0
+	var height := maxf(1.0,size.y-282.0-24.0-top)
+	var width := maxf(1.0,size.x-28.0-28.0)
+	var gap := 16.0
+	var portrait_width := height * 415.0/511.0
+	var log_width := clampf(width*.25,280.0,400.0)
+	var middle_width := maxf(1.0,width-portrait_width-log_width-gap*2)
+	var half_height := (height-gap)*.5
+	panel_layout.scale = Vector2.ONE
+	panel_layout.position = Vector2(28,top)
+	panel_layout.size = Vector2(width,height)
+	var rects := [Rect2(0,0,portrait_width,height), Rect2(portrait_width+gap,0,middle_width,half_height), Rect2(portrait_width+gap,half_height+gap,middle_width,half_height), Rect2(width-log_width,0,log_width,height)]
+	for i in range(rects.size()):
+		var panel: Control = panel_layout.get_child(i)
+		panel.position=rects[i].position; panel.size=rects[i].size
+
+func adapt_mobile_controls(node: Node) -> void:
+	if node is Label: node.add_theme_font_size_override("font_size",maxi(18,node.get_theme_font_size("font_size")))
+	if node is BaseButton:
+		node.custom_minimum_size.y=maxf(44,node.custom_minimum_size.y)
+		node.add_theme_font_size_override("font_size",16)
+	for child in node.get_children(): adapt_mobile_controls(child)
+
+func scrollable_content(parent: Control, id: String) -> Node:
+	if not mobile: return parent
+	var scroll := ScrollContainer.new()
+	scroll.name=id; scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.size_flags_vertical=SIZE_EXPAND_FILL; scroll.size_flags_horizontal=SIZE_EXPAND_FILL
+	parent.add_child(scroll)
+	return scroll
 
 func build_monster_panel(parent: Control) -> void:
 	var enemy_id: String = str(context.battle.get("id", "biter"))
@@ -149,6 +204,7 @@ func build_monster_panel(parent: Control) -> void:
 
 func build_action_preview_panel(parent: Control, preview_parent: Control) -> void:
 	var vbox := VBoxContainer.new()
+	vbox.size_flags_horizontal=SIZE_EXPAND_FILL
 	vbox.add_theme_constant_override("separation", 8)
 	parent.add_child(vbox)
 
@@ -167,6 +223,7 @@ func build_action_preview_panel(parent: Control, preview_parent: Control) -> voi
 
 	var intent_frame := PanelContainer.new()
 	intent_frame.size_flags_vertical = SIZE_EXPAND_FILL
+	intent_frame.size_flags_horizontal = SIZE_EXPAND_FILL
 	var if_style := StyleBoxFlat.new()
 	if_style.bg_color = Color.TRANSPARENT
 	if_style.border_color = Color("5a322c")
@@ -175,7 +232,7 @@ func build_action_preview_panel(parent: Control, preview_parent: Control) -> voi
 	if_style.content_margin_left = 0; if_style.content_margin_right = 0
 	if_style.content_margin_top = 8; if_style.content_margin_bottom = 8
 	intent_frame.add_theme_stylebox_override("panel", if_style)
-	top_box.add_child(intent_frame)
+	scrollable_content(top_box,"MobileIntentScroll").add_child(intent_frame)
 
 	var enemy_id: String = str(context.battle.get("id", "biter"))
 	var enemy: Dictionary = preload("res://core/difficulty_rules.gd").enemy(catalog,context,enemy_id)
@@ -204,6 +261,7 @@ func build_action_preview_panel(parent: Control, preview_parent: Control) -> voi
 	intent_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 
 	var preview_vbox_root := VBoxContainer.new()
+	preview_vbox_root.size_flags_horizontal=SIZE_EXPAND_FILL
 	preview_vbox_root.add_theme_constant_override("separation", 6)
 	preview_parent.add_child(preview_vbox_root)
 
@@ -225,12 +283,19 @@ func build_action_preview_panel(parent: Control, preview_parent: Control) -> voi
 	cancel_btn.custom_minimum_size = Vector2(80, 26)
 	cancel_btn.size_flags_horizontal = SIZE_SHRINK_END
 	cancel_btn.add_theme_font_size_override("font_size", 13)
+	var details_parent: Node = bot_box
+	if mobile:
+		var details := VBoxContainer.new()
+		details.size_flags_horizontal = SIZE_EXPAND_FILL
+		details.add_theme_constant_override("separation",6)
+		scrollable_content(bot_box,"MobilePreviewScroll").add_child(details)
+		details_parent = details
 
 	var battle_buffs: Array = context.get("boost_cards", []).filter(func(buff): return buff.get("id","") in ["power","barrier"])
 	if not battle_buffs.is_empty():
 		var buff_row := HBoxContainer.new()
 		buff_row.add_theme_constant_override("separation", 8)
-		bot_box.add_child(buff_row)
+		details_parent.add_child(buff_row)
 		W.text(buff_row, "独立发电机增益", 14, W.GOLD)
 		var boost_select := OptionButton.new()
 		boost_select.name = "BattleBoostSelect"
@@ -254,9 +319,9 @@ func build_action_preview_panel(parent: Control, preview_parent: Control) -> voi
 	pf_style.set_border_width_all(0)
 	pf_style.set_corner_radius_all(3)
 	pf_style.content_margin_left = 0; pf_style.content_margin_right = 0
-	pf_style.content_margin_top = 8; pf_style.content_margin_bottom = 8
+	pf_style.content_margin_top = 4 if mobile else 8; pf_style.content_margin_bottom = 4 if mobile else 8
 	preview_frame.add_theme_stylebox_override("panel", pf_style)
-	bot_box.add_child(preview_frame)
+	details_parent.add_child(preview_frame)
 
 	var preview_vbox := VBoxContainer.new()
 	preview_vbox.add_theme_constant_override("separation", 4)
@@ -312,6 +377,7 @@ func build_combat_log_panel(parent: Control) -> void:
 	vbox.add_child(log_panel)
 
 	log_scroll = ScrollContainer.new()
+	log_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
 	log_scroll.size_flags_horizontal = SIZE_EXPAND_FILL
 	log_scroll.size_flags_vertical = SIZE_EXPAND_FILL
 	log_panel.add_child(log_scroll)
@@ -324,7 +390,7 @@ func build_combat_log_panel(parent: Control) -> void:
 	populate_combat_logs()
 
 	# 3. Bottom bar: 2 Buttons: Skip Turn (battle_end) & Abandon / Retreat
-	var btn_row := HBoxContainer.new()
+	var btn_row: BoxContainer = VBoxContainer.new() if mobile else HBoxContainer.new()
 	btn_row.add_theme_constant_override("separation", 10)
 	vbox.add_child(btn_row)
 
@@ -531,6 +597,14 @@ func update_preview(dispatch_to_app: bool = false) -> void:
 	else:
 		title_text = "从下方手牌选择「攻击」或「防御」。"
 		detail_text = "可附加材料卡，增强攻击、护盾或施加异常。"
+		if context.get("mode","")=="tutorial":
+			var lesson_id: String=str(context.get("tutorial_hint",{}).get("id",""))
+			if lesson_id in ["attack2a","attack2b"]:
+				title_text="当前教学：使用手牌『矛击』。"
+				detail_text="按住0.05秒，向上拖出手牌区松开；滑回取消。" if mobile else "双击『矛击』，消耗1战斗AP，造成3点伤害。"
+			elif lesson_id=="endturn2":
+				title_text="攻击已完成，请结束当前回合。"
+				detail_text="点右侧『跳过当前回合』，观察敌人反击。"
 		is_valid = false
 
 	# Update UI text

@@ -1,0 +1,662 @@
+{
+  "schema_version": 1,
+  "id": "chapter1.n11",
+  "title": "第一章 · 节点 11/11",
+  "imported_chapter1": true,
+  "entry": "n11_intro_p0377_0",
+  "nodes": [
+    {
+      "id": "n11_intro_p0377_0",
+      "text": "【第 11 回合 / 节点 11｜大阻断：走廊空间错位（调查之夜 6/9）】",
+      "source_block_id": "p0377",
+      "source_offset": 0,
+      "next": "n11_intro_p0378_0"
+    },
+    {
+      "id": "n11_intro_p0378_0",
+      "text": "【场景】：深夜，灰潮分队主船下层走廊至甲板交界处。木料撕裂的爆响此起彼伏，走廊如同被怪力拧转的麻花，欧几里得几何彻底崩塌：原本通往储物舱的通道直立翻转成了九十度直插向上的死角，而地板木板裂开后露出的不是底舱积水，而是另一间完全颠倒悬挂在头顶",
+      "source_block_id": "p0378",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n11_intro_p0378_120"
+    },
+    {
+      "id": "n11_intro_p0378_120",
+      "text": "的水手宿舍！狂暴的冷风与带有石料粉尘的阴风在错位的缝隙中尖啸穿梭。",
+      "source_block_id": "p0378",
+      "source_offset": 120,
+      "display_override": true,
+      "next": "n11_intro_p0378_154"
+    },
+    {
+      "id": "n11_intro_p0378_154",
+      "text": "【环境音】：粗大橡木龙骨被无形巨力生生折断的刺耳呻吟声、断裂舱壁深处传来的水手失控尖叫与呼救回音、门轴低频震颤的嗡鸣。",
+      "source_block_id": "p0378",
+      "source_offset": 154,
+      "display_override": true,
+      "next": "n11_intro_p0378_214"
+    },
+    {
+      "id": "n11_intro_p0378_214",
+      "text": "【剧情提示】：请选择今晚的行动方向。",
+      "source_block_id": "p0378",
+      "source_offset": 214,
+      "display_override": true,
+      "next": "n11_intro_p0379_0"
+    },
+    {
+      "id": "n11_intro_p0379_0",
+      "text": "【大阻断爆发演出：迷宫化与紧急避险】旁白：",
+      "source_block_id": "p0379",
+      "source_offset": 0,
+      "next": "n11_intro_p0379_22"
+    },
+    {
+      "id": "n11_intro_p0379_22",
+      "text": "深夜，潜藏已久的异变终于撕下了所有伪装，全面爆发！",
+      "source_block_id": "p0379",
+      "source_offset": 22,
+      "next": "n11_intro_p0379_48"
+    },
+    {
+      "id": "n11_intro_p0379_48",
+      "text": "空间彻底错位了。整艘船的下层走廊化为了一座动态重叠、循环折叠的未知迷宫。两名原本在过道换班的水手惨叫着被突然闭合的移位墙体死死隔断在另一侧，门扉开在了脚下，阶梯倒悬通往虚无。",
+      "source_block_id": "p0379",
+      "source_offset": 48,
+      "next": "n11_intro_p0379_136"
+    },
+    {
+      "id": "n11_intro_p0379_136",
+      "text": "水手们的心理防线被这超越人类理智的灾变彻底碾碎，绝望的哭号与狂乱的脚步声在断裂的墙缝后乱成一团。",
+      "source_block_id": "p0379",
+      "source_offset": 136,
+      "next": "n11_intro_p0379_185"
+    },
+    {
+      "id": "n11_intro_p0379_185",
+      "text": "关键时刻，塞琳展现出了极其强悍的领袖决断力。她冒着被空间撕裂的危险，持短刃在剧烈摇晃的错位走廊中强行开路，将剩余大部分水手驱赶并撤离至受影响最小的露天甲板外层与通风井口。",
+      "source_block_id": "p0379",
+      "source_offset": 185,
+      "next": "n11_intro_p0380_0"
+    },
+    {
+      "id": "n11_intro_p0380_0",
+      "text": "塞琳：",
+      "source_block_id": "p0380",
+      "source_offset": 0,
+      "next": "n11_intro_p0380_4"
+    },
+    {
+      "id": "n11_intro_p0380_4",
+      "text": "（迎着狂风与刺骨的海水，厉声断喝，声音压过木材崩裂的巨响）",
+      "source_block_id": "p0380",
+      "source_offset": 4,
+      "next": "n11_intro_p0380_34"
+    },
+    {
+      "id": "n11_intro_p0380_34",
+      "text": "“全都给我冷静下来！拿粗麻缆绳把自己绑在主桅杆和固定的防风铁环上！三个人一组，谁也不准解开绳扣！只要不踏入下层回廊，空间就吞不掉你们！”",
+      "source_block_id": "p0380",
+      "source_offset": 34,
+      "next": "n11_intro_p0380_103"
+    },
+    {
+      "id": "n11_intro_p0380_103",
+      "text": "凭借塞琳的铁腕组织与敏锐撤离调度，全船水手被牢牢固定在甲板安全带上，伤亡暂时被遏制，但整座下层船舱已化为常人无法涉足的险恶禁区。",
+      "source_block_id": "p0380",
+      "source_offset": 103,
+      "next": "n11_intro_p0382_0"
+    },
+    {
+      "id": "n11_intro_p0382_0",
+      "text": "【夜间行动抉择】",
+      "source_block_id": "p0382",
+      "source_offset": 0,
+      "next": "n11_intro_p0383_0"
+    },
+    {
+      "id": "n11_intro_p0383_0",
+      "text": "旁白：",
+      "source_block_id": "p0383",
+      "source_offset": 0,
+      "next": "n11_intro_p0383_4"
+    },
+    {
+      "id": "n11_intro_p0383_4",
+      "text": "今晚是第 6 个调查夜晚。下层走廊已经迷宫化阻断，常规路径完全失效。请选择行动：",
+      "source_block_id": "p0383",
+      "source_offset": 4,
+      "next": "n11_intro_end"
+    },
+    {
+      "id": "n11_intro_end",
+      "text": "请选择接下来的行动。",
+      "system_text": true,
+      "narrative_effects": [],
+      "choices": [
+        {
+          "id": "n11_rest",
+          "text": "【抉择 A】在甲板临时安全区【休息】（累计三次休息将进入坏结局）。",
+          "next": "n11_rest_p0387_0",
+          "source_block_id": "p0384",
+          "condition": {},
+          "narrative_effects": [],
+          "display_override": true
+        },
+        {
+          "id": "n11_investigate",
+          "text": "【抉择 B】强打精神，携带线索深入【错位迷宫调查】（在随时可能被空间折叠夹碎的绝境中搜寻破局关键）。",
+          "next": "n11_investigate_p0390_0",
+          "source_block_id": "p0385",
+          "condition": {},
+          "narrative_effects": []
+        }
+      ]
+    },
+    {
+      "id": "n11_rest_p0387_0",
+      "text": "【选择 A：休息】",
+      "source_block_id": "p0387",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n11_rest_p0388_0"
+    },
+    {
+      "id": "n11_rest_p0388_0",
+      "text": "旁白：",
+      "source_block_id": "p0388",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n11_rest_p0388_4"
+    },
+    {
+      "id": "n11_rest_p0388_4",
+      "text": "你背靠着坚硬冰冷的甲板木桶闭上双眼。然而，门轴生涩摩擦的轰鸣声几乎直接在你的头盖骨内部疯狂震颤，空气中的死鱼甜香浓得让人反胃窒息。",
+      "source_block_id": "p0388",
+      "source_offset": 4,
+      "display_override": true,
+      "next": "n11_rest_p0388_70"
+    },
+    {
+      "id": "n11_rest_p0388_70",
+      "text": "【剧情记录】：本夜选择休息，未获得线索。累计三次休息将进入坏结局。",
+      "source_block_id": "p0388",
+      "source_offset": 70,
+      "display_override": true,
+      "next": "n11_rest_end"
+    },
+    {
+      "id": "n11_rest_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "rest",
+          "key": "RestCount",
+          "value": 1
+        }
+      ],
+      "next": "n11_outro_p0406_0",
+      "rest_redirect": "be03_p0218_0"
+    },
+    {
+      "id": "n11_investigate_p0390_0",
+      "text": "【选择 B：深入调查（行动展开）】",
+      "source_block_id": "p0390",
+      "source_offset": 0,
+      "next": "n11_investigate_p0391_0"
+    },
+    {
+      "id": "n11_investigate_p0391_0",
+      "text": "今晚你想去哪里冒险调查？",
+      "source_block_id": "p0391",
+      "source_offset": 0,
+      "next": "n11_investigate_end"
+    },
+    {
+      "id": "n11_investigate_end",
+      "text": "请选择接下来的行动。",
+      "system_text": true,
+      "narrative_effects": [],
+      "choices": [
+        {
+          "id": "n11_core",
+          "text": "【调查选项 1】利用【学者骨质罗盘】与七英尺规律，探寻【折叠长廊的核心暗室】。",
+          "next": "n11_core_p0395_0",
+          "source_block_id": "p0392",
+          "condition": {
+            "has_item": "学者骨质罗盘"
+          },
+          "narrative_effects": []
+        },
+        {
+          "id": "n11_rescue",
+          "text": "【调查选项 2】携带【老海妖骨凿】，循着呼救声救援【被困在重力死角的涅德与柯尔】。",
+          "next": "n11_rescue_p0399_0",
+          "source_block_id": "p0393",
+          "condition": {
+            "has_item": "老海妖骨凿"
+          },
+          "narrative_effects": []
+        },
+        {
+          "id": "return_to_rest",
+          "text": "返回休息",
+          "system_text": true,
+          "next": "n11_rest_p0387_0"
+        }
+      ]
+    },
+    {
+      "id": "n11_core_p0395_0",
+      "text": "【子分支 1：穿行折叠走廊与学者遗稿】",
+      "source_block_id": "p0395",
+      "source_offset": 0,
+      "next": "n11_core_p0396_0"
+    },
+    {
+      "id": "n11_core_p0396_0",
+      "text": "【场景】：彻底迷宫化的下层空间。通道如断裂的千层饼般交叠，普通指南针的磁针在表盘里疯狂乱转，指针甚至直接脱轴甩飞。",
+      "source_block_id": "p0396",
+      "source_offset": 0,
+      "next": "n11_core_p0396_58"
+    },
+    {
+      "id": "n11_core_p0396_58",
+      "text": "旁白：",
+      "source_block_id": "p0396",
+      "source_offset": 58,
+      "next": "n11_core_p0396_62"
+    },
+    {
+      "id": "n11_core_p0396_62",
+      "text": "你从怀中掏出塞琳赠予的【学者骨质罗盘】。只见罗盘上的黑兽骨指针不受物理重力与磁偏角影响，定定地指向头顶一处倒悬翻转的木梁缝隙！",
+      "source_block_id": "p0396",
+      "source_offset": 62,
+      "next": "n11_core_p0396_126"
+    },
+    {
+      "id": "n11_core_p0396_126",
+      "text": "你结合此前掌握的波长规律，掐准了空间波纹震荡的死角，在墙壁即将翻转合拢的瞬间侧身翻滚而过，险之又险地穿透了原本被视为死胡同的假象壁板！",
+      "source_block_id": "p0396",
+      "source_offset": 126,
+      "next": "n11_core_p0396_194"
+    },
+    {
+      "id": "n11_core_p0396_194",
+      "text": "穿过夹层，你坠入了一间原本早已随着船底破损而沉没的残骸中。这里的空间奇迹般地保持着诡异的干燥与石化静止。",
+      "source_block_id": "p0396",
+      "source_offset": 194,
+      "next": "n11_core_p0396_247"
+    },
+    {
+      "id": "n11_core_p0396_247",
+      "text": "在受潮结晶的硬木抽屉深处，你搜出了一份被厚桐油布密封包裹的【古代学者航海遗稿残页】！",
+      "source_block_id": "p0396",
+      "source_offset": 247,
+      "next": "n11_core_p0397_0"
+    },
+    {
+      "id": "n11_core_p0397_0",
+      "text": "【遗稿文字特写】：",
+      "source_block_id": "p0397",
+      "source_offset": 0,
+      "next": "n11_core_p0397_10"
+    },
+    {
+      "id": "n11_core_p0397_10",
+      "text": "泛黄干瘪的羊皮纸上，历代学者用颤抖狂乱的笔触记录着残酷的本质：",
+      "source_block_id": "p0397",
+      "source_offset": 10,
+      "next": "n11_core_p0397_42"
+    },
+    {
+      "id": "n11_core_p0397_42",
+      "text": "“……世人皆以为门后乃吞噬生命之异兽，大谬！门后乃??神沉睡无意识之投影长廊也。其并不以血肉为食，其侵蚀乃‘同化’与‘神隐’。凡见门、识门、悟其活质者，现实法则渐次将其排斥剥离……失踪者肉躯未毁，魂灵未灭，唯失去‘人’之定义，同化为门后万千",
+      "source_block_id": "p0397",
+      "source_offset": 42,
+      "next": "n11_core_p0397_162"
+    },
+    {
+      "id": "n11_core_p0397_162",
+      "text": "蜡像之一也！若欲抗衡，唯以不腐之异质死骨断其并轨之根……”",
+      "source_block_id": "p0397",
+      "source_offset": 162,
+      "next": "n11_core_p0398_0"
+    },
+    {
+      "id": "n11_core_p0398_0",
+      "text": "主角：",
+      "source_block_id": "p0398",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n11_core_p0398_4"
+    },
+    {
+      "id": "n11_core_p0398_4",
+      "text": "（后背冷汗涔涔，终于明白哈克到底遭遇了什么）",
+      "source_block_id": "p0398",
+      "source_offset": 4,
+      "display_override": true,
+      "next": "n11_core_p0398_27"
+    },
+    {
+      "id": "n11_core_p0398_27",
+      "text": "“原来……被门吞进去的人，并没有死在哪个房间里。他们是失去了身为‘人’的现实锚点，变成了门本身的一部分！”",
+      "source_block_id": "p0398",
+      "source_offset": 27,
+      "display_override": true,
+      "next": "n11_core_p0398_81"
+    },
+    {
+      "id": "n11_core_p0398_81",
+      "text": "· 【获得线索】：线索 C-5《神隐与同化的本质》（本档线索：揭示门后超自然侵蚀的底层世界观，受害者并未物理死亡，而是概念被剥离同化为门后投影；明确对抗并轨需要非生体死骨媒介）。",
+      "source_block_id": "p0398",
+      "source_offset": 81,
+      "display_override": true,
+      "next": "n11_core_p0398_171"
+    },
+    {
+      "id": "n11_core_p0398_171",
+      "text": "【剧情进度】：第11节点；当前章节共11节点。",
+      "source_block_id": "p0398",
+      "source_offset": 171,
+      "display_override": true,
+      "next": "n11_core_end"
+    },
+    {
+      "id": "n11_core_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "clue",
+          "key": "C-5"
+        }
+      ],
+      "next": "n11_outro_p0406_0"
+    },
+    {
+      "id": "n11_rescue_p0399_0",
+      "text": "【子分支 2：救援被困的涅德与老柯尔】",
+      "source_block_id": "p0399",
+      "source_offset": 0,
+      "next": "n11_rescue_p0400_0"
+    },
+    {
+      "id": "n11_rescue_p0400_0",
+      "text": "【场景】：底舱与下层夹角处的备用工具隔间。整间木舱已经发生了一百八十度重力倒错，四壁厚重木板在尖锐变形中不断向内挤压收缩。",
+      "source_block_id": "p0400",
+      "source_offset": 0,
+      "next": "n11_rescue_p0400_62"
+    },
+    {
+      "id": "n11_rescue_p0400_62",
+      "text": "旁白：",
+      "source_block_id": "p0400",
+      "source_offset": 62,
+      "next": "n11_rescue_p0400_66"
+    },
+    {
+      "id": "n11_rescue_p0400_66",
+      "text": "你顺着狭窄的裂隙艰难爬行，隐约听到了熟悉的惨叫与咒骂声。",
+      "source_block_id": "p0400",
+      "source_offset": 66,
+      "next": "n11_rescue_p0400_95"
+    },
+    {
+      "id": "n11_rescue_p0400_95",
+      "text": "隔间内，老木匠柯尔与涅德正狼狈地被倒挂在半空，脚踝被扭曲变形的铁条死死卡住！周围的木墙像有生命一般，每一次扭动都发出骨骼碎裂般的巨响，正以肉眼可见的速度向中央合拢，眼看就要将两人碾成肉酱！",
+      "source_block_id": "p0400",
+      "source_offset": 95,
+      "next": "n11_rescue_p0401_0"
+    },
+    {
+      "id": "n11_rescue_p0401_0",
+      "text": "涅德：（满脸通红，青筋暴起，狂乱地挥舞着鱼叉试图撑住墙壁）",
+      "source_block_id": "p0401",
+      "source_offset": 0,
+      "next": "n11_rescue_p0401_30"
+    },
+    {
+      "id": "n11_rescue_p0401_30",
+      "text": "“*他*的！木头长牙了！！兄弟！救命啊！！”",
+      "source_block_id": "p0401",
+      "source_offset": 30,
+      "next": "n11_rescue_p0401_53"
+    },
+    {
+      "id": "n11_rescue_p0401_53",
+      "text": "柯尔：（咳着血沫，绝望大喊）",
+      "source_block_id": "p0401",
+      "source_offset": 53,
+      "next": "n11_rescue_p0401_68"
+    },
+    {
+      "id": "n11_rescue_p0401_68",
+      "text": "“后生快走！别进来！这是空间的死结！普通斧头砸不断这些被时间咬死的木头！！”",
+      "source_block_id": "p0401",
+      "source_offset": 68,
+      "next": "n11_rescue_p0402_0"
+    },
+    {
+      "id": "n11_rescue_p0402_0",
+      "text": "旁白：",
+      "source_block_id": "p0402",
+      "source_offset": 0,
+      "next": "n11_rescue_p0402_4"
+    },
+    {
+      "id": "n11_rescue_p0402_4",
+      "text": "千钧一发之际，你暴喝一声，反手拔出腰间的【老海妖骨凿】，狠狠刺入了卡死铁条与空间裂缝的交界受力点！",
+      "source_block_id": "p0402",
+      "source_offset": 4,
+      "next": "n11_rescue_p0402_54"
+    },
+    {
+      "id": "n11_rescue_p0402_54",
+      "text": "“嗤啦——！！”",
+      "source_block_id": "p0402",
+      "source_offset": 54,
+      "next": "n11_rescue_p0402_63"
+    },
+    {
+      "id": "n11_rescue_p0402_63",
+      "text": "一股白烟骤然腾起！这根未被植物与泥土污染过的深海古死骨，爆发出强烈的抗侵蚀异力，原本疯狂退行挤压的木墙仿佛被烙铁烫伤般猛地向外弹开数寸！",
+      "source_block_id": "p0402",
+      "source_offset": 63,
+      "next": "n11_rescue_p0402_132"
+    },
+    {
+      "id": "n11_rescue_p0402_132",
+      "text": "你趁机跃上半空，用短刀削断绳索，将倒悬脱臼的柯尔一把背在肩上，另一只手狠命拉拽出涅德，三人在隔间彻底被压缩成实木方块的前一秒，翻滚跌出了狭窄的生路！",
+      "source_block_id": "p0402",
+      "source_offset": 132,
+      "next": "n11_rescue_p0403_0"
+    },
+    {
+      "id": "n11_rescue_p0403_0",
+      "text": "【脱险对谈】：",
+      "source_block_id": "p0403",
+      "source_offset": 0,
+      "next": "n11_rescue_p0403_8"
+    },
+    {
+      "id": "n11_rescue_p0403_8",
+      "text": "瘫坐在相对稳固的走廊拐角，涅德浑身湿透，看着你的眼神宛如看着再造父母，激动得嘴唇发青：",
+      "source_block_id": "p0403",
+      "source_offset": 8,
+      "next": "n11_rescue_p0403_52"
+    },
+    {
+      "id": "n11_rescue_p0403_52",
+      "text": "涅德：“兄弟……我涅德以前眼瞎！从今往后，我这条命就是你的！哪怕你要杀出这艘船，我手里的鱼叉第一个替你开路！”",
+      "source_block_id": "p0403",
+      "source_offset": 52,
+      "next": "n11_rescue_p0403_108"
+    },
+    {
+      "id": "n11_rescue_p0403_108",
+      "text": "（涅德从衣领深处扯下一枚用粗银丝包裹、散发着刺骨寒意的尖锐海兽牙齿，塞进你的手中）",
+      "source_block_id": "p0403",
+      "source_offset": 108,
+      "next": "n11_rescue_p0403_150"
+    },
+    {
+      "id": "n11_rescue_p0403_150",
+      "text": "涅德：“这是我家传的【避水海兽獠牙护符】！老海民传下来的，能镇定心神、避开深海里那些看不见的低语！你戴上它，门里的声音就勾不走你的魂！”",
+      "source_block_id": "p0403",
+      "source_offset": 150,
+      "next": "n11_rescue_p0404_0"
+    },
+    {
+      "id": "n11_rescue_p0404_0",
+      "text": "老木匠柯尔：",
+      "source_block_id": "p0404",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n11_rescue_p0404_7"
+    },
+    {
+      "id": "n11_rescue_p0404_7",
+      "text": "（揉着摔伤的肋骨，剧烈喘息着，眼中泛着行将就木的决然）",
+      "source_block_id": "p0404",
+      "source_offset": 7,
+      "display_override": true,
+      "next": "n11_rescue_p0404_35"
+    },
+    {
+      "id": "n11_rescue_p0404_35",
+      "text": "“后生，你救了老头子这条残命……老朽活了这把年纪，终于想明白了！”",
+      "source_block_id": "p0404",
+      "source_offset": 35,
+      "display_override": true,
+      "next": "n11_rescue_p0404_69"
+    },
+    {
+      "id": "n11_rescue_p0404_69",
+      "text": "“十天前撞暗礁时，外层龙骨断了三根，是我用老橡木包铁打的桩。这扇门……它不是飘在海上的幽灵，它必须依托船体的受损伤口才能‘降生’！”",
+      "source_block_id": "p0404",
+      "source_offset": 69,
+      "display_override": true,
+      "next": "n11_rescue_p0404_136"
+    },
+    {
+      "id": "n11_rescue_p0404_136",
+      "text": "（柯尔用力抓住你的手腕，指向底舱最深处）",
+      "source_block_id": "p0404",
+      "source_offset": 136,
+      "display_override": true,
+      "next": "n11_rescue_p0404_157"
+    },
+    {
+      "id": "n11_rescue_p0404_157",
+      "text": "“要彻底破坏门与这艘船的并轨，光在门外封板子全他*是自欺欺人！必须下到底舱龙骨最底部，找到门最初扎根的‘锚点龙骨’，用死骨生生把它从龙骨上凿断！！”",
+      "source_block_id": "p0404",
+      "source_offset": 157,
+      "display_override": true,
+      "next": "n11_rescue_p0404_232"
+    },
+    {
+      "id": "n11_rescue_p0404_232",
+      "text": "· 【获得关键道具】：【避水海兽獠牙护符】（剧情道具）。",
+      "source_block_id": "p0404",
+      "source_offset": 232,
+      "display_override": true,
+      "next": "n11_rescue_p0404_261"
+    },
+    {
+      "id": "n11_rescue_p0404_261",
+      "text": "· 【获得线索】：线索 A-5《门扉扎根的龙骨锚点》（本档线索：老木匠柯尔道出破除并轨的终极物理机制——必须潜入龙骨底部拔除空间根系；涅德与柯尔结为主角的绝对生死同盟）。",
+      "source_block_id": "p0404",
+      "source_offset": 261,
+      "display_override": true,
+      "next": "n11_rescue_p0404_347"
+    },
+    {
+      "id": "n11_rescue_p0404_347",
+      "text": "【剧情进度】：第11节点；当前章节共11节点。",
+      "source_block_id": "p0404",
+      "source_offset": 347,
+      "display_override": true,
+      "next": "n11_rescue_end"
+    },
+    {
+      "id": "n11_rescue_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "clue",
+          "key": "A-5"
+        },
+        {
+          "action": "item",
+          "key": "避水海兽獠牙护符"
+        },
+        {
+          "action": "flag",
+          "key": "rescued_ned_kohl"
+        }
+      ],
+      "next": "n11_outro_p0406_0"
+    },
+    {
+      "id": "n11_outro_p0406_0",
+      "text": "【第 11 回合 / 节点结算】",
+      "source_block_id": "p0406",
+      "source_offset": 0,
+      "next": "n11_outro_p0407_0"
+    },
+    {
+      "id": "n11_outro_p0407_0",
+      "text": "【剧情进度】：当前提供的正文到第11节点为止，后续调查剧情尚未提供。",
+      "source_block_id": "p0407",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "n11_outro_end"
+    },
+    {
+      "id": "n11_outro_end",
+      "text": "当前版本剧情到此为止。请完成第11节点航行；后续剧情尚未提供。",
+      "system_text": true,
+      "narrative_effects": []
+    },
+    {
+      "id": "be03_p0218_0",
+      "text": "💀 【BAD END 3：沉溺于甜饴之梦】（累计 3 次休息触发）",
+      "source_block_id": "p0218",
+      "source_offset": 0,
+      "display_override": true,
+      "next": "be03_p0218_34"
+    },
+    {
+      "id": "be03_p0218_34",
+      "text": "· 结局演出：致幻的死鱼发酵甜香彻底漫过理智。你梦见自己沉入温暖舒适的金色蜜海，肉体与骨髓像方糖般在沸腾的体液中发酵融解，与老旧海船的橡木龙骨永久粘合在一起，成为了船底的新养分。",
+      "source_block_id": "p0218",
+      "source_offset": 34,
+      "display_override": true,
+      "next": "be03_p0218_124"
+    },
+    {
+      "id": "be03_p0218_124",
+      "text": "· 解锁信息：“沉沦于虚假的安宁，不过是加速被深渊消化的过程。理智的崩解，始于对香甜梦境的妥协。”",
+      "source_block_id": "p0218",
+      "source_offset": 124,
+      "display_override": true,
+      "next": "be03_end"
+    },
+    {
+      "id": "be03_end",
+      "text": "本段剧情结束。",
+      "system_text": true,
+      "narrative_effects": [
+        {
+          "action": "ending",
+          "key": "BAD_END_3"
+        }
+      ],
+      "ending": "bad_end_3"
+    }
+  ]
+}

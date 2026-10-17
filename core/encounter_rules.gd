@@ -25,8 +25,8 @@ static func definitions(ctx) -> Array:
 static func eligible(ctx, node: Dictionary, state: Dictionary = {}) -> bool:
 	var s: Dictionary=ctx.state if state.is_empty() else state
 	var id: String=key(node)
-	if node.get("boss",false): return s.mode=="challenge" and int(s.voyage)==int(s.length)
-	if s.mode=="challenge" and int(s.voyage)==int(s.length): return false
+	if node.get("boss",false): return s.mode in ["challenge", "story"] and int(s.voyage)==int(s.length)
+	if s.mode in ["challenge", "story"] and int(s.voyage)==int(s.length): return false
 	return not node.get("retired",false) and int(s.voyage)>=int(node.get("min_voyage",1)) and int(s.flags.get("event_visits",{}).get(id,0))<int(node.get("max_visits",99)) and int(s.voyage)-int(s.flags.get("event_last",{}).get(id,-999))>=int(node.get("cooldown",1))
 
 static func free_benefit(ctx, node: Dictionary, food_only: bool = false) -> bool:
@@ -80,7 +80,7 @@ static func candidates(ctx) -> void:
 		for node in definitions(ctx):
 			if eligible(ctx,node): available.append(node)
 		var safe: Array=[]
-		var early: bool=s.mode=="challenge" and int(s.voyage)<=2
+		var early: bool=s.mode in ["challenge", "story"] and int(s.voyage)<=2
 		if early:
 			for node in available:
 				if free_benefit(ctx,node,true): safe.append(node)

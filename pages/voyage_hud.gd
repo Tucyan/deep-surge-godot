@@ -74,9 +74,12 @@ func build() -> void:
 	toggle_view.tooltip_text="当前：%s\n点击切换为%s，并设为默认复位视角" % ["俯视" if top_view else "斜俯视","斜俯视" if top_view else "俯视"]
 	rect(toggle_view,Vector4(0,.4,0,.4),Vector4(58,-96,114,-40))
 	W.UtilityButtonArt.apply(toggle_view,"view")
+	var camera_utilities_visible: bool = context.phase != "battle"
+	reset_view.visible = camera_utilities_visible
+	toggle_view.visible = camera_utilities_visible
 	# The event plate is drawn above these utilities: keep them visible but untouchable.
-	reset_view.focus_mode = Control.FOCUS_NONE if event_covered else Control.FOCUS_ALL
-	toggle_view.focus_mode = Control.FOCUS_NONE if event_covered else Control.FOCUS_ALL
+	reset_view.focus_mode = Control.FOCUS_NONE if event_covered or not camera_utilities_visible else Control.FOCUS_ALL
+	toggle_view.focus_mode = Control.FOCUS_NONE if event_covered or not camera_utilities_visible else Control.FOCUS_ALL
 	var view_icon:=TextureRect.new(); view_icon.name="ViewModeIcon"
 	view_icon.texture=assets.texture("icon.camera.oblique" if top_view else "icon.camera.top")
 	view_icon.expand_mode=TextureRect.EXPAND_IGNORE_SIZE; view_icon.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
@@ -475,6 +478,16 @@ func refresh_environments() -> void:
 	if is_instance_valid(row): _environment_host.remove_child(row); row.queue_free()
 	build_environment_names(_environment_host)
 
+func refresh_hand_preferences() -> void:
+	var old_hand:=find_child("hand_fan",true,false)
+	if not is_instance_valid(old_hand): return
+	var saved: Dictionary=old_hand.capture_visual()
+	var parent:=old_hand.get_parent()
+	parent.remove_child(old_hand); old_hand.queue_free()
+	hand(parent)
+	var replacement:=parent.get_node("hand_fan")
+	replacement.restore_visual(saved)
+
 func hand(parent: Node) -> void:
 	var fan = load("res://presentation/hand_fan.gd").new()
 	fan.name = "hand_fan"
@@ -496,4 +509,9 @@ func hand(parent: Node) -> void:
 			if is_instance_valid(bview): bview.on_card_clicked(card)
 		elif context.phase == "discard": send("discard",{"uid":card.uid})
 		elif context.can_base and card.definition.kind == "survival": send("play",{"uid":card.uid})
+		else: request("card",card.uid))
+	fan.inspected.connect(func(card):
+		if context.phase == "battle":
+			var bview = find_child("BattleHUDView", true, false)
+			if is_instance_valid(bview): bview.on_card_clicked(card)
 		else: request("card",card.uid))

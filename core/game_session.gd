@@ -169,7 +169,9 @@ func new_game(args: Dictionary) -> bool:
 	EnvironmentRules.initialize(state)
 	state.flags.event_visits = {}; state.flags.event_last = {}
 	state.mode = mode
-	state.length = Tutorial.LENGTH if tutorial else (15 if state.mode == "story" else 10 + int(R.draw(state.rng, "nodes") * 6))
+	# Draw the shared gameplay stream in both modes; story only fixes its length.
+	var rolled_length := 10 + int(R.draw(state.rng, "nodes") * 6) if not tutorial else 0
+	state.length = Tutorial.LENGTH if tutorial else (11 if state.mode == "story" else rolled_length)
 	state.flags.raft_layout = Rules.Layout.ID
 	state.expansion_count = 0
 	var initial_cells: Array = Rules.Layout.POSITIONS.slice(2,6)

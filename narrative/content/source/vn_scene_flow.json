@@ -1,0 +1,2289 @@
+{
+  "schema": "deep_surge.vn.scene_flow.v1",
+  "source_blocks_file": "vn_source_blocks.json",
+  "entry_scene": "n01",
+  "editorial_scene": "chapter_front_matter",
+  "scenes": [
+    {
+      "id": "chapter_front_matter",
+      "node": 0,
+      "source_range": [
+        0,
+        6
+      ],
+      "block_ids": [
+        "p0000",
+        "p0001",
+        "p0002",
+        "p0003",
+        "p0004",
+        "p0005",
+        "p0006"
+      ],
+      "next": "n01",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [],
+      "notes": []
+    },
+    {
+      "id": "n01",
+      "node": 1,
+      "source_range": [
+        7,
+        15
+      ],
+      "block_ids": [
+        "p0007",
+        "p0008",
+        "p0009",
+        "p0010",
+        "p0011",
+        "p0012",
+        "p0013",
+        "p0014",
+        "p0015"
+      ],
+      "next": null,
+      "menu": [
+        {
+          "id": "n01_scrap",
+          "source_block_id": "p0016",
+          "target": "n01_post",
+          "effects": [
+            {
+              "action": "grant_item",
+              "key": "废铁",
+              "scope": "run",
+              "value": 2,
+              "source_block_id": "p0016"
+            }
+          ]
+        },
+        {
+          "id": "n01_wood",
+          "source_block_id": "p0017",
+          "target": "n01_post",
+          "effects": [
+            {
+              "action": "grant_item",
+              "key": "木头",
+              "scope": "inventory",
+              "value": 1,
+              "source_block_id": "p0017"
+            },
+            {
+              "action": "grant_item",
+              "key": "绳子",
+              "scope": "inventory",
+              "value": 1,
+              "source_block_id": "p0017"
+            },
+            {
+              "action": "grant_item",
+              "key": "布料",
+              "scope": "inventory",
+              "value": 1,
+              "source_block_id": "p0017"
+            }
+          ]
+        }
+      ],
+      "on_enter": [],
+      "on_exit": [],
+      "notes": [
+        "本关为打捞前段，剧情选项应出现在共同损耗叙事之前。"
+      ]
+    },
+    {
+      "id": "n01_post",
+      "node": 1,
+      "source_range": [
+        18,
+        23
+      ],
+      "block_ids": [
+        "p0018",
+        "p0019",
+        "p0020",
+        "p0021",
+        "p0022",
+        "p0023"
+      ],
+      "next": "n02",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "delta_status",
+          "key": "生命值",
+          "scope": "run",
+          "value": -5,
+          "source_block_id": "p0019"
+        },
+        {
+          "action": "delta_status",
+          "key": "饱食度",
+          "scope": "run",
+          "value": -10,
+          "source_block_id": "p0019"
+        },
+        {
+          "action": "delta_status",
+          "key": "口渴值",
+          "scope": "run",
+          "value": -10,
+          "source_block_id": "p0019"
+        },
+        {
+          "action": "delta_status",
+          "key": "SAN",
+          "scope": "run",
+          "value": -10,
+          "source_block_id": "p0021"
+        }
+      ],
+      "notes": [
+        "教学选项的共同结算发生一次，不要因为 both next=n02 而重复发放。"
+      ]
+    },
+    {
+      "id": "n02",
+      "node": 2,
+      "source_range": [
+        24,
+        35
+      ],
+      "block_ids": [
+        "p0024",
+        "p0025",
+        "p0026",
+        "p0027",
+        "p0028",
+        "p0029",
+        "p0030",
+        "p0031",
+        "p0032",
+        "p0033",
+        "p0034",
+        "p0035"
+      ],
+      "next": "n03",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [],
+      "notes": [
+        "滤水器/土盆建造需要触发项目实际建造 UI；原稿未给成本、产量。"
+      ]
+    },
+    {
+      "id": "n03",
+      "node": 3,
+      "source_range": [
+        36,
+        55
+      ],
+      "block_ids": [
+        "p0036",
+        "p0037",
+        "p0038",
+        "p0039",
+        "p0040",
+        "p0041",
+        "p0042",
+        "p0043",
+        "p0044",
+        "p0045",
+        "p0046",
+        "p0047",
+        "p0048",
+        "p0049",
+        "p0050",
+        "p0051",
+        "p0052",
+        "p0053",
+        "p0054",
+        "p0055"
+      ],
+      "next": "n04_intro",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [],
+      "notes": [
+        "战斗节点由游戏战斗模块触发，不要把【战斗选项】当纯对白。"
+      ]
+    },
+    {
+      "id": "n04_intro",
+      "node": 4,
+      "source_range": [
+        56,
+        72
+      ],
+      "block_ids": [
+        "p0056",
+        "p0057",
+        "p0058",
+        "p0059",
+        "p0060",
+        "p0061",
+        "p0062",
+        "p0063",
+        "p0064",
+        "p0065",
+        "p0066",
+        "p0067",
+        "p0068",
+        "p0069",
+        "p0070",
+        "p0071",
+        "p0072"
+      ],
+      "next": null,
+      "menu": [
+        {
+          "id": "n04_join",
+          "source_block_id": "p0071",
+          "target": "n04_joined",
+          "effects": [
+            {
+              "action": "set_flag",
+              "key": "joined_grey_tide",
+              "scope": "run",
+              "value": true,
+              "source_block_id": "p0071"
+            }
+          ]
+        },
+        {
+          "id": "n04_refuse",
+          "source_block_id": "p0072",
+          "target": "be01",
+          "effects": []
+        }
+      ],
+      "on_enter": [],
+      "on_exit": [],
+      "notes": []
+    },
+    {
+      "id": "be01",
+      "node": 4,
+      "source_range": [
+        73,
+        76
+      ],
+      "block_ids": [
+        "p0073",
+        "p0074",
+        "p0075",
+        "p0076"
+      ],
+      "next": null,
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "trigger_ending",
+          "key": "BAD_END_1",
+          "scope": "meta",
+          "source_block_id": "p0076"
+        },
+        {
+          "action": "delta_meta",
+          "key": "周目轮回点",
+          "scope": "meta",
+          "value": 1,
+          "source_block_id": "p0076"
+        }
+      ],
+      "notes": [],
+      "terminal": "bad_end_1"
+    },
+    {
+      "id": "n04_joined",
+      "node": 4,
+      "source_range": [
+        77,
+        79
+      ],
+      "block_ids": [
+        "p0077",
+        "p0078",
+        "p0079"
+      ],
+      "next": "n05_incident",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [],
+      "notes": []
+    },
+    {
+      "id": "n05_incident",
+      "node": 5,
+      "source_range": [
+        80,
+        135
+      ],
+      "block_ids": [
+        "p0080",
+        "p0081",
+        "p0082",
+        "p0083",
+        "p0084",
+        "p0085",
+        "p0086",
+        "p0087",
+        "p0088",
+        "p0089",
+        "p0090",
+        "p0091",
+        "p0092",
+        "p0093",
+        "p0094",
+        "p0095",
+        "p0096",
+        "p0097",
+        "p0098",
+        "p0099",
+        "p0100",
+        "p0101",
+        "p0102",
+        "p0103",
+        "p0104",
+        "p0105",
+        "p0106",
+        "p0107",
+        "p0108",
+        "p0109",
+        "p0110",
+        "p0111",
+        "p0112",
+        "p0113",
+        "p0114",
+        "p0115",
+        "p0116",
+        "p0117",
+        "p0118",
+        "p0119",
+        "p0120",
+        "p0121",
+        "p0122",
+        "p0123",
+        "p0124",
+        "p0125",
+        "p0126",
+        "p0127",
+        "p0128",
+        "p0129",
+        "p0130",
+        "p0131",
+        "p0132",
+        "p0133",
+        "p0134",
+        "p0135"
+      ],
+      "next": null,
+      "menu": [
+        {
+          "id": "n05_truth",
+          "source_block_id": "p0136",
+          "target": "n05_truth",
+          "effects": []
+        },
+        {
+          "id": "n05_reason",
+          "source_block_id": "p0146",
+          "target": "n05_reason",
+          "effects": []
+        },
+        {
+          "id": "n05_fight",
+          "source_block_id": "p0153",
+          "target": "n05_fight",
+          "effects": []
+        }
+      ],
+      "on_enter": [
+        {
+          "action": "start_quest",
+          "key": "不合理的门扉与消失者",
+          "scope": "run",
+          "value": true,
+          "source_block_id": "p0119"
+        }
+      ],
+      "on_exit": [],
+      "notes": [
+        "任务开启事件 source p0118~0122，3个选项标题位于目标分支标题中。"
+      ]
+    },
+    {
+      "id": "n05_truth",
+      "node": 5,
+      "source_range": [
+        136,
+        145
+      ],
+      "block_ids": [
+        "p0136",
+        "p0137",
+        "p0138",
+        "p0139",
+        "p0140",
+        "p0141",
+        "p0142",
+        "p0143",
+        "p0144",
+        "p0145"
+      ],
+      "next": "n05_continue",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "delta_trust",
+          "key": "塞琳",
+          "scope": "run",
+          "value": 3,
+          "source_block_id": "p0144"
+        },
+        {
+          "action": "set_flag",
+          "key": "restricted_core_cabin",
+          "scope": "run",
+          "value": true,
+          "source_block_id": "p0144"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "id": "n05_reason",
+      "node": 5,
+      "source_range": [
+        146,
+        152
+      ],
+      "block_ids": [
+        "p0146",
+        "p0147",
+        "p0148",
+        "p0149",
+        "p0150",
+        "p0151",
+        "p0152"
+      ],
+      "next": "n05_continue",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "delta_trust",
+          "key": "塞琳",
+          "scope": "run",
+          "value": 5,
+          "source_block_id": "p0151"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "id": "n05_fight",
+      "node": 5,
+      "source_range": [
+        153,
+        168
+      ],
+      "block_ids": [
+        "p0153",
+        "p0154",
+        "p0155",
+        "p0156",
+        "p0157",
+        "p0158",
+        "p0159",
+        "p0160",
+        "p0161",
+        "p0162",
+        "p0163",
+        "p0164",
+        "p0165",
+        "p0166",
+        "p0167",
+        "p0168"
+      ],
+      "next": null,
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "trigger_ending",
+          "key": "BAD_END_2",
+          "scope": "meta",
+          "source_block_id": "p0166"
+        },
+        {
+          "action": "delta_meta",
+          "key": "周目轮回点",
+          "scope": "meta",
+          "value": 1,
+          "source_block_id": "p0166"
+        }
+      ],
+      "notes": [],
+      "terminal": "bad_end_2"
+    },
+    {
+      "id": "n05_continue",
+      "node": 5,
+      "source_range": [
+        169,
+        174
+      ],
+      "block_ids": [
+        "p0169",
+        "p0170",
+        "p0171",
+        "p0172",
+        "p0173",
+        "p0174"
+      ],
+      "next": "n06_intro",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "set_flag",
+          "key": "night_investigation_open",
+          "scope": "run",
+          "value": true,
+          "source_block_id": "p0172"
+        }
+      ],
+      "notes": [
+        "调查剩余 9 晚，按 node 06~14 共 9 次计算；不要在节点05消耗一次。"
+      ]
+    },
+    {
+      "id": "n06_intro",
+      "node": 6,
+      "source_range": [
+        175,
+        183
+      ],
+      "block_ids": [
+        "p0175",
+        "p0176",
+        "p0177",
+        "p0178",
+        "p0179",
+        "p0180",
+        "p0181",
+        "p0182",
+        "p0183"
+      ],
+      "next": null,
+      "menu": [
+        {
+          "id": "n06_rest",
+          "source_block_id": "p0180",
+          "target": "n06_rest",
+          "effects": []
+        },
+        {
+          "id": "n06_investigate",
+          "source_block_id": "p0181",
+          "target": "n06_investigate",
+          "effects": []
+        }
+      ],
+      "on_enter": [],
+      "on_exit": [],
+      "notes": []
+    },
+    {
+      "id": "n06_rest",
+      "node": 6,
+      "source_range": [
+        184,
+        188
+      ],
+      "block_ids": [
+        "p0184",
+        "p0185",
+        "p0186",
+        "p0187",
+        "p0188"
+      ],
+      "next": "n07_intro",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "delta_status",
+          "key": "生命值",
+          "scope": "run",
+          "value": 5,
+          "source_block_id": "p0186"
+        },
+        {
+          "action": "delta_status",
+          "key": "饱食度",
+          "scope": "run",
+          "value": -10,
+          "source_block_id": "p0186"
+        },
+        {
+          "action": "delta_status",
+          "key": "口渴值",
+          "scope": "run",
+          "value": -10,
+          "source_block_id": "p0186"
+        },
+        {
+          "action": "increment",
+          "key": "RestCount",
+          "scope": "run",
+          "value": 1,
+          "source_block_id": "p0186",
+          "note": "原稿06未显式写RestCount，07起说明统计06~14全部休息，需确认。"
+        }
+      ],
+      "notes": [
+        "节点06特殊梦境文本不同于后续通用休息。",
+        "进入本段正文后执行恢复；完成结算后只判断一次 RestCount>=3，不能同时进入下一节点。"
+      ],
+      "post_effect_redirect": {
+        "when": {
+          "rest_count_gte": 3
+        },
+        "target": "be03"
+      }
+    },
+    {
+      "id": "n06_investigate",
+      "node": 6,
+      "source_range": [
+        189,
+        196
+      ],
+      "block_ids": [
+        "p0189",
+        "p0190",
+        "p0191",
+        "p0192",
+        "p0193",
+        "p0194",
+        "p0195",
+        "p0196"
+      ],
+      "next": null,
+      "menu": [
+        {
+          "id": "n06_corridor",
+          "source_block_id": "p0192",
+          "target": "n06_corridor",
+          "effects": []
+        },
+        {
+          "id": "n06_hack",
+          "source_block_id": "p0193",
+          "target": "n06_hack_intro",
+          "effects": []
+        },
+        {
+          "id": "n06_celine",
+          "source_block_id": "p0194",
+          "target": "n06_celine",
+          "effects": []
+        }
+      ],
+      "on_enter": [],
+      "on_exit": [],
+      "notes": []
+    },
+    {
+      "id": "n06_corridor",
+      "node": 6,
+      "source_range": [
+        197,
+        198
+      ],
+      "block_ids": [
+        "p0197",
+        "p0198"
+      ],
+      "next": "n06_outro",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "unlock_clue",
+          "key": "A-1",
+          "scope": "meta",
+          "source_block_id": "p0198"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "id": "n06_hack_intro",
+      "node": 6,
+      "source_range": [
+        199,
+        200
+      ],
+      "block_ids": [
+        "p0199",
+        "p0200"
+      ],
+      "next": null,
+      "menu": [
+        {
+          "id": "n06_ned_a",
+          "source_block_id": "p0201",
+          "target": "n06_ned_a",
+          "effects": []
+        },
+        {
+          "id": "n06_ned_b",
+          "source_block_id": "p0203",
+          "target": "n06_ned_b",
+          "effects": []
+        }
+      ],
+      "on_enter": [],
+      "on_exit": [],
+      "notes": []
+    },
+    {
+      "id": "n06_ned_a",
+      "node": 6,
+      "source_range": [
+        202,
+        202
+      ],
+      "block_ids": [
+        "p0202"
+      ],
+      "next": "n06_hack_finish",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "delta_trust",
+          "key": "涅德",
+          "scope": "run",
+          "value": 1,
+          "source_block_id": "p0202"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "id": "n06_ned_b",
+      "node": 6,
+      "source_range": [
+        204,
+        204
+      ],
+      "block_ids": [
+        "p0204"
+      ],
+      "next": "n06_hack_finish",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "delta_trust",
+          "key": "涅德",
+          "scope": "run",
+          "value": 3,
+          "source_block_id": "p0204"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "id": "n06_hack_finish",
+      "node": 6,
+      "source_range": [
+        205,
+        206
+      ],
+      "block_ids": [
+        "p0205",
+        "p0206"
+      ],
+      "next": "n06_outro",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "unlock_clue",
+          "key": "B-1",
+          "scope": "meta",
+          "source_block_id": "p0205"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "id": "n06_celine",
+      "node": 6,
+      "source_range": [
+        207,
+        208
+      ],
+      "block_ids": [
+        "p0207",
+        "p0208"
+      ],
+      "next": "n06_outro",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "unlock_clue",
+          "key": "C-1",
+          "scope": "meta",
+          "source_block_id": "p0208"
+        },
+        {
+          "action": "delta_trust",
+          "key": "塞琳",
+          "scope": "run",
+          "value": 2,
+          "source_block_id": "p0208"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "id": "n06_outro",
+      "node": 6,
+      "source_range": [
+        209,
+        209
+      ],
+      "block_ids": [
+        "p0209"
+      ],
+      "next": "n07_intro",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [],
+      "notes": []
+    },
+    {
+      "id": "n07_intro",
+      "node": 7,
+      "source_range": [
+        210,
+        215
+      ],
+      "block_ids": [
+        "p0210",
+        "p0211",
+        "p0212",
+        "p0213",
+        "p0214",
+        "p0215"
+      ],
+      "next": null,
+      "menu": [
+        {
+          "id": "n07_rest",
+          "source_block_id": "p0213",
+          "target": "n07_rest",
+          "effects": []
+        },
+        {
+          "id": "n07_investigate",
+          "source_block_id": "p0214",
+          "target": "n07_investigate",
+          "effects": []
+        }
+      ],
+      "on_enter": [],
+      "on_exit": [],
+      "notes": []
+    },
+    {
+      "id": "n07_rest",
+      "node": 7,
+      "source_range": [
+        216,
+        217
+      ],
+      "block_ids": [
+        "p0216",
+        "p0217"
+      ],
+      "next": "n07_outro",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "delta_status",
+          "key": "生命值",
+          "scope": "run",
+          "value": 10,
+          "source_block_id": "p0217"
+        },
+        {
+          "action": "delta_status",
+          "key": "SAN",
+          "scope": "run",
+          "value": 10,
+          "source_block_id": "p0217"
+        },
+        {
+          "action": "delta_status",
+          "key": "饱食度",
+          "scope": "run",
+          "value": -10,
+          "source_block_id": "p0217"
+        },
+        {
+          "action": "delta_status",
+          "key": "口渴值",
+          "scope": "run",
+          "value": -10,
+          "source_block_id": "p0217"
+        },
+        {
+          "action": "increment",
+          "key": "RestCount",
+          "scope": "run",
+          "value": 1,
+          "source_block_id": "p0217"
+        }
+      ],
+      "notes": [
+        "on_exit后 if RestCount>=3 -> be03, 否则到 n07_outro。",
+        "进入本段正文后执行恢复；完成结算后只判断一次 RestCount>=3，不能同时进入下一节点。"
+      ],
+      "post_effect_redirect": {
+        "when": {
+          "rest_count_gte": 3
+        },
+        "target": "be03"
+      }
+    },
+    {
+      "id": "be03",
+      "node": 7,
+      "source_range": [
+        218,
+        218
+      ],
+      "block_ids": [
+        "p0218"
+      ],
+      "next": null,
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "trigger_ending",
+          "key": "BAD_END_3",
+          "scope": "meta",
+          "source_block_id": "p0218"
+        },
+        {
+          "action": "delta_meta",
+          "key": "周目轮回点",
+          "scope": "meta",
+          "value": 1,
+          "source_block_id": "p0218"
+        }
+      ],
+      "notes": [],
+      "condition": {
+        "rest_count_gte": 3
+      },
+      "terminal": "bad_end_3"
+    },
+    {
+      "id": "n07_investigate",
+      "node": 7,
+      "source_range": [
+        219,
+        223
+      ],
+      "block_ids": [
+        "p0219",
+        "p0220",
+        "p0221",
+        "p0222",
+        "p0223"
+      ],
+      "next": null,
+      "menu": [
+        {
+          "id": "n07_storage",
+          "source_block_id": "p0221",
+          "target": "n07_storage",
+          "effects": []
+        },
+        {
+          "id": "n07_lookout",
+          "source_block_id": "p0222",
+          "target": "n07_lookout",
+          "effects": []
+        }
+      ],
+      "on_enter": [],
+      "on_exit": [],
+      "notes": []
+    },
+    {
+      "id": "n07_storage",
+      "node": 7,
+      "source_range": [
+        224,
+        226
+      ],
+      "block_ids": [
+        "p0224",
+        "p0225",
+        "p0226"
+      ],
+      "next": "n07_outro",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "unlock_clue",
+          "key": "B-2",
+          "scope": "meta",
+          "source_block_id": "p0226"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "id": "n07_lookout",
+      "node": 7,
+      "source_range": [
+        227,
+        234
+      ],
+      "block_ids": [
+        "p0227",
+        "p0228",
+        "p0229",
+        "p0230",
+        "p0231",
+        "p0232",
+        "p0233",
+        "p0234"
+      ],
+      "next": "n07_outro",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "unlock_clue",
+          "key": "C-2",
+          "scope": "meta",
+          "source_block_id": "p0233"
+        }
+      ],
+      "notes": [
+        "涅德好感上升，但没有给定具体数值；不自动赋值。"
+      ]
+    },
+    {
+      "id": "n07_outro",
+      "node": 7,
+      "source_range": [
+        235,
+        237
+      ],
+      "block_ids": [
+        "p0235",
+        "p0236",
+        "p0237"
+      ],
+      "next": "n08_intro",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [],
+      "notes": []
+    },
+    {
+      "id": "n08_intro",
+      "node": 8,
+      "source_range": [
+        238,
+        259
+      ],
+      "block_ids": [
+        "p0238",
+        "p0239",
+        "p0240",
+        "p0241",
+        "p0242",
+        "p0243",
+        "p0244",
+        "p0245",
+        "p0246",
+        "p0247",
+        "p0248",
+        "p0249",
+        "p0250",
+        "p0251",
+        "p0252",
+        "p0253",
+        "p0254",
+        "p0255",
+        "p0256",
+        "p0257",
+        "p0258",
+        "p0259"
+      ],
+      "next": null,
+      "menu": [
+        {
+          "id": "n08_rest",
+          "source_block_id": "p0256",
+          "target": "n08_rest",
+          "effects": []
+        },
+        {
+          "id": "n08_investigate",
+          "source_block_id": "p0257",
+          "target": "n08_investigate",
+          "effects": []
+        }
+      ],
+      "on_enter": [],
+      "on_exit": [],
+      "notes": [
+        "固定公共异动不消耗当晚主要行动。"
+      ]
+    },
+    {
+      "id": "n08_rest",
+      "node": 8,
+      "source_range": [
+        260,
+        263
+      ],
+      "block_ids": [
+        "p0260",
+        "p0261",
+        "p0262",
+        "p0263"
+      ],
+      "next": "n08_outro",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "delta_status",
+          "key": "生命值",
+          "scope": "run",
+          "value": 10,
+          "source_block_id": "p0261"
+        },
+        {
+          "action": "delta_status",
+          "key": "SAN",
+          "scope": "run",
+          "value": 10,
+          "source_block_id": "p0261"
+        },
+        {
+          "action": "delta_status",
+          "key": "饱食度",
+          "scope": "run",
+          "value": -10,
+          "source_block_id": "p0261"
+        },
+        {
+          "action": "delta_status",
+          "key": "口渴值",
+          "scope": "run",
+          "value": -10,
+          "source_block_id": "p0261"
+        },
+        {
+          "action": "increment",
+          "key": "RestCount",
+          "scope": "run",
+          "value": 1,
+          "source_block_id": "p0261"
+        }
+      ],
+      "notes": [
+        "进入本段正文后执行恢复；完成结算后只判断一次 RestCount>=3，不能同时进入下一节点。"
+      ],
+      "post_effect_redirect": {
+        "when": {
+          "rest_count_gte": 3
+        },
+        "target": "be03"
+      }
+    },
+    {
+      "id": "n08_investigate",
+      "node": 8,
+      "source_range": [
+        264,
+        267
+      ],
+      "block_ids": [
+        "p0264",
+        "p0265",
+        "p0266",
+        "p0267"
+      ],
+      "next": null,
+      "menu": [
+        {
+          "id": "n08_celine",
+          "source_block_id": "p0266",
+          "target": "n08_celine",
+          "effects": []
+        },
+        {
+          "id": "n08_kohl",
+          "source_block_id": "p0267",
+          "target": "n08_kohl",
+          "effects": []
+        }
+      ],
+      "on_enter": [],
+      "on_exit": [],
+      "notes": []
+    },
+    {
+      "id": "n08_celine",
+      "node": 8,
+      "source_range": [
+        268,
+        270
+      ],
+      "block_ids": [
+        "p0268",
+        "p0269",
+        "p0270"
+      ],
+      "next": "n08_outro",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "unlock_clue",
+          "key": "A-3",
+          "scope": "meta",
+          "source_block_id": "p0269"
+        },
+        {
+          "action": "delta_trust",
+          "key": "塞琳",
+          "scope": "run",
+          "value": 3,
+          "source_block_id": "p0269"
+        },
+        {
+          "action": "grant_card",
+          "key": "食物",
+          "scope": "run",
+          "source_block_id": "p0269",
+          "note": "原稿未指定数量/卡牌ID，请程序按资产配置，不擅自设定。"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "id": "n08_kohl",
+      "node": 8,
+      "source_range": [
+        271,
+        298
+      ],
+      "block_ids": [
+        "p0271",
+        "p0272",
+        "p0273",
+        "p0274",
+        "p0275",
+        "p0276",
+        "p0277",
+        "p0278",
+        "p0279",
+        "p0280",
+        "p0281",
+        "p0282",
+        "p0283",
+        "p0284",
+        "p0285",
+        "p0286",
+        "p0287",
+        "p0288",
+        "p0289",
+        "p0290",
+        "p0291",
+        "p0292",
+        "p0293",
+        "p0294",
+        "p0295",
+        "p0296",
+        "p0297",
+        "p0298"
+      ],
+      "next": "n08_outro",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "unlock_clue",
+          "key": "B-3",
+          "scope": "meta",
+          "source_block_id": "p0295"
+        },
+        {
+          "action": "grant_item",
+          "key": "老海妖骨凿",
+          "scope": "inventory",
+          "value": 1,
+          "source_block_id": "p0295"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "id": "n08_outro",
+      "node": 8,
+      "source_range": [
+        299,
+        301
+      ],
+      "block_ids": [
+        "p0299",
+        "p0300",
+        "p0301"
+      ],
+      "next": "n09_intro",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [],
+      "notes": []
+    },
+    {
+      "id": "n09_intro",
+      "node": 9,
+      "source_range": [
+        302,
+        310
+      ],
+      "block_ids": [
+        "p0302",
+        "p0303",
+        "p0304",
+        "p0305",
+        "p0306",
+        "p0307",
+        "p0308",
+        "p0309",
+        "p0310"
+      ],
+      "next": null,
+      "menu": [
+        {
+          "id": "n09_rest",
+          "source_block_id": "p0308",
+          "target": "n09_rest",
+          "effects": []
+        },
+        {
+          "id": "n09_investigate",
+          "source_block_id": "p0309",
+          "target": "n09_investigate",
+          "effects": []
+        }
+      ],
+      "on_enter": [],
+      "on_exit": [],
+      "notes": []
+    },
+    {
+      "id": "n09_rest",
+      "node": 9,
+      "source_range": [
+        311,
+        313
+      ],
+      "block_ids": [
+        "p0311",
+        "p0312",
+        "p0313"
+      ],
+      "next": "n09_outro",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "delta_status",
+          "key": "生命值",
+          "scope": "run",
+          "value": 10,
+          "source_block_id": "p0312"
+        },
+        {
+          "action": "delta_status",
+          "key": "SAN",
+          "scope": "run",
+          "value": 10,
+          "source_block_id": "p0312"
+        },
+        {
+          "action": "delta_status",
+          "key": "饱食度",
+          "scope": "run",
+          "value": -10,
+          "source_block_id": "p0312"
+        },
+        {
+          "action": "delta_status",
+          "key": "口渴值",
+          "scope": "run",
+          "value": -10,
+          "source_block_id": "p0312"
+        },
+        {
+          "action": "increment",
+          "key": "RestCount",
+          "scope": "run",
+          "value": 1,
+          "source_block_id": "p0312"
+        }
+      ],
+      "notes": [
+        "进入本段正文后执行恢复；完成结算后只判断一次 RestCount>=3，不能同时进入下一节点。"
+      ],
+      "post_effect_redirect": {
+        "when": {
+          "rest_count_gte": 3
+        },
+        "target": "be03"
+      }
+    },
+    {
+      "id": "n09_investigate",
+      "node": 9,
+      "source_range": [
+        314,
+        318
+      ],
+      "block_ids": [
+        "p0314",
+        "p0315",
+        "p0316",
+        "p0317",
+        "p0318"
+      ],
+      "next": null,
+      "menu": [
+        {
+          "id": "n09_berth",
+          "source_block_id": "p0316",
+          "target": "n09_berth",
+          "effects": []
+        },
+        {
+          "id": "n09_ryan",
+          "source_block_id": "p0317",
+          "target": "n09_ryan_intro",
+          "effects": []
+        }
+      ],
+      "on_enter": [],
+      "on_exit": [],
+      "notes": []
+    },
+    {
+      "id": "n09_berth",
+      "node": 9,
+      "source_range": [
+        319,
+        334
+      ],
+      "block_ids": [
+        "p0319",
+        "p0320",
+        "p0321",
+        "p0322",
+        "p0323",
+        "p0324",
+        "p0325",
+        "p0326",
+        "p0327",
+        "p0328",
+        "p0329",
+        "p0330",
+        "p0331",
+        "p0332",
+        "p0333",
+        "p0334"
+      ],
+      "next": "n09_outro",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "unlock_clue",
+          "key": "B-4",
+          "scope": "meta",
+          "source_block_id": "p0334"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "id": "n09_ryan_intro",
+      "node": 9,
+      "source_range": [
+        335,
+        338
+      ],
+      "block_ids": [
+        "p0335",
+        "p0336",
+        "p0337",
+        "p0338"
+      ],
+      "next": null,
+      "menu": [
+        {
+          "id": "n09_watch",
+          "source_block_id": "p0339",
+          "target": "n09_watch",
+          "effects": []
+        },
+        {
+          "id": "n09_confront",
+          "source_block_id": "p0341",
+          "target": "n09_confront",
+          "effects": []
+        }
+      ],
+      "on_enter": [],
+      "on_exit": [],
+      "notes": []
+    },
+    {
+      "id": "n09_watch",
+      "node": 9,
+      "source_range": [
+        340,
+        340
+      ],
+      "block_ids": [
+        "p0340"
+      ],
+      "next": "n09_outro",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "unlock_clue",
+          "key": "C-3",
+          "scope": "meta",
+          "source_block_id": "p0340"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "id": "n09_confront",
+      "node": 9,
+      "source_range": [
+        342,
+        350
+      ],
+      "block_ids": [
+        "p0342",
+        "p0343",
+        "p0344",
+        "p0345",
+        "p0346",
+        "p0347",
+        "p0348",
+        "p0349",
+        "p0350"
+      ],
+      "next": null,
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "trigger_ending",
+          "key": "BAD_END_4",
+          "scope": "meta",
+          "source_block_id": "p0350"
+        }
+      ],
+      "notes": [
+        "原文没有写 BE4 获得轮回点，因此不添加。"
+      ],
+      "terminal": "bad_end_4"
+    },
+    {
+      "id": "n09_outro",
+      "node": 9,
+      "source_range": [
+        351,
+        354
+      ],
+      "block_ids": [
+        "p0351",
+        "p0352",
+        "p0353",
+        "p0354"
+      ],
+      "next": "n10_intro",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [],
+      "notes": []
+    },
+    {
+      "id": "n10_intro",
+      "node": 10,
+      "source_range": [
+        355,
+        360
+      ],
+      "block_ids": [
+        "p0355",
+        "p0356",
+        "p0357",
+        "p0358",
+        "p0359",
+        "p0360"
+      ],
+      "next": null,
+      "menu": [
+        {
+          "id": "n10_rest",
+          "source_block_id": "p0358",
+          "target": "n10_rest",
+          "effects": []
+        },
+        {
+          "id": "n10_investigate",
+          "source_block_id": "p0359",
+          "target": "n10_investigate",
+          "effects": []
+        }
+      ],
+      "on_enter": [],
+      "on_exit": [],
+      "notes": []
+    },
+    {
+      "id": "n10_rest",
+      "node": 10,
+      "source_range": [
+        361,
+        363
+      ],
+      "block_ids": [
+        "p0361",
+        "p0362",
+        "p0363"
+      ],
+      "next": "n10_outro",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "delta_status",
+          "key": "生命值",
+          "scope": "run",
+          "value": 10,
+          "source_block_id": "p0362"
+        },
+        {
+          "action": "delta_status",
+          "key": "SAN",
+          "scope": "run",
+          "value": 10,
+          "source_block_id": "p0362"
+        },
+        {
+          "action": "delta_status",
+          "key": "饱食度",
+          "scope": "run",
+          "value": -10,
+          "source_block_id": "p0362"
+        },
+        {
+          "action": "delta_status",
+          "key": "口渴值",
+          "scope": "run",
+          "value": -10,
+          "source_block_id": "p0362"
+        },
+        {
+          "action": "increment",
+          "key": "RestCount",
+          "scope": "run",
+          "value": 1,
+          "source_block_id": "p0362"
+        }
+      ],
+      "notes": [
+        "进入本段正文后执行恢复；完成结算后只判断一次 RestCount>=3，不能同时进入下一节点。"
+      ],
+      "post_effect_redirect": {
+        "when": {
+          "rest_count_gte": 3
+        },
+        "target": "be03"
+      }
+    },
+    {
+      "id": "n10_investigate",
+      "node": 10,
+      "source_range": [
+        364,
+        368
+      ],
+      "block_ids": [
+        "p0364",
+        "p0365",
+        "p0366",
+        "p0367",
+        "p0368"
+      ],
+      "next": null,
+      "menu": [
+        {
+          "id": "n10_report",
+          "source_block_id": "p0366",
+          "target": "n10_report",
+          "effects": [],
+          "condition": {
+            "clue_unlocked": "C-3"
+          },
+          "implementation_note": "此限制由对话的既有情报前提推导，原剧本未给出缺失线索时的替代分支，需确认。"
+        },
+        {
+          "id": "n10_chisel",
+          "source_block_id": "p0367",
+          "target": "n10_chisel",
+          "effects": [],
+          "condition": {
+            "has_item": "老海妖骨凿"
+          },
+          "implementation_note": "文本直接使用骨凿；未拥有时无替代剧本。"
+        }
+      ],
+      "on_enter": [],
+      "on_exit": [],
+      "notes": []
+    },
+    {
+      "id": "n10_report",
+      "node": 10,
+      "source_range": [
+        369,
+        370
+      ],
+      "block_ids": [
+        "p0369",
+        "p0370"
+      ],
+      "next": "n10_outro",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "unlock_clue",
+          "key": "C-4",
+          "scope": "meta",
+          "source_block_id": "p0370"
+        },
+        {
+          "action": "delta_trust",
+          "key": "塞琳",
+          "scope": "run",
+          "value": 4,
+          "source_block_id": "p0370"
+        },
+        {
+          "action": "grant_item",
+          "key": "学者骨质罗盘",
+          "scope": "inventory",
+          "value": 1,
+          "source_block_id": "p0370"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "id": "n10_chisel",
+      "node": 10,
+      "source_range": [
+        371,
+        373
+      ],
+      "block_ids": [
+        "p0371",
+        "p0372",
+        "p0373"
+      ],
+      "next": "n10_outro",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "unlock_clue",
+          "key": "A-4",
+          "scope": "meta",
+          "source_block_id": "p0372"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "id": "n10_outro",
+      "node": 10,
+      "source_range": [
+        374,
+        376
+      ],
+      "block_ids": [
+        "p0374",
+        "p0375",
+        "p0376"
+      ],
+      "next": "n11_intro",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [],
+      "notes": []
+    },
+    {
+      "id": "n11_intro",
+      "node": 11,
+      "source_range": [
+        377,
+        386
+      ],
+      "block_ids": [
+        "p0377",
+        "p0378",
+        "p0379",
+        "p0380",
+        "p0381",
+        "p0382",
+        "p0383",
+        "p0384",
+        "p0385",
+        "p0386"
+      ],
+      "next": null,
+      "menu": [
+        {
+          "id": "n11_rest",
+          "source_block_id": "p0384",
+          "target": "n11_rest",
+          "effects": []
+        },
+        {
+          "id": "n11_investigate",
+          "source_block_id": "p0385",
+          "target": "n11_investigate",
+          "effects": []
+        }
+      ],
+      "on_enter": [],
+      "on_exit": [],
+      "notes": []
+    },
+    {
+      "id": "n11_rest",
+      "node": 11,
+      "source_range": [
+        387,
+        389
+      ],
+      "block_ids": [
+        "p0387",
+        "p0388",
+        "p0389"
+      ],
+      "next": "n11_outro",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "delta_status",
+          "key": "生命值",
+          "scope": "run",
+          "value": 10,
+          "source_block_id": "p0388"
+        },
+        {
+          "action": "delta_status",
+          "key": "SAN",
+          "scope": "run",
+          "value": 10,
+          "source_block_id": "p0388"
+        },
+        {
+          "action": "delta_status",
+          "key": "饱食度",
+          "scope": "run",
+          "value": -10,
+          "source_block_id": "p0388"
+        },
+        {
+          "action": "delta_status",
+          "key": "口渴值",
+          "scope": "run",
+          "value": -10,
+          "source_block_id": "p0388"
+        },
+        {
+          "action": "increment",
+          "key": "RestCount",
+          "scope": "run",
+          "value": 1,
+          "source_block_id": "p0388"
+        }
+      ],
+      "notes": [
+        "进入本段正文后执行恢复；完成结算后只判断一次 RestCount>=3，不能同时进入下一节点。"
+      ],
+      "post_effect_redirect": {
+        "when": {
+          "rest_count_gte": 3
+        },
+        "target": "be03"
+      }
+    },
+    {
+      "id": "n11_investigate",
+      "node": 11,
+      "source_range": [
+        390,
+        394
+      ],
+      "block_ids": [
+        "p0390",
+        "p0391",
+        "p0392",
+        "p0393",
+        "p0394"
+      ],
+      "next": null,
+      "menu": [
+        {
+          "id": "n11_core",
+          "source_block_id": "p0392",
+          "target": "n11_core",
+          "effects": [],
+          "condition": {
+            "has_item": "学者骨质罗盘"
+          },
+          "implementation_note": "叙事明确使用罗盘；七英尺规律也依赖此前调查信息，是否必须A-3待确认。"
+        },
+        {
+          "id": "n11_rescue",
+          "source_block_id": "p0393",
+          "target": "n11_rescue",
+          "effects": [],
+          "condition": {
+            "has_item": "老海妖骨凿"
+          },
+          "implementation_note": "叙事明确使用骨凿；未拥有时应锁定或另补剧情。"
+        }
+      ],
+      "on_enter": [],
+      "on_exit": [],
+      "notes": []
+    },
+    {
+      "id": "n11_core",
+      "node": 11,
+      "source_range": [
+        395,
+        398
+      ],
+      "block_ids": [
+        "p0395",
+        "p0396",
+        "p0397",
+        "p0398"
+      ],
+      "next": "n11_outro",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "unlock_clue",
+          "key": "C-5",
+          "scope": "meta",
+          "source_block_id": "p0398"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "id": "n11_rescue",
+      "node": 11,
+      "source_range": [
+        399,
+        405
+      ],
+      "block_ids": [
+        "p0399",
+        "p0400",
+        "p0401",
+        "p0402",
+        "p0403",
+        "p0404",
+        "p0405"
+      ],
+      "next": "n11_outro",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [
+        {
+          "action": "unlock_clue",
+          "key": "A-5",
+          "scope": "meta",
+          "source_block_id": "p0404"
+        },
+        {
+          "action": "grant_item",
+          "key": "避水海兽獠牙护符",
+          "scope": "inventory",
+          "value": 1,
+          "source_block_id": "p0404"
+        },
+        {
+          "action": "set_flag",
+          "key": "rescued_ned_kohl",
+          "scope": "run",
+          "value": true,
+          "source_block_id": "p0404"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "id": "n11_outro",
+      "node": 11,
+      "source_range": [
+        406,
+        407
+      ],
+      "block_ids": [
+        "p0406",
+        "p0407"
+      ],
+      "next": "UNWRITTEN_NODE12",
+      "menu": null,
+      "on_enter": [],
+      "on_exit": [],
+      "notes": [
+        "上传文档在11节点结束；12~15和最终结算尚未出现，不可凭空补齐。"
+      ]
+    }
+  ],
+  "clue_catalog": {
+    "A-1": {
+      "id": "A-1",
+      "title": "伤口与结痂",
+      "source_block_id": "p0198",
+      "persistence": "meta",
+      "description_source": "p0198"
+    },
+    "B-1": {
+      "id": "B-1",
+      "title": "受惊者的刻印与日记",
+      "source_block_id": "p0205",
+      "persistence": "meta",
+      "description_source": "p0205"
+    },
+    "C-1": {
+      "id": "C-1",
+      "title": "学者的古训与过往失踪",
+      "source_block_id": "p0208",
+      "persistence": "meta",
+      "description_source": "p0208"
+    },
+    "B-2": {
+      "id": "B-2",
+      "title": "位置错乱与逆流遗物",
+      "source_block_id": "p0226",
+      "persistence": "meta",
+      "description_source": "p0226"
+    },
+    "C-2": {
+      "id": "C-2",
+      "title": "受蚀者的计数律",
+      "source_block_id": "p0233",
+      "persistence": "meta",
+      "description_source": "p0233"
+    },
+    "A-3": {
+      "id": "A-3",
+      "title": "侵蚀核心的投影规律",
+      "source_block_id": "p0269",
+      "persistence": "meta",
+      "description_source": "p0269"
+    },
+    "B-3": {
+      "id": "B-3",
+      "title": "死掉的木材与逆转物质",
+      "source_block_id": "p0295",
+      "persistence": "meta",
+      "description_source": "p0295"
+    },
+    "B-4": {
+      "id": "B-4",
+      "title": "抹除存在的认知侵蚀",
+      "source_block_id": "p0334",
+      "persistence": "meta",
+      "description_source": "p0334"
+    },
+    "C-3": {
+      "id": "C-3",
+      "title": "芮安的秘密信物与异常流向",
+      "source_block_id": "p0340",
+      "persistence": "meta",
+      "description_source": "p0340"
+    },
+    "C-4": {
+      "id": "C-4",
+      "title": "暗流信标与分队暗鬼",
+      "source_block_id": "p0370",
+      "persistence": "meta",
+      "description_source": "p0370"
+    },
+    "A-4": {
+      "id": "A-4",
+      "title": "并轨的长廊与虚掩之门",
+      "source_block_id": "p0372",
+      "persistence": "meta",
+      "description_source": "p0372"
+    },
+    "C-5": {
+      "id": "C-5",
+      "title": "神隐与同化的本质",
+      "source_block_id": "p0398",
+      "persistence": "meta",
+      "description_source": "p0398"
+    },
+    "A-5": {
+      "id": "A-5",
+      "title": "门扉扎根的龙骨锚点",
+      "source_block_id": "p0404",
+      "persistence": "meta",
+      "description_source": "p0404"
+    }
+  },
+  "item_catalog": {
+    "废铁": {
+      "type": "material",
+      "source": "p0016"
+    },
+    "木头": {
+      "type": "material",
+      "source": "p0017"
+    },
+    "绳子": {
+      "type": "material",
+      "source": "p0017"
+    },
+    "布料": {
+      "type": "material",
+      "source": "p0017"
+    },
+    "老海妖骨凿": {
+      "type": "quest_item",
+      "source": "p0295",
+      "persistence": "run"
+    },
+    "学者骨质罗盘": {
+      "type": "quest_item",
+      "source": "p0370",
+      "persistence": "run"
+    },
+    "避水海兽獠牙护符": {
+      "type": "quest_item",
+      "source": "p0404",
+      "persistence": "run"
+    },
+    "食物": {
+      "type": "card_placeholder",
+      "source": "p0269",
+      "needs_asset_id": true
+    }
+  },
+  "state_schema": {
+    "run": {
+      "chapter_node": "int",
+      "current_scene": "string",
+      "status": "{生命值,SAN,饱食度,口渴值,船体...}",
+      "inventory": "{item_id:count}",
+      "cards": "list/card_repository",
+      "trust": "{塞琳:int,涅德:int,...}",
+      "flags": "set[str]",
+      "RestCount": "int",
+      "night_action_consumed": "bool"
+    },
+    "meta": {
+      "unlocked_clues": "set[clue_id]",
+      "unlocked_endings": "set[ending_id]",
+      "周目轮回点": "int",
+      "scholar_memory_flags": "set[str]"
+    }
+  },
+  "rules": {
+    "one_night_major_action": true,
+    "night_active_nodes": [
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ],
+    "night_deadline_node": 15,
+    "remaining_nights_formula": "max(0, 15-current_node) at the START of each node 6..14; after completing night subtract one by moving to next node (no extra manual decrement)",
+    "rest_bad_end_rule": "If RestCount reaches 3 on any rest during node 06..14, immediately route to be03.",
+    "clue_persistence": "meta",
+    "inventory_persistence": "run by default",
+    "trust_persistence": "run by default",
+    "on_exit_once": "Apply exactly once, after scene playback, save state, then resolve post_effect_redirect before .next"
+  },
+  "non_generated_nodes": [
+    12,
+    13,
+    14,
+    15
+  ],
+  "branch_graph_notes": [
+    "所有未选分支必须跳过。不要遍历段落0~407直接顺序播放。",
+    "scene 的 block_ids 是原文段落。menu 引用的 source_block_id 是原文按钮文字，不要把它当旁白重复显示。",
+    "节点 07~11 休息分支为通用规则，但各自原文保留，不强行统一删掉。",
+    "n06 的 RestCount 计数属于跨文本推导，需作者核对。",
+    "n10/n11 若缺前置线索或物品，原稿没有替代剧情。程序不得编造对话，应禁用并提示未满足或回到其他选项。",
+    "文中混有系统策划说明、括号动作、旁白、人物发言，需按展示层分拆；原文字串不可变。"
+  ]
+}
