@@ -1256,10 +1256,11 @@
         "asset-sources/planter-v3/planter_v003.blend",
         "asset-sources/raft-blender-v1/raft_modules_v005.blend",
         "presentation/raft_state_models.gd",
-        "asset-sources/filter-states-v1/filter_states_v001.blend"
+        "asset-sources/filter-states-v1/filter_states_v001.blend",
+        "content/data/equipment.json"
       ],
-      "version": 15,
-      "sha256": "ad6927de54f136ef02c2c9dfd1c683cdf8b9dcf5132718f8da71217bfcef8591",
+      "version": 16,
+      "sha256": "efa4530ec81d804a7526b2fe70540a24f44289f98208c032cd4333eac8655aab",
       "dependencies": [
         "shader.raft.wet-wood",
         "model.raft.module.deck-intact",
@@ -1289,11 +1290,21 @@
         "no_depth_test": true,
         "text_priority": 10,
         "outline_priority": 9,
-        "purpose": "equipment names, levels and production states readable through deck/equipment; 2D modals remain above scene"
+        "purpose": "single line cell number, equipment name and level; multi-round production uses a blue progress bar"
       },
       "wood_style": "shared imagegen hand-painted wood; planter geometry and production mapping unchanged",
       "wood_texture_version": 3,
-      "source_hash_verified_on": "2026-10-17"
+      "source_hash_verified_on": "2026-10-18",
+      "production_bar": {
+        "source": "content/data/equipment.json intervals by level; equipment.progress / interval clamped 0..1",
+        "visibility": "interval > 1 only",
+        "texture": "RaftModels cached 160x8 solid white GradientTexture2D; per-cell Sprite3D track and fill",
+        "colors": [
+          "#17384e",
+          "#49b8ff"
+        ],
+        "random": "none"
+      }
     },
     "model.raft.module.crossbow": {
       "path": "res://assets/models/raft-modules/crossbow.glb",
