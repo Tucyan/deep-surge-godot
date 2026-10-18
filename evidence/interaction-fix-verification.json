@@ -1,0 +1,13 @@
+{
+  "date": "2026-10-18",
+  "content_version": "godot-flow-v02-23",
+  "input_attempts": 245,
+  "input_failures": 0,
+  "all_first_draw_states_ready": true,
+  "all_main_hud_instances_retained": true,
+  "headless_passed": 28,
+  "gpu_regressions_passed": 3,
+  "independent_review": "no remaining actionable findings",
+  "assets_hashed": 254,
+  "scope": "Windows RTX4060 OpenGL1280x720 plus multi-size GUI regressions; no Android/release/long-duration memory validation"
+}

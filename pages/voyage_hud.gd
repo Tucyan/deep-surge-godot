@@ -22,6 +22,17 @@ var _nav_header_nodes: Array = []
 var _nav_row_nodes: Array = []
 var _environment_signature := ""
 
+func refresh_camera_mode(mode: String) -> void:
+	context.camera_mode=mode
+	var toggle:=find_child("ToggleRaftView",true,false) as Button
+	var icon:=find_child("ViewModeIcon",true,false) as TextureRect
+	var top: bool=mode=="top"
+	if toggle!=null: toggle.tooltip_text="当前：%s\n点击切换为%s，并设为默认复位视角" % ["俯视" if top else "斜俯视","斜俯视" if top else "俯视"]
+	if icon!=null: icon.texture=assets.texture("icon.camera.oblique" if top else "icon.camera.top")
+
+func refresh_battle_selection(value: String) -> void:
+	context.ui_state.battle_selection=value
+
 func rect(control: Control, anchors: Vector4, offsets: Vector4) -> void:
 	control.anchor_left = anchors.x; control.anchor_top = anchors.y
 	control.anchor_right = anchors.z; control.anchor_bottom = anchors.w
@@ -180,12 +191,22 @@ func build() -> void:
 	shield_badge.visible = context.phase == "battle" or total_shield > 0
 	var frame = preload("res://presentation/hud_frame.gd").new()
 	frame.name = "VoyageOperationFrame"; stage.add_child(frame)
-	frame.add_theme_stylebox_override("panel",compact_style())
+	var operation_style:=compact_style()
+	if context.get("mobile",false):
+		operation_style.content_margin_top=12; operation_style.content_margin_bottom=12
+	frame.add_theme_stylebox_override("panel",operation_style)
 	# Fixed operation frame: one rect for every phase, so adding a title or an extra
 	# line of detail never resizes the panel. Text grows downwards inside it instead.
-	rect(frame,Vector4(1,0,1,1),Vector4(-352,OPERATION_TOP,-24,-316))
-	var operation := VBoxContainer.new(); frame.add_child(operation)
-	operation.add_theme_constant_override("separation",9)
+	rect(frame,Vector4(1,0,1,1),Vector4(-352,OPERATION_TOP,-24,-294 if context.get("mobile",false) else -316))
+	var operation := VBoxContainer.new()
+	if context.get("mobile",false):
+		var scroll := ScrollContainer.new(); scroll.name="MobileOperationScroll"
+		scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
+		frame.add_child(scroll); scroll.add_child(operation)
+		operation.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+		operation.size_flags_vertical=Control.SIZE_EXPAND_FILL
+	else: frame.add_child(operation)
+	operation.add_theme_constant_override("separation",6 if context.get("mobile",false) else 9)
 	_operation_frame = frame; _operation_box = operation
 	frame.visible = context.phase != "story" and context.phase != "battle"
 	operation_content(operation)
@@ -221,8 +242,8 @@ func build() -> void:
 	salvage.set_meta("salvage_disabled",salvage_disabled)
 	salvage.set_meta("tutorial_operation",str(context.get("tutorial_operation","")))
 	salvage.tooltip_text = catalog.entry("equipment","fishingNet").description
-	salvage.add_theme_font_size_override("font_size", 16)
-	rect(salvage, Vector4(1,1,1,1), Vector4(-252, -250, -28, -192))
+	salvage.add_theme_font_size_override("font_size", 18 if context.get("mobile",false) else 16)
+	rect(salvage, Vector4(1,1,1,1), Vector4(-252, -262 if context.get("mobile",false) else -250, -28, -192))
 	preload("res://presentation/nautical_button_art.gd").apply(salvage)
 	salvage.focus_mode = Control.FOCUS_NONE if event_covered else Control.FOCUS_ALL
 	var craft: Button
@@ -254,7 +275,7 @@ func style_operation_buttons(box: Node) -> void:
 	for child in box.get_children():
 		if not child is Button: continue
 		child.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		child.custom_minimum_size.y = 38
+		child.custom_minimum_size.y = 60 if context.get("mobile",false) else 38
 		for state in ["normal","hover","pressed","disabled"]:
 			var style := StyleBoxFlat.new()
 			style.bg_color = Color("182934") if state == "normal" else Color("263b47")
@@ -360,7 +381,7 @@ func navigation_content(header_parent: Node, row_parent: Node) -> void:
 			var depart := W.button(route,"出发",func(): send("voyage",{"id":node.visit_id}))
 			depart.name = "NavigationDepart"
 			depart.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART; depart.size_flags_horizontal=Control.SIZE_EXPAND_FILL
-			depart.custom_minimum_size.y=40
+			depart.custom_minimum_size.y=60 if context.get("mobile",false) else 40
 			depart.tooltip_text = "驶向"+str(node.name)
 			W.primary(depart)
 		else:
@@ -368,7 +389,7 @@ func navigation_content(header_parent: Node, row_parent: Node) -> void:
 			option.name = "NavigationOption"
 			option.set_meta("visit_id",str(node.visit_id))
 			option.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART; option.size_flags_horizontal=Control.SIZE_EXPAND_FILL
-			option.custom_minimum_size.y=40
+			option.custom_minimum_size.y=60 if context.get("mobile",false) else 40
 			option.tooltip_text = str(node.get("description",""))
 		_nav_track(route,true)
 		if node.get("visibility","full")!="full":

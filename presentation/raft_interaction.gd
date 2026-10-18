@@ -88,7 +88,7 @@ func select_target(target: Dictionary) -> void:
 				var hint:=W.text(column,_action_hint(item),14,W.MUTED if item.allowed else Color("efaaa0"))
 				hint.name="RaftHint_"+operation; hint.visible=not hint.text.is_empty()
 			else:
-				var choices:=OptionButton.new(); choices.custom_minimum_size.y=36; column.add_child(choices)
+				var choices:=OptionButton.new(); choices.custom_minimum_size.y=56 if app.display_settings.mobile else 36; column.add_child(choices)
 				for item in options: choices.add_item(item.label); choices.set_item_disabled(choices.item_count-1,not item.allowed)
 				var first: int=options.find(options.filter(func(a):return a.allowed)[0]) if options.any(func(a):return a.allowed) else 0
 				choices.select(first)

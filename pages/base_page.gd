@@ -11,10 +11,14 @@ func configure_session(value: RefCounted) -> void:
 
 func setup(view: Dictionary, content: RefCounted, art: RefCounted) -> void:
 	context = view.duplicate(true)
+	set_meta("mobile_ui",bool(context.get("mobile",false)))
 	catalog = content
 	assets = art
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	build()
+	if context.get("mobile",false):
+		for picker in find_children("*","OptionButton",true,false):
+			picker.custom_minimum_size.y=maxf(56,picker.custom_minimum_size.y)
 
 func build() -> void:
 	pass

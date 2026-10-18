@@ -1,0 +1,74 @@
+[
+  {
+    "test": "test_ocean_sampling_performance",
+    "exit": 0
+  },
+  {
+    "test": "test_toon_ocean",
+    "exit": 0
+  },
+  {
+    "test": "test_wave_noise",
+    "exit": 0
+  },
+  {
+    "test": "test_ocean_detail",
+    "exit": 0
+  },
+  {
+    "test": "test_shadow_ghost_water",
+    "exit": 0
+  },
+  {
+    "test": "test_raft_ghost_style",
+    "exit": 0
+  },
+  {
+    "test": "test_raft_highlight_surface",
+    "exit": 0
+  },
+  {
+    "test": "test_raft_interactions",
+    "exit": 0
+  },
+  {
+    "test": "test_navigation_partial_refresh",
+    "exit": 0
+  },
+  {
+    "test": "test_navigation_actions",
+    "exit": 0
+  },
+  {
+    "test": "test_hand_fan",
+    "exit": 0
+  },
+  {
+    "test": "test_recall_restore",
+    "exit": 0
+  },
+  {
+    "test": "test_narrative",
+    "exit": 0
+  },
+  {
+    "test": "test_narrative_flow",
+    "exit": 0
+  },
+  {
+    "test": "test_save",
+    "exit": 0
+  },
+  {
+    "test": "test_mechanics",
+    "exit": 0
+  },
+  {
+    "test": "test_flow",
+    "exit": 0
+  },
+  {
+    "test": "test_routes",
+    "exit": 0
+  }
+]

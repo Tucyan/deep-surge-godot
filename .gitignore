@@ -11,3 +11,6 @@ __pycache__/
 builds/
 *.keystore
 
+
+# Local execution notes and scratch verification copies
+.planning/

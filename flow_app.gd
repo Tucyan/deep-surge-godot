@@ -6,6 +6,7 @@ const Store = preload("res://adapters/save_store.gd")
 const Meta = preload("res://adapters/meta_store.gd")
 const Tutorial = preload("res://core/tutorial_rules.gd")
 const W = preload("res://presentation/widgets.gd")
+const BasePage = preload("res://pages/base_page.gd")
 const World = preload("res://presentation/voyage_world.gd")
 const SettlementPage = preload("res://pages/settlement_page.gd")
 const NarrativeContent = preload("res://narrative/narrative_content.gd")
@@ -33,6 +34,13 @@ var world_view: TextureRect
 var local_panel := ""
 var reset_hand_visual := false
 var ui_state := {"hand_page":0,"list_page":0,"selected_id":"","category":"","card":"","battle_selection":"","craft_tab":"craft","transmute_target":"wood","transmute_uids":"","transmute_count":1}
+var _base_page: Control
+var _modal_root: Control
+var _modal_id := ""
+var _base_signature := ""
+var _blocked_buttons: Dictionary = {}
+var _blocked_modes: Dictionary = {}
+var _blocked_visuals: Dictionary = {}
 var event_target_surface: Node3D
 ## Narrative is an independent layer: it reads a projection, never GameState.
 var narrative_content: RefCounted
@@ -82,6 +90,14 @@ func _ready() -> void:
 	# player can select starting cards before a run or its save is created.
 	render()
 	_maybe_story.call_deferred()
+	_warm_craft_art.call_deferred()
+
+func _warm_craft_art() -> void:
+	if DisplayServer.get_name()=="headless": return
+	var ids: Array=[]
+	for id in catalog.table("recipes").keys().slice(0,PAGES.craft.PAGE_SIZE):
+		ids.append("card."+str(catalog.entry("recipes",id).output))
+	await assets.warm_textures(ids,self)
 
 func update_render_resolution() -> void:
 	if is_instance_valid(world_view) and is_instance_valid(world_view.viewport):
@@ -120,7 +136,8 @@ func apply_display_settings(change_mode: bool = true, rebuild_ui: bool = true) -
 func refresh_hand_preferences() -> void:
 	if local_panel=="settings" and is_instance_valid(current_page) and current_page.has_method("refresh_hand_preferences"):
 		current_page.refresh_hand_preferences()
-		disable_buttons(current_page)
+		if is_instance_valid(_modal_root): _block_base_controls()
+		else: disable_buttons(current_page)
 		preload("res://presentation/settings_panel.gd").sync_controls(self)
 	else: render()
 
@@ -147,7 +164,10 @@ func handle_ui(action: String, value: String = "") -> void:
 		display_settings.camera_mode="top" if display_settings.camera_mode=="oblique" else "oblique"
 		world_view.set_camera_mode(display_settings.camera_mode)
 		if persistence: display_settings.save_preferences()
-		render(); return
+		if is_instance_valid(current_page) and current_page.has_method("refresh_camera_mode") and _base_signature==_retained_hud_signature():
+			current_page.refresh_camera_mode(display_settings.camera_mode)
+		else: render()
+		return
 	if action=="camera_reset":
 		world_view.reset_camera_view(); return
 	if action=="event_target":
@@ -184,7 +204,13 @@ func handle_ui(action: String, value: String = "") -> void:
 		"transmute_target": ui_state.transmute_target = value
 		"transmute_uids": ui_state.transmute_uids = value
 		"transmute_count": ui_state.transmute_count = maxi(1, int(value))
-		"battle_selection": ui_state.battle_selection = value
+		"battle_selection":
+			ui_state.battle_selection = value
+			# The battle view already updates its selected cards, preview and confirm
+			# button. Persist its UI state without destroying the source controls.
+			if session.phase()=="battle" and is_instance_valid(current_page) and current_page.has_method("refresh_battle_selection") and _base_signature==_retained_hud_signature():
+				current_page.refresh_battle_selection(value)
+				return
 		"settlement_exit":
 			local_panel=""; handle_command("home"); return
 		"hand_reordered":
@@ -579,7 +605,94 @@ func page(id: String, parent: Node, view: Dictionary) -> Control:
 	result.setup(view,catalog,assets)
 	return result
 
+func _retained_hud_signature() -> String:
+	# Revision/panel changes alone do not change the HUD, but real state/profile
+	# changes and layout settings must invalidate the retained presentation.
+	return JSON.stringify([session.screen,session.state,session.profile,session.last_settlement,size,display_settings.ui_scale,display_settings.mobile])
+
+func _game_panel_id(view: Dictionary) -> String:
+	var id: String=local_panel if local_panel!="" else view.panel
+	if view.phase in ["story","battle"] and id in ["story","battle"]: return ""
+	return id
+
+func _remove_modal_layer() -> void:
+	if is_instance_valid(_modal_root):
+		_modal_root.get_parent().remove_child(_modal_root); _modal_root.queue_free()
+	_modal_root=null; _modal_id=""
+
+func _block_base_controls() -> void:
+	if not is_instance_valid(_base_page): return
+	for button in _base_page.find_children("*","BaseButton",true,false):
+		var id: int=button.get_instance_id()
+		if not _blocked_buttons.has(id): _blocked_buttons[id]={"node":weakref(button),"disabled":button.disabled}
+		button.disabled=true
+	var interaction:=layout.get_node_or_null("RaftInteraction")
+	for node in [_base_page,interaction]:
+		if not is_instance_valid(node): continue
+		var id: int=node.get_instance_id()
+		if not _blocked_modes.has(id): _blocked_modes[id]={"node":weakref(node),"mode":node.process_mode}
+		node.process_mode=Node.PROCESS_MODE_DISABLED
+	for fan in _base_page.find_children("hand_fan","",true,false): fan.cancel_gesture()
+	if is_instance_valid(interaction) and is_instance_valid(interaction.surface):
+		var visual=interaction.surface
+		if not _blocked_visuals.has(visual.get_instance_id()): _blocked_visuals[visual.get_instance_id()]={"node":weakref(visual),"visible":visual.visible}
+		visual.hide()
+	world_view.set_camera_input_enabled(false)
+
+func _restore_base_controls(view: Dictionary) -> void:
+	for entry in _blocked_buttons.values():
+		var node=entry.node.get_ref()
+		if is_instance_valid(node): node.disabled=entry.disabled
+	for entry in _blocked_modes.values():
+		var node=entry.node.get_ref()
+		if is_instance_valid(node): node.process_mode=entry.mode
+	for entry in _blocked_visuals.values():
+		var node=entry.node.get_ref()
+		if is_instance_valid(node): node.visible=entry.visible
+	_blocked_buttons.clear(); _blocked_modes.clear(); _blocked_visuals.clear()
+	var interaction:=layout.get_node_or_null("RaftInteraction")
+	if is_instance_valid(interaction): interaction.refresh_policy()
+	world_view.set_camera_input_enabled(view.screen=="game" and _game_panel_id(view)=="")
+
+func _refresh_modal_only(view: Dictionary) -> bool:
+	if view.screen!="game" or narrative_playing or not is_instance_valid(_base_page) or not is_instance_valid(layout): return false
+	if _base_signature!=_retained_hud_signature(): return false
+	var panel_id:=_game_panel_id(view)
+	var supported: Array=["","settings","help","craft","build","raft","encyclopedia"]
+	if not panel_id in supported or not _modal_id in supported: return false
+	if panel_id=="" and not is_instance_valid(_modal_root): return false
+	camera_binding_capture=false
+	_remove_modal_layer()
+	current_page=_base_page
+	# Base page closures stamp revisions at execution time. Shared hand/battle
+	# contexts see the updated dictionary too, preserving stale-command checks.
+	for node in layout.find_children("*","",true,false):
+		if node is BasePage:
+			for field in ["revision","panel","page","ui_state","camera_mode"]: node.context[field]=view[field]
+	if panel_id!="": _build_modal(panel_id,view)
+	else: _restore_base_controls(view)
+	_refresh_hud_notice(panel_id)
+	var banner:=layout.get_node_or_null("TutorialBanner")
+	if is_instance_valid(banner): layout.remove_child(banner); banner.queue_free()
+	if panel_id not in ["settings","help","narrative"]: _add_tutorial_banner(layout,view,panel_id!="")
+	return true
+
+func _refresh_hud_notice(panel_id: String) -> void:
+	var notice:=layout.get_node_or_null("HudNotice") as Label
+	if panel_id!="" or message.is_empty():
+		if is_instance_valid(notice): layout.remove_child(notice); notice.queue_free()
+		return
+	if not is_instance_valid(notice):
+		notice=W.text(layout,"",18,Color("efb395")); notice.name="HudNotice"
+		notice.position=Vector2(28,200); notice.size=Vector2(580,60)
+	notice.text=message
+
 func render() -> void:
+	set_meta("mobile_ui",display_settings.mobile)
+	var view: Dictionary = hud_view()
+	if _refresh_modal_only(view): return
+	_base_page=null; _modal_root=null; _modal_id=""; _base_signature=""
+	_blocked_buttons.clear(); _blocked_modes.clear(); _blocked_visuals.clear()
 	camera_binding_capture=false
 	world_view.set_camera_input_enabled(false)
 	if is_instance_valid(event_target_surface): event_target_surface.hide(); event_target_surface.queue_free()
@@ -589,7 +702,6 @@ func render() -> void:
 			if layout.is_ancestor_of(fan): hand_visual[fan.get_meta("presentation_role","hand")] = fan.capture_visual()
 	reset_hand_visual = false
 	if is_instance_valid(layout): remove_child(layout); layout.queue_free()
-	var view: Dictionary = hud_view()
 	if view.has("hand"):
 		var arranged: Array=hand_layout.build(view.hand)
 		hand_layout.order.clear()
@@ -645,69 +757,79 @@ func render() -> void:
 	current_page = page("setup" if view.screen == "home" and setup_mode != "" else view.screen,host,view)
 	var panel_id: String = local_panel if local_panel != "" else view.panel
 	if view.screen=="game" and view.phase in ["story","battle"] and panel_id in ["story","battle"]: panel_id=""
+	_base_page=current_page
 	if panel_id != "":
-		disable_buttons(current_page)
-		var shade := ColorRect.new(); shade.z_index = 200; shade.color = Color(0.01,0.02,0.03,0.85)
-		shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT); host.add_child(shade)
-		var inset := MarginContainer.new(); inset.z_index = 201; inset.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		inset.anchor_left = 0.12; inset.anchor_right = 0.88; inset.anchor_top = 0.10; inset.anchor_bottom = 0.77
-		if panel_id in ["battle","raft"]:
-			inset.anchor_left=0.035; inset.anchor_right=0.965; inset.anchor_top=0.035; inset.anchor_bottom=0.965
-		if panel_id in ["craft","shop","build","encyclopedia","meta_shop"]:
-			inset.anchor_left=0; inset.anchor_right=1; inset.anchor_top=0; inset.anchor_bottom=1
-		if panel_id == "recall":
-			inset.anchor_left=0.035; inset.anchor_right=0.965; inset.anchor_top=0.035; inset.anchor_bottom=0.965
-		if panel_id=="settings":
-			inset.anchor_left=0.5; inset.anchor_right=0.5; inset.anchor_top=0.04; inset.anchor_bottom=0.96
-			var panel_width:=minf(700.0,size.x-40.0)
-			inset.offset_left=-panel_width*0.5; inset.offset_right=panel_width*0.5
-		host.add_child(inset)
-		var dialog := W.panel(inset)
-		var surface: PanelContainer=dialog.get_parent(); surface.name="ModalSurface"
-		if panel_id == "recall":
-			var gallery_style: StyleBoxFlat = surface.get_theme_stylebox("panel").duplicate()
-			gallery_style.bg_color = Color("0b1b24")
-			surface.add_theme_stylebox_override("panel", gallery_style)
-		if panel_id=="settings": W.text(dialog,"设置",28,W.GOLD)
-		if not message.is_empty(): W.text(dialog,message,17,Color("ecb49a"))
-		if panel_id in ["help","settings","narrative","recall"]: local_content(dialog,panel_id,view)
-		else: current_page = page(panel_id,dialog,view)
-		W.corner_close(surface,func():
-			if local_panel != "": local_panel = ""; render()
-			else: handle_command("close"))
-		if panel_id in ["craft", "build"]:
-			var help := Button.new()
-			help.name = "CraftHelpButton"; help.text = "?"
-			help.accessibility_name = "工作台说明"; help.tooltip_text = "工作台说明"
-			surface.get_node("CloseOverlay").add_child(help)
-			help.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-			help.offset_left = -104; help.offset_right = -60
-			help.offset_top = 0; help.offset_bottom = 44
-			help.custom_minimum_size = Vector2(44, 44)
-			help.add_theme_font_size_override("font_size", 26)
-			for state in ["normal", "hover", "pressed", "focus"]:
-				var style := StyleBoxFlat.new()
-				style.bg_color = Color("203d49") if state in ["hover", "pressed"] else Color("0c1d26")
-				style.border_color = W.GOLD if state in ["hover", "focus"] else Color("8b9a9e")
-				style.set_border_width_all(2); style.set_corner_radius_all(22)
-				help.add_theme_stylebox_override(state, style)
-			help.pressed.connect(current_page.show_workbench_help)
-
-	elif not message.is_empty():
-		var label := W.text(host,message,18,Color("efb395"))
-		label.position = Vector2(28,200); label.size = Vector2(580,60)
+		_build_modal(panel_id,view)
+	_refresh_hud_notice(panel_id)
 
 	for fan in get_tree().get_nodes_in_group("hand_fans"):
 		if layout.is_ancestor_of(fan):
 			fan.restore_visual(hand_visual.get(fan.get_meta("presentation_role","hand"),{}))
 
-	if view.screen=="game" and view.get("can_base",false) and panel_id=="":
+	if view.screen=="game" and view.get("can_base",false):
 		var interaction=preload("res://presentation/raft_interaction.gd").new()
 		host.add_child(interaction); interaction.create(self)
+		if panel_id!="": _block_base_controls()
 	world_view.set_camera_input_enabled(view.screen=="game" and panel_id=="" and report.is_empty())
 	if panel_id not in ["settings","help","narrative"]:
 		_add_tutorial_banner(host,view,panel_id!="")
+	_base_signature=_retained_hud_signature()
 	_update_world_framing.call_deferred()
+
+## Modal contents retain the original layout; their container is independent of
+## the retained game HUD so opening/closing them need not recreate that HUD.
+func _build_modal(panel_id: String, view: Dictionary) -> void:
+	_modal_id=panel_id
+	_block_base_controls()
+	var host:=Control.new(); host.name="GameModalLayer"; host.z_index=200
+	host.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	host.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	layout.add_child(host); _modal_root=host
+	var shade := ColorRect.new(); shade.z_index = 0; shade.color = Color(0.01,0.02,0.03,0.85)
+	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT); host.add_child(shade)
+	var inset := MarginContainer.new(); inset.z_index = 1; inset.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	inset.anchor_left = 0.12; inset.anchor_right = 0.88; inset.anchor_top = 0.10; inset.anchor_bottom = 0.77
+	if panel_id in ["battle","raft"]:
+		inset.anchor_left=0.035; inset.anchor_right=0.965; inset.anchor_top=0.035; inset.anchor_bottom=0.965
+	if panel_id in ["craft","shop","build","encyclopedia","meta_shop"]:
+		inset.anchor_left=0; inset.anchor_right=1; inset.anchor_top=0; inset.anchor_bottom=1
+	if panel_id == "recall":
+		inset.anchor_left=0.035; inset.anchor_right=0.965; inset.anchor_top=0.035; inset.anchor_bottom=0.965
+	if panel_id=="settings":
+		inset.anchor_left=0.5; inset.anchor_right=0.5; inset.anchor_top=0.04; inset.anchor_bottom=0.96
+		var panel_width:=minf(700.0,size.x-40.0)
+		inset.offset_left=-panel_width*0.5; inset.offset_right=panel_width*0.5
+	host.add_child(inset)
+	var dialog := W.panel(inset)
+	var surface: PanelContainer=dialog.get_parent(); surface.name="ModalSurface"
+	if panel_id == "recall":
+		var gallery_style: StyleBoxFlat = surface.get_theme_stylebox("panel").duplicate()
+		gallery_style.bg_color = Color("0b1b24")
+		surface.add_theme_stylebox_override("panel", gallery_style)
+	if panel_id=="settings": W.text(dialog,"设置",28,W.GOLD)
+	if not message.is_empty(): W.text(dialog,message,17,Color("ecb49a"))
+	if panel_id in ["help","settings","narrative","recall"]: local_content(dialog,panel_id,view)
+	else: current_page = page(panel_id,dialog,view)
+	W.corner_close(surface,func():
+		if local_panel != "": local_panel = ""; render()
+		else: handle_command("close"))
+	if panel_id in ["craft", "build"]:
+		var help := Button.new()
+		help.name = "CraftHelpButton"; help.text = "?"
+		help.accessibility_name = "工作台说明"; help.tooltip_text = "工作台说明"
+		surface.get_node("CloseOverlay").add_child(help)
+		help.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+		help.offset_left = -104; help.offset_right = -60
+		help.offset_top = 0; help.offset_bottom = 44
+		help.custom_minimum_size = Vector2(44, 44)
+		help.add_theme_font_size_override("font_size", 26)
+		for state in ["normal", "hover", "pressed", "focus"]:
+			var style := StyleBoxFlat.new()
+			style.bg_color = Color("203d49") if state in ["hover", "pressed"] else Color("0c1d26")
+			style.border_color = W.GOLD if state in ["hover", "focus"] else Color("8b9a9e")
+			style.set_border_width_all(2); style.set_corner_radius_all(22)
+			help.add_theme_stylebox_override(state, style)
+		help.pressed.connect(current_page.show_workbench_help)
 
 ## Persistent lesson strip. It never takes mouse input, so it guides without
 ## blocking the real interface the player is learning. It covers unrelated title

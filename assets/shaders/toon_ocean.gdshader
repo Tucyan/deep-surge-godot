@@ -146,6 +146,12 @@ vec3 gerstner(vec2 g) {
 // Analytic normal, Jacobian of the horizontal mapping and height at grid point g.
 // crest: sharpened per-wave crest lines; the steepest wave alone reaches 1, so foam follows ridges.
 void wave_frame(vec2 g, float f, out vec3 n, out float jac, out float h, out float crest) {
+	// Zero amplitude has an exact flat frame, including the entire far ocean.
+	// Skip four noise gradients and trigonometric sums whose weights are zero.
+	if (f == 0.0) {
+		n = vec3(0.0, 1.0, 0.0); jac = 1.0; h = 0.0; crest = 0.0;
+		return;
+	}
 	float nx = 0.0; float nz = 0.0;
 	float jxx = 0.0; float jzz = 0.0; float jxz = 0.0; float jzx = 0.0;
 	float weight = 0.0;

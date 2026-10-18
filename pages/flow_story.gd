@@ -63,7 +63,7 @@ func build() -> void:
 	options_header = HBoxContainer.new()
 	options_header.name = "NodeEventOptionsHeader"
 	options_header.add_theme_constant_override("separation", 6)
-	options_header.custom_minimum_size.y = 44 if context.get("mobile",false) else 34
+	options_header.custom_minimum_size.y = 56 if context.get("mobile",false) else 34
 	choices_column.add_child(options_header)
 	var prompt := W.text(options_header, "请做出选择", 14, W.MUTED)
 	prompt.name = "NodeEventOptionsHint"
@@ -77,7 +77,7 @@ func build() -> void:
 	cancel_button = build_direct_button(options_header, "取消选择", cancel_preselect)
 	cancel_button.name = "CancelPreselect"
 	cancel_button.tooltip_text = "回到事件说明，不提交选项"
-	cancel_button.custom_minimum_size = Vector2(136, 44 if context.get("mobile",false) else 34)
+	cancel_button.custom_minimum_size = Vector2(136, 56 if context.get("mobile",false) else 34)
 	cancel_button.size_flags_horizontal = Control.SIZE_SHRINK_END
 	cancel_button.add_theme_font_size_override("font_size", 14)
 	options_panel = VBoxContainer.new()
@@ -195,7 +195,7 @@ func build_direct_button(parent: Node, title: String, callback: Callable) -> But
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	button.add_theme_font_size_override("font_size", 15)
 	button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	button.custom_minimum_size.y = 46
+	button.custom_minimum_size.y = 56 if context.get("mobile",false) else 46
 	return button
 
 ## Backward-compatible helper used by existing UI tests for direct commands.

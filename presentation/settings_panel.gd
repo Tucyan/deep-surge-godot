@@ -384,7 +384,9 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 	if prefs.mobile: adapt_touch_controls(parent)
 
 static func adapt_touch_controls(node: Node) -> void:
-	if node is BaseButton or node is Slider:
+	if node is BaseButton:
+		node.custom_minimum_size.y = maxf(node.custom_minimum_size.y,56)
+	elif node is Slider:
 		node.custom_minimum_size.y = maxf(node.custom_minimum_size.y,44)
 	if node is Label and node.get_theme_font_size("font_size") < 14:
 		node.add_theme_font_size_override("font_size",14)

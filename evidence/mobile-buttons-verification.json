@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-18",
+  "renderer": "gl_compatibility",
+  "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "mobile_button_checks": 106,
+  "mobile_page_checks": 681,
+  "desktop_page_checks": 687,
+  "touch_events": 12,
+  "failures": 0,
+  "android_device_tested": false,
+  "apk_rebuilt": false,
+  "checks": [
+    "mobile button height / bounds / padding",
+    "three initial routes fully visible",
+    "preview scroll height >=60",
+    "dynamic raft picker >=56",
+    "touch route choice / disabled retreat / one turn command",
+    "mobile and desktop shared buttons",
+    "mobile battle selection / boost / tutorial",
+    "GPU craft action and pagination",
+    "hand gestures",
+    "retained HUD",
+    "raft rules",
+    "desktop battle space",
+    "255 hashed asset bindings",
+    "diff whitespace"
+  ]
+}

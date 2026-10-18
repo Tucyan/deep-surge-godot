@@ -1,0 +1,3164 @@
+{
+	"failures": 0,
+	"gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+	"renderer": "gl_compatibility",
+	"samples": {
+		"battle_action": [
+			{
+				"commands": 0,
+				"draw_ms": 28.268,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.841,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 23.548,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.907,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 27.344,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.748,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 24.441,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.853,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 28.591,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.863,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 26.223,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 2.024,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 26.952,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.48,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 27.788,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.861,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 27.037,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.82,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 26.072,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.608,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 27.206,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.044,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 27.462,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.886,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 27.466,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.64,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 26.229,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.924,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 34.179,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.404,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 30.162,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.305,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 26.961,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.066,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 28.714,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.856,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 27.086,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 2.267,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 29.585,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.853,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 28.957,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.064,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 25.658,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.853,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 23.825,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.04,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 32.478,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.989,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 26.27,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.685,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 36.873,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.517,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 28.918,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 2.51,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 25.396,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.839,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 25.837,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 2.071,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 28.193,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.886,
+				"ui_calls": 1
+			}
+		],
+		"battle_resource": [
+			{
+				"commands": 0,
+				"draw_ms": 29.81,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.996,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 27.496,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.069,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 26.531,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.861,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 28.831,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.87,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 29.493,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.867,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 30.082,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.857,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 29.592,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.942,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 29.538,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.973,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 35.509,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.889,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 30.27,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.927,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 24.697,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.887,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 26.264,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.914,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 32.008,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.003,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 34.855,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.646,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 36.197,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.888,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 34.657,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.64,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 31.916,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.867,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 31.262,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.366,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 26.954,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.895,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 26.653,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.843,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 28.532,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.888,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 35.854,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.325,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 31.341,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.297,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 24.515,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.849,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 24.685,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.876,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 27.121,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.262,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 23.607,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.889,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 31.733,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.46,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 32.282,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.947,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 25.393,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.847,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 24.745,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.859,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 32.804,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.482,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 27.458,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.909,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 23.278,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.833,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 25.349,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.865,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 28.121,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.004,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 23.972,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.862,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 27.596,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.455,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 24.835,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.86,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 23.025,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.87,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 32.594,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.548,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 32.453,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.806,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 25.272,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.185,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 24.653,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.972,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 24.064,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.891,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 24.225,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.845,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 29.123,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.981,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 26.327,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 2.062,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 27.386,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.791,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 28.602,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.875,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 27.556,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.861,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 27.696,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.306,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 26.993,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.887,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 32.9,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.998,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 26.011,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.926,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 28.049,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.921,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 24.204,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.893,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 23.939,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.892,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 26.397,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.9,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 24.29,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.054,
+				"ui_calls": 1
+			}
+		],
+		"camera_toggle": [
+			{
+				"commands": 0,
+				"draw_ms": 24.453,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.95,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 22.077,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.355,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 28.469,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.352,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 26.06,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.433,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 27.774,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.381,
+				"ui_calls": 1
+			}
+		],
+		"craft_close": [
+			{
+				"commands": 1,
+				"draw_ms": 31.075,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 2.611,
+				"save_ms": 0.002,
+				"sync_ms": 2.833,
+				"ui_calls": 0
+			},
+			{
+				"commands": 1,
+				"draw_ms": 32.026,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 2.699,
+				"save_ms": 0.002,
+				"sync_ms": 2.96,
+				"ui_calls": 0
+			},
+			{
+				"commands": 1,
+				"draw_ms": 33.106,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 2.622,
+				"save_ms": 0.001,
+				"sync_ms": 2.856,
+				"ui_calls": 0
+			},
+			{
+				"commands": 1,
+				"draw_ms": 33.993,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 2.563,
+				"save_ms": 0.001,
+				"sync_ms": 2.859,
+				"ui_calls": 0
+			},
+			{
+				"commands": 1,
+				"draw_ms": 31.023,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 5.406,
+				"save_ms": 0.002,
+				"sync_ms": 5.809,
+				"ui_calls": 0
+			}
+		],
+		"craft_open": [
+			{
+				"commands": 1,
+				"draw_ms": 200.693,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 160.211,
+				"save_ms": 0.002,
+				"sync_ms": 160.496,
+				"ui_calls": 0
+			},
+			{
+				"commands": 1,
+				"draw_ms": 62.705,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 27.337,
+				"save_ms": 0.002,
+				"sync_ms": 27.603,
+				"ui_calls": 0
+			},
+			{
+				"commands": 1,
+				"draw_ms": 68.91,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 32.306,
+				"save_ms": 0.002,
+				"sync_ms": 32.608,
+				"ui_calls": 0
+			},
+			{
+				"commands": 1,
+				"draw_ms": 61.722,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 28.553,
+				"save_ms": 0.001,
+				"sync_ms": 28.874,
+				"ui_calls": 0
+			},
+			{
+				"commands": 1,
+				"draw_ms": 63.799,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 28.254,
+				"save_ms": 0.001,
+				"sync_ms": 28.582,
+				"ui_calls": 0
+			}
+		],
+		"depart_no_save": [
+			{
+				"commands": 1,
+				"draw_ms": 35.738,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.001,
+				"sync_ms": 6.748,
+				"ui_calls": 0
+			},
+			{
+				"commands": 1,
+				"draw_ms": 31.741,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.001,
+				"sync_ms": 4.745,
+				"ui_calls": 0
+			},
+			{
+				"commands": 1,
+				"draw_ms": 30.766,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.001,
+				"sync_ms": 4.932,
+				"ui_calls": 0
+			},
+			{
+				"commands": 1,
+				"draw_ms": 28.088,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.001,
+				"sync_ms": 4.966,
+				"ui_calls": 0
+			},
+			{
+				"commands": 1,
+				"draw_ms": 32.538,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.001,
+				"sync_ms": 5.079,
+				"ui_calls": 0
+			}
+		],
+		"depart_save": [
+			{
+				"commands": 1,
+				"draw_ms": 31.821,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 4.638,
+				"sync_ms": 9.519,
+				"ui_calls": 0
+			},
+			{
+				"commands": 1,
+				"draw_ms": 30.927,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 3.774,
+				"sync_ms": 8.988,
+				"ui_calls": 0
+			},
+			{
+				"commands": 1,
+				"draw_ms": 39.076,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 5.53,
+				"sync_ms": 12.816,
+				"ui_calls": 0
+			},
+			{
+				"commands": 1,
+				"draw_ms": 35.238,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 3.573,
+				"sync_ms": 8.636,
+				"ui_calls": 0
+			},
+			{
+				"commands": 1,
+				"draw_ms": 34.594,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 4.719,
+				"sync_ms": 10.493,
+				"ui_calls": 0
+			}
+		],
+		"idle": [
+			{
+				"draw_ms": 31.763,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.0
+			},
+			{
+				"draw_ms": 30.122,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.0
+			},
+			{
+				"draw_ms": 27.158,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.0
+			},
+			{
+				"draw_ms": 26.693,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.0
+			},
+			{
+				"draw_ms": 25.497,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.0
+			},
+			{
+				"draw_ms": 25.387,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.0
+			},
+			{
+				"draw_ms": 23.143,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.0
+			},
+			{
+				"draw_ms": 28.123,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.0
+			},
+			{
+				"draw_ms": 28.28,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.0
+			},
+			{
+				"draw_ms": 29.432,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.0
+			},
+			{
+				"draw_ms": 31.184,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.0
+			},
+			{
+				"draw_ms": 26.546,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.0
+			},
+			{
+				"draw_ms": 24.683,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.0
+			},
+			{
+				"draw_ms": 26.951,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.0
+			},
+			{
+				"draw_ms": 27.583,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.0
+			},
+			{
+				"draw_ms": 24.878,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.0
+			},
+			{
+				"draw_ms": 28.102,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.0
+			},
+			{
+				"draw_ms": 27.474,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.0
+			},
+			{
+				"draw_ms": 23.139,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.0
+			},
+			{
+				"draw_ms": 26.128,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.0
+			}
+		],
+		"navigation_select": [
+			{
+				"commands": 0,
+				"draw_ms": 34.348,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 5.206,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 29.647,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.91,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 28.139,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 5.897,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 31.099,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.39,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 31.593,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.686,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 26.651,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.551,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 31.223,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.708,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 27.414,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.493,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 30.41,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 8.295,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 28.903,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.557,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 32.523,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 5.611,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 35.263,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.957,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 31.313,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 5.012,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 32.498,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 5.277,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 29.947,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 6.305,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 33.627,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 5.846,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 34.053,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.263,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 29.434,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.866,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 33.821,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 7.643,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 35.216,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.877,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 31.871,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.539,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 31.363,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 5.327,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 29.422,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.879,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 30.479,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 6.626,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 42.725,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.909,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 34.182,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.482,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 27.893,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.433,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 33.178,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.44,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 32.633,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.572,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 27.214,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.832,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 32.7,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.582,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 36.307,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 5.109,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 29.386,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.278,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 27.582,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.557,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 35.411,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.559,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 26.211,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.545,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 28.949,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.401,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 31.522,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 6.939,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 31.084,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 5.265,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 28.768,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 5.323,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 29.639,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 6.459,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 29.145,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.472,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 27.828,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.494,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 25.486,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.24,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 30.142,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.529,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 28.222,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.433,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 28.362,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 5.778,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 33.456,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 8.397,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 31.694,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 5.246,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 25.76,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.632,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 29.39,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.174,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 30.981,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.652,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 28.968,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.418,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 30.827,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 6.615,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 30.251,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.582,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 32.982,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 6.352,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 30.048,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.555,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 28.391,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 6.628,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 29.037,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 5.174,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 29.071,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.738,
+				"ui_calls": 1
+			}
+		],
+		"resource_card": [
+			{
+				"commands": 0,
+				"draw_ms": 28.39,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.192,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 23.911,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.207,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 22.777,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.289,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 27.266,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.189,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 28.553,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.185,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 24.1,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.533,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 21.685,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.182,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 23.942,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.188,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 29.296,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.266,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 22.616,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.19,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 24.491,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.206,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 26.43,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.196,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 25.976,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.195,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 28.322,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.189,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 22.571,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.188,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 28.646,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.385,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 31.069,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.281,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 25.904,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.228,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 27.189,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.192,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 29.018,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.186,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 22.81,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.188,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 23.262,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.185,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 27.777,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.456,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 27.33,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.238,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 27.256,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.19,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 27.293,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.188,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 31.67,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.285,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 30.215,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.219,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 33.529,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.191,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 36.993,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.315,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 39.588,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.193,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 36.155,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.445,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 33.464,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.392,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 42.783,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.194,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 36.946,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.589,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 37.467,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.259,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 42.326,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.404,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 36.994,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.292,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 22.889,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.185,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 31.171,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.206,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 39.363,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.355,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 35.891,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.192,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 32.879,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.202,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 32.445,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.191,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 27.414,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.318,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 37.784,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.314,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 35.621,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.233,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 35.613,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.258,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 34.774,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.219,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 31.117,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.281,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 32.361,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.198,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 22.204,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.191,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 24.973,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.275,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 22.539,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.189,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 25.231,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.3,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 25.281,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.206,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 22.875,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.186,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 24.364,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.183,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 25.376,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.267,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 24.676,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.433,
+				"ui_calls": 1
+			}
+		],
+		"settings_close": [
+			{
+				"commands": 0,
+				"draw_ms": 29.178,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 4.818,
+				"save_ms": 0.0,
+				"sync_ms": 4.855,
+				"ui_calls": 0
+			},
+			{
+				"commands": 0,
+				"draw_ms": 30.526,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 3.011,
+				"save_ms": 0.0,
+				"sync_ms": 3.045,
+				"ui_calls": 0
+			},
+			{
+				"commands": 0,
+				"draw_ms": 37.511,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 5.167,
+				"save_ms": 0.0,
+				"sync_ms": 5.204,
+				"ui_calls": 0
+			},
+			{
+				"commands": 0,
+				"draw_ms": 33.663,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 3.254,
+				"save_ms": 0.0,
+				"sync_ms": 3.293,
+				"ui_calls": 0
+			},
+			{
+				"commands": 0,
+				"draw_ms": 33.967,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 3.185,
+				"save_ms": 0.0,
+				"sync_ms": 3.217,
+				"ui_calls": 0
+			}
+		],
+		"settings_open": [
+			{
+				"commands": 0,
+				"draw_ms": 98.475,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 60.823,
+				"save_ms": 0.0,
+				"sync_ms": 60.915,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 62.118,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 35.321,
+				"save_ms": 0.0,
+				"sync_ms": 35.392,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 65.324,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 29.328,
+				"save_ms": 0.0,
+				"sync_ms": 29.419,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 63.322,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 34.304,
+				"save_ms": 0.0,
+				"sync_ms": 34.408,
+				"ui_calls": 1
+			},
+			{
+				"commands": 0,
+				"draw_ms": 63.768,
+				"ready_first_draw": true,
+				"ready_later": true,
+				"rebuild": false,
+				"render_ms": 30.583,
+				"save_ms": 0.0,
+				"sync_ms": 30.662,
+				"ui_calls": 1
+			}
+		]
+	},
+	"size": [
+		1280,
+		720
+	],
+	"summary": {
+		"battle_action": {
+			"draw_ms": {
+				"max": 36.873,
+				"median": 27.344,
+				"n": 30,
+				"p95": 34.179
+			},
+			"render_ms": {
+				"max": 0.0,
+				"median": 0.0,
+				"n": 30,
+				"p95": 0.0
+			},
+			"save_ms": {
+				"max": 0.0,
+				"median": 0.0,
+				"n": 30,
+				"p95": 0.0
+			},
+			"sync_ms": {
+				"max": 2.51,
+				"median": 1.305,
+				"n": 30,
+				"p95": 2.267
+			}
+		},
+		"battle_resource": {
+			"draw_ms": {
+				"max": 36.197,
+				"median": 27.556,
+				"n": 60,
+				"p95": 34.855
+			},
+			"render_ms": {
+				"max": 0.0,
+				"median": 0.0,
+				"n": 60,
+				"p95": 0.0
+			},
+			"save_ms": {
+				"max": 0.0,
+				"median": 0.0,
+				"n": 60,
+				"p95": 0.0
+			},
+			"sync_ms": {
+				"max": 2.062,
+				"median": 0.914,
+				"n": 60,
+				"p95": 1.791
+			}
+		},
+		"camera_toggle": {
+			"draw_ms": {
+				"max": 28.469,
+				"median": 26.06,
+				"n": 5,
+				"p95": 28.469
+			},
+			"render_ms": {
+				"max": 0.0,
+				"median": 0.0,
+				"n": 5,
+				"p95": 0.0
+			},
+			"save_ms": {
+				"max": 0.0,
+				"median": 0.0,
+				"n": 5,
+				"p95": 0.0
+			},
+			"sync_ms": {
+				"max": 1.95,
+				"median": 0.381,
+				"n": 5,
+				"p95": 1.95
+			}
+		},
+		"craft_close": {
+			"draw_ms": {
+				"max": 33.993,
+				"median": 32.026,
+				"n": 5,
+				"p95": 33.993
+			},
+			"render_ms": {
+				"max": 5.406,
+				"median": 2.622,
+				"n": 5,
+				"p95": 5.406
+			},
+			"save_ms": {
+				"max": 0.002,
+				"median": 0.002,
+				"n": 5,
+				"p95": 0.002
+			},
+			"sync_ms": {
+				"max": 5.809,
+				"median": 2.859,
+				"n": 5,
+				"p95": 5.809
+			}
+		},
+		"craft_open": {
+			"draw_ms": {
+				"max": 200.693,
+				"median": 63.799,
+				"n": 5,
+				"p95": 200.693
+			},
+			"render_ms": {
+				"max": 160.211,
+				"median": 28.553,
+				"n": 5,
+				"p95": 160.211
+			},
+			"save_ms": {
+				"max": 0.002,
+				"median": 0.002,
+				"n": 5,
+				"p95": 0.002
+			},
+			"sync_ms": {
+				"max": 160.496,
+				"median": 28.874,
+				"n": 5,
+				"p95": 160.496
+			}
+		},
+		"depart_no_save": {
+			"draw_ms": {
+				"max": 35.738,
+				"median": 31.741,
+				"n": 5,
+				"p95": 35.738
+			},
+			"render_ms": {
+				"max": 0.0,
+				"median": 0.0,
+				"n": 5,
+				"p95": 0.0
+			},
+			"save_ms": {
+				"max": 0.001,
+				"median": 0.001,
+				"n": 5,
+				"p95": 0.001
+			},
+			"sync_ms": {
+				"max": 6.748,
+				"median": 4.966,
+				"n": 5,
+				"p95": 6.748
+			}
+		},
+		"depart_save": {
+			"draw_ms": {
+				"max": 39.076,
+				"median": 34.594,
+				"n": 5,
+				"p95": 39.076
+			},
+			"render_ms": {
+				"max": 0.0,
+				"median": 0.0,
+				"n": 5,
+				"p95": 0.0
+			},
+			"save_ms": {
+				"max": 5.53,
+				"median": 4.638,
+				"n": 5,
+				"p95": 5.53
+			},
+			"sync_ms": {
+				"max": 12.816,
+				"median": 9.519,
+				"n": 5,
+				"p95": 12.816
+			}
+		},
+		"idle": {
+			"draw_ms": {
+				"max": 31.763,
+				"median": 27.158,
+				"n": 20,
+				"p95": 31.184
+			},
+			"render_ms": {
+				"max": 0.0,
+				"median": 0.0,
+				"n": 20,
+				"p95": 0.0
+			},
+			"save_ms": {
+				"max": 0.0,
+				"median": 0.0,
+				"n": 20,
+				"p95": 0.0
+			},
+			"sync_ms": {
+				"max": 0.0,
+				"median": 0.0,
+				"n": 20,
+				"p95": 0.0
+			}
+		},
+		"navigation_select": {
+			"draw_ms": {
+				"max": 42.725,
+				"median": 30.41,
+				"n": 60,
+				"p95": 35.263
+			},
+			"render_ms": {
+				"max": 0.0,
+				"median": 0.0,
+				"n": 60,
+				"p95": 0.0
+			},
+			"save_ms": {
+				"max": 0.0,
+				"median": 0.0,
+				"n": 60,
+				"p95": 0.0
+			},
+			"sync_ms": {
+				"max": 8.397,
+				"median": 4.832,
+				"n": 60,
+				"p95": 6.939
+			}
+		},
+		"resource_card": {
+			"draw_ms": {
+				"max": 42.783,
+				"median": 28.322,
+				"n": 60,
+				"p95": 39.363
+			},
+			"render_ms": {
+				"max": 0.0,
+				"median": 0.0,
+				"n": 60,
+				"p95": 0.0
+			},
+			"save_ms": {
+				"max": 0.0,
+				"median": 0.0,
+				"n": 60,
+				"p95": 0.0
+			},
+			"sync_ms": {
+				"max": 0.589,
+				"median": 0.206,
+				"n": 60,
+				"p95": 0.445
+			}
+		},
+		"settings_close": {
+			"draw_ms": {
+				"max": 37.511,
+				"median": 33.663,
+				"n": 5,
+				"p95": 37.511
+			},
+			"render_ms": {
+				"max": 5.167,
+				"median": 3.254,
+				"n": 5,
+				"p95": 5.167
+			},
+			"save_ms": {
+				"max": 0.0,
+				"median": 0.0,
+				"n": 5,
+				"p95": 0.0
+			},
+			"sync_ms": {
+				"max": 5.204,
+				"median": 3.293,
+				"n": 5,
+				"p95": 5.204
+			}
+		},
+		"settings_open": {
+			"draw_ms": {
+				"max": 98.475,
+				"median": 63.768,
+				"n": 5,
+				"p95": 98.475
+			},
+			"render_ms": {
+				"max": 60.823,
+				"median": 34.304,
+				"n": 5,
+				"p95": 60.823
+			},
+			"save_ms": {
+				"max": 0.0,
+				"median": 0.0,
+				"n": 5,
+				"p95": 0.0
+			},
+			"sync_ms": {
+				"max": 60.915,
+				"median": 34.408,
+				"n": 5,
+				"p95": 60.915
+			}
+		}
+	}
+}

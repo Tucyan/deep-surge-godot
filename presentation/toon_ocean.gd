@@ -161,6 +161,9 @@ func _wave_noise(g: Vector2, index: int) -> float:
 
 ## Same perturbed Gerstner sum as the vertex shader, scaled by distance fade.
 func displacement(g: Vector2) -> Vector3:
+	var fade := fade_at(g)
+	# Distant vertices have exactly zero amplitude; avoid all four noise sums.
+	if fade == 0.0: return Vector3.ZERO
 	var d := Vector3.ZERO
 	for i in range(_waves.size()):
 		var wave: Dictionary=_waves[i]
@@ -170,7 +173,7 @@ func displacement(g: Vector2) -> Vector3:
 		var theta: float = wave.k*wave.dir.dot(g)-wave.omega*time+wave.phase+float(noise.phase_strength)*perturbation
 		var horizontal: Vector2 = wave.dir*(wave.s/wave.k)*cos(theta)*amplitude
 		d.x += horizontal.x; d.z += horizontal.y; d.y += wave.a*sin(theta)*amplitude
-	return d*fade_at(g)
+	return d*fade
 
 ## World position of the displaced vertex whose undisplaced grid point is g.
 func surface_point(g: Vector2) -> Vector3:
@@ -192,6 +195,9 @@ func plane_at(x: float, z: float) -> float:
 	return plane_height+plane_slope.dot(Vector2(x,z))
 
 func height_at(x: float, z: float) -> float:
+	# Full contact cancels horizontal displacement. The initial inverse guess is
+	# already its fixed point and the resulting height is exactly the tangent plane.
+	if contact_at(Vector2(x,z)) == 1.0: return plane_at(x,z)
 	var g := _invert(Vector2(x,z),true)
 	return lerpf(displacement(g).y,plane_at(x,z),contact_at(g))
 

@@ -1,0 +1,114 @@
+[
+  {
+    "test": "test_interaction_refresh",
+    "exit": 0
+  },
+  {
+    "test": "test_asset_warmup",
+    "exit": 0
+  },
+  {
+    "test": "test_hand_animation_click",
+    "exit": 0
+  },
+  {
+    "test": "test_hand_gestures",
+    "exit": 0
+  },
+  {
+    "test": "test_mobile_hand",
+    "exit": 0
+  },
+  {
+    "test": "test_battle_equipment_ui",
+    "exit": 0
+  },
+  {
+    "test": "test_battle_actions",
+    "exit": 0
+  },
+  {
+    "test": "test_combat_integration",
+    "exit": 0
+  },
+  {
+    "test": "test_navigation_partial_refresh",
+    "exit": 0
+  },
+  {
+    "test": "test_navigation_actions",
+    "exit": 0
+  },
+  {
+    "test": "test_camera_bindings",
+    "exit": 0
+  },
+  {
+    "test": "test_camera_controls",
+    "exit": 0
+  },
+  {
+    "test": "test_display_settings",
+    "exit": 0
+  },
+  {
+    "test": "test_frame_rate_settings",
+    "exit": 0
+  },
+  {
+    "test": "test_clean_ui",
+    "exit": 0
+  },
+  {
+    "test": "test_recall_restore",
+    "exit": 0
+  },
+  {
+    "test": "test_narrative",
+    "exit": 0
+  },
+  {
+    "test": "test_narrative_flow",
+    "exit": 0
+  },
+  {
+    "test": "test_narrative_repairs",
+    "exit": 0
+  },
+  {
+    "test": "test_tutorial",
+    "exit": 0
+  },
+  {
+    "test": "test_tutorial_setup",
+    "exit": 0
+  },
+  {
+    "test": "test_tutorial_rules_repairs",
+    "exit": 0
+  },
+  {
+    "test": "test_tutorial_event_layout",
+    "exit": 0
+  },
+  {
+    "test": "test_flow",
+    "exit": 0
+  },
+  {
+    "test": "test_mechanics",
+    "exit": 0
+  },
+  {
+    "test": "test_save",
+    "exit": 0
+  },
+  {
+    "test": "test_ocean_sampling_performance",
+    "exit": 0
+  },
+  {
+    "test": "test_toon_ocean",
+    "exit": 0
+  }
+]

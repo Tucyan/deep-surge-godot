@@ -16,6 +16,7 @@ var dragging := false
 var pressed_index := -1
 var press_time := 0.0
 var press_point := Vector2.ZERO
+var press_origin := Vector2.ZERO
 var pointer_point := Vector2.ZERO
 var drop_index := -1
 var touch_index := -1
@@ -358,6 +359,7 @@ func _gui_input(event: InputEvent) -> void:
 
 func _begin_press(index: int,point: Vector2) -> void:
 	focus_card(index); pressed_index=index; press_time=0.0; pointer_point=point
+	press_origin=point
 	press_point=point-tiles[index].position; tip.hide()
 
 func hit_card(point: Vector2) -> int:
@@ -380,7 +382,9 @@ func _input(event: InputEvent) -> void:
 		cancel_gesture(); get_viewport().set_input_as_handled(); return
 	if (event is InputEventMouseMotion and touch_index<0) or (event is InputEventScreenDrag and event.index==touch_index):
 		var next_point: Vector2 = get_global_transform().affine_inverse() * (event.position if event is InputEventScreenDrag else event.global_position)
-		if not dragging and next_point.distance_to(tiles[pressed_index].position+press_point)>10:
+		# Card easing can move its geometry under a stationary finger/mouse.
+		# Gesture movement is measured from the pointer-down position, not the card.
+		if not dragging and next_point.distance_to(press_origin)>10:
 			cancel_gesture(); return
 		pointer_point=next_point
 		if dragging:
@@ -420,7 +424,7 @@ func _input(event: InputEvent) -> void:
 			if context.get("phase","") == "battle": max_dest = maxi(0, cards.size() - 3)
 			if destination!=index and destination>=0 and destination <= max_dest:
 				hand_layout.move_group(cards,index,destination); reordered.emit()
-		elif hit_card(release_point)==index and not buttons[index].disabled:
+		elif (hit_card(release_point)==index or (release_point.distance_to(press_origin)<=10 and get_viewport_rect().has_point(get_global_transform()*release_point))) and not buttons[index].disabled:
 			if mobile: inspected.emit(held_card)
 			else: activated.emit(held_card)
 

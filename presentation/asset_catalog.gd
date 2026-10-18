@@ -11,6 +11,32 @@ func _init() -> void:
 	if data is Dictionary:
 		_definitions = data.get("assets", {})
 
+## Warm at most one recipe page from local imported art. Decode in workers and
+## finalize at most one ready resource per frame; never wait on an unfinished job.
+## The normal texture() path remains the fallback when art is requested sooner.
+func warm_textures(ids: Array, owner: Node) -> void:
+	if not is_instance_valid(owner) or not owner.is_inside_tree(): return
+	var tree:=owner.get_tree()
+	var pending: Dictionary={}
+	for id in ids.slice(0,8):
+		if _cache.has(id): continue
+		var path: String=_definitions.get(id,{}).get("path","")
+		if not path.begins_with("res://assets/") or ".." in path or not ResourceLoader.exists(path): continue
+		if pending.has(path): pending[path].append(id); continue
+		var error:=ResourceLoader.load_threaded_request(path,"Texture2D")
+		if error==OK: pending[path]=[id]
+	while not pending.is_empty():
+		await tree.process_frame
+		for path in pending.keys():
+			var status:=ResourceLoader.load_threaded_get_status(path)
+			if status==ResourceLoader.THREAD_LOAD_IN_PROGRESS: continue
+			if status==ResourceLoader.THREAD_LOAD_LOADED:
+				var loaded:=ResourceLoader.load_threaded_get(path)
+				if loaded is Texture2D and is_instance_valid(owner) and owner.is_inside_tree():
+					for id in pending[path]: texture(id)
+			pending.erase(path)
+			break
+
 func texture(asset_id: String) -> Texture2D:
 	if asset_id in ["card.action_attack","card.attack"]:
 		return texture("card.punch")

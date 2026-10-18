@@ -685,7 +685,7 @@
         "presentation/supplied_ocean.gd",
         "presentation/texture_ocean.gd"
       ],
-      "version": 14,
+      "version": 15,
       "role": "Blender-authored modular raft; four playable cells at 3,4,5,6; two reserved decorative root cells at 1,2; toon ocean default, original GLB ocean fallback",
       "framing": {
         "method": "fit projected visible raft mesh bounds in UI-provided safe rect; smooth pose interpolation",
@@ -695,8 +695,8 @@
       },
       "source_hashes": {
         "presentation/voyage_world.gd": "419c5036682f8bd4cf3ff3b67760e590a502fb31af7d1e2d9806dfdce8ae0a65",
-        "presentation/raft_state_models.gd": "5fd7db9fee88b473d4b677cd2176d39f20698b0d52739469cd80c453dfd188e6",
-        "presentation/toon_ocean.gd": "395f91476571f7616ab8126918a9b631c299f5d9f186a63cdf6f03d1ad87324f",
+        "presentation/raft_state_models.gd": "ad6927de54f136ef02c2c9dfd1c683cdf8b9dcf5132718f8da71217bfcef8591",
+        "presentation/toon_ocean.gd": "93aeb15c843b7e07fb02f70dd032b5c728bef6dccda296a42a85f7bec3911cdc",
         "presentation/model_ocean.gd": "173e741d87735558f46fb2e3fbcb72261c07f577c71545ae2a2c65db84e92ba7",
         "presentation/supplied_ocean.gd": "fe3baadb9224b4c0702f1eaae0cea6508856bdb8af6feef25c11d7d203de1ca2",
         "presentation/texture_ocean.gd": "4580a8ed85969d118a1789ba70b9dbfc63ed9515ae599c9386fff4c920c97bbe"
@@ -1143,13 +1143,13 @@
     "ocean.wave-noise-sampler": {
       "path": "res://presentation/toon_ocean.gd",
       "source": "presentation/toon_ocean.gd",
-      "version": 1,
-      "sha256": "dd95fd59dd5d9a65021080a5f9f7ec6d22047613b48ce30f6cdebf718e1db60c",
+      "version": 2,
+      "sha256": "93aeb15c843b7e07fb02f70dd032b5c728bef6dccda296a42a85f7bec3911cdc",
       "dependencies": [
         "data.ocean.toon-config",
         "shader.ocean.toon"
       ],
-      "role": "shared CPU/GPU smooth seeded phase and amplitude perturbations, raft surface sampling",
+      "role": "shared CPU/GPU smooth seeded perturbations; exact tangent-plane contact queries and zero-amplitude sampling fast paths",
       "license": "project-authored procedural asset"
     },
     "data.ocean.toon-config": {
@@ -1162,15 +1162,15 @@
     },
     "shader.ocean.toon": {
       "path": "res://assets/shaders/toon_ocean.gdshader",
-      "version": 3,
+      "version": 4,
       "source": "assets/shaders/toon_ocean.gdshader",
-      "sha256": "e72b879a2a5bd3e7af3c9fe898892755b2b8931d309a15089d46049ba11b51bd",
+      "sha256": "59e0d622e2121d5e35e8e7cac6ff922a5f44e40736601a80aab6e5b017e21f1a",
       "dependencies": [
         "data.ocean.toon-config",
         "texture.ocean.detail"
       ],
       "license": "project-authored procedural shader/config; no external imagery",
-      "role": "smooth noise-modulated Gerstner waves mirrored by presentation/toon_ocean.gd; visual time only"
+      "role": "smooth noise-modulated Gerstner waves mirrored by CPU sampler; zero-amplitude flat frame skips wave gradients; visual time only"
     },
     "shader.voyage.night-grade": {
       "path": "res://assets/shaders/night_grade.gdshader",
@@ -1234,8 +1234,8 @@
     "ui.hand.fan": {
       "path": "res://presentation/hand_fan.gd",
       "source": "presentation/hand_fan.gd",
-      "version": 24,
-      "sha256": "fd2e23c5f5002298e72e9d5c6548078d336471051b3879d68f46c857fb269f0d",
+      "version": 25,
+      "sha256": "750f079ecbaf9ee5a16bfaeb5a1dac271a6416f4fc10d0533613a089349f40c3",
       "dependencies": [
         "ui.hand.border",
         "ui.item-card",
@@ -1244,7 +1244,8 @@
       ],
       "license": "project-authored shader and deterministic procedural ornament; no external artwork",
       "source_hash_verified_on": "2026-10-18",
-      "runtime_mapping": "card height 97 percent of body excluding fixed-height header; hover and selected raise preserve sibling draw order; hover clearance uses visible frame width excluding transparent margins and shadow, threshold 5 percent; no battle-selection requirement or experimental rear layers; mobile hold 0.05s and release above hand to use, tap inspect/select, validated battle confirmation; mobile battle selection raises 12px without hover lift so capacity stays visible"
+      "runtime_mapping": "card height 97 percent of body excluding fixed-height header; hover and selected raise preserve sibling draw order; hover clearance uses visible frame width excluding transparent margins and shadow, threshold 5 percent; no battle-selection requirement or experimental rear layers; mobile hold 0.05s and release above hand to use, tap inspect/select, validated battle confirmation; mobile battle selection raises 12px without hover lift so capacity stays visible",
+      "gesture_motion_origin": "immutable pointer-down position; stationary release survives card animation, actual pointer movement and cancellation guards retained"
     },
     "model.raft-state": {
       "path": "res://presentation/raft_state_models.gd",
@@ -1486,8 +1487,8 @@
     },
     "ui.hud.voyage-adapter": {
       "path": "res://pages/voyage_hud.gd",
-      "version": 25,
-      "sha256": "c64f38192d06232aa9618d57478956864e2dcde68d48e710fa80cf1b6f1e3a67",
+      "version": 27,
+      "sha256": "bb7bf34b0d0fb99acd5cdf5b28ec277100e2480fb45db4fe64f9bcb2ab8fe9bc",
       "source": [
         "asset-sources/hud-visual-v2/deep_surge_hud_godot4_v2_visual_match.zip",
         "pages/voyage_hud.gd"
@@ -1511,8 +1512,8 @@
     },
     "ui.hud.story-adapter": {
       "path": "res://pages/flow_story.gd",
-      "version": 5,
-      "sha256": "027d1bd8a26e54196ae9bbf5dbd9c8ee4ff669741018a1ee350cf92910c61e34",
+      "version": 6,
+      "sha256": "e75b7856c6830978e60139b376ed0be921ffef5ebfb92cbb8aa342c8c5aea2fa",
       "source": [
         "asset-sources/hud-visual-v2/deep_surge_hud_godot4_v2_visual_match.zip",
         "pages/flow_story.gd"
@@ -1915,8 +1916,8 @@
     "ui.title.home": {
       "path": "res://pages/flow_home.gd",
       "source": "pages/flow_home.gd",
-      "version": 6,
-      "sha256": "fadd348ab077e232ff5938537d4b14a1317b378421e3502a69d36bb837f696a0",
+      "version": 7,
+      "sha256": "de452a226c4c0da3c28c19abb45fa79dfe8e70cea96f499d6c799428febe2637",
       "dependencies": [
         "ui.title.menu"
       ],
@@ -2052,8 +2053,8 @@
     "ui.node-event.embedded": {
       "path": "res://pages/flow_story.gd",
       "source": "pages/flow_story.gd",
-      "sha256": "027d1bd8a26e54196ae9bbf5dbd9c8ee4ff669741018a1ee350cf92910c61e34",
-      "version": 7,
+      "sha256": "e75b7856c6830978e60139b376ed0be921ffef5ebfb92cbb8aa342c8c5aea2fa",
+      "version": 8,
       "dependencies": [
         "res://core/difficulty_rules.gd",
         "res://pages/story_gallery.gd",
@@ -2094,8 +2095,8 @@
     "ui.hand.capacity-badge": {
       "path": "res://pages/voyage_hud.gd",
       "source": "pages/voyage_hud.gd",
-      "version": 25,
-      "sha256": "c64f38192d06232aa9618d57478956864e2dcde68d48e710fa80cf1b6f1e3a67",
+      "version": 27,
+      "sha256": "bb7bf34b0d0fb99acd5cdf5b28ec277100e2480fb45db4fe64f9bcb2ab8fe9bc",
       "dependencies": [
         "ui.voyage-hud",
         "ui.controls.utility-icons"
@@ -2107,8 +2108,8 @@
     "ui.craft.circle-entry": {
       "path": "res://pages/voyage_hud.gd",
       "source": "pages/voyage_hud.gd",
-      "version": 25,
-      "sha256": "c64f38192d06232aa9618d57478956864e2dcde68d48e710fa80cf1b6f1e3a67",
+      "version": 27,
+      "sha256": "bb7bf34b0d0fb99acd5cdf5b28ec277100e2480fb45db4fe64f9bcb2ab8fe9bc",
       "dependencies": [
         "ui.voyage-hud",
         "ui.hud.nautical-button-art",
@@ -2138,8 +2139,8 @@
     "ui.craft.grid": {
       "path": "res://pages/craft_page.gd",
       "source": "pages/craft_page.gd",
-      "version": 7,
-      "sha256": "9f67eba62c1df72855b60ed8396dd50b4fe78f05036c9377fe5750fba20dbb51",
+      "version": 8,
+      "sha256": "9c90623166c08e74b5f99cdc89d59d2980297f3925e4d6a087feeed8158e21e9",
       "dependencies": [
         "ui.controls.text-buttons"
       ],
@@ -2187,8 +2188,8 @@
     "ui.settings-panel": {
       "path": "res://presentation/settings_panel.gd",
       "source": "presentation/settings_panel.gd",
-      "version": 11,
-      "sha256": "e66f9a7558a5040bc6cc9d267d01802fc5f2a42549de3b8762eeb202861866af",
+      "version": 12,
+      "sha256": "8efd082ec93b16b6db81a0a10d827ee43e24adc807a9d530e7544d2345d21192",
       "dependencies": [
         "ui.controls.close",
         "ui.display-preferences",
@@ -2215,8 +2216,8 @@
     "ui.modal-layout": {
       "path": "res://flow_app.gd",
       "source": "flow_app.gd",
-      "version": 14,
-      "sha256": "44e4b4cc244fede45e3b025be952381b3f757afee2ad40cc2459471ee6229faf",
+      "version": 17,
+      "sha256": "e8206f5dd6cb35c3de91c185ad218a106e0a63e310d93807824ced47ef9c6e0c",
       "dependencies": [
         "ui.controls.close",
         "ui.settings-panel",
@@ -2226,7 +2227,7 @@
         "data.story-gallery-archive",
         "ui.opening-intro"
       ],
-      "role": "Full-screen crafting, encyclopedia and meta shop; modal X close; home navigation only in settings",
+      "role": "Shared modal layout with retained game HUD, blocked base input and exact disabled-state/revision restoration; full refresh on rule/layout change",
       "license": "project-authored procedural UI; reuses existing artwork and theme",
       "visual_random": "none",
       "source_hash_verified_on": "2026-10-18",
@@ -2343,8 +2344,8 @@
     "ui.raft.interaction": {
       "path": "res://presentation/raft_interaction.gd",
       "source": "presentation/raft_interaction.gd",
-      "version": 11,
-      "sha256": "b0b3df5e7b3e3f4cf43ea87f3632e99205d1c1e19b902b02028c917fc870e6ca",
+      "version": 12,
+      "sha256": "7ee1623d85cc4b581d261d62726af9a5913a4cc997feed417886534578c05195",
       "dependencies": [
         "ui.raft.actions",
         "ui.raft.surface",
@@ -3049,8 +3050,8 @@
     "ui.formal-shop": {
       "path": "res://pages/shop_page.gd",
       "source": "project-authored/native-Godot-formal-shop-v11",
-      "version": 2,
-      "sha256": "94babda27b685ff1bbc232bcc5e3f2630fad0981e510e9c426e7f3987ab00eda",
+      "version": 3,
+      "sha256": "9488ab8e327869f4aa3c299adb445d2324e6bbac21d7b6ca4afe800c28801657",
       "dependencies": [
         "res://pages/flow_base.gd",
         "res://presentation/widgets.gd",
@@ -3063,7 +3064,7 @@
         "sell": "corpse 2 coins; other eligible cards 1; basic materials excluded"
       },
       "license": "project-authored native UI; no external artwork",
-      "source_hash_verified_on": "2026-10-17"
+      "source_hash_verified_on": "2026-10-18"
     },
     "data.environment-buffs": {
       "path": "res://content/data/environments.json",
@@ -3107,8 +3108,8 @@
     "ui.battle.salvage": {
       "path": "res://pages/voyage_hud.gd",
       "source": "project-authored/native-Godot-battle-salvage-v14",
-      "version": 25,
-      "sha256": "c64f38192d06232aa9618d57478956864e2dcde68d48e710fa80cf1b6f1e3a67",
+      "version": 27,
+      "sha256": "bb7bf34b0d0fb99acd5cdf5b28ec277100e2480fb45db4fe64f9bcb2ab8fe9bc",
       "dependencies": [
         "res://core/run_rules.gd",
         "res://core/action_query.gd",
@@ -3561,15 +3562,15 @@
     "ui.battle.panels": {
       "path": "res://pages/battle_hud_view.gd",
       "source": "project-authored supplied-panel adapter",
-      "version": 4,
-      "sha256": "ee88e27c54d809086f8fa30158a3de7f3fde512253f95c1d13bb3652f8d5849c",
+      "version": 6,
+      "sha256": "0505ad46b726fe946df7a287ee95af1947e9e942923d633dc1edc5bee3d463ad",
       "dependencies": [
         "texture.battle.panel.monster",
         "texture.battle.panel.intent",
         "texture.battle.panel.preview",
         "texture.battle.panel.log"
       ],
-      "runtime_mapping": "desktop: proportional four-panel composition; mobile: unscaled 18px text, safe region above hand, NinePatch intent/preview/log at 0.65 ornament scale with 128/80/128/48 source margins, fixed preview header and scrollable details, 44px touch targets; combat hides reset/view-toggle utilities; mobile battle panel left inset 28px reclaims their 100px gutter; tutorial combat guidance overlays only upper-left voyage heading, mouse/touch ignored, full-height battle panels retained; mobile lesson and preview instructions describe 0.05s drag-out and end-turn steps",
+      "runtime_mapping": "desktop: proportional four-panel composition fitted to actual status bottom +16 (occupied environment/rest status row bottom +8) and action-point top -8 in view coordinates, horizontally centered with 32px side clearance; mobile: unscaled 18px text, safe region above hand, NinePatch intent/preview/log at 0.65 ornament scale with 128/80/128/48 source margins, fixed preview header and scrollable details, 44px touch targets; combat hides reset/view-toggle utilities; mobile battle panel left inset 28px reclaims their 100px gutter; tutorial combat guidance overlays only upper-left voyage heading, mouse/touch ignored, full-height battle panels retained; mobile lesson and preview instructions describe 0.05s drag-out and end-turn steps",
       "source_hash_verified_on": "2026-10-18"
     },
     "ui.camera.reset-icon": {
@@ -3870,7 +3871,7 @@
     },
     "ui.controls.text-buttons": {
       "path": "res://presentation/text_button_art.gd",
-      "version": 1,
+      "version": 2,
       "source": [
         "presentation/text_button_art.gd",
         "asset-sources/text-buttons-v1/deep_surge_resizable_buttons_godot4.zip"
@@ -3884,9 +3885,9 @@
         "texture.ui.tarot.disabled",
         "texture.ui.tarot.compass"
       ],
-      "runtime_mapping": "Widgets.button plus settings tabs/actions, debug buttons and native confirmation dialogs; nine-slice art behind native input/text; compact symbol variant; explicit caller skins take precedence",
-      "sha256": "52c2023abb4e68235105257505f82a61186270c0b3b6d88ab3f8f1842a4b9e0c",
-      "source_hash_verified_on": "2026-10-17"
+      "runtime_mapping": "Widgets.button plus settings tabs/actions, debug buttons and native confirmation dialogs; nine-slice art behind native input/text; compact symbol variant; explicit caller skins take precedence; mobile_ui inherited platform flag selects 18px vertical padding (desktop7), intrinsic native button height about56-62; dedicated caller skins still take precedence",
+      "sha256": "27b54f13ed326b6d49db13b791ce09d2d9b142ce19d9535d994e00868b694170",
+      "source_hash_verified_on": "2026-10-18"
     },
     "ui.controls.utility-icons": {
       "path": "res://presentation/utility_button_art.gd",
@@ -4243,6 +4244,48 @@
       "dependencies": [],
       "license": "project-authored",
       "show_label": false,
+      "source_hash_verified_on": "2026-10-18"
+    },
+    "runtime.ui-art-warmup": {
+      "path": "res://presentation/asset_catalog.gd",
+      "source": "presentation/asset_catalog.gd",
+      "version": 1,
+      "sha256": "7a335e2935cadf04b6cf707b3dbddf745f449b9663120e562a1a6d2171967671",
+      "dependencies": [
+        "ui.craft.grid"
+      ],
+      "entry": "flow_app._warm_craft_art -> warm_textures",
+      "source_hashes": {
+        "presentation/asset_catalog.gd": "7a335e2935cadf04b6cf707b3dbddf745f449b9663120e562a1a6d2171967671",
+        "flow_app.gd": "e8206f5dd6cb35c3de91c185ad218a106e0a63e310d93807824ced47ef9c6e0c"
+      },
+      "role": "Bounded first-recipe-page local texture warmup; worker decode, readiness checks, at most one finalized path per frame; normal demand fallback and shared texture ownership",
+      "license": "project-authored resource cache adapter; reuses existing local card images",
+      "visual_random": "none"
+    },
+    "ui.controls.mobile-metrics": {
+      "path": "res://pages/base_page.gd",
+      "source": "project-authored mobile layout integration",
+      "version": 1,
+      "sha256": "fbff9611dda5e7fef5c0d04f9ab1b37e4a4ffd805a2f42cfa0637ac0ead67fc8",
+      "source_hashes": {
+        "pages/base_page.gd": "fbff9611dda5e7fef5c0d04f9ab1b37e4a4ffd805a2f42cfa0637ac0ead67fc8",
+        "pages/voyage_hud.gd": "bb7bf34b0d0fb99acd5cdf5b28ec277100e2480fb45db4fe64f9bcb2ab8fe9bc",
+        "pages/battle_hud_view.gd": "0505ad46b726fe946df7a287ee95af1947e9e942923d633dc1edc5bee3d463ad",
+        "pages/craft_page.gd": "9c90623166c08e74b5f99cdc89d59d2980297f3925e4d6a087feeed8158e21e9",
+        "pages/flow_home.gd": "de452a226c4c0da3c28c19abb45fa79dfe8e70cea96f499d6c799428febe2637",
+        "pages/flow_story.gd": "e75b7856c6830978e60139b376ed0be921ffef5ebfb92cbb8aa342c8c5aea2fa",
+        "pages/shop_page.gd": "9488ab8e327869f4aa3c299adb445d2324e6bbac21d7b6ca4afe800c28801657",
+        "presentation/settings_panel.gd": "8efd082ec93b16b6db81a0a10d827ee43e24adc807a9d530e7544d2345d21192",
+        "presentation/raft_interaction.gd": "7ee1623d85cc4b581d261d62726af9a5913a4cc997feed417886534578c05195",
+        "flow_app.gd": "e8206f5dd6cb35c3de91c185ad218a106e0a63e310d93807824ced47ef9c6e0c"
+      },
+      "dependencies": [
+        "ui.controls.text-buttons"
+      ],
+      "runtime_mapping": "BasePage and flow_app provide inherited mobile_ui marker before construction; native selectors >=56, navigation >=60, battle/settings >=56; mobile operation/shop stock/transmute center scroll as needed; recipe icons min64; home settings160x64; salvage70 high; desktop metrics retained; mobile battle intent/preview split 40%/remaining with16px gap keeps >=60px preview scroll height after enlarged reset header",
+      "license": "project-authored presentation code; existing user-supplied PNGs unchanged",
+      "visual_random": "none",
       "source_hash_verified_on": "2026-10-18"
     }
   }

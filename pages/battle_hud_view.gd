@@ -111,13 +111,28 @@ func layout_panels() -> void:
 	if mobile:
 		layout_mobile_panels()
 		return
-	var available := Vector2(maxf(1.0,size.x-64.0), maxf(1.0,size.y-486.0))
-	# Enlarged HUD preferences leave less vertical room between status and hand.
-	# Scale the content with the art below its readable design height.
+	# Use the actual HUD boundaries rather than a fixed low starting position.
+	# Work in this view's coordinates so canvas/UI scaling is applied only once.
+	var to_view := get_global_transform().affine_inverse()
+	var navigation := hud.find_child("VoyageNavigationBar",true,false) as Control
+	var action_points := hud.find_child("SurgeActionPointHUD",true,false) as Control
+	var top := 96.0
+	var bottom := size.y-316.0-8.0
+	if navigation != null:
+		top = (to_view * navigation.get_global_rect().end).y + 16.0
+	var environment := hud.find_child("VoyageEnvironmentNames",true,false) as Control
+	if environment != null:
+		var row := environment.get_node_or_null("EnvironmentBuffs")
+		if row != null and row.get_child_count() > 0:
+			top = maxf(top,(to_view * environment.get_global_rect().end).y + 8.0)
+	if action_points != null:
+		bottom = (to_view * action_points.get_global_rect().position).y - 8.0
+	var available := Vector2(maxf(1.0,size.x-64.0), maxf(1.0,bottom-top))
+	# Scale compact layouts' content together with the original panel artwork.
 	var content_scale := minf(1.0, available.y/414.0)
 	panel_layout.scale = Vector2.ONE*content_scale
 	var fit := minf(available.x/(1534.0*content_scale), available.y/(511.0*content_scale))
-	panel_layout.position = Vector2((size.x-1534.0*fit*content_scale)*0.5, 190.0)
+	panel_layout.position = Vector2((size.x-1534.0*fit*content_scale)*0.5, top)
 	panel_layout.size = Vector2(1534,511)*fit
 	var rects := [Rect2(0,0,415,511), Rect2(431,0,686,255), Rect2(431,294,687,217), Rect2(1134,0,400,505)]
 	for i in range(rects.size()):
@@ -134,11 +149,14 @@ func layout_mobile_panels() -> void:
 	var portrait_width := height * 415.0/511.0
 	var log_width := clampf(width*.25,280.0,400.0)
 	var middle_width := maxf(1.0,width-portrait_width-log_width-gap*2)
-	var half_height := (height-gap)*.5
+	# The taller touch reset button needs a deeper preview body. Intent text
+	# keeps its own scroll region for unusually long enemy/status descriptions.
+	var intent_height := height*.4
+	var preview_height := height-gap-intent_height
 	panel_layout.scale = Vector2.ONE
 	panel_layout.position = Vector2(28,top)
 	panel_layout.size = Vector2(width,height)
-	var rects := [Rect2(0,0,portrait_width,height), Rect2(portrait_width+gap,0,middle_width,half_height), Rect2(portrait_width+gap,half_height+gap,middle_width,half_height), Rect2(width-log_width,0,log_width,height)]
+	var rects := [Rect2(0,0,portrait_width,height), Rect2(portrait_width+gap,0,middle_width,intent_height), Rect2(portrait_width+gap,intent_height+gap,middle_width,preview_height), Rect2(width-log_width,0,log_width,height)]
 	for i in range(rects.size()):
 		var panel: Control = panel_layout.get_child(i)
 		panel.position=rects[i].position; panel.size=rects[i].size
@@ -146,8 +164,8 @@ func layout_mobile_panels() -> void:
 func adapt_mobile_controls(node: Node) -> void:
 	if node is Label: node.add_theme_font_size_override("font_size",maxi(18,node.get_theme_font_size("font_size")))
 	if node is BaseButton:
-		node.custom_minimum_size.y=maxf(44,node.custom_minimum_size.y)
-		node.add_theme_font_size_override("font_size",16)
+		node.custom_minimum_size.y=maxf(56,node.custom_minimum_size.y)
+		node.add_theme_font_size_override("font_size",18)
 	for child in node.get_children(): adapt_mobile_controls(child)
 
 func scrollable_content(parent: Control, id: String) -> Node:

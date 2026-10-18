@@ -1,0 +1,14 @@
+[
+  {
+    "test": "verify_retained_modal_input",
+    "exit": 0
+  },
+  {
+    "test": "test_partial_refresh",
+    "exit": 0
+  },
+  {
+    "test": "test_camera_modes",
+    "exit": 0
+  }
+]

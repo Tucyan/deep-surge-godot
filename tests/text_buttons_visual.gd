@@ -5,9 +5,11 @@ var app
 var failures := 0
 var audited := 0
 var capture := false
+var mobile := false
 
 func _init() -> void:
 	capture = "--capture" in OS.get_cmdline_user_args()
+	mobile = "--mobile" in OS.get_cmdline_user_args()
 	call_deferred("run")
 
 func check(ok: bool, message: String) -> void:
@@ -23,23 +25,38 @@ func shot(id: String) -> void:
 	for button in app.find_children("*", "Button", true, false):
 		if not button.is_visible_in_tree() or button.get_class() != "Button": continue
 		audited += 1
-		check(button.has_node("SurgeTextButtonArt") or button.has_theme_stylebox_override("normal"), "Button has supplied or dedicated skin: " + button.text)
-		check(app.get_global_rect().grow(2).encloses(button.get_global_rect()), "Button fits screen: " + id + " / " + button.text)
+		# Flat recipe icons intentionally use their child texture as the full skin.
+		var image_skin: bool = button.flat and button.get_children().any(func(child): return child is TextureRect and child.texture!=null)
+		check(button.has_node("SurgeTextButtonArt") or button.has_theme_stylebox_override("normal") or image_skin, "Button has supplied or dedicated skin: " + button.text)
+		var fits: bool=app.get_global_rect().grow(2).encloses(button.get_global_rect())
+		if mobile and not fits:
+			var ancestor=button.get_parent()
+			while ancestor!=null and not ancestor is ScrollContainer: ancestor=ancestor.get_parent()
+			if ancestor is ScrollContainer:
+				var previous: int=ancestor.scroll_vertical
+				ancestor.scroll_vertical+=int(button.get_global_rect().end.y-ancestor.get_global_rect().end.y)
+				await settle()
+				fits=ancestor.get_global_rect().grow(2).encloses(button.get_global_rect())
+				ancestor.scroll_vertical=previous;await settle()
+		check(fits, "Button fits screen or is reachable by scrolling: " + id + " / " + button.text)
 	if capture:
 		await RenderingServer.frame_post_draw
-		root.get_texture().get_image().save_png("res://evidence/text-buttons-" + id + ".png")
+		var capture_id:= "mobile-"+id if mobile and not id.contains("mobile-") else id
+		root.get_texture().get_image().save_png("res://evidence/text-buttons-" + capture_id + ".png")
 
 func run() -> void:
-	for config in [Vector3(1280,720,1), Vector3(1280,720,1.25), Vector3(1600,900,1)]:
+	var configs := [Vector3(1260,540,1.25), Vector3(1280,720,1.25), Vector3(1680,720,1)] if mobile else [Vector3(1280,720,1), Vector3(1280,720,1.25), Vector3(1600,900,1)]
+	for config in configs:
 		app = load("res://scenes/main.tscn").instantiate()
 		app.persistence = false
 		root.add_child(app)
 		await settle()
 		root.size = Vector2i(config.x, config.y)
+		app.display_settings.mobile = mobile
 		app.display_settings.free_aspect = true
 		app.display_settings.ui_scale = config.z
 		app.apply_display_settings(false)
-		var suffix := "%dx%d-%d" % [config.x,config.y,roundi(config.z*100)]
+		var suffix := ("mobile-" if mobile else "") + "%dx%d-%d" % [config.x,config.y,roundi(config.z*100)]
 		app.handle_command("home")
 		app.handle_ui("setup", "challenge")
 		await shot("setup-" + suffix)

@@ -18,7 +18,12 @@ func build() -> void:
 	body=VBoxContainer.new()
 	body.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	body.size_flags_vertical=Control.SIZE_EXPAND_FILL
-	add_child(body)
+	if context.get("mobile",false):
+		var stock_scroll:=ScrollContainer.new(); stock_scroll.name="MobileShopStockScroll"
+		stock_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
+		stock_scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL
+		add_child(stock_scroll); stock_scroll.add_child(body)
+	else: add_child(body)
 	confirmation=ConfirmationDialog.new()
 	confirmation.title="确认交易"
 	confirmation.min_size=Vector2i(540,260)

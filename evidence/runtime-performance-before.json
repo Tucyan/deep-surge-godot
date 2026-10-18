@@ -1,0 +1,36 @@
+{
+	"renderer": "Windows",
+	"results": {
+		"contact_100_queries": {
+			"max_ms": 15.102,
+			"median_ms": 10.243,
+			"n": 120,
+			"p95_ms": 10.964
+		},
+		"frame_interval": {
+			"max_ms": 29.981,
+			"median_ms": 22.721,
+			"n": 120,
+			"p95_ms": 26.961
+		},
+		"ghost_update": {
+			"max_ms": 1.465,
+			"median_ms": 0.936,
+			"n": 120,
+			"p95_ms": 1.269
+		},
+		"ocean_tick": {
+			"max_ms": 0.708,
+			"median_ms": 0.504,
+			"n": 120,
+			"p95_ms": 0.538
+		},
+		"world_update": {
+			"max_ms": 0.581,
+			"median_ms": 0.523,
+			"n": 120,
+			"p95_ms": 0.538
+		}
+	},
+	"rules_unchanged": true
+}

@@ -272,7 +272,7 @@ func recipe_tile(grid: Node, id: String) -> void:
 	icon.set_meta("recipe_output", output)
 	icon.flat = true
 	icon.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	icon.custom_minimum_size.y = 80
+	icon.custom_minimum_size.y = 64 if context.get("mobile",false) else 80
 	icon.accessibility_name = output.name + " · 点击查看说明"
 	column.add_child(icon)
 	var art := TextureRect.new()
@@ -492,7 +492,13 @@ func build_transmute_panel() -> void:
 	center_panel.add_theme_stylebox_override("panel", box_style(Color("0c1d26"), Color("2c4652"), 14))
 	columns.add_child(center_panel)
 	
-	var center_vbox := VBoxContainer.new(); center_panel.add_child(center_vbox)
+	var center_vbox := VBoxContainer.new()
+	if context.get("mobile",false):
+		var center_scroll:=ScrollContainer.new(); center_scroll.name="MobileTransmuteScroll"
+		center_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
+		center_panel.add_child(center_scroll); center_scroll.add_child(center_vbox)
+		center_vbox.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	else: center_panel.add_child(center_vbox)
 	center_vbox.add_theme_constant_override("separation", 8)
 	
 	var core_hdr := HBoxContainer.new(); center_vbox.add_child(core_hdr)

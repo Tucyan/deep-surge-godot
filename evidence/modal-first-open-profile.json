@@ -1,0 +1,30 @@
+{
+	"0": {
+		"draw_ms": 68.919,
+		"sync_ms": 29.637,
+		"texture_load_us": {
+			"card.crossbow": 13,
+			"card.filter": 6,
+			"card.generator": 6,
+			"card.lamp": 7,
+			"card.medkit": 7,
+			"card.planter": 6,
+			"card.shieldRack": 5,
+			"card.spearRack": 6
+		}
+	},
+	"1": {
+		"draw_ms": 64.863,
+		"sync_ms": 28.725,
+		"texture_load_us": {
+			"card.crossbow": 5,
+			"card.filter": 16,
+			"card.generator": 5,
+			"card.lamp": 7,
+			"card.medkit": 6,
+			"card.planter": 6,
+			"card.shieldRack": 6,
+			"card.spearRack": 6
+		}
+	}
+}

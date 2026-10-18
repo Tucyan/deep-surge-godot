@@ -1,0 +1,110 @@
+{
+  "battle_action": {
+    "received": 10,
+    "attempts": 10,
+    "draw_median_ms": 146.525,
+    "draw_p95_ms": 166.847,
+    "draw_max_ms": 166.847,
+    "sync_median_ms": 42.262,
+    "rebuild_count": 10
+  },
+  "battle_resource": {
+    "received": 19,
+    "attempts": 20,
+    "draw_median_ms": 154.654,
+    "draw_p95_ms": 197.136,
+    "draw_max_ms": 197.136,
+    "sync_median_ms": 43.506,
+    "rebuild_count": 19
+  },
+  "camera_toggle": {
+    "received": 5,
+    "attempts": 5,
+    "draw_median_ms": 155.134,
+    "draw_p95_ms": 162.943,
+    "draw_max_ms": 162.943,
+    "sync_median_ms": 34.273,
+    "rebuild_count": 5
+  },
+  "craft_close": {
+    "received": 5,
+    "attempts": 5,
+    "draw_median_ms": 154.059,
+    "draw_p95_ms": 165.842,
+    "draw_max_ms": 165.842,
+    "sync_median_ms": 36.336,
+    "rebuild_count": 5
+  },
+  "craft_open": {
+    "received": 5,
+    "attempts": 5,
+    "draw_median_ms": 178.212,
+    "draw_p95_ms": 318.175,
+    "draw_max_ms": 318.175,
+    "sync_median_ms": 58.126,
+    "rebuild_count": 5
+  },
+  "depart_no_save": {
+    "received": 5,
+    "attempts": 5,
+    "draw_median_ms": 28.39,
+    "draw_p95_ms": 29.564,
+    "draw_max_ms": 29.564,
+    "sync_median_ms": 5.163,
+    "rebuild_count": 0
+  },
+  "depart_save": {
+    "received": 5,
+    "attempts": 5,
+    "draw_median_ms": 32.61,
+    "draw_p95_ms": 45.774,
+    "draw_max_ms": 45.774,
+    "sync_median_ms": 9.277,
+    "rebuild_count": 0
+  },
+  "idle": {
+    "received": 20,
+    "attempts": 20,
+    "draw_median_ms": 21.378,
+    "draw_p95_ms": 21.864,
+    "draw_max_ms": 22.429,
+    "sync_median_ms": 0.0,
+    "rebuild_count": 0
+  },
+  "navigation_select": {
+    "received": 20,
+    "attempts": 20,
+    "draw_median_ms": 28.279,
+    "draw_p95_ms": 35.322,
+    "draw_max_ms": 43.898,
+    "sync_median_ms": 4.945,
+    "rebuild_count": 0
+  },
+  "resource_card": {
+    "received": 20,
+    "attempts": 20,
+    "draw_median_ms": 21.501,
+    "draw_p95_ms": 22.767,
+    "draw_max_ms": 24.405,
+    "sync_median_ms": 0.221,
+    "rebuild_count": 0
+  },
+  "settings_close": {
+    "received": 5,
+    "attempts": 5,
+    "draw_median_ms": 152.588,
+    "draw_p95_ms": 169.125,
+    "draw_max_ms": 169.125,
+    "sync_median_ms": 36.95,
+    "rebuild_count": 5
+  },
+  "settings_open": {
+    "received": 5,
+    "attempts": 5,
+    "draw_median_ms": 187.454,
+    "draw_p95_ms": 235.264,
+    "draw_max_ms": 235.264,
+    "sync_median_ms": 63.048,
+    "rebuild_count": 5
+  }
+}

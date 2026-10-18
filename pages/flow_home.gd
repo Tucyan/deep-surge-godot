@@ -4,9 +4,9 @@ func build() -> void:
 	title.size_flags_vertical=Control.SIZE_EXPAND_FILL; title.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	add_child(title); title.create(context,false)
 	var settings:=W.button(title,"设置",func(): request("local_panel","settings"))
-	settings.name="HomeSettings"; settings.custom_minimum_size=Vector2(112,48)
+	settings.name="HomeSettings"; settings.custom_minimum_size=Vector2(160,64) if context.get("mobile",false) else Vector2(112,48)
 	settings.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-	settings.offset_left=-136; settings.offset_right=-24; settings.offset_top=24; settings.offset_bottom=72
+	settings.offset_left=-184 if context.get("mobile",false) else -136; settings.offset_right=-24; settings.offset_top=24; settings.offset_bottom=88 if context.get("mobile",false) else 72
 	settings.add_theme_font_size_override("font_size",22)
 	title.menu_action.connect(_title_action.bind(title))
 func _title_action(id: String, title: Control) -> void:

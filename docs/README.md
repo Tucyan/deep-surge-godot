@@ -1,5 +1,11 @@
 # Deep Surge 文档索引
 
+海面 CPU 采样与远景着色器的等值优化、前后实测及逐像素验证见[运行性能优化验证](../evidence/runtime-performance-verification.md)。
+
+按钮/卡牌输入到绘制的实测及仍存在的整页重建停顿见[交互延迟检查](../evidence/interaction-latency-verification.md)；完整探针保留一次未收到回调的失败，未宣称全部交互无延迟。
+
+后续已实施局部交互、模态生命周期和异步配方图片预热修复，见[刷新机制](interaction-refresh.md)及[交互延迟修复验证](../evidence/interaction-fix-verification.md)。
+
 资源卡查看与常用设置的局部刷新修复及GPU/回归结果见 [点击卡顿修复验证](../evidence/partial-refresh-fix-verification.md)（含旧轨迹跳过与回廊退出日志说明）。
 
 导航候选/出发按钮的卡顿诊断与分阶段修复方案见 [导航按钮卡顿修复方案 v1](superpowers/plans/2026-10-18-navigation-stall-repair.md)（已测量，未实施修复）。

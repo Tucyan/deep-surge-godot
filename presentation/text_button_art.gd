@@ -18,6 +18,13 @@ var colors := {
 	"font_hover_pressed_color": Color("122138"), "font_disabled_color": Color("788596"),
 }
 
+static func uses_touch_ui(node: Node) -> bool:
+	var current := node
+	while current != null:
+		if current.has_meta("mobile_ui"): return bool(current.get_meta("mobile_ui"))
+		current = current.get_parent()
+	return OS.has_feature("mobile")
+
 static func apply(button: Button) -> void:
 	var art = load("res://presentation/text_button_art.gd").new()
 	art.name = "SurgeTextButtonArt"
@@ -25,8 +32,11 @@ static func apply(button: Button) -> void:
 	art.content_style = StyleBoxEmpty.new()
 	art.content_style.content_margin_left = 12 if art.compact else 28
 	art.content_style.content_margin_right = art.content_style.content_margin_left
-	art.content_style.content_margin_top = 7
-	art.content_style.content_margin_bottom = 7
+	# Intrinsic padding survives callers' old 34/40/44px minimum overrides.
+	# Dedicated icon/card skins remove this style and keep their own metrics.
+	var touch := uses_touch_ui(button)
+	art.content_style.content_margin_top = 18 if touch else 7
+	art.content_style.content_margin_bottom = 18 if touch else 7
 	for state in ["normal", "hover", "pressed", "hover_pressed", "disabled"]:
 		button.add_theme_stylebox_override(state, art.content_style)
 	var focus := StyleBoxFlat.new()
