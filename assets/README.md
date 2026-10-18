@@ -1,5 +1,7 @@
 # 素材登记
 
+2026-10-18 应用图标采用用户选中候选04的白帆船/蓝海浪。稳定ID为 `app.icon`、`app.icon.windows`、`app.icon.android.foreground`、`app.icon.android.background`、`app.icon.android.monochrome`；均为v1。内置ImageGen独立源、候选原图和提示保存在[图标源目录](../asset-sources/app-icon-sail-v1/README.md)，`tools/register_app_icon.py` 生成平台PNG/ICO尺寸、系统自适应安全区和主题alpha蒙版并登记hash/依赖，无视觉随机。映射到project.godot、Windows ICO及Android普通/自适应/单色图标；不参与GameState。实际安装包图标与签名检查见[打包记录](../docs/android-export.md)。
+
 2026-10-18 全屏局外商店与两层科技：新增 `ui.meta-shop`、`rules.tech-tree`、`data.tech-tree`，复用已登记卡图；遗产与优惠券新增项目原创SVG `icon.meta.inheritance` / `icon.meta.coupon`，无下载依赖。同步图鉴共享预览卡片和全屏路由hash。详见[机制](../docs/meta-shop-and-tech.md)与[验证](../evidence/meta-shop-tech-v22-verification.md)。
 
 2026-10-17 全屏图鉴：新增 `ui.encyclopedia`，复用已有卡图、怪物图、藏品图和 `ui.card.back`；无新增外部图片。`ui.modal-layout` 同步全屏路由 hash，详见[验证记录](../evidence/encyclopedia-verification.md)。

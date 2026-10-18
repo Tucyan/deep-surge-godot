@@ -2,6 +2,7 @@ config_version=5
 
 [application]
 config/name="Deep Surge · V0.2"
+config/icon="res://assets/icons/app-sail-v1.png"
 run/main_scene="res://scenes/main.tscn"
 
 [display]

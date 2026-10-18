@@ -4298,6 +4298,100 @@
       "license": "project-authored presentation code; existing user-supplied PNGs unchanged",
       "visual_random": "none",
       "source_hash_verified_on": "2026-10-18"
+    },
+    "app.icon": {
+      "path": "res://assets/icons/app-sail-v1.png",
+      "source": [
+        "asset-sources/app-icon-sail-v1/source.png",
+        "asset-sources/app-icon-sail-v1/README.md"
+      ],
+      "version": 1,
+      "sha256": "79fd3d3f66d9b9a9f163f4b388ca52cfbfe0ac27b740004ad748d29050c9fae1",
+      "dependencies": [],
+      "license": "project ImageGen artwork; user-approved candidate 04",
+      "generator": "tools/register_app_icon.py",
+      "mapping": "project application/config/icon; Android legacy launcher icon",
+      "visual_random": "none",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    "app.icon.windows": {
+      "path": "res://assets/icons/app-sail-v1.ico",
+      "source": [
+        "asset-sources/app-icon-sail-v1/source.png",
+        "asset-sources/app-icon-sail-v1/README.md"
+      ],
+      "version": 1,
+      "sha256": "60922f06ebaafe13f1955e3943a4e90e32fca12337ac595a3f0ee95ef33f65a5",
+      "dependencies": [
+        "app.icon"
+      ],
+      "license": "project ImageGen artwork; user-approved candidate 04",
+      "generator": "tools/register_app_icon.py",
+      "mapping": "Windows Desktop application/icon; seven ICO sizes",
+      "visual_random": "none"
+    },
+    "app.icon.android.foreground": {
+      "path": "res://assets/icons/app-sail-adaptive-v1.png",
+      "source": [
+        "asset-sources/app-icon-sail-v1/source.png",
+        "asset-sources/app-icon-sail-v1/README.md"
+      ],
+      "version": 1,
+      "sha256": "beff8788fcc4c46fbd0c4667357f218e93a9e208a1681f7157510a68fb59774a",
+      "dependencies": [
+        "app.icon"
+      ],
+      "license": "project ImageGen artwork; user-approved candidate 04",
+      "generator": "tools/register_app_icon.py",
+      "mapping": "Android adaptive foreground; artwork 288px centered in 432px layer",
+      "visual_random": "none",
+      "dimensions": [
+        432,
+        432
+      ]
+    },
+    "app.icon.android.background": {
+      "path": "res://assets/icons/app-sail-background-v1.png",
+      "source": [
+        "asset-sources/app-icon-sail-v1/source.png",
+        "asset-sources/app-icon-sail-v1/README.md"
+      ],
+      "version": 1,
+      "sha256": "17f9eb3e81e1b2df085b1ec5724e5ceda44c182df2488433c80971108dce6ff9",
+      "dependencies": [
+        "app.icon"
+      ],
+      "license": "project ImageGen artwork; user-approved candidate 04",
+      "generator": "tools/register_app_icon.py",
+      "mapping": "Android adaptive background; source corner navy color",
+      "visual_random": "none",
+      "dimensions": [
+        432,
+        432
+      ]
+    },
+    "app.icon.android.monochrome": {
+      "path": "res://assets/icons/app-sail-monochrome-v1.png",
+      "source": [
+        "asset-sources/app-icon-sail-v1/source.png",
+        "asset-sources/app-icon-sail-v1/README.md"
+      ],
+      "version": 1,
+      "sha256": "6a0802034af392ff0e66b9220c26fefadb7df17c8b8cffd8cc1aa2c043ce77c2",
+      "dependencies": [
+        "app.icon"
+      ],
+      "license": "project ImageGen artwork; user-approved candidate 04",
+      "generator": "tools/register_app_icon.py",
+      "mapping": "Android themed icon; sail/wave alpha mask, same adaptive padding",
+      "visual_random": "none",
+      "dimensions": [
+        432,
+        432
+      ]
     }
   }
 }

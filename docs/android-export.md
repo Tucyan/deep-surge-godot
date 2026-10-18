@@ -1,5 +1,19 @@
 # Android APK 导出
 
+2026-10-18 帆船图标重打包（当前默认文件，覆盖下方同路径旧hash）：采用用户选中的候选04，独立源及生成映射见[图标记录](../asset-sources/app-icon-sail-v1/README.md)。
+
+- Windows Release：`builds/windows/DeepSurge.exe`，255831592字节，SHA256 `fcd3060dddfc79f0146ebab01d3a04c88d5d62c11a73b579d35593c8e6ea303b`。
+- Android Debug：`builds/android/深潮-v0.2-debug.apk`，203639543字节，SHA256 `44e8a47627b63dcc5724a28bbe75c4cf2dce0541baa1fe1eeb9a34f7eea24b53`；名称“深潮”，包名和版本沿用。
+- 两平台最终导出均退出0；从EXE提取图标及从APK提取普通/单色图标检查，均为帆船。APK自适应前景和背景显式配置，主题单色图标另有帆船alpha蒙版。最终两个导出日志无ERROR/WARNING；APK v2/v3签名和ZIP CRC通过，资产校验260个hash绑定通过。未进行真机安装或完整玩法回归。
+- 本地日志 `builds/windows/export-icon-v1.log`、`builds/android/export-icon-v1.log`；大小/hash记录 `builds/icon-v1-build.json`。源图为内置ImageGen生成，后续平台尺寸与ICO转换由 `tools/register_app_icon.py` 完成。
+
+2026-10-18 独立 APK 名称版本：Android 安装后应用名称设为“深潮”，旧 APK 保留。
+
+- 文件：`builds/android/深潮-v0.2-debug.apk`；包名 `com.tucyan.deepsurge`，版本 `0.2` / versionCode `2`，ARM64 与 ARMv7。
+- Godot 4.7.2 导出成功；aapt 输出确认 `application-label:'深潮'`。APK 调试密钥签名，apksigner v2/v3 验证通过，ZIP CRC 通过。
+- 文件大小：201577299 字节。SHA256：`DC76DC1ED7029A1D7FE126BFEA52ECE7BF57A70618163BD2369B7BF804576871`。
+- 导出预设默认输出路径现为此文件，`package/name` 设为“深潮”。未在真机安装验证。
+
 2026-10-18 基于当前工作区重新导出 Windows 与 Android 测试包：
 
 - Windows Release：`builds/windows/DeepSurge.exe`，x86_64，内嵌 PCK，253060784 字节；SHA256 `4E01B69DCD6C3ABE3DD1E0A6DF3ABC94592821153B41C6786AD07D0225315517`。使用 `--headless --quit-after 3` 启动检查通过。
