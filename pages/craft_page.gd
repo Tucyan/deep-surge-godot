@@ -215,7 +215,7 @@ func build() -> void:
 func build_recipe_grid() -> void:
 	var ui_state: Dictionary = context.get("ui_state", {})
 	var is_build_mode: bool = context.get("panel", "") == "build" or ui_state.get("craft_mode", "") == "build"
-	var page_size: int = PAGE_SIZE
+	var page_size: int = 6 if context.get("mobile",false) else PAGE_SIZE
 	var all_ids: Array = catalog.table("recipes").keys()
 	var ids: Array = []
 	if is_build_mode:
@@ -228,10 +228,15 @@ func build_recipe_grid() -> void:
 		ids = all_ids
 	var pages := maxi(1, ceili(float(ids.size()) / page_size))
 	var index := clampi(int(ui_state.get("list_page", 0)), 0, pages - 1)
-	var grid := GridContainer.new(); grid.name = "RecipeGrid"; grid.columns = 4
+	var grid := GridContainer.new(); grid.name = "RecipeGrid"; grid.columns = 3 if context.get("mobile",false) else 4
 	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL; grid.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	grid.add_theme_constant_override("h_separation", 10); grid.add_theme_constant_override("v_separation", 10)
-	add_child(grid)
+	if context.get("mobile",false):
+		var scroll:=ScrollContainer.new(); scroll.name="MobileRecipeScroll"
+		scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
+		scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL
+		add_child(scroll); scroll.add_child(grid)
+	else: add_child(grid)
 	var page_slice: Array = ids.slice(index * page_size, mini(ids.size(), (index + 1) * page_size))
 	for id in page_slice: recipe_tile(grid, id)
 	# Pad with dummy controls to 8 (4 columns x 2 rows) so card dimensions remain identical across all pages
@@ -370,11 +375,20 @@ func build_transmute_panel() -> void:
 	W.text(tip_bar, "消耗基地 AP 与手牌中任意 3 张资源牌，转化为指定的 2 张同类资源。", 18, W.MUTED)
 	
 	# Three-Column Layout Container
-	var columns := HBoxContainer.new(); columns.name = "TransmuteColumns"
+	var columns: BoxContainer = VBoxContainer.new() if context.get("mobile",false) else HBoxContainer.new()
+	columns.name = "TransmuteColumns"
 	columns.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	columns.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	columns.add_theme_constant_override("separation", 14)
-	container.add_child(columns)
+	if context.get("mobile",false):
+		var scroll:=ScrollContainer.new(); scroll.name="MobileTransmutePageScroll"
+		scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
+		scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL
+		container.add_child(scroll); scroll.add_child(columns)
+		W.remember_scroll(scroll,context.ui_state,"transmute_scroll")
+		scroll.get_v_scroll_bar().value_changed.connect(func(value):
+			if not scroll.get_meta("restoring_scroll",false): request("transmute_scroll",str(int(value))))
+	else: container.add_child(columns)
 	
 	# ==========================================
 	# LEFT COLUMN: 现有材料 (Existing Materials)
@@ -448,21 +462,22 @@ func build_transmute_panel() -> void:
 		
 		if owned > 0:
 			m_panel.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND if can_plus else Control.CURSOR_ARROW
-			m_panel.mouse_entered.connect(func(): m_panel.add_theme_stylebox_override("panel", hover_style))
+			m_panel.mouse_entered.connect(func(): m_panel.add_theme_stylebox_override("panel", hover_style) if not context.get("mobile",false) else null)
 			m_panel.mouse_exited.connect(func(): m_panel.add_theme_stylebox_override("panel", normal_style))
 			m_panel.tooltip_text = "点击投入 1 张%s" % def.name if can_plus else plus_reason
 		else:
 			m_panel.tooltip_text = "暂无此材料"
 		
 		# Card children pass pointer events to the full card surface.
+		var add_material=func():
+			var next_uids: Array = selected_uids.duplicate()
+			for uid in my_uids:
+				if uid not in next_uids:
+					next_uids.append(uid); break
+			request("transmute_uids", ",".join(next_uids))
 		m_panel.gui_input.connect(func(event: InputEvent):
-			if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT and can_plus:
-				var next_uids: Array = selected_uids.duplicate()
-				for uid in my_uids:
-					if uid not in next_uids:
-						next_uids.append(uid)
-						break
-				request("transmute_uids", ",".join(next_uids))
+			if not context.get("mobile",false) and event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT and can_plus:
+				add_material.call()
 		)
 
 		mat_list.add_child(m_panel)
@@ -480,6 +495,9 @@ func build_transmute_panel() -> void:
 		quantity.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		quantity.autowrap_mode = TextServer.AUTOWRAP_OFF
 		quantity.mouse_filter = Control.MOUSE_FILTER_PASS
+		if context.get("mobile",false):
+			var add_button:=W.button(card_column,"投入 1 张" if can_plus else (plus_reason if owned>0 else "暂无材料"),add_material,not can_plus)
+			add_button.name="AddMaterial_"+id
 
 	# ==========================================
 	# CENTER COLUMN: 三元融合图示 + 开始转化
@@ -493,12 +511,7 @@ func build_transmute_panel() -> void:
 	columns.add_child(center_panel)
 	
 	var center_vbox := VBoxContainer.new()
-	if context.get("mobile",false):
-		var center_scroll:=ScrollContainer.new(); center_scroll.name="MobileTransmuteScroll"
-		center_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
-		center_panel.add_child(center_scroll); center_scroll.add_child(center_vbox)
-		center_vbox.size_flags_horizontal=Control.SIZE_EXPAND_FILL
-	else: center_panel.add_child(center_vbox)
+	center_panel.add_child(center_vbox)
 	center_vbox.add_theme_constant_override("separation", 8)
 	
 	var core_hdr := HBoxContainer.new(); center_vbox.add_child(core_hdr)
@@ -547,12 +560,20 @@ func build_transmute_panel() -> void:
 		slot.add_child(icon)
 		slot.mouse_filter = Control.MOUSE_FILTER_STOP
 		slot.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		slot.gui_input.connect(func(event: InputEvent):
-			if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-				var next_uids: Array = selected_uids.duplicate()
-				next_uids.erase(uid)
-				request("transmute_uids", ",".join(next_uids) if not next_uids.is_empty() else "none")
-		)
+		var remove_material=func():
+			var next_uids: Array = selected_uids.duplicate()
+			next_uids.erase(uid)
+			request("transmute_uids", ",".join(next_uids) if not next_uids.is_empty() else "none")
+		if context.get("mobile",false):
+			var remove:=W.button(slot,"",remove_material)
+			remove.name="RemoveTransmuteSlot_"+str(i)
+			remove.accessibility_name="撤回已投入的"+catalog.entry("cards",card.id).name
+			remove.get_node("SurgeTextButtonArt").hide()
+			for state in ["normal","hover","pressed","disabled","focus"]:
+				remove.add_theme_stylebox_override(state,StyleBoxEmpty.new())
+		else:
+			slot.gui_input.connect(func(event: InputEvent):
+				if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT: remove_material.call())
 
 	# Output contains only an icon with the yield below it.
 	var out_col := VBoxContainer.new()
@@ -610,6 +631,10 @@ func build_transmute_panel() -> void:
 	right_vbox.custom_minimum_size = Vector2(320, 0)
 	right_vbox.add_theme_constant_override("separation", 10)
 	columns.add_child(right_vbox)
+	if context.get("mobile",false):
+		columns.move_child(right_vbox,1)
+		left_panel.custom_minimum_size.x=0; center_panel.custom_minimum_size.x=0; right_vbox.custom_minimum_size.x=0
+		left_title.text="1. 投入原料"; core_title.text="3. 确认转化"
 	
 	# Bottom Section: 选择转化的目标材料
 	var target_panel := PanelContainer.new(); target_panel.name = "TransmuteTargetSection"
@@ -620,6 +645,7 @@ func build_transmute_panel() -> void:
 	target_vbox.add_theme_constant_override("separation", 6)
 	
 	var target_title := W.text(target_vbox, "选择转化的目标材料", 18, W.GOLD)
+	if context.get("mobile",false): target_title.text="2. 选择目标材料"
 	target_title.autowrap_mode = TextServer.AUTOWRAP_OFF
 	
 	var targets_list := VBoxContainer.new(); targets_list.name = "TransmuteTargets"
@@ -644,10 +670,10 @@ func build_transmute_panel() -> void:
 		item_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 		if not is_selected:
 			item_panel.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-			item_panel.mouse_entered.connect(func(): item_panel.add_theme_stylebox_override("panel", t_hover_style))
+			item_panel.mouse_entered.connect(func(): item_panel.add_theme_stylebox_override("panel", t_hover_style) if not context.get("mobile",false) else null)
 			item_panel.mouse_exited.connect(func(): item_panel.add_theme_stylebox_override("panel", t_normal_style))
 			item_panel.gui_input.connect(func(event: InputEvent):
-				if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+				if not context.get("mobile",false) and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 					request("transmute_target", id)
 					request("transmute_uids", "")
 			)

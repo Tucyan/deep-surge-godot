@@ -25,6 +25,9 @@ static func uses_touch_ui(node: Node) -> bool:
 		current = current.get_parent()
 	return OS.has_feature("mobile")
 
+static func pointer_hovered(button: BaseButton) -> bool:
+	return not uses_touch_ui(button) and button.is_hovered()
+
 static func apply(button: Button) -> void:
 	var art = load("res://presentation/text_button_art.gd").new()
 	art.name = "SurgeTextButtonArt"
@@ -35,6 +38,9 @@ static func apply(button: Button) -> void:
 	# Intrinsic padding survives callers' old 34/40/44px minimum overrides.
 	# Dedicated icon/card skins remove this style and keep their own metrics.
 	var touch := uses_touch_ui(button)
+	if touch:
+		button.add_theme_font_size_override("font_size",20)
+		button.custom_minimum_size=button.custom_minimum_size.max(Vector2(56,60))
 	art.content_style.content_margin_top = 18 if touch else 7
 	art.content_style.content_margin_bottom = 18 if touch else 7
 	for state in ["normal", "hover", "pressed", "hover_pressed", "disabled"]:
@@ -99,7 +105,7 @@ func _draw() -> void:
 		state = "disabled"
 	elif button.is_pressed():
 		state = "pressed"
-	elif button.is_hovered() or button.get_meta("surge_primary", false):
+	elif pointer_hovered(button) or button.get_meta("surge_primary", false):
 		state = "hover"
 	if not frames.has(state):
 		var frame := StyleBoxTexture.new()

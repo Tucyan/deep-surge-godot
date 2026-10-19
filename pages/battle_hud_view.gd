@@ -42,6 +42,11 @@ func setup(parent_hud: Control, view: Dictionary, cat: RefCounted, art: RefCount
 	build_ui()
 
 var panel_layout: Control
+var tutorial_banner: Control
+
+func tutorial_bottom() -> float:
+	if not is_instance_valid(tutorial_banner) or not tutorial_banner.is_visible_in_tree(): return 0.0
+	return (get_global_transform().affine_inverse()*tutorial_banner.get_global_rect().end).y+8.0
 
 func build_ui() -> void:
 	# Art is fitted as one composition; each texture keeps its original aspect.
@@ -127,6 +132,7 @@ func layout_panels() -> void:
 			top = maxf(top,(to_view * environment.get_global_rect().end).y + 8.0)
 	if action_points != null:
 		bottom = (to_view * action_points.get_global_rect().position).y - 8.0
+	top=maxf(top,tutorial_bottom())
 	var available := Vector2(maxf(1.0,size.x-64.0), maxf(1.0,bottom-top))
 	# Scale compact layouts' content together with the original panel artwork.
 	var content_scale := minf(1.0, available.y/414.0)
@@ -142,7 +148,7 @@ func layout_panels() -> void:
 
 func layout_mobile_panels() -> void:
 	# Use the space between the status strip and hand instead of scaling text.
-	var top := 112.0
+	var top := maxf(112.0,tutorial_bottom())
 	var height := maxf(1.0,size.y-282.0-24.0-top)
 	var width := maxf(1.0,size.x-28.0-28.0)
 	var gap := 16.0

@@ -135,6 +135,7 @@ func _draw_analysis() -> void:
 	for line in _detail_lines(): W.text(entries,line,16)
 	var controls := HBoxContainer.new(); _content.add_child(controls)
 	W.button(controls,"回看航海日志",show_logs)
+	W.primary(W.button(controls,"结束",func(): end_hold(); request("settlement_exit")))
 
 func _detail_lines() -> Array[String]:
 	var result: Array[String] = []

@@ -41,8 +41,8 @@
     "ui.settlement": {
       "path": "res://pages/settlement_page.gd",
       "source": "project-authored/native-Godot-settlement-v1",
-      "version": 7,
-      "sha256": "c46c179989adaccd44906a32a4df3880b45db388fa27c2dcf5700227e5b6bd5b",
+      "version": 8,
+      "sha256": "b80c2ac0d1d3e82ba6e280eb400887ec89b926e62e2e1e94adff66f05f54f17b",
       "dependencies": [
         "res://pages/flow_base.gd",
         "res://presentation/widgets.gd"
@@ -53,10 +53,11 @@
         "normal_scroll_pixels_per_second": 24,
         "hold_seconds": 0.35,
         "hold_multiplier": 6,
-        "initial_end_delay_seconds": 2
+        "initial_end_delay_seconds": 2,
+        "analysis_footer": "review voyage logs, then finish to home via settlement_exit"
       },
       "license": "project-authored procedural UI; no external artwork",
-      "source_hash_verified_on": "2026-10-18"
+      "source_hash_verified_on": "2026-10-19"
     },
     "card.wood": {
       "path": "res://assets/images/supplied-20261012/asset-09.png",
@@ -688,7 +689,8 @@
         "data.ocean.surface",
         "data.ocean.model-config",
         "shader.ocean.model",
-        "texture.ocean.foam"
+        "texture.ocean.foam",
+        "font.ui.cjk"
       ],
       "source": [
         "presentation/voyage_world.gd",
@@ -698,7 +700,7 @@
         "presentation/supplied_ocean.gd",
         "presentation/texture_ocean.gd"
       ],
-      "version": 16,
+      "version": 17,
       "role": "Blender-authored modular raft; four playable cells at 3,4,5,6; two reserved decorative root cells at 1,2; toon ocean default, original GLB ocean fallback",
       "framing": {
         "method": "fit projected visible raft mesh bounds in UI-provided safe rect; smooth pose interpolation",
@@ -707,7 +709,7 @@
         "exclude": "preview ghosts; wave animation does not retrigger camera fitting"
       },
       "source_hashes": {
-        "presentation/voyage_world.gd": "419c5036682f8bd4cf3ff3b67760e590a502fb31af7d1e2d9806dfdce8ae0a65",
+        "presentation/voyage_world.gd": "5bf156d4efe803304408b520f55a3232a883cd92a2fe719bed04be0f55eabf07",
         "presentation/raft_state_models.gd": "f3a2a6c4caa61b9cc4cf8341e3311c73276fc2d4565ee0b94ef07f4f13d7eb81",
         "presentation/toon_ocean.gd": "93aeb15c843b7e07fb02f70dd032b5c728bef6dccda296a42a85f7bec3911cdc",
         "presentation/model_ocean.gd": "173e741d87735558f46fb2e3fbcb72261c07f577c71545ae2a2c65db84e92ba7",
@@ -1037,14 +1039,14 @@
     },
     "ui.item-card": {
       "path": "res://presentation/item_card.gd",
-      "version": 7,
+      "version": 8,
       "source": "presentation/item_card.gd",
       "dependencies": [
         "ui.card.front",
         "card.*"
       ],
-      "sha256": "b18daad29641e18eeb7964296ddfdb76d7d7b6c98335383589ed490091652d4e",
-      "source_hash_verified_on": "2026-10-17",
+      "sha256": "e471d1fd41f39745e268d4a8bbc03415e052fdd3188402d8065ad8aa1a28e4c3",
+      "source_hash_verified_on": "2026-10-19",
       "role": "clean card face: bottom contact shadow; outlined light quantity text without backing; raised name; native Button retains action/input",
       "visible_face_horizontal_bounds_px": [
         80,
@@ -1237,19 +1239,19 @@
       "path": "res://presentation/hand_border.gd",
       "source": "presentation/hand_border.gd",
       "version": 2,
-      "sha256": "11127ba12e86752fa6af910b8e37a05386eebfc4f5521ae5b3dbf01f365b8fb2",
+      "sha256": "84a462e6b681fa45a1893a68f51a7932c805da091ac27798e09684bcec996932",
       "dependencies": [
         "ui.hud.nautical-frame"
       ],
       "license": "project-authored shader and deterministic procedural ornament; no external artwork",
-      "source_hash_verified_on": "2026-10-17",
+      "source_hash_verified_on": "2026-10-19",
       "role": "70-percent-opacity parchment fill below all hand cards; trim and cards retain full opacity"
     },
     "ui.hand.fan": {
       "path": "res://presentation/hand_fan.gd",
       "source": "presentation/hand_fan.gd",
-      "version": 27,
-      "sha256": "b5641edb24e08b341f21eb9d8a68762c2e7ad8b1d858964a33145a884d573342",
+      "version": 28,
+      "sha256": "bc747066798b14fbfa7bf3ce1c020c49730e24a26d0aff04ccf5cf3cb9b88961",
       "dependencies": [
         "ui.hand.border",
         "ui.item-card",
@@ -1257,10 +1259,11 @@
         "ui.hand.stack-backplate"
       ],
       "license": "project-authored shader and deterministic procedural ornament; no external artwork",
-      "source_hash_verified_on": "2026-10-18",
+      "source_hash_verified_on": "2026-10-19",
       "runtime_mapping": "card height 97 percent of body excluding fixed-height header; hover and selected raise preserve sibling draw order; hover clearance uses visible frame width excluding transparent margins and shadow, threshold 5 percent; no battle-selection requirement or experimental rear layers; mobile hold 0.05s and release above hand to use, tap inspect/select, validated battle confirmation; mobile battle selection raises 12px without hover lift so capacity stays visible",
       "gesture_motion_origin": "immutable pointer-down position; stationary release survives card animation, actual pointer movement and cancellation guards retained",
-      "reorder_release": "reuse cards, tiles, buttons and stack backplates in place; preserve UID, painter order, focus and animation position; exclude fixed battle actions from persisted order; successful preference save does not rebuild HUD"
+      "reorder_release": "reuse cards, tiles, buttons and stack backplates in place; preserve UID, painter order, focus and animation position; exclude fixed battle actions from persisted order; successful preference save does not rebuild HUD",
+      "mobile_discard": "slide only the representative front instance; keep stack rear layers and all other cards stationary and opaque; no reorder preview or reorder on cancel; valid release discards one UID"
     },
     "model.raft-state": {
       "path": "res://presentation/raft_state_models.gd",
@@ -1457,8 +1460,8 @@
     },
     "ui.hud.status": {
       "path": "res://presentation/hud/status_hud.gd",
-      "version": 8,
-      "sha256": "14a0c7ea0c9c92dfae753467aa9ef397eb832fcc1c9701ed0fabf7a166ff706e",
+      "version": 9,
+      "sha256": "0ab79e4fba8bd1490c1692cd33619cace6fc8af8874307ef98f992d132280038",
       "source": [
         "asset-sources/nautical-hud-v1/icons-original.zip",
         "presentation/hud/status_hud.gd"
@@ -1473,7 +1476,7 @@
       "visual_random": "none",
       "role": "presentation-only; draws current read-only session view; native choices dispatch existing commands",
       "runtime_mapping": "single row health/satiety/water/sanity; fixed 72-unit tracks; hide all tracks when space is insufficient and retain icon/current/max",
-      "source_hash_verified_on": "2026-10-17"
+      "source_hash_verified_on": "2026-10-19"
     },
     "ui.hud.action-points": {
       "path": "res://presentation/hud/action_points_hud.gd",
@@ -1513,8 +1516,8 @@
     },
     "ui.hud.voyage-adapter": {
       "path": "res://pages/voyage_hud.gd",
-      "version": 29,
-      "sha256": "8525286c40ac31176e30a182d0f2eb885a5ef29c1852e952b13db27b14b40f08",
+      "version": 30,
+      "sha256": "ec91fa32e3578bce45c2395ba1cb5c407f11701996b8cac689599bf9e869ca1d",
       "source": [
         "asset-sources/hud-visual-v2/deep_surge_hud_godot4_v2_visual_match.zip",
         "pages/voyage_hud.gd"
@@ -1538,8 +1541,8 @@
     },
     "ui.hud.story-adapter": {
       "path": "res://pages/flow_story.gd",
-      "version": 6,
-      "sha256": "e75b7856c6830978e60139b376ed0be921ffef5ebfb92cbb8aa342c8c5aea2fa",
+      "version": 7,
+      "sha256": "8eb9724bed7fd92fbe0d4db740c8d774e33d1e8e1151bdb4eddd70181db38aaa",
       "source": [
         "asset-sources/hud-visual-v2/deep_surge_hud_godot4_v2_visual_match.zip",
         "pages/flow_story.gd"
@@ -1551,7 +1554,7 @@
       "license": "user-supplied HUD package; no explicit upstream license supplied, project adaptations",
       "visual_random": "none",
       "role": "presentation-only; draws current read-only session view; native choices dispatch existing commands",
-      "source_hash_verified_on": "2026-10-18",
+      "source_hash_verified_on": "2026-10-19",
       "runtime_mapping": "NodeEventBody: mobile fixed 44px options header/cancel and target selectors; three columns and scrollable prose/choices; preselect/cancel are read-only"
     },
     "texture.hud.status-art": {
@@ -1887,7 +1890,7 @@
       "path": "res://presentation/title_menu.gd",
       "source": "presentation/title_menu.gd",
       "version": 11,
-      "sha256": "e440b378c7f4f23a5014bafbe461aa3b9efa3f7106efedd69b496e52522ce576",
+      "sha256": "13779a09ecd0665c5a348cd3cd1b4e9593ef4542cf80e8e6565585cafc7a9228",
       "dependencies": [
         "texture.title.01-start-game-dark",
         "texture.title.01-start-game-light",
@@ -2066,30 +2069,33 @@
     },
     "ui.story.layout": {
       "path": "res://pages/story_page.gd",
-      "version": 4,
+      "version": 6,
       "source": "plain native Godot controls and system font; no image dependencies",
       "reference_size": [
         1600,
         900
       ],
-      "dependencies": [],
+      "dependencies": [
+        "font.ui.cjk"
+      ],
       "visual_seed": null,
-      "sha256": "98f6841f5f5d4c9076ad438d2e2166dd0b52ecedc50e6c2e0242af1306334d50",
-      "source_hash_verified_on": "2026-10-18"
+      "sha256": "32dcef9bcd44239c8a2b3b6e76be60b5a8a741533471ac796bdea2a3ed25d16b",
+      "source_hash_verified_on": "2026-10-19",
+      "mobile_layout": "independent canvas text/toolbar/choices/log; scrolling instead of font shrink; desktop composition retained"
     },
     "ui.node-event.embedded": {
       "path": "res://pages/flow_story.gd",
       "source": "pages/flow_story.gd",
-      "sha256": "e75b7856c6830978e60139b376ed0be921ffef5ebfb92cbb8aa342c8c5aea2fa",
-      "version": 8,
+      "sha256": "8eb9724bed7fd92fbe0d4db740c8d774e33d1e8e1151bdb4eddd70181db38aaa",
+      "version": 10,
       "dependencies": [
         "res://core/difficulty_rules.gd",
         "res://pages/story_gallery.gd",
         "res://presentation/hud_frame.gd"
       ],
-      "presentation": "full-screen translucent backdrop below HUD; three columns (illustration | prose | options) in one inset; options column shows only native buttons under a fixed header row (请做出选择 left, 取消选择 right while preselecting); two-step select then confirm",
-      "source_hash_verified_on": "2026-10-18",
-      "runtime_mapping": "NodeEventBody: mobile fixed 44px options header/cancel and target selectors; three columns and scrollable prose/choices; preselect/cancel are read-only"
+      "presentation": "full-screen translucent backdrop below HUD; three columns (illustration | prose | options) in one inset; options column shows only native buttons under a fixed header row (请做出选择 left, plain red text 取消选择 without background, border or artwork right while preselecting); two-step select then confirm",
+      "source_hash_verified_on": "2026-10-19",
+      "runtime_mapping": "NodeEventBody: mobile 56px options header and plain red cancel action; target selectors at least 44px; three columns and scrollable prose/choices; preselect/cancel are read-only"
     },
     "texture.voyage.topbar-v1": {
       "path": "res://assets/textures/voyage-topbar-v1.png",
@@ -2122,8 +2128,8 @@
     "ui.hand.capacity-badge": {
       "path": "res://pages/voyage_hud.gd",
       "source": "pages/voyage_hud.gd",
-      "version": 29,
-      "sha256": "8525286c40ac31176e30a182d0f2eb885a5ef29c1852e952b13db27b14b40f08",
+      "version": 30,
+      "sha256": "ec91fa32e3578bce45c2395ba1cb5c407f11701996b8cac689599bf9e869ca1d",
       "dependencies": [
         "ui.voyage-hud",
         "ui.controls.utility-icons"
@@ -2135,8 +2141,8 @@
     "ui.craft.circle-entry": {
       "path": "res://pages/voyage_hud.gd",
       "source": "pages/voyage_hud.gd",
-      "version": 29,
-      "sha256": "8525286c40ac31176e30a182d0f2eb885a5ef29c1852e952b13db27b14b40f08",
+      "version": 30,
+      "sha256": "ec91fa32e3578bce45c2395ba1cb5c407f11701996b8cac689599bf9e869ca1d",
       "dependencies": [
         "ui.voyage-hud",
         "ui.hud.nautical-button-art",
@@ -2167,14 +2173,15 @@
     "ui.craft.grid": {
       "path": "res://pages/craft_page.gd",
       "source": "pages/craft_page.gd",
-      "version": 8,
-      "sha256": "9c90623166c08e74b5f99cdc89d59d2980297f3925e4d6a087feeed8158e21e9",
+      "version": 9,
+      "sha256": "4444df3de289af569ce28de504ba7797a09731da3ce5db2ca41ee368eb968f6a",
       "dependencies": [
         "ui.controls.text-buttons"
       ],
       "role": "full-screen four-column two-row crafting, eight recipes per page at every UI scale, X close",
       "license": "project-authored procedural UI; user screenshot is layout reference",
-      "source_hash_verified_on": "2026-10-18"
+      "source_hash_verified_on": "2026-10-19",
+      "runtime_mapping": "desktop 4x2/8 recipes; mobile 3 columns/6 recipes with scrolling; vertical transmutation sections and release-based explicit material selection"
     },
     "ui.hand.layout": {
       "path": "res://presentation/hand_layout.gd",
@@ -2190,34 +2197,35 @@
     "ui.hand.stack-quantity": {
       "path": "res://presentation/item_card.gd",
       "source": "presentation/item_card.gd",
-      "version": 7,
-      "sha256": "b18daad29641e18eeb7964296ddfdb76d7d7b6c98335383589ed490091652d4e",
+      "version": 8,
+      "sha256": "e471d1fd41f39745e268d4a8bbc03415e052fdd3188402d8065ad8aa1a28e4c3",
       "dependencies": [
         "ui.item-card"
       ],
       "role": "right-side StackQuantity Label; weight-800 light glyphs, font size 23, dark outline size 6; no backing",
       "license": "project-authored procedural UI; no external artwork",
-      "source_hash_verified_on": "2026-10-17"
+      "source_hash_verified_on": "2026-10-19"
     },
     "ui.controls.close": {
       "path": "res://presentation/widgets.gd",
       "source": "presentation/widgets.gd",
-      "version": 3,
-      "sha256": "61f9a1309439f51342d1a36822b0fd7f1be6b4bfa4b5331ca8ccd43395c9f4f2",
+      "version": 5,
+      "sha256": "bb570fc9d25b386513b4604259e28af7f98817efeef67c00fd0c9815d6fa0a27",
       "dependencies": [
         "ui.controls.text-buttons",
-        "ui.controls.utility-icons"
+        "ui.controls.utility-icons",
+        "font.ui.cjk"
       ],
       "role": "shared top-right X overlay with centered geometric cross and rounded-square bezel; 44px touch target; native text retained for accessibility",
       "license": "project-authored procedural UI; reuses existing artwork and theme",
       "visual_random": "none",
-      "source_hash_verified_on": "2026-10-17"
+      "source_hash_verified_on": "2026-10-19"
     },
     "ui.settings-panel": {
       "path": "res://presentation/settings_panel.gd",
       "source": "presentation/settings_panel.gd",
-      "version": 14,
-      "sha256": "f4b28b4fcd3a55772043a1f654d2badcdff44e16ae75e46f406633e3f593cecb",
+      "version": 15,
+      "sha256": "6538dab8c6d7cd347138ac6365938ff5e0219e239b11b2890a621bbde4867a65",
       "dependencies": [
         "ui.controls.close",
         "ui.display-preferences",
@@ -2228,7 +2236,7 @@
       "license": "project-authored procedural UI; reuses existing artwork and theme",
       "visual_random": "none",
       "source_hash_verified_on": "2026-10-19",
-      "runtime_mapping": "game preferences HandHoverMode: spread occluders or raise front layer; save local hand preferences; compact short-screen settings",
+      "runtime_mapping": "desktop modal; mobile full-page settings with back, 22/18/20 typography, 60-high controls, per-tab scroll restoration and game-only voyage management",
       "tab_build_policy": "Only selected display/game/narrative tab is initially built; each additional tab built once per modal; native controls and callbacks reused while switching"
     },
     "ui.display-preferences": {
@@ -2246,7 +2254,7 @@
       "path": "res://flow_app.gd",
       "source": "flow_app.gd",
       "version": 26,
-      "sha256": "4e1aa6eac31b9a94677c141b52816d7dd5c773e01383dfed46d321b39baedfc6",
+      "sha256": "1e5ff0e5124093ada350eeafec242eb53fa35a9aabdedca034eb2a1c9965da3f",
       "dependencies": [
         "ui.controls.close",
         "ui.settings-panel",
@@ -3141,8 +3149,8 @@
     "ui.battle.salvage": {
       "path": "res://pages/voyage_hud.gd",
       "source": "project-authored/native-Godot-battle-salvage-v14",
-      "version": 29,
-      "sha256": "8525286c40ac31176e30a182d0f2eb885a5ef29c1852e952b13db27b14b40f08",
+      "version": 30,
+      "sha256": "ec91fa32e3578bce45c2395ba1cb5c407f11701996b8cac689599bf9e869ca1d",
       "dependencies": [
         "res://core/run_rules.gd",
         "res://core/action_query.gd",
@@ -3595,8 +3603,8 @@
     "ui.battle.panels": {
       "path": "res://pages/battle_hud_view.gd",
       "source": "project-authored supplied-panel adapter",
-      "version": 7,
-      "sha256": "53cf1a65423bcb5a05e5e62ddd4fd3765d21203831cec4db9cafaa610515d3c9",
+      "version": 8,
+      "sha256": "2fade1e74b95f35a83cef9531d3a67ef243cf5796cec8b6c89eeaad6385db90b",
       "dependencies": [
         "texture.battle.panel.monster",
         "texture.battle.panel.intent",
@@ -3604,7 +3612,7 @@
         "texture.battle.panel.log"
       ],
       "runtime_mapping": "desktop: proportional four-panel composition fitted to actual status bottom +16 (occupied environment/rest status row bottom +8) and action-point top -8 in view coordinates, horizontally centered with 32px side clearance; mobile: unscaled 18px text, safe region above hand, NinePatch intent/preview/log at 0.65 ornament scale with 128/80/128/48 source margins, fixed preview header and scrollable details, 44px touch targets; combat hides reset/view-toggle utilities; mobile battle panel left inset 28px reclaims their 100px gutter; tutorial combat guidance overlays only upper-left voyage heading, mouse/touch ignored, full-height battle panels retained; mobile lesson and preview instructions describe 0.05s drag-out and end-turn steps",
-      "source_hash_verified_on": "2026-10-18"
+      "source_hash_verified_on": "2026-10-19"
     },
     "ui.camera.reset-icon": {
       "path": "res://assets/icons/camera-reset.svg",
@@ -3851,7 +3859,7 @@
       "path": "res://presentation/nautical_button_art.gd",
       "source": "project-authored from user-supplied references in asset-sources/nautical-hud-v1",
       "version": 1,
-      "sha256": "316f98487f7bdb5cf3b616879de154826661448edb11213443d5b94252a21d0b",
+      "sha256": "bd7abcc7b68dab56d883164bdef78d7673e5fa78a264352f8796abec72bb6fa2",
       "role": "independent long salvage and circular craft art; native Button text and input",
       "dependencies": [
         "ui.hud.nautical-frame"
@@ -3864,7 +3872,7 @@
       "path": "res://presentation/nautical_menu_icon.gd",
       "source": "project-authored from user-supplied references in asset-sources/nautical-hud-v1",
       "version": 1,
-      "sha256": "b4ad7890ca69df3b53ad5aba1d30aa7c20ef5e0757ea7a8509baf276be86fa41",
+      "sha256": "6d9a34795daf8fadea27e8d72a6da32f5665157646946634fd1394ffa48becfd",
       "role": "procedural help, settings and home icons; accessible native button labels",
       "dependencies": [],
       "license": "project-authored procedural rendering based on user-supplied style reference",
@@ -3905,7 +3913,7 @@
     },
     "ui.controls.text-buttons": {
       "path": "res://presentation/text_button_art.gd",
-      "version": 2,
+      "version": 3,
       "source": [
         "presentation/text_button_art.gd",
         "asset-sources/text-buttons-v1/deep_surge_resizable_buttons_godot4.zip"
@@ -3920,8 +3928,8 @@
         "texture.ui.tarot.compass"
       ],
       "runtime_mapping": "Widgets.button plus settings tabs/actions, debug buttons and native confirmation dialogs; nine-slice art behind native input/text; compact symbol variant; explicit caller skins take precedence; mobile_ui inherited platform flag selects 18px vertical padding (desktop7), intrinsic native button height about56-62; dedicated caller skins still take precedence",
-      "sha256": "27b54f13ed326b6d49db13b791ce09d2d9b142ce19d9535d994e00868b694170",
-      "source_hash_verified_on": "2026-10-18"
+      "sha256": "62cf93083151bb08b4ef9db62c3e15d743bbdc6c695eb69c402bc677efca1d12",
+      "source_hash_verified_on": "2026-10-19"
     },
     "ui.controls.utility-icons": {
       "path": "res://presentation/utility_button_art.gd",
@@ -3931,7 +3939,7 @@
       "license": "project-authored geometry; no external icon font or texture",
       "visual_random": "none",
       "runtime_mapping": "CloseX: centered rounded-stroke X in 44px rounded square; ResetRaftView: 56px circle with curved arrow; SettingsResetRaftView: matching arrow and native label",
-      "sha256": "6370f0ac9b2844d773c6970a430b0328660d2c34c05ae9a4d7d7c9219b04cff0",
+      "sha256": "1d1b23acfb9818496495e890eff316d1bc320c8a609e31c860c9445ff6294f76",
       "source_hash_verified_on": "2026-10-17"
     },
     "opening.image.01": {
@@ -4105,15 +4113,16 @@
     "ui.opening-intro": {
       "path": "res://presentation/opening_intro.gd",
       "source": "project-authored/opening-intro-v1",
-      "version": 2,
-      "sha256": "807d5e62e3c6464b47cd9ff2266330b85b2c354bf3dcb7426b65ea3f157e6bb5",
+      "version": 3,
+      "sha256": "72aa1472d3d0d510d25755616bc5d11534116fd8df909a41a07fb172fc15090f",
       "dependencies": [
         "opening.scenes",
-        "audio.blip-voice"
+        "audio.blip-voice",
+        "font.ui.cjk"
       ],
       "role": "Black background, upper illustration, white typewriter narration and synchronized blips",
       "license": "project-authored UI; user-supplied media and synthesizer",
-      "source_hash_verified_on": "2026-10-17",
+      "source_hash_verified_on": "2026-10-19",
       "runtime_mapping": {
         "preferences": "user://opening-intro.cfg",
         "entry": "game_bootstrap.gd before flow_app.gd",
@@ -4165,8 +4174,8 @@
     "ui.encyclopedia": {
       "path": "res://pages/paged_reference.gd",
       "source": "project-authored/native-Godot-encyclopedia",
-      "version": 2,
-      "sha256": "72cf55cb32303e239e27401544387b9e7a17830c9d01b9a72d4a757f87e4b1a3",
+      "version": 3,
+      "sha256": "f90ba1f86041c8562ec158ed573ce3c39faf6e757d9a9a404cf5325da2d26ea8",
       "dependencies": [
         "res://presentation/widgets.gd",
         "ui.modal-layout",
@@ -4181,13 +4190,13 @@
         "tabs": "UI-only encyclopedia_tab; no session mutation"
       },
       "license": "project-authored native UI; reuses existing artwork",
-      "source_hash_verified_on": "2026-10-18"
+      "source_hash_verified_on": "2026-10-19"
     },
     "ui.meta-shop": {
       "path": "res://pages/paged_reference.gd",
       "source": "project-authored/meta-shop-tech-tiers-v22",
-      "version": 1,
-      "sha256": "72cf55cb32303e239e27401544387b9e7a17830c9d01b9a72d4a757f87e4b1a3",
+      "version": 2,
+      "sha256": "f90ba1f86041c8562ec158ed573ce3c39faf6e757d9a9a404cf5325da2d26ea8",
       "dependencies": [
         "res://presentation/widgets.gd",
         "ui.modal-layout",
@@ -4207,7 +4216,7 @@
       ],
       "role": "Full-screen six-product gallery and two-tier technology nodes",
       "license": "project-authored; previews reuse existing registered artwork",
-      "source_hash_verified_on": "2026-10-18",
+      "source_hash_verified_on": "2026-10-19",
       "runtime_mapping": {
         "entry": "flow_app.gd meta_shop full-screen panel",
         "categories": [
@@ -4291,7 +4300,7 @@
       "entry": "flow_app._warm_craft_art -> warm_textures",
       "source_hashes": {
         "presentation/asset_catalog.gd": "7a335e2935cadf04b6cf707b3dbddf745f449b9663120e562a1a6d2171967671",
-        "flow_app.gd": "de26e283a8c158c816beb0d599b72a4614fa17477f52d1d9d25e633a54f848c6"
+        "flow_app.gd": "1e5ff0e5124093ada350eeafec242eb53fa35a9aabdedca034eb2a1c9965da3f"
       },
       "role": "Bounded first-recipe-page local texture warmup; worker decode, readiness checks, at most one finalized path per frame; normal demand fallback and shared texture ownership",
       "license": "project-authored resource cache adapter; reuses existing local card images",
@@ -4302,18 +4311,18 @@
       "path": "res://pages/base_page.gd",
       "source": "project-authored mobile layout integration",
       "version": 6,
-      "sha256": "fbff9611dda5e7fef5c0d04f9ab1b37e4a4ffd805a2f42cfa0637ac0ead67fc8",
+      "sha256": "b2f3814c4d1293354649dec667687d14eafa7159a5e8a36ec1ba9756879ace57",
       "source_hashes": {
-        "pages/base_page.gd": "fbff9611dda5e7fef5c0d04f9ab1b37e4a4ffd805a2f42cfa0637ac0ead67fc8",
-        "pages/voyage_hud.gd": "9d431e8a58a615839b4fa48ba56be7bd07e5e0675811288a358c2e8b434644dc",
-        "pages/battle_hud_view.gd": "9680935a10efd0595e099f992c254dc557d6aa9341fcfeda5eef1e1e22299297",
-        "pages/craft_page.gd": "9c90623166c08e74b5f99cdc89d59d2980297f3925e4d6a087feeed8158e21e9",
-        "pages/flow_home.gd": "b81705b73106724b8a0945cbbeff43b880691ca7a86ea4a0e837b0655d01e8c2",
-        "pages/flow_story.gd": "e75b7856c6830978e60139b376ed0be921ffef5ebfb92cbb8aa342c8c5aea2fa",
-        "pages/shop_page.gd": "3805085680d481047d36e32312223b7524537939139596df4fe3996448cfbacd",
-        "presentation/settings_panel.gd": "f4b28b4fcd3a55772043a1f654d2badcdff44e16ae75e46f406633e3f593cecb",
+        "pages/base_page.gd": "b2f3814c4d1293354649dec667687d14eafa7159a5e8a36ec1ba9756879ace57",
+        "pages/voyage_hud.gd": "ec91fa32e3578bce45c2395ba1cb5c407f11701996b8cac689599bf9e869ca1d",
+        "pages/battle_hud_view.gd": "2fade1e74b95f35a83cef9531d3a67ef243cf5796cec8b6c89eeaad6385db90b",
+        "pages/craft_page.gd": "4444df3de289af569ce28de504ba7797a09731da3ce5db2ca41ee368eb968f6a",
+        "pages/flow_home.gd": "0c8d88ded2fd2ae6b953048f497799371cfc5aed3209f1dc1ee47de8e5d1753f",
+        "pages/flow_story.gd": "8eb9724bed7fd92fbe0d4db740c8d774e33d1e8e1151bdb4eddd70181db38aaa",
+        "pages/shop_page.gd": "fe3dd25e150dbb8b88398f076c437511b0ee1c2ac5e8f9ea363eecf8047df69c",
+        "presentation/settings_panel.gd": "6538dab8c6d7cd347138ac6365938ff5e0219e239b11b2890a621bbde4867a65",
         "presentation/raft_interaction.gd": "c1b679fa4b83b17324cb97dd153a9fcffc46e3b602e075afd90a6ec518ae3ac6",
-        "flow_app.gd": "de26e283a8c158c816beb0d599b72a4614fa17477f52d1d9d25e633a54f848c6"
+        "flow_app.gd": "1e5ff0e5124093ada350eeafec242eb53fa35a9aabdedca034eb2a1c9965da3f"
       },
       "dependencies": [
         "ui.controls.text-buttons"
@@ -4431,11 +4440,11 @@
     "ui.origins.status": {
       "path": "res://pages/voyage_hud.gd",
       "source": "pages/voyage_hud.gd + core/origin_rules.gd",
-      "version": 2,
-      "sha256": "8525286c40ac31176e30a182d0f2eb885a5ef29c1852e952b13db27b14b40f08",
+      "version": 3,
+      "sha256": "ec91fa32e3578bce45c2395ba1cb5c407f11701996b8cac689599bf9e869ca1d",
       "source_hashes": {
-        "pages/voyage_hud.gd": "9d431e8a58a615839b4fa48ba56be7bd07e5e0675811288a358c2e8b434644dc",
-        "core/origin_rules.gd": "d9cf4370a4a19c70737d4a34c69b7d7a9eb902f59bad4acdd6a99e7f7ff427f2"
+        "pages/voyage_hud.gd": "ec91fa32e3578bce45c2395ba1cb5c407f11701996b8cac689599bf9e869ca1d",
+        "core/origin_rules.gd": "490a7d4be1cd50fb92dcefe5134ef81730f69df6b4415a46bc6fc163dc14b907"
       },
       "dependencies": [
         "ui.hand.capacity-badge",
@@ -4500,7 +4509,7 @@
       "visual_random": "none",
       "runtime_mapping": "UI pending UID/currency projection hides unconfirmed cards and stack/capacity gains; confirmation builds and freezes final rest layout; direct flight to exact card rectangle and full hand size; reveal/update capacity at arrived signal; committed gameplay rewards stay unchanged",
       "source_hashes": {
-        "application/acquisition_projection.gd": "3093d3b221236db3205a08a64ef2ef5e7bef20125f269d36520485372c5a0543"
+        "application/acquisition_projection.gd": "5c60b7a3a65dd7ca57a3752db49f6abd2fced2635a674eebb42783d65691c233"
       }
     },
     "ui.collectible.placeholder": {
@@ -4519,15 +4528,16 @@
     "ui.collectibles.warehouse": {
       "path": "res://pages/collectibles_page.gd",
       "source": "project-authored/native-Godot-acquisition-warehouse-v1",
-      "version": 2,
+      "version": 3,
       "dependencies": [
         "ui.collectible.placeholder"
       ],
       "license": "project-authored procedural UI; no external artwork",
-      "sha256": "634048799a6e60f6ef84ccd24d70f55150b31da55db8d228b76d5e308312389c",
+      "sha256": "0fc6d212ced5207c733404e3abfb9f4e21b4b67ca75cd03b25397829e7236787",
       "source_hash_verified_on": "2026-10-19",
       "visual_random": "none",
-      "runtime_mapping": "Five columns by four rows, 20 instance slots/page; local inspection and paging; right image region 1/3; shared transparent relic image; existing discard_collectible UID command"
+      "runtime_mapping": "Five columns by four rows, 20 instance slots/page; local inspection and paging; right image region 1/3; shared transparent relic image; existing discard_collectible UID command",
+      "mobile_layout": "3 columns, 6 entries per page, existing scrollable detail"
     },
     "texture.collectible.placeholder": {
       "path": "res://assets/collectibles/relic-placeholder-v1.png",
@@ -4544,6 +4554,17 @@
       "runtime_mapping": "collectible_art.gd shared image for every relic: acquisition, warehouse grid and detail",
       "alpha": "RGBA; actual transparent background",
       "placeholder": true
+    },
+    "font.ui.cjk": {
+      "path": "res://assets/fonts/NotoSansSC-VF.ttf",
+      "source": "https://github.com/notofonts/noto-cjk/tree/main/Sans/Variable/TTF/Subset",
+      "version": 1,
+      "font_version": "Version 2.04;241114210130;non-release",
+      "sha256": "763146584cf0710223441356b4395e279021b0806c196614377a7a0174ae074a",
+      "license": "SIL Open Font License 1.1; assets/fonts/OFL.txt",
+      "dependencies": [],
+      "runtime_mapping": "Widgets.ui_font: Android uses packaged FontFile for shared UI, story, opening intro and voyage labels; desktop retains system font selection",
+      "source_hash_verified_on": "2026-10-19"
     }
   }
 }

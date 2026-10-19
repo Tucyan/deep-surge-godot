@@ -108,6 +108,8 @@ var story_replay: Control:
 	set(value): narrative_coordinator.story_replay = value
 
 func _ready() -> void:
+	set_meta("mobile_ui",display_settings.mobile)
+	get_tree().node_added.connect(_queue_mobile_control_policy)
 	get_tree().auto_accept_quit = false
 	theme = W.theme()
 	if not catalog.load_catalog(): W.text(self,"内容载入失败："+catalog.error,24); return
@@ -218,6 +220,11 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 func handle_ui(action: String, value: String = "") -> void:
 	if transition_busy or is_instance_valid(acquisition_overlay): return
+	if action=="close_settings":
+		if local_panel=="settings": local_panel=""; render()
+		return
+	if action=="transmute_scroll":
+		ui_state.transmute_scroll=maxi(0,int(value)); return
 	if action == "retry_save":
 		persistence_coordinator.retry(self); render(); _maybe_story(); return
 	if action == "cancel_quit":
@@ -309,6 +316,8 @@ func handle_ui(action: String, value: String = "") -> void:
 	render()
 
 func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_GO_BACK_REQUEST and local_panel=="settings":
+		handle_ui("close_settings"); return
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		if session == null: get_tree().quit()
 		else: _request_quit()
@@ -627,9 +636,24 @@ func _refresh_modal_only(view: Dictionary) -> bool:
 func _refresh_hud_notice(panel_id: String) -> void:
 	page_host._refresh_hud_notice(self, panel_id)
 
+func _queue_mobile_control_policy(node: Node) -> void:
+	if display_settings.mobile and node is Control and is_ancestor_of(node):
+		_apply_mobile_control_policy.call_deferred(weakref(node))
+
+func _apply_mobile_control_policy(reference: WeakRef) -> void:
+	var node := reference.get_ref() as Control
+	if not is_instance_valid(node) or not is_ancestor_of(node) or not display_settings.mobile: return
+	W.suppress_mobile_hover(node)
+	preload("res://presentation/touch_scroll.gd").configure(node)
+
 func render(staged: bool = false) -> void:
+	set_meta("mobile_ui",display_settings.mobile)
 	persistence_coordinator.refresh_notice(self)
 	await page_host.render(self, staged)
+	if display_settings.mobile:
+		for node in find_children("*","Control",true,false):
+			W.suppress_mobile_hover(node)
+			preload("res://presentation/touch_scroll.gd").configure(node)
 
 func _build_modal(panel_id: String, view: Dictionary) -> void:
 	page_host._build_modal(self, panel_id, view)

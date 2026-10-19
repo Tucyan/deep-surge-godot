@@ -18,7 +18,7 @@ func build() -> void:
 	var body:=HBoxContainer.new(); body.name="CollectionBody"; body.size_flags_vertical=Control.SIZE_EXPAND_FILL; add_child(body)
 	body.add_theme_constant_override("separation",18)
 	var left:=VBoxContainer.new(); left.size_flags_horizontal=Control.SIZE_EXPAND_FILL; left.size_flags_stretch_ratio=1.8; body.add_child(left)
-	grid=GridContainer.new(); grid.name="CollectiblesGrid"; grid.columns=5
+	grid=GridContainer.new(); grid.name="CollectiblesGrid"; grid.columns=3 if context.get("mobile",false) else 5
 	grid.size_flags_vertical=Control.SIZE_EXPAND_FILL
 	grid.add_theme_constant_override("h_separation",9); grid.add_theme_constant_override("v_separation",9); left.add_child(grid)
 	footer=HBoxContainer.new(); footer.alignment=BoxContainer.ALIGNMENT_CENTER; left.add_child(footer)
@@ -29,12 +29,13 @@ func build() -> void:
 func _refresh_grid() -> void:
 	for node in grid.get_children(): grid.remove_child(node); node.queue_free()
 	for node in footer.get_children(): footer.remove_child(node); node.queue_free()
-	var pages:=maxi(1,ceili(float(items.size())/PAGE_SIZE))
+	var page_size:=6 if context.get("mobile",false) else PAGE_SIZE
+	var pages:=maxi(1,ceili(float(items.size())/page_size))
 	page_index=clampi(page_index,0,pages-1)
-	var visible_items: Array=items.slice(page_index*PAGE_SIZE,(page_index+1)*PAGE_SIZE)
+	var visible_items: Array=items.slice(page_index*page_size,(page_index+1)*page_size)
 	if not visible_items.any(func(item):return item.uid==selected_uid): selected_uid=visible_items[0].uid if not visible_items.is_empty() else ""
 	for item in visible_items: _slot(item)
-	for unused in range(PAGE_SIZE-visible_items.size()):
+	for unused in range(page_size-visible_items.size()):
 		var empty:=PanelContainer.new(); empty.custom_minimum_size=Vector2(80,80)
 		empty.size_flags_horizontal=Control.SIZE_EXPAND_FILL; empty.size_flags_vertical=Control.SIZE_EXPAND_FILL
 		empty.mouse_filter=Control.MOUSE_FILTER_IGNORE

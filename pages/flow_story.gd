@@ -40,10 +40,12 @@ func build() -> void:
 	var columns := HBoxContainer.new()
 	columns.name = "NodeEventColumns"
 	columns.add_theme_constant_override("separation", int(COLUMN_GAP))
+	if context.get("mobile",false): columns.add_theme_constant_override("separation",12)
 	columns.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	columns.clip_contents = true
 	add_child(columns)
 	build_art_column(columns)
+	if context.get("mobile",false): columns.get_child(0).hide()
 	var prose_column := build_frame_column(columns, 1.06, "NodeEventProse")
 	prose = VBoxContainer.new()
 	prose.name = "NodeEventText"
@@ -58,6 +60,8 @@ func build() -> void:
 	prose.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	var choices_column := build_frame_column(columns, 0.0, "NodeEventOptions")
 	choices_column.custom_minimum_size.x = CHOICES_WIDTH
+	if context.get("mobile",false):
+		choices_column.custom_minimum_size.x=420
 	choices_column.size_flags_horizontal = Control.SIZE_FILL
 	# The header keeps its height in every state so showing 取消选择 never moves the options.
 	options_header = HBoxContainer.new()
@@ -74,7 +78,16 @@ func build() -> void:
 	push.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	push.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	options_header.add_child(push)
-	cancel_button = build_direct_button(options_header, "取消选择", cancel_preselect)
+	# Plain text action: bypass the shared decorative button artwork.
+	cancel_button = Button.new()
+	cancel_button.text = "取消选择"
+	cancel_button.pressed.connect(cancel_preselect)
+	cancel_button.flat = true
+	for state in ["normal", "hover", "pressed", "hover_pressed", "focus", "disabled"]:
+		cancel_button.add_theme_stylebox_override(state, StyleBoxEmpty.new())
+	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "font_focus_color", "font_disabled_color"]:
+		cancel_button.add_theme_color_override(state, Color("ef7777"))
+	options_header.add_child(cancel_button)
 	cancel_button.name = "CancelPreselect"
 	cancel_button.tooltip_text = "回到事件说明，不提交选项"
 	cancel_button.custom_minimum_size = Vector2(136, 56 if context.get("mobile",false) else 34)
@@ -193,7 +206,7 @@ func direct(title: String, command: String, args: Dictionary = {}, disabled: boo
 func build_direct_button(parent: Node, title: String, callback: Callable) -> Button:
 	var button := W.button(parent, title, callback)
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	button.add_theme_font_size_override("font_size", 15)
+	button.add_theme_font_size_override("font_size", 20 if context.get("mobile",false) else 15)
 	button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	button.custom_minimum_size.y = 56 if context.get("mobile",false) else 46
 	return button

@@ -16,12 +16,18 @@ func touch(down: bool, point: Vector2, finger: int = 0, canceled: bool = false):
 func move_to(point: Vector2, finger: int = 0):
 	var e := InputEventScreenDrag.new(); e.index = finger; e.position = fan.global_position + point
 	fan._input(e)
-func setup(phase: String = "preparation", ap: int = 3, id: String = "water"):
+func setup(phase: String = "preparation", ap: int = 3, id: String = "water", count: int = 1):
 	if is_instance_valid(fan): fan.free()
 	fan = load("res://presentation/hand_fan.gd").new(); app.add_child(fan)
 	fan.position = Vector2(100,450); fan.size = Vector2(900,238)
 	var card := {"uid":"mobile-test", "id":id, "definition":app.session.catalog.entry("cards",id), "temporary":false}
-	fan.create(app.assets,[card],{"mobile":true,"phase":phase,"can_base":phase=="preparation","battle":{"ap":ap},"hand":[card]})
+	var entries := [card]
+	for i in range(1,count):
+		var copy := card.duplicate(); copy.uid = "mobile-test-%d" % i; entries.append(copy)
+	if count > 1:
+		entries.append({"uid":"mobile-neighbour","id":"food","definition":app.session.catalog.entry("cards","food"),"temporary":false})
+	var layout = load("res://presentation/hand_layout.gd").new(); layout.auto_sort=false
+	fan.create(app.assets,entries,{"mobile":true,"phase":phase,"can_base":phase=="preparation","battle":{"ap":ap},"hand":entries,"hand_layout":layout})
 	fan.arrange(); fan.set_process(false)
 	fan.activated.connect(func(c): used.append(c.uid))
 	fan.battle_action_double_clicked.connect(func(c): quick.append(c.uid))
@@ -55,6 +61,26 @@ func run():
 	check(used.is_empty() and quick.is_empty(),"insufficient AP cannot play")
 	setup("discard",3,"pollution"); touch(true,point()); fan._process(.051); touch(false,Vector2(400,-50))
 	check(used.is_empty(),"forbidden discard cannot play")
+	for mode in ["spread","raise"]:
+		setup("discard",3,"wood",6)
+		fan.hand_layout.hover_mode=mode; fan.arrange(); fan._process(1.0)
+		touch(true,point()); fan._process(.049)
+		fan.show_description()
+		check(not fan.tip_text.text.contains("调整顺序"),"mobile discard help does not promise sorting "+mode)
+		var rear: Vector2=fan.stack_bases[0].position
+		var neighbour: Vector2=fan.tiles[1].position
+		var order: Array=fan.cards.map(func(c):return c.uid)
+		fan._process(.003)
+		check(fan.stack_bases[0].position.is_equal_approx(rear),"discard hold leaves rear cards stationary "+mode)
+		move_to(Vector2(800,-50)); fan._process(.2)
+		check(fan.tiles[0].position.y<0,"discard slides the front card above hand "+mode)
+		check(fan.stack_bases[0].position.is_equal_approx(rear) and fan.stack_bases[0].modulate.a==1.0 and fan.stack_bases[0].z_index==1,"discard rear stays opaque on table "+mode)
+		check(fan.tiles[1].position.is_equal_approx(neighbour),"discard does not open a sorting slot "+mode)
+		move_to(Vector2(800,80)); fan._process(.2); touch(false,Vector2(800,80))
+		check(used.is_empty() and fan.cards.map(func(c):return c.uid)==order,"returning discard cancels without reordering "+mode)
+		fan._process(1.0); touch(true,point()); fan._process(.051)
+		move_to(Vector2(800,-50)); fan._process(.2); touch(false,Vector2(800,-50))
+		check(used==["mobile-test"],"stack discard activates only the front UID "+mode)
 	setup("battle",3); touch(true,point()); fan._process(.051); touch(false,Vector2(400,-50))
 	check(quick.size()==1 and used.is_empty(),"battle drag confirms playable card via validated battle action")
 	setup("battle",3); var attack: int = fan.cards.size()-2
@@ -85,6 +111,31 @@ func run():
 	check(app.session.state.player.hydration>40,"real mobile drag applies water effect")
 	check(not app.session.state.hand.any(func(c):return c.uid==water_uid),"real mobile drag consumes selected UID")
 	await process_frame; await process_frame
+	app.session.state.hand.clear()
+	app.session.give("wood",6,false,"mobile-stack-discard")
+	app.session.give("iron",6,false,"mobile-stack-discard")
+	app.session.state.phase="discard"; app.session.state.player.limit=1
+	app.render(); await process_frame; await process_frame
+	fan=app.find_child("hand_fan",true,false); fan._process(1.0)
+	var stack_index: int=fan.cards.find_custom(func(c):return c.id=="wood")
+	var discarded_uid: String=fan.cards[stack_index].uid
+	var hand_before: Array=app.session.state.hand.duplicate(true)
+	var rng_before: Dictionary=app.session.state.rng.duplicate(true)
+	touch(true,point(stack_index)); fan._process(.051)
+	var stack_rest: Vector2=fan.stack_bases[stack_index].position
+	move_to(Vector2(400,-50)); fan._process(.2)
+	check(fan.stack_bases[stack_index].position.is_equal_approx(stack_rest),"real discard rear remains on table")
+	if "--capture-discard" in OS.get_cmdline_user_args():
+		await process_frame; await process_frame
+		root.get_texture().get_image().save_png("user://mobile-stack-discard.png")
+	touch(false,Vector2(400,-50))
+	check(app.session.state.hand.size()==hand_before.size()-1 and not app.session.state.hand.any(func(c):return c.uid==discarded_uid),"real stack discard removes exactly the front UID")
+	check(app.session.I.count(app.session.state,"wood")==5 and app.session.I.count(app.session.state,"iron")==6,"real stack discard preserves remaining cards")
+	check(app.session.state.rng==rng_before,"stack discard does not consume RNG")
+	await process_frame; await process_frame
+	fan=app.find_child("hand_fan",true,false)
+	stack_index=fan.cards.find_custom(func(c):return c.id=="wood")
+	check(fan.cards[stack_index].stack_count==5 and fan.stack_bases[stack_index]!=null,"real stack discard refreshes remaining stack")
 	app.session.state.node=app.catalog.entry("nodes","battle")
 	app.session.state.node.visit_id="mobile-battle"
 	app.session.state.phase="story"; app.session.state.story_step="choice"

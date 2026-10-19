@@ -30,6 +30,7 @@ func create_background() -> void:
 	resized.connect(_reflow); _reflow()
 func create(view: Dictionary, with_background: bool = true) -> void:
 	building=true
+	set_meta("mobile_ui",bool(view.get("mobile",false)))
 	clip_contents=true
 	if with_background:
 		create_background()
@@ -74,14 +75,15 @@ func create(view: Dictionary, with_background: bool = true) -> void:
 		b.pivot_offset=b.size*Vector2(0.5,0.5); b.focus_mode=FOCUS_ALL
 		b.z_index=6-i
 		b.mouse_default_cursor_shape=CURSOR_POINTING_HAND
-		b.texture_normal=dark[i]; b.texture_hover=light[i]; b.texture_pressed=light[i]; b.texture_focused=light[i]
+		b.texture_normal=dark[i]; b.texture_hover=dark[i] if view.get("mobile",false) else light[i]; b.texture_pressed=light[i]; b.texture_focused=light[i]
 		var hit_mask:=BitMap.new(); hit_mask.create_from_image_alpha(dark[i].get_image(),0.15)
 		b.texture_click_mask=hit_mask
 		b.disabled=i==1 and not view.get("can_resume",view.active) and not view.get("has_story_saves", false)
 		if b.disabled:
 			b.modulate=Color(0.62,0.66,0.72,0.75)
 			b.tooltip_text="已有航程，请继续游戏" if i==0 else "暂无可继续的存档"
-		b.mouse_entered.connect(_hover.bind(i,true)); b.mouse_exited.connect(_hover.bind(i,false))
+		if not view.get("mobile",false):
+			b.mouse_entered.connect(_hover.bind(i,true)); b.mouse_exited.connect(_hover.bind(i,false))
 		b.focus_entered.connect(_hover.bind(i,true)); b.focus_exited.connect(_hover.bind(i,false))
 		b.pressed.connect(func(): menu_action.emit(ACTIONS[i]))
 		composition.add_child(b); buttons.append(b)
@@ -109,6 +111,7 @@ func _reflow() -> void:
 func _update_highlight() -> void:
 	for i in range(buttons.size()): buttons[i].texture_normal=light[i] if i==selected and not buttons[i].disabled else dark[i]
 func _hover(index: int, active: bool) -> void:
+	if get_meta("mobile_ui",false): return
 	if buttons[index].disabled:return
 	if active: selected=index
 	_update_highlight()

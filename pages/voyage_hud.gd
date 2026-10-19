@@ -57,12 +57,18 @@ func build() -> void:
 	rect(menu_frame,Vector4(1,0,1,0),Vector4(-166,24,-16,80))
 	var menu=HBoxContainer.new(); menu.name="VoyageMenu"; stage.add_child(menu); menu.z_index=ABOVE_EVENT
 	rect(menu,Vector4(1,0,1,0),Vector4(-166,27,-24,77))
+	if context.get("mobile",false):
+		rect(menu,Vector4(1,0,1,0),Vector4(-216,18,-16,78))
+		rect(menu_frame,Vector4(1,0,1,0),Vector4(-224,14,-8,82))
+		rect(navigation,Vector4(0,0,1,0),Vector4(24,24,-234,80))
+		menu.add_theme_constant_override("separation",10)
 	var help=W.button(menu,"游戏说明",func(): request("local_panel","help"))
 	help.name="GameHelpEntry"; help.tooltip_text="游戏说明 · 操作指南与游戏流程"; help.accessibility_name="游戏说明"
 	var settings=W.button(menu,"设置",func(): request("local_panel","settings")); settings.tooltip_text="设置"
 	var home=W.button(menu,"返回首页",func(): send("home")); home.tooltip_text="返回首页"; home.name="HomeEntry"
 	for entry in menu.get_children():
 		entry.custom_minimum_size=Vector2(40,40); entry.clip_text=true
+		if context.get("mobile",false): entry.custom_minimum_size=Vector2(60,60)
 		for state in ["normal","hover","pressed","disabled","focus"]: entry.add_theme_stylebox_override(state,StyleBoxEmpty.new())
 		var focus=StyleBoxFlat.new(); focus.bg_color=Color.TRANSPARENT; focus.border_color=W.GOLD; focus.set_border_width_all(1)
 		entry.add_theme_stylebox_override("focus",focus)
@@ -117,6 +123,7 @@ func build() -> void:
 	_environment_host=environments
 	build_environment_names(environments)
 	var status=preload("res://presentation/hud/status_hud.gd").new(); status.name="SurgeStatusHUD"; status.minimum_row_width=0
+	if context.get("mobile",false): status.font_size=22
 	navigation.add_child(status)
 	_status_hud=status
 	rect(status,Vector4(.42,0,1,1),Vector4(4,0,-22,0))

@@ -73,7 +73,7 @@ func stat_layout() -> Array:
     var columns=2 if two_columns else 4
     var cell=Vector2(size.x/columns,size.y/(2 if two_columns else 1))
     var icon_size=minf(50,cell.y-2)
-    var number_size=mini(font_size,16)
+    var number_size=font_size
     var font=get_theme_font("font")
     var texts=[]
     var widest=0.0

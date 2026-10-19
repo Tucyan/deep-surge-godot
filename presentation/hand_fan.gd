@@ -56,6 +56,7 @@ func create(assets: RefCounted, entries: Array, view: Dictionary) -> void:
 	add_to_group("hand_fans")
 	context = view; visual_assets = assets
 	mobile = bool(view.get("mobile", OS.has_feature("mobile")))
+	set_meta("mobile_ui",mobile)
 	hold_seconds = MOBILE_HOLD_SECONDS if mobile else DESKTOP_HOLD_SECONDS
 	hand_layout = view.get("hand_layout",preload("res://presentation/hand_layout.gd").new())
 	cards = hand_layout.build(entries)
@@ -154,7 +155,7 @@ func restore_visual(saved: Dictionary) -> void:
 	for i in range(cards.size()):
 		if saved.positions.has(cards[i].uid): tiles[i].position = saved.positions[cards[i].uid]
 		if stack_bases[i]!=null and saved.get("stack_positions",{}).has(cards[i].uid): stack_bases[i].position=saved.stack_positions[cards[i].uid]
-		if cards[i].uid == saved.hover_uid: hovered = i
+		if not mobile and cards[i].uid == saved.hover_uid: hovered = i
 	laid_out = true; dwell = saved.dwell if hovered>=0 else 0.0
 	arrange()
 	if hovered>=0 and saved.tip_visible: show_description()
@@ -231,6 +232,7 @@ func desktop_usage(card: Dictionary) -> String:
 		"combat","negative": return "战斗中查看与使用。"+cost
 		_: return "制作材料：在「合成/转化」选择配方或转化；点击查看用途。"
 func focus_card(index: int) -> void:
+	if mobile: index = -1
 	if hovered == index: return
 	if index >= 0: focus_x = tiles[index].position.x
 	hovered = index; dwell = 0.0
@@ -285,9 +287,10 @@ func arrange() -> void:
 	laid_out = true
 	if is_instance_valid(tip) and tip.visible: place_tip()
 func show_description() -> void:
-	if hovered < 0: return
+	if mobile or hovered < 0: return
 	var card: Dictionary = cards[hovered]
-	tip_text.text = card.definition.name+(" ×%d" % card.stack_count if card.stack_count>1 else "")+"\n"+card.definition.description+"\n\n"+usage(card)+"\n长按拖动调整顺序"
+	var reorder_hint := "" if mobile and context.get("phase","")=="discard" else "\n长按拖动调整顺序"
+	tip_text.text = card.definition.name+(" ×%d" % card.stack_count if card.stack_count>1 else "")+"\n"+card.definition.description+"\n\n"+usage(card)+reorder_hint
 	tip_text.custom_minimum_size.x = minf(360,size.x-24)-36
 	tip.size = Vector2(minf(360,size.x-24),0); tip.show(); place_tip(); place_tip.call_deferred()
 func place_tip() -> void:
@@ -323,14 +326,18 @@ func _process(delta: float) -> void:
 	var move_delta := maxf(0.0,delta-refill_delay)
 	refill_delay = maxf(0.0,refill_delay-delta)
 	var blend := 1.0-exp(-move_delta*4.0/maxf(.05,move_duration))
+	var single_card_discard: bool = dragging and mobile and context.get("phase","")=="discard"
 	for i in range(mini(tiles.size(),target_positions.size())):
 		if dragging and i==pressed_index: continue
+		if single_card_discard: continue
 		var tile: Control = tiles[i]
 		if tile.position.distance_squared_to(target_positions[i]) < .04: tile.position = target_positions[i]
 		else: tile.position = tile.position.lerp(target_positions[i],blend)
 	for i in range(stack_bases.size()):
 		var backing: Control=stack_bases[i]
 		if backing==null: continue
+		# Discard moves one instance, leaving the rest of the stack on the table.
+		if single_card_discard: continue
 		if dragging and i==pressed_index:
 			backing.position=tiles[i].position+Vector2(0,14)
 			backing.z_index=299
@@ -339,12 +346,12 @@ func _process(delta: float) -> void:
 			backing.z_index=1
 		backing.modulate.a=tiles[i].modulate.a
 	if tip.visible: place_tip()
-	if hovered >= 0 and pressed_index<0:
+	if not mobile and hovered >= 0 and pressed_index<0:
 		dwell += delta
 		if dwell >= 0.35 and not tip.visible: show_description()
 func _gui_input(event: InputEvent) -> void:
 	if pressed_index>=0: return
-	if event is InputEventMouseMotion and not cards.is_empty():
+	if not mobile and event is InputEventMouseMotion and not cards.is_empty():
 		var index := hit_card(event.position)
 		focus_card(index)
 	elif event is InputEventScreenTouch and event.pressed and touch_index<0:
@@ -403,6 +410,7 @@ func _input(event: InputEvent) -> void:
 		pointer_point=next_point
 		if dragging:
 			get_viewport().set_input_as_handled()
+			if mobile and context.get("phase","")=="discard": return
 			if bool(cards[pressed_index].get("is_fixed_action",false)): return
 			var step: float = base_x[1]-base_x[0] if base_x.size()>1 else card_width
 			var max_drop := cards.size() - 1
@@ -433,6 +441,7 @@ func _input(event: InputEvent) -> void:
 				battle_action_double_clicked.emit(held_card)
 			else: activated.emit(held_card)
 		elif was_dragging:
+			if mobile and context.get("phase","")=="discard": return
 			if mobile and (not Rect2(Vector2.ZERO,size).has_point(release_point) or held_card.get("is_fixed_action",false)): return
 			var max_dest := cards.size() - 1
 			if context.get("phase","") == "battle": max_dest = maxi(0, cards.size() - 3)
@@ -459,7 +468,7 @@ func move_card_group(from: int, to: int) -> void:
 			sibling+=1
 		move_child(tiles[i],sibling)
 		sibling+=1
-	hovered=to
+	hovered=-1 if mobile else to
 	arrange()
 	reordered.emit()
 

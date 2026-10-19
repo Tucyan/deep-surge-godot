@@ -44,7 +44,7 @@ func _draw() -> void:
 	if button == null: return
 	var color := Color("e5dbc6")
 	if button.disabled: color = Color("73818a")
-	elif button.is_hovered() or button.has_focus(): color = Color("fff1d2")
+	elif preload("res://presentation/text_button_art.gd").pointer_hovered(button) or button.has_focus(): color = Color("fff1d2")
 	var center := size * 0.5 if icon_only else Vector2(18, size.y * 0.5)
 	var factor := clampf(minf(size.x, size.y) / 44.0, 0.8, 1.25) if icon_only else 0.85
 	if button.is_pressed(): factor *= 0.92

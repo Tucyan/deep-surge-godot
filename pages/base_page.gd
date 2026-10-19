@@ -17,6 +17,7 @@ func setup(view: Dictionary, content: RefCounted, art: RefCounted) -> void:
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	build()
 	if context.get("mobile",false):
+		W.readable_controls(self)
 		for picker in find_children("*","OptionButton",true,false):
 			picker.custom_minimum_size.y=maxf(56,picker.custom_minimum_size.y)
 

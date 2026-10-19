@@ -17,6 +17,7 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 	subtitle.add_theme_font_size_override("font_size", 13)
 	subtitle.add_theme_color_override("font_color", Color("8ca1b0"))
 	parent.add_child(subtitle)
+	subtitle.visible=not prefs.mobile
 
 	# 1. Tab Navigation Bar (Segmented Control with Highlight)
 	var tab_bar := HBoxContainer.new()
@@ -53,12 +54,17 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 	content_area.name = "SettingsContentArea"
 	content_area.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	content_area.add_theme_constant_override("separation", 6)
+	var mobile_scroll: ScrollContainer
 	if prefs.mobile:
 		var scroll := ScrollContainer.new()
+		mobile_scroll=scroll
 		scroll.name = "MobileSettingsScroll"
 		scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 		parent.add_child(scroll); scroll.add_child(content_area)
+		scroll.get_v_scroll_bar().value_changed.connect(func(value):
+			if not scroll.get_meta("restoring_scroll",true):
+				app.ui_state["settings_scroll_"+app.settings_tab]=int(value))
 	else: parent.add_child(content_area)
 
 	var display_box := VBoxContainer.new()
@@ -80,6 +86,7 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 	var built: Dictionary={}
 	var boxes: Dictionary={"display":display_box,"game":game_box,"narrative":narrative_box}
 	var update_tabs = func(target: String):
+		if mobile_scroll: mobile_scroll.set_meta("restoring_scroll",true)
 		if not built.has(target):
 			match target:
 				"display": _build_display(display_box,app,view)
@@ -87,11 +94,24 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 				"narrative": NarrativeMenu.build_settings(narrative_box,app)
 			built[target]=true
 			if prefs.mobile: adapt_touch_controls(boxes[target])
+			if prefs.mobile and target=="game":
+				var management=game_box.get_node_or_null("VoyageControlPanel")
+				if management: game_box.move_child(management,-1)
 		sync_controls(app)
 		app.settings_tab = target
 		display_box.visible = (target == "display")
 		game_box.visible = (target == "game")
 		narrative_box.visible = (target == "narrative")
+		if mobile_scroll:
+			var saved:=int(app.ui_state.get("settings_scroll_"+target,0))
+			var reference: WeakRef=weakref(mobile_scroll)
+			var restore=func():
+				await app.get_tree().process_frame
+				await app.get_tree().process_frame
+				var live=reference.get_ref()
+				if is_instance_valid(live) and app.settings_tab==target:
+					live.scroll_vertical=saved; live.set_meta("restoring_scroll",false)
+			restore.call()
 
 		tab_display.set_meta("surge_primary", target == "display")
 		tab_game.set_meta("surge_primary", target == "game")
@@ -119,7 +139,8 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 		vp_style.content_margin_left = 12; vp_style.content_margin_right = 12
 		vp_style.content_margin_top = 8; vp_style.content_margin_bottom = 8
 		voyage_panel.add_theme_stylebox_override("panel", vp_style)
-		parent.add_child(voyage_panel)
+		if prefs.mobile: game_box.add_child(voyage_panel)
+		else: parent.add_child(voyage_panel)
 
 		var vp_vbox := VBoxContainer.new()
 		vp_vbox.add_theme_constant_override("separation", 6)
@@ -208,6 +229,12 @@ static func _build_display(display_box: VBoxContainer, app: Control, view: Dicti
 			app.apply_display_settings.call_deferred(false)
 	)
 	scale_row.add_child(slider)
+	if prefs.mobile:
+		var decrease:=W.button(scale_row,"−",func():slider.value=maxf(slider.min_value,slider.value-5))
+		decrease.name="UIScaleDecrease"; decrease.accessibility_name="缩小界面百分之五"
+		scale_row.move_child(decrease,1)
+		var increase:=W.button(scale_row,"+",func():slider.value=minf(slider.max_value,slider.value+5))
+		increase.name="UIScaleIncrease"; increase.accessibility_name="放大界面百分之五"
 	display_box.add_child(make_row("界面缩放 (UI Scale)", "调整文字、卡牌与界面大小（100% ~ 125%）", scale_row, 195))
 
 	# Row 2: 帧率限制
@@ -360,14 +387,15 @@ static func _build_game(game_box: VBoxContainer, app: Control, view: Dictionary)
 	)
 	game_box.add_child(make_row("资源合并显示 (叠牌)", "同种基础资源达到 4 张时自动合并为单格显示，减少拥挤", opt_stack, 130))
 
-	var hover_picker := OptionButton.new(); hover_picker.name="HandHoverMode"
-	hover_picker.add_item("排开遮挡"); hover_picker.add_item("图层上浮")
-	hover_picker.select(app.hand_layout.HOVER_MODES.find(app.hand_layout.hover_mode))
-	hover_picker.item_selected.connect(func(index):
-		app.hand_layout.hover_mode=app.hand_layout.HOVER_MODES[index]
-		if app.persistence and app.hand_layout.save_preferences()!=OK: app.message="手牌设置保存失败"
-		app.refresh_hand_preferences.call_deferred())
-	game_box.add_child(make_row("触牌展开方式" if prefs.mobile else "手牌悬停方式","排开遮挡：让右侧牌让位；图层上浮：仅将主卡显示到上层",hover_picker,150))
+	if not prefs.mobile:
+		var hover_picker := OptionButton.new(); hover_picker.name="HandHoverMode"
+		hover_picker.add_item("排开遮挡"); hover_picker.add_item("图层上浮")
+		hover_picker.select(app.hand_layout.HOVER_MODES.find(app.hand_layout.hover_mode))
+		hover_picker.item_selected.connect(func(index):
+			app.hand_layout.hover_mode=app.hand_layout.HOVER_MODES[index]
+			if app.persistence and app.hand_layout.save_preferences()!=OK: app.message="手牌设置保存失败"
+			app.refresh_hand_preferences.call_deferred())
+		game_box.add_child(make_row("手牌悬停方式","排开遮挡：让右侧牌让位；图层上浮：仅将主卡显示到上层",hover_picker,150))
 
 	# Row 3: 游戏操作与手势提示卡片
 	var tip_card := PanelContainer.new()
@@ -410,13 +438,19 @@ static func _build_game(game_box: VBoxContainer, app: Control, view: Dictionary)
 			row.add_theme_stylebox_override("panel",style)
 
 static func adapt_touch_controls(node: Node) -> void:
+	W.readable_controls(node)
+	_adapt_touch_layout(node)
+
+static func _adapt_touch_layout(node: Node) -> void:
 	if node is BaseButton:
-		node.custom_minimum_size.y = maxf(node.custom_minimum_size.y,56)
+		node.custom_minimum_size.y = maxf(node.custom_minimum_size.y,60)
 	elif node is Slider:
-		node.custom_minimum_size.y = maxf(node.custom_minimum_size.y,44)
-	if node is Label and node.get_theme_font_size("font_size") < 14:
-		node.add_theme_font_size_override("font_size",14)
-	for child in node.get_children(): adapt_touch_controls(child)
+		node.custom_minimum_size.y = maxf(node.custom_minimum_size.y,60)
+	if node is Label and node.name=="RowTitle":
+		node.add_theme_font_size_override("font_size",22)
+		node.text=node.text.split(" (")[0]
+	if node is VBoxContainer: node.add_theme_constant_override("separation",12)
+	for child in node.get_children(): _adapt_touch_layout(child)
 
 static func sync_controls(app: Control) -> void:
 	# select() and set_pressed_no_signal() do not re-enter preference callbacks.
@@ -466,6 +500,8 @@ static func make_row(title_text: String, hint_text: String, control: Control, co
 	hbox.add_child(left_vbox)
 
 	var t_lbl := Label.new()
+	t_lbl.name="RowTitle"
+	t_lbl.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	t_lbl.text = title_text
 	t_lbl.add_theme_font_size_override("font_size", 15)
 	t_lbl.add_theme_color_override("font_color", Color("eee3cd"))

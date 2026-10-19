@@ -26,8 +26,8 @@ func _ready():
 	mouse_filter=MOUSE_FILTER_IGNORE; resized.connect(queue_redraw)
 func _draw():
 	var button=get_parent() as Button
-	var gold=Color("edcd98") if button.is_hovered() or button.has_focus() else Color("dabb87")
-	var blue=Color("11354c") if button.is_hovered() else Color("082639")
+	var gold=Color("edcd98") if preload("res://presentation/text_button_art.gd").pointer_hovered(button) or button.has_focus() else Color("dabb87")
+	var blue=Color("11354c") if preload("res://presentation/text_button_art.gd").pointer_hovered(button) else Color("082639")
 	if button.is_pressed(): blue=Color("183e50")
 	if button.disabled: gold=Color("626d70"); blue=Color("112330")
 	var center=size*.5

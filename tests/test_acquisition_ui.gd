@@ -45,11 +45,29 @@ func run():
 	check(app.acquisition_overlay.batch.source=="打捞" and app.acquisition_overlay.batch.items.size()==3,"real salvage displays three actual cards")
 	check(not app.world_view.camera_input_enabled,"camera disabled during acquisition")
 	await screenshot("salvage"); await dismiss()
-	app.session.state.cells[0].equipment={}
+	app.session.state.cells[0].equipment={"id":"filter","level":2,"fuel":0,"progress":0,"boost_cards":[],"production_bonus":0}
 	app.session.state.hand=[]; app.session.state.coins=0; app.session.state.phase="aftermath"; app.session.state.ap=1
 	app.render(); app.request_command("end_voyage"); await wait_for_overlay()
+	check(app.acquisition_overlay.batch.source=="设备生产" and app.acquisition_overlay.batch.items.size()==1,"production after voyage transition")
+	var pending_uids: Array=app._pending_receipt.uids.duplicate()
+	check(pending_uids.size()==3 and not app.hud_view().hand.any(func(card):return card.uid in pending_uids),"production and spring rewards remain hidden before confirmation")
+	await screenshot("production"); await dismiss(); await wait_for_overlay()
 	check(app.acquisition_overlay.batch.source=="涌泉" and app.acquisition_overlay.batch.items.size()==2,"spring after voyage transition")
 	await screenshot("spring"); await dismiss()
+	app.session.state.cells[0].equipment={}
+	# Use the normal option dispatch for both fixed and random node effects.
+	var old_options: Array=app.catalog._tables.nodes.camp.options.duplicate(true)
+	app.catalog._tables.nodes.camp.options=[{"id":"take","name":"取走物资","cost":0,"effects":[{"type":"GiveCard","id":"wood","amount":2},{"type":"GiveRandomResource","amount":1}]}]
+	app.session.state.node=app.catalog.entry("nodes","camp"); app.session.state.node.visit_id="acquisition-node"
+	app.session.state.phase="story"; app.session.state.story_step="choice"; app.session.state.ap=3
+	app.session.Encounter.arrived(app.session)
+	app.render(); app.request_command("option",{"id":"take"}); await wait_for_overlay()
+	check(app.acquisition_overlay.batch.source=="节点事件" and app.acquisition_overlay.batch.items.size()==3,"real event fixed/random rewards use acquisition overlay")
+	pending_uids=app._pending_receipt.uids.duplicate()
+	check(pending_uids.size()==3 and not app.hud_view().hand.any(func(card):return card.uid in pending_uids),"event cards remain hidden before confirmation")
+	await screenshot("node-event"); await dismiss()
+	check(app._pending_receipt.uids.is_empty(),"event confirmation clears pending receipt")
+	app.catalog._tables.nodes.camp.options=old_options
 	app.session.state.node=app.catalog.entry("nodes","battle"); app.session.state.node.visit_id="acquisition-battle"
 	app.session.state.phase="story"; app.session.state.story_step="choice"; app.session.state.candidates=[]
 	app.handle_command("fight"); app.session.state.battle.hp=1

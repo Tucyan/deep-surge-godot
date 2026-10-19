@@ -38,6 +38,8 @@ static func batches(session, cursor: Dictionary) -> Array:
 		if reason=="spring": source="涌泉"
 		elif reason in ["salvage","origin_salvage"]: source="打捞"
 		elif reason in ["reward","bloodMoon"] and won: source="战斗"
+		elif reason=="event" or (reason=="reward" and event.get("command","")=="option"): source="节点事件"
+		elif reason=="production": source="设备生产"
 		if source.is_empty(): continue
 		var matches: Array=result.filter(func(batch):return batch.source==source and batch.kind=="card")
 		var batch: Dictionary

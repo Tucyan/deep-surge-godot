@@ -267,14 +267,36 @@ func _build_modal(app, panel_id: String, view: Dictionary) -> void:
 		inset.anchor_left=0.5; inset.anchor_right=0.5; inset.anchor_top=0.04; inset.anchor_bottom=0.96
 		var panel_width=minf(700.0,app.size.x-40.0)
 		inset.offset_left=-panel_width*0.5; inset.offset_right=panel_width*0.5
+		if app.display_settings.mobile:
+			inset.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+			if OS.has_feature("mobile"):
+				var safe: Rect2i=DisplayServer.get_display_safe_area()
+				var window_rect:=Rect2i(app.get_window().position,app.get_window().size)
+				var visible:=safe.intersection(window_rect)
+				if visible.has_area():
+					var ratio: Vector2=app.size/Vector2(window_rect.size)
+					inset.offset_left=(visible.position.x-window_rect.position.x)*ratio.x
+					inset.offset_top=(visible.position.y-window_rect.position.y)*ratio.y
+					inset.offset_right=(visible.end.x-window_rect.end.x)*ratio.x
+					inset.offset_bottom=(visible.end.y-window_rect.end.y)*ratio.y
 	host.add_child(inset)
 	var dialog = W.panel(inset)
 	var surface: PanelContainer=dialog.get_parent(); surface.name="ModalSurface"
+	if panel_id=="settings" and app.display_settings.mobile:
+		var settings_style: StyleBoxFlat=surface.get_theme_stylebox("panel").duplicate()
+		settings_style.bg_color=Color("0b1b24")
+		surface.add_theme_stylebox_override("panel",settings_style)
 	if panel_id == "recall":
 		var gallery_style: StyleBoxFlat = surface.get_theme_stylebox("panel").duplicate()
 		gallery_style.bg_color = Color("0b1b24")
 		surface.add_theme_stylebox_override("panel", gallery_style)
-	if panel_id=="settings": W.text(dialog,"设置",28,W.GOLD)
+	if panel_id=="settings":
+		if app.display_settings.mobile:
+			var header:=HBoxContainer.new(); header.name="MobileSettingsHeader"; dialog.add_child(header)
+			var back:=W.button(header,"‹ 返回",func():app.handle_ui("close_settings")); back.name="SettingsBack"
+			back.size_flags_horizontal=Control.SIZE_SHRINK_BEGIN
+			W.text(header,"设置",30,W.GOLD)
+		else: W.text(dialog,"设置",28,W.GOLD)
 	if not app.message.is_empty(): W.text(dialog,app.message,17,Color("ecb49a"))
 	if panel_id == "quit_unsaved":
 		W.text(dialog,"当前操作尚未保存",28,W.GOLD)
@@ -293,11 +315,12 @@ func _build_modal(app, panel_id: String, view: Dictionary) -> void:
 		confirm.name = "ConfirmReplacement"
 	elif panel_id in ["help","settings","narrative","recall"]: app.local_content(dialog,panel_id,view)
 	else: current_page = app.page(panel_id,dialog,view)
-	W.corner_close(surface,func():
+	var close:=W.corner_close(surface,func():
 		if panel_id == "quit_unsaved": app.handle_ui("cancel_quit")
 		elif panel_id == "replace_run": app.handle_ui("cancel_replacement")
 		elif app.local_panel != "": app.local_panel = ""; app.render()
 		else: app.handle_command("close"))
+	if panel_id=="settings" and app.display_settings.mobile: close.get_parent().hide()
 	if panel_id in ["craft", "build"]:
 		var help = Button.new()
 		help.name = "CraftHelpButton"; help.text = "?"
@@ -371,6 +394,12 @@ func _add_tutorial_banner(app, host: Control, view: Dictionary, modal: bool = fa
 	if detail != "":
 		var note = W.text(box,detail,15,W.MUTED)
 		note.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	if view.phase=="battle":
+		var battle=host.find_child("BattleHUDView",true,false)
+		if is_instance_valid(battle):
+			battle.tutorial_banner=outer
+			outer.resized.connect(battle.layout_panels)
+			battle.layout_panels.call_deferred()
 
 
 func local_content(app, parent: Node, id: String, view: Dictionary) -> void:

@@ -3,14 +3,63 @@ extends RefCounted
 const INK := Color("e3dfcc")
 const MUTED := Color("9baeb1")
 const GOLD := Color("c8b17a")
+const PORTABLE_FONT = preload("res://assets/fonts/NotoSansSC-VF.ttf")
 const TextButtonArt = preload("res://presentation/text_button_art.gd")
 const UtilityButtonArt = preload("res://presentation/utility_button_art.gd")
+const MOBILE_COPY_SIZE := 18
+const MOBILE_BUTTON_SIZE := 20
+const MOBILE_TOUCH_SIZE := 60
+
+static func remember_scroll(scroll: ScrollContainer, state: Dictionary, key: String) -> void:
+	var saved:=int(state.get(key,0))
+	scroll.set_meta("restoring_scroll",true)
+	scroll.get_v_scroll_bar().value_changed.connect(func(value):
+		if not scroll.get_meta("restoring_scroll",false): state[key]=int(value))
+	var reference: WeakRef=weakref(scroll)
+	var tree:=scroll.get_tree()
+	var restore=func():
+		await tree.process_frame
+		await tree.process_frame
+		var live=reference.get_ref()
+		if is_instance_valid(live):
+			live.scroll_vertical=saved; live.set_meta("restoring_scroll",false)
+	restore.call()
+
+static func readable_controls(node: Node) -> void:
+	if node is Label:
+		node.add_theme_font_size_override("font_size",maxi(MOBILE_COPY_SIZE,node.get_theme_font_size("font_size")))
+	elif node is BaseButton:
+		node.add_theme_font_size_override("font_size",maxi(MOBILE_BUTTON_SIZE,node.get_theme_font_size("font_size")))
+		if node is OptionButton:
+			node.custom_minimum_size.y=maxf(MOBILE_TOUCH_SIZE,node.custom_minimum_size.y)
+			var popup: PopupMenu=node.get_popup()
+			popup.add_theme_font_size_override("font_size",MOBILE_BUTTON_SIZE)
+			popup.add_theme_constant_override("v_separation",24)
+	elif node is LineEdit:
+		node.add_theme_font_size_override("font_size",MOBILE_BUTTON_SIZE)
+		node.custom_minimum_size.y=maxf(MOBILE_TOUCH_SIZE,node.custom_minimum_size.y)
+	for child in node.get_children(): readable_controls(child)
+
+static func suppress_mobile_hover(control: Control) -> void:
+	control.tooltip_text = ""
+	if control is Button:
+		control.add_theme_stylebox_override("hover",control.get_theme_stylebox("normal"))
+		control.add_theme_stylebox_override("hover_pressed",control.get_theme_stylebox("pressed"))
+		control.add_theme_color_override("font_hover_color",control.get_theme_color("font_color"))
+		control.add_theme_color_override("font_hover_pressed_color",control.get_theme_color("font_pressed_color"))
+	elif control is TextureButton:
+		control.texture_hover = control.texture_normal
+
+static func ui_font() -> Font:
+	# Android font aliases vary by device; bundle Chinese punctuation with the UI.
+	if OS.has_feature("android"): return PORTABLE_FONT
+	var font := SystemFont.new()
+	font.font_names = PackedStringArray(["Microsoft YaHei", "Noto Sans CJK SC", "sans-serif"])
+	return font
 
 static func theme() -> Theme:
 	var result := Theme.new()
-	var font := SystemFont.new()
-	font.font_names = PackedStringArray(["Microsoft YaHei", "Noto Sans CJK SC", "sans-serif"])
-	result.default_font = font
+	result.default_font = ui_font()
 	result.default_font_size = 16
 	result.set_color("font_color", "Label", INK)
 	result.set_color("font_color", "Button", INK)
@@ -35,7 +84,7 @@ static func theme() -> Theme:
 static func text(parent: Node, value: String, size: int = 18, color: Color = INK) -> Label:
 	var label := Label.new()
 	label.text = value
-	label.add_theme_font_size_override("font_size", size)
+	label.add_theme_font_size_override("font_size", maxi(size,MOBILE_COPY_SIZE) if TextButtonArt.uses_touch_ui(parent) else size)
 	label.add_theme_color_override("font_color", color)
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -115,6 +164,13 @@ static func corner_close(parent: Control, callback: Callable) -> Button:
 	close.offset_left=-48; close.offset_right=0; close.offset_top=0; close.offset_bottom=44
 	close.custom_minimum_size=Vector2(44,44); close.add_theme_font_size_override("font_size",24)
 	UtilityButtonArt.apply(close, "close")
+	if TextButtonArt.uses_touch_ui(parent):
+		close.custom_minimum_size=Vector2(60,60)
+		close.offset_left=-64; close.offset_bottom=60
+		close.get_node("UtilityButtonArt").hide()
+		close.text="×"; close.add_theme_font_size_override("font_size",30)
+		for key in ["font_color","font_hover_color","font_pressed_color","font_focus_color"]:
+			close.add_theme_color_override(key,INK)
 	return close
 
 static func grid(parent: Node, columns: int = 3) -> GridContainer:

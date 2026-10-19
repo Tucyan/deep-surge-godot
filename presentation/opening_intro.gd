@@ -56,8 +56,7 @@ func _ready() -> void:
 	narration.position = Vector2(500, 510)
 	narration.size = Vector2(600, 205)
 	narration.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	var font := SystemFont.new()
-	font.font_names = PackedStringArray(["Microsoft YaHei", "Noto Sans CJK SC", "sans-serif"])
+	var font := preload("res://presentation/widgets.gd").ui_font()
 	narration.add_theme_font_override("font", font)
 	narration.add_theme_font_size_override("font_size", 30)
 	narration.add_theme_constant_override("line_spacing", 14)

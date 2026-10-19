@@ -39,7 +39,7 @@ var _env: Environment
 var _materials: Dictionary = {}
 var _meshes: Dictionary = {}
 var _assets: RefCounted
-var _font: SystemFont
+var _font: Font
 var _cell_signature := ""
 var _destination_signature := ""
 var _time := 0.0
@@ -149,7 +149,7 @@ func _resize_render_surface() -> void:
 
 func create(assets: RefCounted) -> void:
 	_assets = assets
-	_font = SystemFont.new(); _font.font_names = PackedStringArray(["Microsoft YaHei","Noto Sans CJK SC"])
+	_font = preload("res://presentation/widgets.gd").ui_font()
 	# Always map the render texture onto the full logical scene rectangle.
 	# Render pixels may vary with clarity without changing screen coordinates.
 	expand_mode=TextureRect.EXPAND_IGNORE_SIZE

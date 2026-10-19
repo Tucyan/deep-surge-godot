@@ -29,6 +29,7 @@ func create(assets: RefCounted, card: Dictionary, action_title: String, callback
 	frame.add_child(art); place(art,Vector4(0.18,0.18,0.82,0.62))
 	var name_label := W.text(frame,card.definition.name,14,Color("24333e")); name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	name_label.autowrap_mode = TextServer.AUTOWRAP_OFF; name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	name_label.text_overrun_behavior=TextServer.OVERRUN_TRIM_ELLIPSIS
 	place(name_label,Vector4(0.14,0.66,0.86,0.75))
 	if int(card.get("stack_count",1))>1:
 		var badge := Label.new(); badge.name="StackQuantity"; badge.text="×%d" % card.stack_count
@@ -50,7 +51,7 @@ func create(assets: RefCounted, card: Dictionary, action_title: String, callback
 	button.add_theme_stylebox_override("focus",focus)
 	for state in ["font_color","font_hover_color","font_pressed_color","font_disabled_color","font_focus_color"]: button.add_theme_color_override(state,Color.TRANSPARENT)
 	button.clip_text = true
-	button.mouse_entered.connect(func(): background.modulate = Color(1.12,1.12,1.12) if not disabled else Color(0.75,0.75,0.75))
+	button.mouse_entered.connect(func(): background.modulate = Color(1.12,1.12,1.12) if not disabled and not W.TextButtonArt.uses_touch_ui(button) else (Color(0.75,0.75,0.75) if disabled else Color.WHITE))
 	button.mouse_exited.connect(func(): background.modulate = Color.WHITE if not disabled else Color(0.75,0.75,0.75))
 	if disabled: background.modulate = Color(0.75,0.75,0.75)
 

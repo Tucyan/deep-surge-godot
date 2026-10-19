@@ -66,7 +66,7 @@ func exercise(mobile: bool):
 	check(tray.tiles[destination]==tile and tray.buttons[destination]==button and tray.stack_bases[destination]==backing,"tile, button and stack keep their UID association")
 	check(tray.stack_bases[destination]!=null,"fixture moves a complete resource stack")
 	tray.focus_card(-1); button.focus_entered.emit()
-	check(tray.hovered==destination,"focus resolves the new slot")
+	check(tray.hovered==(-1 if mobile else destination),"desktop focus resolves the new slot; mobile keeps hover disabled")
 	tray.focus_card(-1); tray._process(1.0)
 	var previous_sibling := 0
 	for i in range(tray.cards.size()):

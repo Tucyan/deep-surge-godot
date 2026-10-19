@@ -22,6 +22,8 @@ var log_scroll: ScrollContainer
 var _elapsed := 0.0
 var characters_per_second := 32.0
 var _pending_speaker := ""
+var mobile_layout := false
+var mobile_choice_scroll: ScrollContainer
 
 const KNOWN_CHARACTERS := [
 	"塞琳", "主角", "涅德", "柯尔", "老木匠柯尔", "芮安", "哈克",
@@ -84,9 +86,7 @@ static func parse_dialogue_node(raw_text: String, declared_speaker: String = "")
 
 func _ready() -> void:
 	var plain_theme := Theme.new()
-	var font := SystemFont.new()
-	font.font_names = PackedStringArray(["Microsoft YaHei", "Noto Sans CJK SC", "sans-serif"])
-	plain_theme.default_font = font
+	plain_theme.default_font = preload("res://presentation/widgets.gd").ui_font()
 	theme = plain_theme
 	clip_contents = true
 	var background := ColorRect.new()
@@ -176,6 +176,8 @@ func _ready() -> void:
 	next_button.pressed.connect(advance)
 
 	_build_log()
+	mobile_layout=preload("res://presentation/text_button_art.gd").uses_touch_ui(self)
+	if mobile_layout: _build_mobile_layout()
 	player.completed.connect(func(result): story_completed.emit(result.duplicate(true)))
 	resized.connect(_reflow)
 	_reflow()
@@ -199,6 +201,9 @@ func _label(parent: Node, text: String, pos: Vector2, dimensions: Vector2, font_
 	return label
 
 func _fit_text(label: Label, maximum: int, minimum: int) -> void:
+	if mobile_layout:
+		label.add_theme_font_size_override("font_size",maxi(22,mini(maximum,28)))
+		return
 	var font_size := maximum
 	var bounds: Vector2 = label.get_meta("text_box_size")
 	var font: Font = label.get_theme_font("font")
@@ -260,6 +265,59 @@ func _reflow() -> void:
 	var fit := minf(size.x / REFERENCE.x, size.y / REFERENCE.y)
 	composition.scale = Vector2.ONE * fit
 	composition.position = (size - REFERENCE * fit) * 0.5
+	if mobile_layout:
+		log_overlay.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
+
+func _build_mobile_layout() -> void:
+	# Text lives in the viewport canvas, independently of the illustrated composition.
+	composition.hide()
+	dialogue_box_rect.hide()
+	var margin:=MarginContainer.new(); margin.name="MobileStoryLayout"; add_child(margin)
+	margin.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
+	for edge in ["left","right","top","bottom"]: margin.add_theme_constant_override("margin_"+edge,24)
+	var column:=VBoxContainer.new(); margin.add_child(column)
+	column.add_theme_constant_override("separation",12)
+	var toolbar:=HBoxContainer.new(); column.add_child(toolbar)
+	for item in [title_label,log_button,skip_button]:
+		item.reparent(toolbar); item.position=Vector2.ZERO
+		item.size_flags_horizontal=SIZE_EXPAND_FILL if item==title_label else SIZE_SHRINK_END
+		item.custom_minimum_size=Vector2(0,60)
+		item.add_theme_font_size_override("font_size",24 if item==title_label else 20)
+	title_label.text_overrun_behavior=TextServer.OVERRUN_TRIM_ELLIPSIS
+	var reading:=ScrollContainer.new(); reading.name="MobileStoryReading"; column.add_child(reading)
+	reading.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
+	reading.size_flags_vertical=SIZE_EXPAND_FILL
+	var copy:=VBoxContainer.new(); copy.size_flags_horizontal=SIZE_EXPAND_FILL; reading.add_child(copy)
+	copy.add_theme_constant_override("separation",16)
+	speaker.reparent(copy); speaker.horizontal_alignment=HORIZONTAL_ALIGNMENT_LEFT
+	var description_column:=VBoxContainer.new(); copy.add_child(description_column)
+	var old_description_panel:=description.get_parent()
+	description.reparent(description_column); old_description_panel.hide()
+	body.reparent(copy)
+	body.add_theme_color_override("font_color",Color("f3ead9"))
+	body.add_theme_constant_override("line_spacing",8)
+	for label in [speaker,description,body]:
+		label.position=Vector2.ZERO; label.size_flags_horizontal=SIZE_EXPAND_FILL
+	mobile_choice_scroll=ScrollContainer.new(); mobile_choice_scroll.name="MobileStoryChoices"
+	mobile_choice_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
+	mobile_choice_scroll.custom_minimum_size.y=140; column.add_child(mobile_choice_scroll)
+	choice_root.queue_free(); choice_root=VBoxContainer.new(); mobile_choice_scroll.add_child(choice_root)
+	choice_root.size_flags_horizontal=SIZE_EXPAND_FILL
+	next_button.reparent(column); next_button.position=Vector2.ZERO; next_button.custom_minimum_size=Vector2(0,60)
+	next_button.add_theme_font_size_override("font_size",22)
+	log_overlay.reparent(self)
+	for item in log_overlay.get_children():
+		if item!=log_scroll and item!=log_close: item.hide()
+	var backdrop:=ColorRect.new(); backdrop.color=Color("101d28"); log_overlay.add_child(backdrop)
+	backdrop.set_anchors_and_offsets_preset(PRESET_FULL_RECT); log_overlay.move_child(backdrop,0)
+	log_scroll.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
+	log_scroll.offset_left=24; log_scroll.offset_top=84; log_scroll.offset_right=-24; log_scroll.offset_bottom=-24
+	log_close.set_anchors_and_offsets_preset(PRESET_TOP_RIGHT)
+	log_close.offset_left=-84; log_close.offset_right=-24; log_close.offset_top=12; log_close.offset_bottom=72
+	log_close.custom_minimum_size=Vector2(60,60)
+	log_text.add_theme_font_size_override("font_size",22)
+	var heading:=Label.new(); heading.text="航海笔记"; heading.position=Vector2(24,20)
+	heading.add_theme_font_size_override("font_size",28); log_overlay.add_child(heading)
 
 func load_story(data: Variant) -> Dictionary:
 	_pending_speaker = ""
@@ -270,6 +328,10 @@ func load_story(data: Variant) -> Dictionary:
 	return result
 
 func _refresh() -> void:
+	if mobile_layout:
+		var reading:=find_child("MobileStoryReading",true,false) as ScrollContainer
+		if reading: reading.scroll_vertical=0
+		mobile_choice_scroll.scroll_vertical=0
 	var view: Dictionary = player.get_view()
 	title_label.text = view.title
 	_fit_text(title_label, 35, 23)
@@ -325,6 +387,11 @@ func _refresh() -> void:
 		if imported:
 			button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 			button.add_theme_font_size_override("font_size", 20)
+		if mobile_layout:
+			button.position=Vector2.ZERO; button.custom_minimum_size=Vector2(0,64)
+			button.size_flags_horizontal=SIZE_EXPAND_FILL
+			button.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+			button.add_theme_font_size_override("font_size",22)
 		button.disabled = choice.get("disabled", false)
 		button.tooltip_text = str(choice.get("disabled_reason", ""))
 		button.pressed.connect(choose.bind(choice.id))
@@ -336,6 +403,7 @@ func _refresh() -> void:
 	if view.status == "completed":
 		body.visible_characters = -1
 	_update_choice_visibility()
+	if mobile_layout: mobile_choice_scroll.visible=not options.is_empty()
 
 func _process(delta: float) -> void:
 	if body == null or log_overlay.visible or body.visible_characters == -1: return

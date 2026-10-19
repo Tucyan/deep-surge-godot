@@ -28,7 +28,7 @@
 | 战斗与成长 | [设备供给](battle-equipment.md)、[结算](settlement.md)、[局外商店/科技](meta-shop-and-tech.md) |
 | 木筏、生产与镜头 | [螺旋与视角](spiral-raft-and-camera.md)、[直接交互](raft-direct-interaction.md)、[状态模型](raft-state-models.md)、[滤水器](filter-production-visuals.md)、[土盆](planter-growth-visuals.md) |
 | 剧情页面与序章 | [数据结构](story-data.md)、[VN 接口](story-interface.md)、[开局序章](opening-intro.md)、[事件呈现](node-event-presentation.md) |
-| UI/显示 | [前端约定](frontend-guidelines.md)、[显示设置](display-settings.md)、[手牌](hand-layout.md)、[航海 HUD](nautical-hud.md)、[首页](title-ui.md) |
+| UI/显示 | [前端约定](frontend-guidelines.md)、[显示设置](display-settings.md)、[手机阅读布局](mobile-ui-readability.md)、[手牌](hand-layout.md)、[航海 HUD](nautical-hud.md)、[首页](title-ui.md) |
 | 刷新与体验 | [交互刷新](interaction-refresh.md)、[加载与局部刷新](loading-and-minor-refresh.md)、[体验卡顿记录](experience-stall-backlog.md) |
 | 资产与海面 | [资产登记](../assets/README.md)、[HUD 素材](supplied-hud.md)、[海浪](wave-noise.md) |
 | 平台导出 | [Android 导出记录](android-export.md)（需核对记录的版本与当次导出范围） |

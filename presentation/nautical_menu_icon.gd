@@ -5,7 +5,7 @@ func _ready():
 	resized.connect(queue_redraw)
 func _draw():
 	var p=size*.5
-	var gold=Color("f1dfbc") if get_parent().is_hovered() else Color("d8c9aa")
+	var gold=Color("f1dfbc") if preload("res://presentation/text_button_art.gd").pointer_hovered(get_parent()) else Color("d8c9aa")
 	if kind=="home":
 		draw_polyline(PackedVector2Array([p+Vector2(-13,0),p+Vector2(0,-12),p+Vector2(13,0)]),gold,3,true)
 		draw_polyline(PackedVector2Array([p+Vector2(-10,-1),p+Vector2(-10,13),p+Vector2(-3,13),p+Vector2(-3,4),p+Vector2(4,4),p+Vector2(4,13),p+Vector2(10,13),p+Vector2(10,-1)]),gold,2,true)

@@ -18,6 +18,7 @@
 | 加载过渡及局部更新 | [加载与刷新验证](loading-and-minor-refresh-verification.md) |
 | 手动排序 | [排序松手验证](hand-reorder-verification.md) |
 | 海面运行性能 | [运行性能验证](runtime-performance-verification.md) |
+| 局内交互剩余卡顿 | [31类操作诊断与分层计时](ingame-stalls-20261019.md)（仅排查，未修复） |
 | 各清晰度低帧率与手牌纸张绘制 | [原因排查](frame-bottleneck-20261019.md)、[优化验证](paper-grain-performance-20261019.md) |
 | 发行/平台 | [Android 导出专题](../docs/android-export.md)（须核对其中记录的版本） |
 

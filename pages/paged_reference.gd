@@ -90,7 +90,7 @@ func encyclopedia() -> void:
 	body.add_theme_constant_override("separation",18)
 	var left := VBoxContainer.new(); left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	left.size_flags_stretch_ratio = 1.8; body.add_child(left)
-	var grid := W.grid(left,3); grid.name = "EncyclopediaGrid"
+	var grid := W.grid(left,2 if context.get("mobile",false) else 3); grid.name = "EncyclopediaGrid"
 	grid.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	var pages := maxi(1,ceili(float(ids.size())/6.0))
 	var index := clampi(int(context.ui_state.get("list_page",0)),0,pages-1)
@@ -177,6 +177,11 @@ func encyclopedia_detail(id: String) -> void:
 		else: copy = str(data.get("description",data.get("intent","暂无说明。")))
 	var text := W.text(detail,copy,18,W.INK if known else W.MUTED)
 	text.name = "DetailCopy"; text.custom_minimum_size.y = 96
+	if context.get("mobile",false):
+		var scroll:=ScrollContainer.new(); scroll.name="MobileEncyclopediaCopy"
+		scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
+		scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL
+		detail.remove_child(text); detail.add_child(scroll); scroll.add_child(text)
 
 func meta_page() -> void:
 	name = "MetaShop"
