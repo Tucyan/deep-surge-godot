@@ -2,6 +2,7 @@ extends RefCounted
 ## Data-driven ordinary events. No UI, storage, or transport dependencies.
 const I = preload("res://core/inventory.gd")
 const R = preload("res://core/random_streams.gd")
+const RelicRewards = preload("res://core/relic_rewards.gd")
 const Origins = preload("res://core/origin_rules.gd")
 const WEIGHTS := {"supply":25,"trade":10,"service":15,"risk":10,"battle":20,"camp":10,"shop":10}
 
@@ -37,7 +38,7 @@ static func free_benefit(ctx, node: Dictionary, food_only: bool = false) -> bool
 		for effect in option.get("effects",[]):
 			if effect.type=="GiveCard" and (not food_only or effect.id in ["food","water"]): return true
 			if food_only: continue
-			if effect.type in ["GiveRandomResource","ChangeAP","AddBuff"]: return true
+			if effect.type in ["GiveRandomResource","ChangeAP","AddBuff","GiveRelic","GiveRandomRelic"]: return true
 			if effect.type=="ChangeCurrent" and int(effect.delta)>0 and ctx.state.player[effect.stat]<ctx.state.player[effect.stat+"_max"]: return true
 	return false
 
@@ -183,8 +184,13 @@ static func reason(ctx, option: Dictionary, args: Dictionary = {}) -> String:
 		if card.is_empty() or card.temporary or card.id not in I.RESOURCES: return "请选择一张永久基础资源"
 		if args.get("target","") not in I.RESOURCES or args.target==card.id: return "请选择另一种基础资源"
 	if option.has("battle") and ctx.catalog.entry("enemies",option.battle.enemy).is_empty(): return "敌人定义无效"
+	if not RelicRewards.valid_content(ctx.catalog.table("relics"),option): return "潮汐遗物奖励配置无效"
 	var effects: Array=option.get("effects",[]).duplicate(true)
 	for outcome in option.get("outcomes",[]): effects.append_array(outcome.get("effects",[]))
+	if ctx.state.get("mode","")=="tutorial":
+		if not option.get("battle",{}).get("rewards",{}).get("relics",[]).is_empty(): return "教程不能获得潮汐遗物"
+		for effect in effects:
+			if effect.type in ["GiveRelic","GiveRandomRelic"]: return "教程不能获得潮汐遗物"
 	for effect in effects:
 		if effect.type=="AddBuff" and effect.id!="rested":
 			var probe=ctx.get_script().new(ctx.catalog); probe.state=ctx.state.duplicate(true)
@@ -192,8 +198,11 @@ static func reason(ctx, option: Dictionary, args: Dictionary = {}) -> String:
 	return ""
 
 static func apply(ctx, effects: Array, args: Dictionary, summary: Array) -> bool:
+	if not RelicRewards.valid_effects(ctx.catalog.table("relics"),effects): return ctx.fail("潮汐遗物奖励配置无效")
 	for effect in effects:
 		match effect.type:
+			"GiveRelic", "GiveRandomRelic":
+				if not RelicRewards.grant(ctx,[RelicRewards.effect_entry(effect)],summary): return false
 			"GiveRandomResource":
 				for i in range(int(effect.get("amount",1))):
 					var id: String=preload("res://core/tutorial_rules.gd").fixed_resource(ctx.state) if ctx.state.get("mode","")=="tutorial" else R.pick(ctx.state.rng,"rewards",I.RESOURCES)
@@ -283,9 +292,10 @@ static func action_label(ctx, args: Dictionary) -> String:
 
 static func reward_preview(option: Dictionary) -> Dictionary:
 	# Only fixed, explicitly offered rewards; never evaluate a random outcome.
-	var result := {"cards":{},"attributes":{},"ap":0,"random_resources":0}
+	var result := {"cards":{},"attributes":{},"ap":0,"random_resources":0,"relics":[]}
 	for effect in option.get("effects",[]):
 		match effect.type:
+			"GiveRelic", "GiveRandomRelic": result.relics.append(RelicRewards.effect_entry(effect))
 			"GiveCard": result.cards[effect.id]=int(result.cards.get(effect.id,0))+int(effect.get("amount",1))
 			"ChangeCurrent": result.attributes[effect.stat]=int(result.attributes.get(effect.stat,0))+int(effect.delta)
 			"ChangeAP": result.ap+=int(effect.delta)
@@ -318,10 +328,16 @@ static func valid_state(ctx, s: Dictionary) -> bool:
 	if s.phase=="battle":
 		if s.battle.has("rewards"):
 			var verified := false
-			for option in s.node.get("options",[]):
+			var offers: Array=s.node.get("options",[])
+			if s.node.has("stages"):
+				var index: int=int(runtime.get("stage",-1))
+				if index<0 or index>=s.node.stages.size(): return false
+				offers=s.node.stages[index]
+			if s.battle.id==s.node.get("monster","") and not runtime.has("battle_option") and s.battle.rewards==s.node.get("rewards",{}): verified=true
+			for option in offers:
 				if option.id==runtime.get("battle_option","") and option.get("battle",{}).get("enemy","")==s.battle.id and option.battle.get("rewards",{})==s.battle.rewards: verified=true
 			if not verified: return false
-		elif s.battle.get("id","")!=s.node.get("monster",""): return false
+		elif s.battle.get("id","")!=s.node.get("monster","") or not s.node.get("rewards",{}).is_empty(): return false
 	if runtime.is_empty(): return not s.node.has("stages")
 	if not runtime.get("visit_id") is String or runtime.visit_id!=s.node.get("visit_id","") or not ctx.Rules.integer(runtime.get("stage")) or runtime.stage<0 or not runtime.get("last_result") is String or not runtime.get("resolved") is bool: return false
 	if s.node.has("stages"):

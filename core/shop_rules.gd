@@ -2,6 +2,7 @@ extends RefCounted
 ## One immutable shelf per node visit; quotes never draw random numbers.
 const I = preload("res://core/inventory.gd")
 const R = preload("res://core/random_streams.gd")
+const RelicRewards = preload("res://core/relic_rewards.gd")
 
 static func enter(ctx) -> bool:
 	var node: Dictionary=ctx.state.get("node",{})
@@ -26,14 +27,26 @@ static func enter(ctx) -> bool:
 	var purchased := {}
 	for id in stock: purchased[id]=0
 	ctx.state.shop={"visit_id":node.visit_id,"stock":stock,"purchased":purchased}
+	var relics: Array=[]
+	if ctx.state.get("mode","")!="tutorial":
+		var pool: Array=[]
+		for id in ctx.catalog.table("relics"):
+			if ctx.catalog.entry("relics",id).get("enabled",false): pool.append(id)
+		pool.sort()
+		for n in range(mini(3,pool.size())):
+			var index: int=int(R.draw(ctx.state.rng,"rewards")*pool.size())
+			relics.append(pool[index]); pool.remove_at(index)
+	ctx.state.shop.relics=relics
+	ctx.state.shop.relic_purchased=[]
 	ctx.Origins.enter_shop(ctx.state,str(node.visit_id))
 	return true
 
 static func view(ctx) -> Dictionary:
-	var result := {"visit_id":"","stock":[],"sellable":[],"relic_slots":3,"relic_status":"未开放"}
+	var result := {"visit_id":"","stock":[],"sellable":[],"relic_slots":3,"relic_status":"开放","relic_stock":[]}
 	var shop: Dictionary=ctx.state.get("shop",{})
 	if shop.is_empty(): return result
 	result.visit_id=shop.visit_id
+	for id in shop.get("relics",[]): result.relic_stock.append(_relic_quote(ctx,id))
 	for id in shop.stock:
 		var row: Dictionary=_quote(ctx,id)
 		result.stock.append(row)
@@ -61,6 +74,25 @@ static func _quote(ctx, id: String) -> Dictionary:
 
 static func _active(ctx) -> bool:
 	return ctx.phase()=="interaction" and ctx.state.get("node",{}).get("kind","")=="shop" and not ctx.state.get("shop",{}).is_empty() and ctx.state.shop.visit_id==ctx.state.node.get("visit_id","")
+
+static func _relic_quote(ctx, id: String) -> Dictionary:
+	var definition: Dictionary=ctx.catalog.entry("relics",id)
+	var remaining: int=0 if id in ctx.state.shop.get("relic_purchased",[]) else 1
+	var price: int=int(definition.price)
+	return {"id":id,"name":definition.name,"description":definition.description,"kind":"collectible","price":price,"remaining":remaining,"limit":1,"can_coin":remaining>0 and ctx.state.coins>=price}
+
+static func buy_collectible(ctx, args: Dictionary) -> bool:
+	if not _active(ctx) or ctx.state.get("mode","")=="tutorial": return ctx.fail("当前不能购买潮汐遗物")
+	var id: Variant=args.get("id","")
+	if not id is String or id not in ctx.state.shop.get("relics",[]): return ctx.fail("潮汐遗物不在本店货架")
+	if args.get("payment","coin")!="coin": return ctx.fail("潮汐遗物仅支持贝币支付")
+	var row: Dictionary=_relic_quote(ctx,id)
+	if row.remaining<=0: return ctx.fail("该潮汐遗物已售罄")
+	if ctx.state.coins<int(row.price): return ctx.fail("贝币不足")
+	if not RelicRewards.grant(ctx,[{"id":id}],[]): return false
+	I.consume(ctx.state,"coin",int(row.price),"collectible_shop")
+	ctx.state.shop.relic_purchased.append(id)
+	return true
 
 static func buy(ctx, args: Dictionary) -> bool:
 	if not _active(ctx): return ctx.fail("当前不在商店")
@@ -104,6 +136,16 @@ static func valid_state(ctx, s: Dictionary, profile: Dictionary = {}) -> bool:
 	var shop = s.get("shop",null)
 	if not shop is Dictionary: return false
 	if shop.is_empty(): return s.get("phase","")!="interaction"
+	if not shop.get("relics") is Array or not shop.get("relic_purchased") is Array: return false
+	var relic_seen: Array=[]
+	for id in shop.relics:
+		if not id is String or id in relic_seen or not ctx.catalog.entry("relics",id).get("enabled",false): return false
+		relic_seen.append(id)
+	if shop.relics.size()!=(0 if s.get("mode","")=="tutorial" else mini(3,ctx.catalog.table("relics").values().filter(func(d):return d.get("enabled",false)).size())): return false
+	var bought_seen: Array=[]
+	for id in shop.relic_purchased:
+		if not id is String or id not in relic_seen or id in bought_seen: return false
+		bought_seen.append(id)
 	if not shop.get("visit_id") is String or shop.visit_id.is_empty() or not shop.get("stock") is Array or not shop.get("purchased") is Dictionary: return false
 	if shop.stock.size()!=6 or shop.purchased.size()!=6: return false
 	var seen := {}; var resources := 0; var equipment := 0

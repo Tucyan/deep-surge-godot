@@ -14,7 +14,10 @@ const Shop = preload("res://core/shop_rules.gd")
 const EnvironmentRules = preload("res://core/environment_rules.gd")
 const Tutorial = preload("res://core/tutorial_rules.gd")
 const Origins = preload("res://core/origin_rules.gd")
-const VERSION := "godot-flow-v02-25"
+const Collectibles = preload("res://core/collectible_rules.gd")
+const EffectQuery = preload("res://core/effect_query.gd")
+const EffectRules = preload("res://core/effect_rules.gd")
+const VERSION := "godot-flow-v02-26"
 const ORIGINS = Origins.DEFINITIONS
 var catalog: RefCounted
 var state: Dictionary = {}
@@ -25,6 +28,9 @@ var error := ""
 var revision := 0
 var last_settlement: Dictionary = {}
 var _auto_advancing := false
+var _effect_preview := false
+## Presentation preference; direct rules callers retain the historical default.
+var auto_end_voyage := true
 
 func _init(content: RefCounted) -> void:
 	catalog = content
@@ -71,6 +77,10 @@ func dispatch(command: String, args: Dictionary = {}) -> bool:
 			if phase() == "interaction":
 				result_story("离开商店，保留未使用的物资。" ); ok = true
 		"buy": ok = Shop.buy(self,args)
+		"buy_collectible": ok = Shop.buy_collectible(self,args)
+		"discard_collectible":
+			if base_action() and state.get("mode","")!="tutorial":
+				ok = Collectibles.discard(self,str(args.get("uid","")))
 		"sell": ok = Shop.sell(self,args)
 		"fight": ok = Battle.enter(self)
 		"leave_encounter":
@@ -109,7 +119,7 @@ func dispatch(command: String, args: Dictionary = {}) -> bool:
 	# The tutorial never auto-advances: every action is the player's prompted choice.
 	if not _auto_advancing and state.get("mode","") != "tutorial" and (command in Stats.GAME_COMMANDS or command=="resume"):
 		var automatic: String=AutoProgress.next_command(self)
-		if automatic!="":
+		if automatic!="" and (automatic!="end_voyage" or auto_end_voyage):
 			_auto_advancing=true
 			dispatch(automatic)
 			_auto_advancing=false
@@ -126,6 +136,7 @@ func event_panel() -> String:
 func open_panel(id: String) -> bool:
 	if id in ["encyclopedia", "meta_shop"] and screen == "home": panel = id; return true
 	if not state.is_empty() and screen == "game" and id == "raft": panel = id; return true
+	if not state.is_empty() and screen == "game" and id == "collectibles": panel = id; return true
 	if not active() or screen != "game": return fail("请先开始或继续航程")
 	if id in ["craft", "build"] and base_action(): panel = id; return true
 	if id == event_panel() and not id.is_empty(): panel = id; return true
@@ -163,6 +174,7 @@ func new_game(args: Dictionary) -> bool:
 	if not tutorial: Rules.profile_modifiers(self, stats)
 	state = {"difficulty":difficulty, "mode":mode, "origin":origin, "seed":int(seed), "rng":R.create(int(seed)), "phase":"navigation", "voyage":1, "length":0, "ap":0, "player":stats, "hand":[], "coins":0, "cells":[], "next_id":1, "node":{}, "candidates":[], "pool":[], "visits":{}, "story_step":"", "result_text":"", "battle":{}, "completed":0, "boss_defeated":false, "awarded":false, "flags":{}, "logs":[], "buffs":[], "xp":0, "level":1}
 	Origins.initialize(state)
+	Collectibles.initialize(state)
 	if tutorial: state.tutorial=Tutorial.new_state()
 	state.shop = {}; state.encounter = {}
 	EnvironmentRules.initialize(state)
@@ -209,7 +221,7 @@ func log_text(text: String) -> void:
 	state.logs.append("第%d航次 · %s" % [state.voyage,text])
 func change(stat: String, delta: int, source: String = "") -> void:
 	var old: int = state.player[stat]
-	state.player[stat] = clampi(int(state.player[stat])+delta,0,int(state.player[stat+"_max"]))
+	state.player[stat] = clampi(int(state.player[stat])+delta,0,EffectQuery.effective_max(state,catalog,stat))
 	Stats.change(state,stat,old,state.player[stat],delta,source)
 func alive() -> bool:
 	if state.player.hp <= 0: finish("dead"); return false
@@ -220,6 +232,8 @@ func result_story(text: String) -> void:
 	log_text(text)
 func finish(result: String) -> void:
 	if phase()=="finished": return
+	if not state.get("battle",{}).is_empty(): Battle.cleanup(self)
+	else: EffectRules.trigger(self,"battle_end")
 	if state.get("settlement",{}).get("scope","")=="chapter": state.chapter_report=state.settlement.duplicate(true)
 	state.erase("settlement")
 	state.phase = "finished"; state.result = result; panel = ""
@@ -264,17 +278,22 @@ func view() -> Dictionary:
 	result.tech_tree=preload("res://core/tech_rules.gd").projection(catalog,profile,active())
 	result.erase("rng"); result.erase("pool"); result.erase("tutorial")
 	result.erase("origin_state")
+	result.erase("collectibles")
 	var lesson: Dictionary = Tutorial.hint(state) if state.get("mode","") == "tutorial" else {}
 	result.tutorial_hint=lesson
 	result.tutorial_operation=str(lesson.get("operation","")) if not lesson.is_empty() else ""
 	result.tutorial_reason=str(lesson.get("text","")) if not lesson.is_empty() else ""
 	if not state.is_empty():
+		result.collectibles=Collectibles.project(self)
+		for stat in ["hp","hunger","hydration","sanity"]:
+			result.player[stat+"_max"]=EffectQuery.effective_max(state,catalog,stat)
 		result.capacity = I.capacity(state)
 		result.origin_status=Origins.status(state)
 		result.player.limit = I.hand_limit(state,catalog)
 		result.can_base = base_action()
 		result.expansion_cost = Rules.expansion_cost(state)
-		result.survival_settlement = {"pending":state.flags.has("voyage_survival_cost"),"food_water_cost":int(state.flags.get("voyage_survival_cost",0))}
+		var survival_base: int=int(state.flags.get("voyage_survival_cost",0))
+		result.survival_settlement = {"pending":state.flags.has("voyage_survival_cost"),"food_water_cost":survival_base,"costs":EffectQuery.survival_costs(state,catalog,{"hunger":survival_base,"hydration":survival_base})}
 		if int(state.flags.get("rested_until",0)) >= state.voyage:
 			result.player.base_ap += 1
 		for card in result.hand:

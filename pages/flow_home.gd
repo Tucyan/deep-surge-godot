@@ -4,11 +4,17 @@ func build() -> void:
 	title.name="HomeMenu"
 	title.size_flags_vertical=Control.SIZE_EXPAND_FILL; title.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	add_child(title); title.create(context,false)
-	var settings:=W.button(title,"设置",func(): request("local_panel","settings"))
+	var settings:=W.button(title,"",func(): request("local_panel","settings"))
 	settings.name="HomeSettings"; settings.custom_minimum_size=Vector2(160,64) if context.get("mobile",false) else Vector2(112,48)
+	settings.accessibility_name="设置"; settings.tooltip_text="设置"
 	settings.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
 	settings.offset_left=-184 if context.get("mobile",false) else -136; settings.offset_right=-24; settings.offset_top=24; settings.offset_bottom=88 if context.get("mobile",false) else 72
-	settings.add_theme_font_size_override("font_size",22)
+	var gear:=TextureRect.new(); gear.name="HomeSettingsGear"; gear.texture=assets.texture("icon.settings.gear")
+	gear.expand_mode=TextureRect.EXPAND_IGNORE_SIZE; gear.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	gear.mouse_filter=Control.MOUSE_FILTER_IGNORE; gear.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	var gear_size:=32.0 if context.get("mobile",false) else 28.0
+	gear.offset_left=-gear_size*0.5; gear.offset_top=-gear_size*0.5; gear.offset_right=gear_size*0.5; gear.offset_bottom=gear_size*0.5
+	settings.add_child(gear)
 	title.menu_action.connect(_title_action.bind(title))
 func _title_action(id: String, title: Control) -> void:
 	match id:
@@ -54,6 +60,16 @@ func select_mode(title: Control) -> void:
 		request("narrative_choose",""))
 	var challenge := W.button(box,"挑战模式",func(): request("setup","challenge"))
 	challenge.name = "ChallengeMode"
-	if context.get("active", false):
-		W.button(box,"返回当前航程",func(): send("resume"))
+	if context.get("can_resume",context.get("active",false)):
+		var is_challenge: bool = context.get("mode","") == "challenge"
+		var resume_button := W.button(box,"继续挑战航程" if is_challenge else "返回当前航程",func(): send("resume"))
+		resume_button.name = "ContinueChallenge" if is_challenge else "ContinueRun"
+		var difficulty_name: String = str(catalog.entry("difficulties",str(context.get("difficulty","standard"))).get("name",""))
+		var phase_name: String = {"navigation":"导航","preparation":"准备","story":"事件","interaction":"交易","battle":"战斗","aftermath":"收尾","discard":"整理手牌"}.get(str(context.get("phase","")),"航行中")
+		W.text(box,"%s · 第 %d/%d 轮 · %s" % [difficulty_name,int(context.get("voyage",1)),int(context.get("length",0)),phase_name],17,W.MUTED)
+	elif not context.get("last_settlement",{}).is_empty():
+		var report: Dictionary = context.last_settlement
+		var result_name: String = str(report.get("outcome_name","航程已结束"))
+		var summary := W.text(box,"上次航程：%s · 完成 %d 轮 · 涌潮点 +%d" % [result_name,int(report.get("completed",0)),int(report.get("points",{}).get("granted",0))],17,W.MUTED)
+		summary.name = "LastChallengeSettlement"
 	W.corner_close(box.get_parent(),func(): center.queue_free(); title.composition.visible=true)

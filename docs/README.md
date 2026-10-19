@@ -1,5 +1,5 @@
 # Deep Surge 文档索引
-<!-- doc-status: current; doc-role: entry; content-version: godot-flow-v02-25; reviewed: 2026-10-19 -->
+<!-- doc-status: current; doc-role: entry; content-version: godot-flow-v02-26; reviewed: 2026-10-19 -->
 
 当前工程为 Godot。先按任务选择下表主文档，再阅读专题；详细数值与行为只在对应主文档维护。文档、代码或测试冲突时需核对，不用历史条目覆盖现行实现。
 
@@ -12,6 +12,7 @@
 | 架构/刷新 | [应用架构](application-architecture.md) | core/application/adapters/presentation 分工 |
 | Agent 接入 | [Agent 接口](agent-interface.md) | JSONL、观察、动作、重放与当前路线门禁 |
 | 剧情/保存 | [剧情与配对存档](narrative-and-save.md) | 11节点剧情、坏结局、存储与失败恢复 |
+| 潮汐遗物效果 | [潮汐遗物契约](collectible-effects.md) | 配置字段、商店、实例生命周期与效果时机 |
 | 旧剧情回看 | [回廊契约](story-gallery.md) | 五幕序章、旧归档只读例外 |
 | 修改文档 | [维护规则](documentation-governance.md) | 文档类型、读取顺序、同步与检查 |
 
@@ -22,7 +23,7 @@
 | 范围 | 文档 |
 |---|---|
 | 难度、起手与出身 | [难度](difficulty.md)、[起手](starting-resources.md)、[出身 v2](origins-v2.md) |
-| 导航与经营 | [导航/制造](navigation-and-crafting.md)、[商店](formal-shop.md)、[环境](environment-buffs.md) |
+| 导航与经营 | [导航/制造](navigation-and-crafting.md)、[商店](formal-shop.md)、[潮汐遗物](collectible-effects.md)、[环境](environment-buffs.md) |
 | 生存/补给/结束 | [生命试测](health-balance.md)、[涌泉](spring-supply.md)、[自动结束](automatic-action-end.md) |
 | 战斗与成长 | [设备供给](battle-equipment.md)、[结算](settlement.md)、[局外商店/科技](meta-shop-and-tech.md) |
 | 木筏、生产与镜头 | [螺旋与视角](spiral-raft-and-camera.md)、[直接交互](raft-direct-interaction.md)、[状态模型](raft-state-models.md)、[滤水器](filter-production-visuals.md)、[土盆](planter-growth-visuals.md) |

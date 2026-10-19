@@ -1,0 +1,44 @@
+[
+  {
+    "renderer": "gpu",
+    "test": "test_paper_grain",
+    "log": ".planning/paper-grain-20261019/test_paper_grain.log",
+    "exit_code": 0
+  },
+  {
+    "renderer": "gpu",
+    "test": "test_hand_fan",
+    "log": ".planning/paper-grain-20261019/test_hand_fan.log",
+    "exit_code": 0
+  },
+  {
+    "renderer": "gpu",
+    "test": "test_partial_refresh",
+    "log": ".planning/paper-grain-20261019/test_partial_refresh.log",
+    "exit_code": 0
+  },
+  {
+    "renderer": "headless",
+    "test": "test_display_settings",
+    "log": ".planning/paper-grain-20261019/test_display_settings.log",
+    "exit_code": 0
+  },
+  {
+    "renderer": "headless",
+    "test": "test_frame_rate_settings",
+    "log": ".planning/paper-grain-20261019/test_frame_rate_settings.log",
+    "exit_code": 0
+  },
+  {
+    "renderer": "headless",
+    "test": "test_raft_interactions",
+    "log": ".planning/paper-grain-20261019/test_raft_interactions.log",
+    "exit_code": 0
+  },
+  {
+    "renderer": "headless",
+    "test": "test_navigation_partial_refresh",
+    "log": ".planning/paper-grain-20261019/test_navigation_partial_refresh.log",
+    "exit_code": 0
+  }
+]

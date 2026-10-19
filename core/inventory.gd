@@ -1,5 +1,6 @@
 extends RefCounted
 const Stats = preload("res://core/run_statistics.gd")
+const Effects = preload("res://core/effect_query.gd")
 const RESOURCES := ["wood", "iron", "plastic", "rope", "cloth"]
 
 static func count(state: Dictionary, id: String) -> int:
@@ -55,7 +56,7 @@ static func hand_limit(state: Dictionary, catalog: RefCounted) -> int:
 		if equipment.get("id", "") == "crate":
 			var level: int=clampi(int(equipment.get("level",1)),1,3)
 			result += int(catalog.entry("equipment", "crate").get("capacity", [1,2,3])[level-1])
-	return result
+	return maxi(1,result+Effects.modifier(state,catalog,"inventory.limit"))
 
 static func find(state: Dictionary, uid: String) -> Dictionary:
 	for card in state.hand:

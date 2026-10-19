@@ -26,7 +26,9 @@ func run() -> void:
 		var root_cell: Dictionary=app.world_view.raft_models.root_cells(app.world_view._raft_layout)[0]
 		var second_root: Dictionary=app.world_view.raft_models.root_cells(app.world_view._raft_layout)[1]
 		await tap(interaction.surface.screen_point(second_root),false)
-		check(app.session.panel=="","cell 2 does not open raft details")
+		check(app.session.panel=="collectibles","cell 2 opens relic warehouse")
+		app.handle_command("close"); await settle()
+		interaction=app.find_child("RaftInteraction",true,false)
 		var before: Dictionary=app.session.snapshot(); before.erase("revision")
 		await tap(interaction.surface.screen_point(root_cell),scale_value>1.0)
 		check(app.session.panel=="raft","click/touch cell 1 opens retained raft details at scale %s" % scale_value)

@@ -1,0 +1,158 @@
+{
+  "date": "2026-10-19",
+  "content_version": "godot-flow-v02-26",
+  "passed": 30,
+  "total": 30,
+  "checks": [
+    {
+      "test": "collectible_effects",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "collectible_voyage_install",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "collectible_battle",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "collectible_integration",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "collectible_ui",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "collectible_agent",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "session",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "catalog",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "save",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "origins_v2",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "origins_edges",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "battle_actions",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "formal_shop",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "node_shop_integration",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "voyage_survival",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "action_query",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "action_catalogue",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "auto_progress",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "environment",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "round_start_production",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "chapter1_saves",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "narrative_repairs",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "reward_recovery",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "recall_restore",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "tutorial",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "interaction_refresh",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "navigation_partial_refresh",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "application_boundaries",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "agent_session",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "routes",
+      "passed": true,
+      "exit_code": 0
+    }
+  ]
+}

@@ -7,6 +7,7 @@ var failures := 0
 var executed := 0
 var successes := 0
 var losses := 0
+var selected_route := ""
 func check(ok: bool, message: String) -> void:
 	if not ok: failures += 1; printerr("FAIL: " + message)
 func read_json(path: String) -> Dictionary:
@@ -14,6 +15,12 @@ func read_json(path: String) -> Dictionary:
 	var data = JSON.parse_string(FileAccess.get_file_as_string(path))
 	return data if data is Dictionary else {}
 func _init() -> void:
+	var arguments := OS.get_cmdline_user_args()
+	if arguments.size() == 2 and arguments[0] == "--route":
+		selected_route = arguments[1]
+		check(selected_route in REQUIRED, "selected route is required and current")
+	elif not arguments.is_empty():
+		check(false, "usage: -- --route REQUIRED_ROUTE_ID")
 	var catalog = load("res://content/catalog.gd").new()
 	check(catalog.load_catalog(), "load catalogue")
 	var manifest := read_json("res://tests/fixtures/routes/manifest.json")
@@ -37,6 +44,7 @@ func _init() -> void:
 		for route in routes:
 			var row: Dictionary = route.entry
 			var trace: Dictionary = route.trace
+			if not selected_route.is_empty() and str(row.id) != selected_route: continue
 			if trace.get("initial",{}).get("content_version","")!=Session.VERSION: continue
 			var agent = load("res://adapters/agent_session.gd").new(catalog)
 			var response: Dictionary = agent.handle({"method":"replay", "params":{"trace":JSON.parse_string(JSON.stringify(trace))}})
@@ -57,7 +65,10 @@ func _init() -> void:
 				if str(row.id).ends_with("-story"): check(result.completed==11, "story uses eleven shared gameplay nodes")
 			if result.outcome in ["dead","mad"]: losses += 1
 			print("ROUTE %s: %s / %s, %d nodes" % [row.id,result.phase,result.outcome,result.completed])
-	check(executed>=REQUIRED.size(), "all required current routes actually executed")
-	check(successes>0 and losses>0, "current success and failure coverage")
+	if selected_route.is_empty():
+		check(executed>=REQUIRED.size(), "all required current routes actually executed")
+		check(successes>0 and losses>0, "current success and failure coverage")
+	else:
+		check(executed == 1, "selected current route actually executed")
 	print("ROUTES: %s (executed=%d, stale=%d, failed=%d)" % ["PASS" if failures==0 else "FAIL",executed,coverage.stale,failures])
 	quit(0 if failures==0 else 1)

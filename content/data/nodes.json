@@ -3,8 +3,8 @@
     "id": "drift",
     "name": "漂浮物带",
     "kind": "supply",
-    "description": "浮标与货箱带来不同的补给或交易机会。",
-    "event": "variant:E01/E05/E04/E03",
+    "description": "浮标与货箱带来不同的补给机会。",
+    "event": "variant:E01/E05/E03",
     "category": "supply",
     "min_voyage": 1,
     "max_visits": 99,
@@ -204,47 +204,6 @@
               }
             ],
             "risk": true
-          },
-          {
-            "id": "leave",
-            "name": "继续航行",
-            "description": "不付出代价，也不获得奖励。",
-            "effects": [],
-            "cost": 0
-          }
-        ]
-      },
-      {
-        "id": "lostBag",
-        "name": "雾里的旧货摊",
-        "kind": "exchange",
-        "description": "摊主愿意用散件交换你带来的另一种材料；一次访问只能领取一个分支。",
-        "event": "E04",
-        "category": "trade",
-        "min_voyage": 1,
-        "max_visits": 1,
-        "cooldown": 3,
-        "options": [
-          {
-            "id": "scraps",
-            "name": "拿走免费边角料",
-            "description": "免费获得木头1。",
-            "effects": [
-              {
-                "type": "GiveCard",
-                "id": "wood",
-                "amount": 1
-              }
-            ],
-            "cost": 0
-          },
-          {
-            "id": "exchange",
-            "name": "挑两份有用的散件",
-            "description": "自选永久基础资源1张，换另一种基础资源2张；不收尸体，不花AP，一次访问仅交易一次。",
-            "effects": [],
-            "cost": 0,
-            "operation": "exchange"
           },
           {
             "id": "leave",
@@ -663,7 +622,8 @@
             ],
             "cost": 0
           }
-        ]
+        ],
+        "retired": true
       },
       {
         "id": "hold",
@@ -1129,7 +1089,8 @@
         "effects": [],
         "cost": 0
       }
-    ]
+    ],
+    "retired": true
   },
   "winch": {
     "id": "winch",

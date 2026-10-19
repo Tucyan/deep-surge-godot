@@ -57,7 +57,8 @@ func build() -> void:
 	rect(menu_frame,Vector4(1,0,1,0),Vector4(-166,24,-16,80))
 	var menu=HBoxContainer.new(); menu.name="VoyageMenu"; stage.add_child(menu); menu.z_index=ABOVE_EVENT
 	rect(menu,Vector4(1,0,1,0),Vector4(-166,27,-24,77))
-	var help=W.button(menu,"玩法",func(): request("local_panel","help")); help.tooltip_text="玩法"
+	var help=W.button(menu,"游戏说明",func(): request("local_panel","help"))
+	help.name="GameHelpEntry"; help.tooltip_text="游戏说明 · 操作指南与游戏流程"; help.accessibility_name="游戏说明"
 	var settings=W.button(menu,"设置",func(): request("local_panel","settings")); settings.tooltip_text="设置"
 	var home=W.button(menu,"返回首页",func(): send("home")); home.tooltip_text="返回首页"; home.name="HomeEntry"
 	for entry in menu.get_children():
@@ -86,6 +87,15 @@ func build() -> void:
 	rect(toggle_view,Vector4(0,.4,0,.4),Vector4(58,-96,114,-40))
 	W.UtilityButtonArt.apply(toggle_view,"view")
 	var camera_utilities_visible: bool = context.phase != "battle"
+	var collection:=W.button(stage,"",func():send("panel",{"id":"collectibles"}))
+	collection.name="CollectiblesEntry"; collection.z_index=ABOVE_EVENT
+	collection.accessibility_name="潮汐遗物"; collection.tooltip_text="潮汐遗物 · 已持有 %d 件" % context.get("collectibles",[]).size()
+	rect(collection,Vector4(0,.4,0,.4),Vector4(58,40,114,96))
+	W.UtilityButtonArt.apply(collection,"view")
+	var treasure:=TextureRect.new(); treasure.name="TreasureIcon"; treasure.texture=assets.texture("icon.treasure")
+	treasure.expand_mode=TextureRect.EXPAND_IGNORE_SIZE; treasure.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	treasure.mouse_filter=Control.MOUSE_FILTER_IGNORE; collection.add_child(treasure)
+	rect(treasure,Vector4(0,0,1,1),Vector4(10,10,-10,-10))
 	reset_view.visible = camera_utilities_visible
 	toggle_view.visible = camera_utilities_visible
 	# The event plate is drawn above these utilities: keep them visible but untouchable.

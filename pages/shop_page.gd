@@ -60,10 +60,16 @@ func _render() -> void:
 		var grid := W.grid(body,3)
 		for i in range(3):
 			var box := _slot(grid)
-			W.text(box,"藏品位 %d" % (i+1),20,W.GOLD)
-			W.text(box,"未开放",18,W.MUTED)
-			W.text(box,"具体藏品与价格尚未定稿",14,W.MUTED)
-			W.button(box,"未开放",func():pass,true)
+			var offers: Array=shop.get("relic_stock",[])
+			if i>=offers.size():
+				W.text(box,"潮汐遗物",20,W.GOLD)
+				W.text(box,"本次没有供货",16,W.MUTED)
+				continue
+			var row: Dictionary=offers[i]
+			W.text(box,row.name,20,W.GOLD)
+			var description:=W.text(box,"查看效果 · 本店限购1件",14,W.MUTED)
+			description.tooltip_text=row.description
+			W.button(box,"售罄" if row.remaining==0 else "%d 贝币" % row.price,func():select_buy(row),row.remaining==0)
 		for row in shop.get("stock",[]):
 			var box := _slot(grid)
 			W.text(box,row.name,20,W.GOLD)
@@ -104,9 +110,12 @@ func _slot(parent: Node) -> VBoxContainer:
 func select_buy(row: Dictionary) -> void:
 	if row.remaining<=0: return
 	selected_quote=row.duplicate(true)
-	pending={"command":"buy","args":{"id":row.id,"payment":"coin"}}
+	pending={"command":"buy_collectible" if row.get("kind","")=="collectible" else "buy","args":{"id":row.id,"payment":"coin"}}
 	confirmation.title="购买 · "+row.name
-	details.text="%s\n\n%s\n\n本店剩余 %d 张。购买后立即进入手牌；购买任一资源会使全店资源原价翻倍。" % [row.name,row.description,row.remaining]
+	if row.get("kind","")=="collectible":
+		details.text="%s\n\n%s\n\n购买后立即生效，可在潮汐遗物面板查看；不占手牌容量。" % [row.name,row.description]
+	else:
+		details.text="%s\n\n%s\n\n本店剩余 %d 张。购买后立即进入手牌；购买任一资源会使全店资源原价翻倍。" % [row.name,row.description,row.remaining]
 	confirmation.ok_button_text="确认购买"
 	payment.clear(); payment.show()
 	payment.add_item("支付 %d 贝币%s" % [row.price,"" if row.can_coin else "（不足）"])
@@ -115,7 +124,7 @@ func select_buy(row: Dictionary) -> void:
 	confirmation.popup_centered(Vector2i(560,320))
 
 func _refresh_payment() -> void:
-	if pending.get("command","")!="buy": return
+	if pending.get("command","") not in ["buy","buy_collectible"]: return
 	pending.args.payment="coin"
 	confirmation.get_ok_button().disabled=not bool(selected_quote.can_coin)
 

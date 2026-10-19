@@ -23,11 +23,11 @@ func _run() -> void:
 	s.state.phase = "interaction"; s.state.shop = {}; s.state.coins = 100
 	var cursor: int=s.state.rng.rewards.cursor
 	check(Shop.enter(s),"首次生成货架")
-	check(s.state.rng.rewards.cursor==cursor+6,"只用奖励流生成六个不同货物")
+	check(s.state.rng.rewards.cursor==cursor+9,"奖励流生成六个货物与三个不同潮汐遗物")
 	var initial: Dictionary = s.snapshot()
 	check(Shop.enter(s) and s.snapshot()==initial,"同次访问重复进入不重抽")
 	var v: Dictionary = Shop.view(s)
-	check(v.stock.size()==6 and v.relic_slots==3,"六种实物与三处未开放藏品位")
+	check(v.stock.size()==6 and v.relic_slots==3 and v.relic_stock.size()==3,"六种实物与三件潮汐遗物")
 	check(v.stock.filter(func(row):return row.kind=="resource").size()==3,"三种资源")
 	check(v.stock.filter(func(row):return row.kind=="equipment").size()==3,"三种设备")
 	var ids := {}
@@ -91,7 +91,7 @@ func _run() -> void:
 			before=s.snapshot()
 			check(not Shop.sell(s,{"uid":card.uid}) and s.snapshot()==before,"排除临时污染战斗牌")
 	before=s.snapshot()
-	check(not Shop.buy(s,{"id":"guardian","payment":"coin"}) and s.snapshot()==before,"旧藏品不得冒充商品")
+	check(not Shop.buy(s,{"id":"guardian","payment":"coin"}) and s.snapshot()==before,"旧潮汐遗物不得冒充商品")
 	s.state.node.visit_id="shop-test-b"
 	check(Shop.enter(s) and s.state.shop.visit_id=="shop-test-b","新店重新生成")
 	check(Shop.view(s).stock.all(func(row):return row.purchased==0),"新店独立限购重置")

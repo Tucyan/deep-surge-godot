@@ -5,6 +5,45 @@ extends Control
 @export_range(0.0,1.0) var paper_opacity := 0.7
 @export var ornaments := true
 const GOLD := Color("dbc395")
+# Match draw_circle's 64-segment fan, shared by every paper frame. Only the
+# instance transforms/colors belong to a frame and are released with it.
+static var _grain_circle: ArrayMesh
+var _paper_grain: MultiMesh
+var _grain_size := Vector2i(-1,-1)
+
+static func _circle_mesh() -> ArrayMesh:
+	if _grain_circle != null: return _grain_circle
+	var vertices := PackedVector2Array([Vector2.ZERO])
+	var indices := PackedInt32Array()
+	for i in range(65):
+		var angle: float=i*TAU/64.0
+		vertices.append(Vector2(cos(angle),sin(angle))*.55)
+	for i in range(64): indices.append_array(PackedInt32Array([0,i+1,i+2]))
+	var arrays: Array=[]; arrays.resize(Mesh.ARRAY_MAX)
+	arrays[Mesh.ARRAY_VERTEX]=vertices; arrays[Mesh.ARRAY_INDEX]=indices
+	_grain_circle=ArrayMesh.new()
+	_grain_circle.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
+	return _grain_circle
+
+func _draw_paper_grain() -> void:
+	var pixel_size := Vector2i(size)
+	if _paper_grain == null or pixel_size != _grain_size:
+		_grain_size=pixel_size
+		var columns := range(12,pixel_size.x-12,5)
+		var rows := range(12,pixel_size.y-12,7)
+		_paper_grain=MultiMesh.new()
+		_paper_grain.transform_format=MultiMesh.TRANSFORM_2D
+		_paper_grain.use_colors=true
+		_paper_grain.mesh=_circle_mesh()
+		_paper_grain.instance_count=columns.size()*rows.size()
+		var index := 0
+		for x in columns:
+			for y in rows:
+				_paper_grain.set_instance_transform_2d(index,Transform2D(0,Vector2(x,y)))
+				_paper_grain.set_instance_color(index,Color(.44,.33,.16,.025+float((x*17+y*13)%7)*.004))
+				index+=1
+	if _paper_grain.instance_count>0: draw_multimesh(_paper_grain,null)
+
 func _ready():
 	mouse_filter=MOUSE_FILTER_IGNORE
 	resized.connect(queue_redraw)
@@ -23,9 +62,7 @@ func _draw():
 	draw_polyline(outline(r,14),GOLD,1.5,true)
 	draw_polyline(outline(r.grow(-5),10),Color("162635") if paper else Color("756954"),1,true)
 	if paper:
-		for x in range(12,int(size.x)-12,5):
-			for y in range(12,int(size.y)-12,7):
-				draw_circle(Vector2(x,y),.55,Color(.44,.33,.16,.025+float((x*17+y*13)%7)*.004))
+		_draw_paper_grain()
 		for corner in [Vector2(13,13),Vector2(size.x-13,13),Vector2(13,size.y-13),size-Vector2(13,13)]:
 			var direction=Vector2(1 if corner.x<size.x*.5 else -1,1 if corner.y<size.y*.5 else -1)
 			for t in [0.0,7.0,14.0]:

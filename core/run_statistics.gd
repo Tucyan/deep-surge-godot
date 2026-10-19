@@ -2,7 +2,7 @@ extends RefCounted
 ## Serializable facts written inside the same transaction as their effects.
 const VERSION := "run-stats-v1"
 const CARD_FIELDS := ["obtained","used","use_consumed","cost_consumed","deployed","discarded","lost","cleared","sold"]
-const GAME_COMMANDS := ["voyage","scout","fix_heading","enter","advance","skip","option","shop_enter","shop_leave","buy","sell","fight","leave_encounter","play","battle_action","claim_boost","boost_device","battle_end","retreat","craft","salvage","transmute","install","fuel","repair_cell","heal","expand","upgrade","action_card","dismantle","end_voyage","night_actions","night_action","night_ack","finish_night","accept_quest","submit_quest","night_exchange","discard","abandon"]
+const GAME_COMMANDS := ["buy_collectible","discard_collectible","voyage","scout","fix_heading","enter","advance","skip","option","shop_enter","shop_leave","buy","sell","fight","leave_encounter","play","battle_action","claim_boost","boost_device","battle_end","retreat","craft","salvage","transmute","install","fuel","repair_cell","heal","expand","upgrade","action_card","dismantle","end_voyage","night_actions","night_action","night_ack","finish_night","accept_quest","submit_quest","night_exchange","discard","abandon"]
 
 static func initialize(state: Dictionary, complete: bool = true) -> void:
 	var initial: Array = []

@@ -141,15 +141,15 @@ func pick(point: Vector2,targets: Array) -> Dictionary:
 	var closest: float=INF
 	var picked: Dictionary={}
 	for target in targets:
-		if target.get("kind","") not in ["cell","raft_details"]: continue
-		var tile: Node=world.raft.get_node_or_null("DecorativeRoot") if target.kind=="raft_details" else world.cells.get_node_or_null(NodePath(target.id))
+		if target.get("kind","") not in ["cell","raft_details","collectibles"]: continue
+		var tile: Node=world.cells.get_node_or_null(NodePath(target.id)) if target.kind=="cell" else world.raft.get_node_or_null("DecorativeRoot")
 		if tile==null: continue
 		for mesh in tile.find_children("*","MeshInstance3D",true,false):
 			if mesh.mesh==null or not mesh.is_visible_in_tree(): continue
 			var inverse: Transform3D=mesh.global_transform.affine_inverse()
 			var hit=mesh.mesh.get_aabb().intersects_ray(inverse*ray_origin,inverse.basis*ray_direction)
 			if hit is Vector3:
-				if target.kind=="raft_details":
+				if target.kind in ["raft_details","collectibles"]:
 					var local_hit: Vector3=world.raft.to_local(mesh.global_transform*hit)
 					var center:=Vector2((target.x-.5)*2.35,(target.y-.5)*2.1)
 					if not Rect2(center-Vector2(1.12,1),Vector2(2.24,2)).has_point(Vector2(local_hit.x,local_hit.z)): continue

@@ -1,5 +1,5 @@
 # Deep Surge · 深潮（Godot）
-<!-- doc-status: current; doc-role: entry; content-version: godot-flow-v02-25; reviewed: 2026-10-19 -->
+<!-- doc-status: current; doc-role: entry; content-version: godot-flow-v02-26; reviewed: 2026-10-19 -->
 
 当前开发工程使用 Godot 4.7.2 / GDScript / Compatibility。文档入口：[分类索引](docs/README.md) · [当前机制](docs/current-game-mechanics.md) · [应用架构](docs/application-architecture.md)。
 
@@ -22,11 +22,12 @@ AP、候选、战斗和设备的详细数值以 [当前机制](docs/current-game
 
 ## 保存与当前边界
 
-- 当前格式为 schema 2，内容 `godot-flow-v02-25`，随机算法 `xorshift32-godot-v1`；旧版本兼容/迁移不在范围，不兼容时明确拒绝并保留原文件。
-- `user://godot-flow-v02.json` 保存共享 profile/最近结算，并保存教程局状态；挑战局可在当前进程返回继续，但没有跨进程恢复承诺。
+- 当前格式为 schema 2，内容 `godot-flow-v02-26`，随机算法 `xorshift32-godot-v1`；旧版本兼容/迁移不在范围，不兼容时明确拒绝并保留原文件。
+- `user://godot-flow-v02.json` 原子保存共享 profile/最近结算及单个当前教程或挑战局；异常退出后可从最后一次成功保存的完整操作继续，重启先进入首页。
 - 剧情槽位 `user://narrative/<id>.json` 同时包含叙事状态和配对 gameplay 快照，必须从剧情模式明确加载；活动指针不代表启动时自动挂载。
 - 教程完成、难度解锁等在独立 `user://deep-surge-meta.json`。保存失败应显示错误，不能冒充保存成功。
-- 旧夜间/委托规则已移除；当前没有第二层或完整藏品系统。剧情坏结局可请求当前航程终局，但不提供玩法数值增益。
+- 保存失败提供重试，未保存时阻止继续改变规则或替换航程；正常退出失败可选择返回或放弃未保存操作。新建/切入剧情会确认替换当前单档进度，候选保存成功才替换内存。拒绝的原档经明确新建会另存原始字节；不承诺物理断电可靠性。
+- 旧夜间/委托规则已移除；当前没有第二层；正式商店已提供六种可用定义中的三种潮汐遗物，支持持有查看、丢弃及组合效果，见[潮汐遗物契约](docs/collectible-effects.md)。剧情坏结局可请求当前航程终局，但不提供玩法数值增益。
 
 配对校验、奖励领取凭据和失败恢复见 [剧情与保存契约](docs/narrative-and-save.md)。
 

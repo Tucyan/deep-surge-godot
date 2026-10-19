@@ -4,7 +4,7 @@ const Tutorial = preload("res://core/tutorial_rules.gd")
 const W = preload("res://presentation/widgets.gd")
 const SettlementPage = preload("res://pages/settlement_page.gd")
 const NarrativeMenu = preload("res://pages/narrative_menu.gd")
-const PAGES := {"home":preload("res://pages/flow_home.gd"),"setup":preload("res://pages/new_game_setup.gd"),"game":preload("res://pages/voyage_hud.gd"),"story":preload("res://pages/flow_story.gd"),"battle":preload("res://pages/flow_battle.gd"),"craft":preload("res://pages/craft_page.gd"),"build":preload("res://pages/craft_page.gd"),"raft":preload("res://pages/paged_reference.gd"),"shop":preload("res://pages/shop_page.gd"),"encyclopedia":preload("res://pages/paged_reference.gd"),"meta_shop":preload("res://pages/paged_reference.gd"),}
+const PAGES := {"home":preload("res://pages/flow_home.gd"),"setup":preload("res://pages/new_game_setup.gd"),"game":preload("res://pages/voyage_hud.gd"),"story":preload("res://pages/flow_story.gd"),"battle":preload("res://pages/flow_battle.gd"),"craft":preload("res://pages/craft_page.gd"),"build":preload("res://pages/craft_page.gd"),"raft":preload("res://pages/paged_reference.gd"),"shop":preload("res://pages/shop_page.gd"),"collectibles":preload("res://pages/collectibles_page.gd"),"encyclopedia":preload("res://pages/paged_reference.gd"),"meta_shop":preload("res://pages/paged_reference.gd"),}
 var current_page: Control
 var layout: Control
 var title_backdrop: Control
@@ -85,7 +85,7 @@ func _refresh_modal_only(app, view: Dictionary) -> bool:
 	if view.screen!="game" or app.narrative_playing or not is_instance_valid(_base_page) or not is_instance_valid(layout): return false
 	if _base_signature!=app._retained_hud_signature(): return false
 	var panel_id=app._game_panel_id(view)
-	var supported: Array=["","settings","help","craft","build","raft","encyclopedia"]
+	var supported: Array=["","settings","help","craft","build","raft","encyclopedia","collectibles","replace_run","quit_unsaved"]
 	if not panel_id in supported or not _modal_id in supported: return false
 	if panel_id=="" and not is_instance_valid(_modal_root): return false
 	app.camera_binding_capture=false
@@ -111,7 +111,7 @@ func _refresh_modal_only(app, view: Dictionary) -> bool:
 
 func _refresh_hud_notice(app, panel_id: String) -> void:
 	var notice=layout.get_node_or_null("HudNotice") as Label
-	if panel_id!="" or app.message.is_empty():
+	if panel_id!="" or app.message.is_empty() or app.persistence_coordinator.save_pending:
 		if is_instance_valid(notice): layout.remove_child(notice); notice.queue_free()
 		return
 	if not is_instance_valid(notice):
@@ -172,10 +172,12 @@ func render(app, staged: bool = false) -> void:
 		settlement_page.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		settlement_page.action_requested.connect(app.handle_ui); settlement_page.command_requested.connect(app.handle_command)
 		view.settlement=report; settlement_page.setup(view,app.catalog,app.assets); current_page=settlement_page
+		_base_page=settlement_page
 		if not app.message.is_empty():
 			var note = W.text(settlement_host,app.message,17,Color("efb395"))
 			note.position=Vector2(24,8); note.size=Vector2(900,44)
 			note.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+		if app.local_panel == "quit_unsaved": app._build_modal("quit_unsaved",view)
 		return
 	app.world_view.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	app.world_view.sync(view)
@@ -255,7 +257,9 @@ func _build_modal(app, panel_id: String, view: Dictionary) -> void:
 	inset.anchor_left = 0.12; inset.anchor_right = 0.88; inset.anchor_top = 0.10; inset.anchor_bottom = 0.77
 	if panel_id in ["battle","raft"]:
 		inset.anchor_left=0.035; inset.anchor_right=0.965; inset.anchor_top=0.035; inset.anchor_bottom=0.965
-	if panel_id in ["craft","shop","build","encyclopedia","meta_shop"]:
+	if panel_id=="help":
+		inset.anchor_left=0.05; inset.anchor_right=0.95; inset.anchor_top=0.05; inset.anchor_bottom=0.95
+	if panel_id in ["craft","shop","build","encyclopedia","meta_shop","collectibles"]:
 		inset.anchor_left=0; inset.anchor_right=1; inset.anchor_top=0; inset.anchor_bottom=1
 	if panel_id == "recall":
 		inset.anchor_left=0.035; inset.anchor_right=0.965; inset.anchor_top=0.035; inset.anchor_bottom=0.965
@@ -272,10 +276,27 @@ func _build_modal(app, panel_id: String, view: Dictionary) -> void:
 		surface.add_theme_stylebox_override("panel", gallery_style)
 	if panel_id=="settings": W.text(dialog,"设置",28,W.GOLD)
 	if not app.message.is_empty(): W.text(dialog,app.message,17,Color("ecb49a"))
-	if panel_id in ["help","settings","narrative","recall"]: app.local_content(dialog,panel_id,view)
+	if panel_id == "quit_unsaved":
+		W.text(dialog,"当前操作尚未保存",28,W.GOLD)
+		W.text(dialog,"现在退出将丢失本次尚未保存的操作，下次从上次成功保存的位置继续。",19,W.INK)
+		W.button(dialog,"返回并重试保存",func(): app.handle_ui("cancel_quit"))
+		var exit_button = W.button(dialog,"退出并放弃未保存操作",func(): app.handle_ui("quit_without_save"))
+		exit_button.name = "QuitWithoutSave"
+	elif panel_id == "replace_run":
+		W.text(dialog,"替换当前航程？",28,W.GOLD)
+		var mode: String = str(view.get("mode",""))
+		var current := "原存档损坏或与当前版本不兼容，已保留原文件。" if app.save_blocked else "当前%s航程：第 %d/%d 轮。" % ["挑战" if mode=="challenge" else ("教程" if mode=="tutorial" else "剧情"),int(view.get("voyage",1)),int(view.get("length",0))]
+		W.text(dialog,current,19,W.INK)
+		W.text(dialog,"继续将替换当前续玩进度；新航程保存成功后生效。",18,W.MUTED)
+		W.button(dialog,"取消，保留当前航程",func(): app.handle_ui("cancel_replacement"))
+		var confirm = W.button(dialog,"确认替换",func(): app.handle_ui("confirm_replacement"))
+		confirm.name = "ConfirmReplacement"
+	elif panel_id in ["help","settings","narrative","recall"]: app.local_content(dialog,panel_id,view)
 	else: current_page = app.page(panel_id,dialog,view)
 	W.corner_close(surface,func():
-		if app.local_panel != "": app.local_panel = ""; app.render()
+		if panel_id == "quit_unsaved": app.handle_ui("cancel_quit")
+		elif panel_id == "replace_run": app.handle_ui("cancel_replacement")
+		elif app.local_panel != "": app.local_panel = ""; app.render()
 		else: app.handle_command("close"))
 	if panel_id in ["craft", "build"]:
 		var help = Button.new()
@@ -361,8 +382,7 @@ func local_content(app, parent: Node, id: String, view: Dictionary) -> void:
 	elif id == "narrative":
 		NarrativeMenu.build_choice(parent, app)
 	elif id == "help":
-		W.text(parent,"航行须知",32,W.GOLD)
-		for line in ["出发支付SAN航耗，抵达后进入准备；轮末弃牌完成、容量达标后才结算食水。","准备与收尾共享基地AP；制造消耗AP，设备安装不消耗AP。","事件先读文字，再作选择；战斗和商店结束后返回节点结果。","轮末处理筏格老化与超限整理；下一轮开始时完好设备推进生产，周期达标才产出。","事件自动显示在航行画面，完成当前事件后才能再次导航。"]: W.text(parent,line,20)
+		preload("res://presentation/game_help.gd").build(parent,app.display_settings)
 	else:
 		preload("res://presentation/settings_panel.gd").build(parent,app,view)
 

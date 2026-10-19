@@ -1,5 +1,5 @@
 # 独立剧情与配对存档
-<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v02-25; reviewed: 2026-10-19 -->
+<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v02-26; reviewed: 2026-10-19 -->
 
 当前第一章11个导航节点；章节内容版本为 `chapter1-local-v1`，定义见 [chapter_l1.json](../narrative/content/chapter_l1.json)。本文描述正式入口的当前行为，历史好感演示与旧夜间流程不覆盖它。
 
@@ -37,14 +37,22 @@
 |---|---|
 | `user://narrative/<id>.json` | schema1、chapter/version/label/时间戳、叙事state及配对gameplay快照 |
 | `user://narrative/active.json` | 活动槽位ID指针；启动不隐式挂载剧情局 |
-| `user://godot-flow-v02.json` | 共享profile和最近结算；仅教程模式保留可恢复state，正式挑战state不落为继续档 |
+| `user://godot-flow-v02.json` | 共享profile、最近结算和单个当前教程/挑战局state；同一文件原子提交 |
 | `user://deep-surge-meta.json` | 教程完成、难度解锁与上次选择 |
 
 叙事state包括affinity、flags、items、clues、rest_count、ending、applied_beats、skipped_beats、seen_scenes、choices、cursor和prefs。gameplay使用GameSession.snapshot，含schema2、内容版本、内容指纹、随机算法、revision、state/profile及最近结算。
 
+当前玩法内容为 `godot-flow-v02-26`，指纹包含潮汐遗物定义。配对快照同时保存 `state.collectibles` 的实例、历史、剩余次数与激活标记，以及商店的 `relics/relic_purchased`；恢复进行结构、定义、唯一UID、次数范围及战斗激活阶段校验。恢复不重新执行获得奖励、开战触发或抽取货架，详见[潮汐遗物契约](collectible-effects.md)。旧内容版本和指纹不符的玩法档明确拒绝，不作迁移，并保留原文件。
+
 剧情多槽位已经包含配对玩法快照；这不等于挑战模式拥有跨进程多槽位保存。剧情模式加载必须验证当前章节/版本、玩法长度11、mode=story及voyage/phase与已应用节拍一致，再同时替换有效会话。旧版本兼容或迁移不是要求；解析器可容忍的未知字段不代表正式入口承诺旧章节可载入。
 
 ## 原子性、奖励与失败恢复
+
+- 挑战/教程的成功命令连同同步自动结算完成后保存完整快照。重启只恢复到首页，查看/取消不dispatch；玩家选择继续才走原resume规则。每次恢复须验证schema、内容版本/指纹、随机算法及状态，恢复不重掷、不重发获取提示。
+- 当前只保留一局教程或挑战续玩；新建及切入剧情先确认替换，候选验证和共享写入成功才替换内存。新剧情候选共享提交失败时回滚新槽位与活动指针；加载已有剧情失败恢复原活动指针。剧情两文件仍不承诺跨文件断电事务。
+- 共享写入失败保留上次完整档，显示未保存提示和重试。失败未解除时禁止继续规则/购买/会话替换，允许只读查看；当前活动配对剧情的明确恢复保留既有补领路径。待保存期间不触发后续剧情。正常关闭会重试，失败可返回或明确退出并放弃未保存操作。
+- 挑战积分和终局状态在同一快照原子提交；终局保存失败后重启回到旧检查点，重新完成结算仍只获得一次应得积分。没有写成功的最新内存操作不作持久化承诺。终局重启不再次发奖，首页显示最近结算摘要且不提供活动续玩。
+- 难度解锁在共享终局提交成功后写入独立meta文件；meta写失败时下次启动从有效终局幂等补写，不重新执行结算或奖励。损坏/不兼容共享文件在普通操作中保持原样；明确新建前另存 `.rejected-<时间>-<序号>.json` 原始字节，备份失败取消替换。
 
 - 槽位写入经过临时文件、flush/错误检查和rename，失败提示冒泡到app.message，不把失败当作保存成功。
 - 新建/挂载先准备候选；槽位与活动指针提交成功后才替换内存。跨档写入若指针提交失败，恢复旧槽位或移除未挂载新档；已挂载槽位保存不重写指针。解绑先成功写空指针。
@@ -58,6 +66,8 @@
 
 已实现独立11节点章节、导入来源保留、叙事条件/效果、坏结局终局、多剧情槽位和配对玩法恢复。游戏命令失败或无效挑战新局不能丢失原剧情会话；挑战候选验证成功后才切换两个会话。
 
+挑战单档跨进程续玩已接入；只承诺最后一次成功保存的完整操作。临时文件、flush和rename经过进程强杀及I/O失败验证，不等于物理断电保证；写入/rename系统调用内部杀死、触摸和发行包尚未验证。实际结果见[挑战中断恢复验证](../evidence/challenge-resume-verification-20261019.md)。
+
 新独立剧情档的已读场景尚未接入回廊；旧回廊只展示五幕序章与原本地旧归档，见 [回廊契约](story-gallery.md)。第二章、完整角色语音系统、挑战跨进程多槽位等不在当前能力声明内。
 
 ## 验证入口
@@ -68,6 +78,9 @@ Godot_v4.7.2-stable_win64_console.exe --headless --path . --script res://tests/t
 Godot_v4.7.2-stable_win64_console.exe --headless --path . --script res://tests/test_narrative_repairs.gd
 Godot_v4.7.2-stable_win64_console.exe --headless --path . --script res://tests/test_reward_recovery.gd
 Godot_v4.7.2-stable_win64_console.exe --headless --path . --script res://tests/test_mode_contract.gd
+python tools/verify_challenge_resume.py
+python tools/verify_challenge_resume.py --tests test_challenge_resume.gd test_challenge_save_failure.gd test_challenge_story_switch.gd test_challenge_meta_recovery.gd
+python tools/verify_challenge_resume.py --gpu --tests test_challenge_save_ui.gd
 ```
 
 测试须隔离APPDATA/LOCALAPPDATA。奖励恢复测试以目录占用.tmp注入真实I/O失败，覆盖两种文件提交失败方向、磁盘重新加载、手动重试和去重；模式契约覆盖候选失败保留、当前revision和成对提交。

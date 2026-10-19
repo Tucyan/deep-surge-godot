@@ -1,5 +1,6 @@
 extends RefCounted
 ## Origin eligibility is evaluated inside the GameSession transaction.
+const Query=preload("res://core/effect_query.gd")
 const DEFINITIONS := {
 	"strong":{"name":"强壮之人","description":"生命与上限+4；每航次首张有效包扎包多恢复1生命","enabled":true},
 	"fool":{"name":"愚者","description":"移动精神航耗少5；每航次首次侦察消耗4精神","enabled":true},
@@ -75,11 +76,20 @@ static func equipment_count(s: Dictionary) -> int:
 		if cell.get("status","")=="intact" and not cell.get("equipment",{}).is_empty(): count+=1
 	return count
 
-static func install_level(s: Dictionary, id: String, level: int) -> int:
+static func install_plan(s: Dictionary, id: String, level: int) -> Dictionary:
+	# The caller has inserted the new equipment, so it counts toward the four-device limit.
 	if active(s,"engineer") and level==1 and id in ENGINEER_TYPES and equipment_count(s)<=4 and s.origin_state.tuned.size()<4 and id not in s.origin_state.tuned:
-		s.origin_state.tuned.append(id)
-		return 2
-	return level
+		return {"level":2,"origin_tune":id}
+	return {"level":level,"origin_tune":""}
+
+static func commit_install(s: Dictionary, plan: Dictionary) -> void:
+	var id: String=str(plan.get("origin_tune",""))
+	if not id.is_empty() and id not in s.origin_state.tuned: s.origin_state.tuned.append(id)
+
+static func install_level(s: Dictionary, id: String, level: int) -> int:
+	var plan:=install_plan(s,id,level)
+	commit_install(s,plan)
+	return int(plan.level)
 
 static func large_workshop(s: Dictionary) -> bool:
 	return active(s,"engineer") and equipment_count(s)>=5
@@ -116,7 +126,7 @@ static func status(s: Dictionary) -> String:
 
 static func use_survival(ctx, card: Dictionary, definition: Dictionary) -> bool:
 	var s: Dictionary=ctx.state
-	var bonus: bool=active(s,"strong") and card.id=="medkit" and s.player.hp<s.player.hp_max and int(s.origin_state.heal_voyage)!=int(s.voyage)
+	var bonus: bool=active(s,"strong") and card.id=="medkit" and s.player.hp<Query.effective_max(s,ctx.catalog,"hp") and int(s.origin_state.heal_voyage)!=int(s.voyage)
 	if not ctx.Rules.effects(ctx,definition.effects): return false
 	if bonus:
 		s.origin_state.heal_voyage=int(s.voyage)

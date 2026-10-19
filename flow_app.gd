@@ -21,7 +21,10 @@ var catalog := Catalog.new()
 var assets := Assets.new()
 var store := Store.new()
 var meta := Meta.new()
-var session: RefCounted
+var session: RefCounted:
+	set(value):
+		session=value
+		if session!=null: session.auto_end_voyage=display_settings.auto_end_voyage
 var current_page: Control:
 	get: return page_host.current_page
 	set(value): page_host.current_page = value
@@ -94,6 +97,10 @@ var transition_busy:=false
 var _defer_transition_render:=false
 var _transition_command_running:=false
 var loading_transition: Control
+var acquisition_overlay: Control
+var _ui_command_pending:=false
+var _receipt_cursor: Dictionary={}
+var _pending_receipt: Dictionary={"uids":[],"coins":0}
 # Temporary legacy gallery: read archived records; new narrative replay is separate.
 var story_gallery = preload("res://adapters/story_gallery_store.gd").new()
 var story_replay: Control:
@@ -101,6 +108,7 @@ var story_replay: Control:
 	set(value): narrative_coordinator.story_replay = value
 
 func _ready() -> void:
+	get_tree().auto_accept_quit = false
 	theme = W.theme()
 	if not catalog.load_catalog(): W.text(self,"内容载入失败："+catalog.error,24); return
 	session = Session.new(catalog)
@@ -113,15 +121,18 @@ func _ready() -> void:
 		saved = store.read()
 		if not store.error.is_empty(): message = store.error; save_blocked = true
 		elif not saved.is_empty() and not session.restore(saved): message = session.error; save_blocked = true
-		# Legacy files remain intact. Only tutorial resumes through this old store;
-		# story runs are loaded explicitly from their paired slot after mode choice.
-		if session.state.get("mode", "") != "tutorial": session.state = {}
+		# Challenge/tutorial checkpoints include the shared profile atomically.
+		# Story runs are loaded explicitly from their paired slot after mode choice.
+		if session.state.get("mode", "") not in ["tutorial","challenge"]: session.state = {}
 	if persistence:
 		meta.read_meta()
 		if not meta.error.is_empty() and message.is_empty(): message = meta.error
+		# A saved terminal checkpoint can repair a failed, idempotent meta write.
+		if not save_blocked: _sync_meta_progress()
 	if persistence:
 		display_settings.load_preferences()
 		display_settings.apply_window(get_window())
+	session.auto_end_voyage=display_settings.auto_end_voyage
 	_init_narrative()
 	if persistence:
 		story_gallery.load_archive()
@@ -168,6 +179,7 @@ func apply_display_settings(change_mode: bool = true, rebuild_ui: bool = true) -
 	var focused:=get_viewport().gui_get_focus_owner()
 	var restore_slider_focus: bool=is_instance_valid(focused) and focused.name=="UIScale"
 	display_settings.apply_window(get_window(),change_mode)
+	session.auto_end_voyage=display_settings.auto_end_voyage
 	world_view.motion=display_settings.motion
 	world_view.camera_controls.locked=display_settings.view_locked
 	world_view.camera_orbit_button=display_settings.camera_orbit_button
@@ -205,7 +217,23 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			world_view.reset_camera_view(); get_viewport().set_input_as_handled()
 
 func handle_ui(action: String, value: String = "") -> void:
-	if transition_busy: return
+	if transition_busy or is_instance_valid(acquisition_overlay): return
+	if action == "retry_save":
+		persistence_coordinator.retry(self); render(); _maybe_story(); return
+	if action == "cancel_quit":
+		local_panel = ""; render(); return
+	if action == "quit_without_save":
+		get_tree().quit(); return
+	if action == "cancel_replacement":
+		persistence_coordinator.pending_replacement = {}; local_panel = ""; render(); return
+	if action == "confirm_replacement":
+		var pending: Dictionary = persistence_coordinator.pending_replacement
+		persistence_coordinator.pending_replacement = {}; local_panel = ""
+		if pending.is_empty() or pending.revision != session.revision:
+			message = "操作已过期，请重新选择航程。"; render(); return
+		var submitted: Dictionary = pending.args.duplicate(true)
+		submitted.replace_current = true
+		request_command(str(pending.command),submitted); return
 	if action == "recall_story":
 		_open_story_review(value); return
 	if action=="camera_toggle":
@@ -244,7 +272,8 @@ func handle_ui(action: String, value: String = "") -> void:
 				return
 		"setup": setup_mode = value
 		"narrative_choose": local_panel = "narrative"; setup_mode = ""
-		"quit": get_tree().quit(); return
+		"quit":
+			_request_quit(); return
 		"local_panel": local_panel = value
 		"hand_page": ui_state.hand_page = maxi(0,int(value))
 		"list_page": ui_state.list_page = maxi(0,int(value)); ui_state.selected_id = ""
@@ -278,6 +307,17 @@ func handle_ui(action: String, value: String = "") -> void:
 				render()
 			return
 	render()
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		if session == null: get_tree().quit()
+		else: _request_quit()
+
+func _request_quit() -> void:
+	if persistence_coordinator.save_pending and not persistence_coordinator.retry(self):
+		local_panel = "quit_unsaved"
+		render(); return
+	get_tree().quit()
 
 ## Interface-only destination choice. Returns false when the live panel cannot absorb
 ## the change and the caller has to fall back to a full render.
@@ -316,6 +356,9 @@ func _visible_candidate(visit_id: String) -> bool:
 ## Presentation fields shared by the full render and the partial refresh paths.
 func hud_view() -> Dictionary:
 	var view: Dictionary = session.view()
+	view.can_resume = session.active()
+	view.save_pending = persistence_coordinator.save_pending
+	preload("res://application/acquisition_projection.gd").apply_pending(view,_pending_receipt)
 	view.has_story_saves = narrative_store != null and narrative_store.has_saves()
 	view.setup_mode = setup_mode
 	view.ui_state = ui_state.duplicate(true)
@@ -344,8 +387,31 @@ func hud_view() -> Dictionary:
 ## UI-originated page transitions keep the original work, under an animated layer.
 ## Direct command callers remain synchronous for rules/tests/agent integrations.
 func request_command(command: String, args: Dictionary = {}) -> void:
+	if transition_busy or _ui_command_pending: return
+	if persistence_coordinator.blocks(self,command): render(); return
+	_ui_command_pending=true
+	var cursor: Dictionary=preload("res://application/acquisition_projection.gd").capture(session)
+	_receipt_cursor=cursor if command not in ["new","load_story","home"] else {}
+	await _request_command_with_transition(command,args)
+	# Loading an existing run must never replay its old rewards.
+	if command not in ["new","load_story","home"]:
+		var batches: Array=preload("res://application/acquisition_projection.gd").batches(session,cursor)
+		await preload("res://application/acquisition_presenter.gd").new().present(self,batches)
+	_receipt_cursor={}; _pending_receipt={"uids":[],"coins":0}
+	_ui_command_pending=false
+	_maybe_story()
+
+func _request_command_with_transition(command: String, args: Dictionary = {}) -> void:
 	if transition_busy: return
-	if command not in ["new","home","resume","load_story"] or narrative_playing:
+	var next_voyage := 0
+	if not narrative_playing and not session.state.is_empty() and command!="new" and (command in Session.Stats.GAME_COMMANDS or command=="resume"):
+		var preview = preload("res://core/action_query.gd").fork(session)
+		# Predict the complete dispatch, including automatic settlement, on a copy.
+		preview._auto_advancing=false; preview._effect_preview=false
+		preview.auto_end_voyage=display_settings.auto_end_voyage
+		if preview.dispatch(command,args) and preview.phase()=="navigation" and int(preview.state.voyage)>int(session.state.voyage):
+			next_voyage=int(preview.state.voyage)
+	if (command not in ["new","home","resume","load_story"] and next_voyage==0) or narrative_playing:
 		handle_command(command,args)
 		return
 	transition_busy=true
@@ -354,18 +420,18 @@ func request_command(command: String, args: Dictionary = {}) -> void:
 	var old_mode: int=old_layout.process_mode if is_instance_valid(old_layout) else Node.PROCESS_MODE_INHERIT
 	if is_instance_valid(old_layout): old_layout.process_mode=Node.PROCESS_MODE_DISABLED
 	world_view.set_camera_input_enabled(false)
-	loading_transition=preload("res://presentation/loading_transition.gd").new()
+	loading_transition=preload("res://presentation/voyage_transition.gd").new() if next_voyage>0 else preload("res://presentation/loading_transition.gd").new()
 	add_child(loading_transition)
 	loading_transition.modulate.a=0
-	loading_transition.set_stage("正在返回港湾" if command=="home" else "正在准备航程")
+	loading_transition.set_stage("第 %d 轮航行 · 潮起再出发" % next_voyage if next_voyage>0 else ("正在返回港湾" if command=="home" else "正在准备航程"))
 	await loading_transition.fade(1.0)
 	await get_tree().process_frame
 	if DisplayServer.get_name()!="headless": await RenderingServer.frame_post_draw
 	_defer_transition_render=true; _transition_command_running=true
-	if command=="load_story": load_story_run(str(submitted.get("id","")))
+	if command=="load_story": load_story_run(str(submitted.get("id","")),bool(submitted.get("replace_current",false)))
 	else: handle_command(command,submitted)
 	_transition_command_running=false; _defer_transition_render=false
-	loading_transition.set_stage("正在展开海图" if session.screen=="game" else "正在点亮灯塔")
+	if next_voyage==0: loading_transition.set_stage("正在展开海图" if session.screen=="game" else "正在点亮灯塔")
 	await render(true)
 	if is_instance_valid(old_layout): old_layout.process_mode=old_mode
 	move_child(loading_transition,get_child_count()-1)
@@ -374,7 +440,8 @@ func request_command(command: String, args: Dictionary = {}) -> void:
 	world_view.set_camera_input_enabled(false)
 	if DisplayServer.get_name()!="headless": await RenderingServer.frame_post_draw
 	else: await get_tree().process_frame
-	loading_transition.set_stage("正在显示提示" if not message.is_empty() else "潮路已就绪")
+	if next_voyage>0: await get_tree().create_timer(.65).timeout
+	else: loading_transition.set_stage("正在显示提示" if not message.is_empty() else "潮路已就绪")
 	await loading_transition.fade(0.0)
 	layout.process_mode=new_mode
 	remove_child(loading_transition); loading_transition.queue_free(); loading_transition=null
@@ -384,6 +451,7 @@ func request_command(command: String, args: Dictionary = {}) -> void:
 
 func handle_command(command: String, args: Dictionary = {}) -> void:
 	if transition_busy and not _transition_command_running: return
+	if persistence_coordinator.blocks(self,command): render(); return
 	if narrative_playing:
 		message = "请先读完当前剧情"
 		return
@@ -393,6 +461,7 @@ func handle_command(command: String, args: Dictionary = {}) -> void:
 		message = "该难度尚未解锁：" + meta.unlock_requirement(str(args.get("difficulty","standard")))
 		render(); return
 	if command == "new" and args.get("mode", "") == "story":
+		if not persistence_coordinator.confirm_replacement(self,command,args): return
 		_start_story_run(args)
 		return
 	reset_hand_visual = command == "new"
@@ -406,6 +475,8 @@ func handle_command(command: String, args: Dictionary = {}) -> void:
 	if command == "new" and args.get("mode", "") == "challenge":
 		var prepared: Dictionary = preload("res://application/session_coordinator.gd").prepare_challenge(session,narrative_content,args)
 		if prepared.ok:
+			if not persistence_coordinator.confirm_replacement(self,command,args): return
+			if not persistence_coordinator.write_candidate(self,prepared.session): render(); return
 			session = prepared.session
 			narrative = prepared.narrative
 			succeeded = true
@@ -418,7 +489,7 @@ func handle_command(command: String, args: Dictionary = {}) -> void:
 	if not succeeded:
 		message = session.error
 	else:
-		message = ""
+		if not persistence_coordinator.save_pending: message = ""
 		local_panel = ""
 		ui_state.card = ""
 		ui_state.battle_selection = ""
@@ -435,9 +506,13 @@ func handle_command(command: String, args: Dictionary = {}) -> void:
 			if picked != "" and picked != "tutorial":
 				meta.set_last_difficulty(picked)
 				if persistence: meta.write_meta()
-		if session.state.get("mode", "") == "story": save_narrative_quiet()
-		_persist_profile()
-		_sync_meta_progress()
+		if not persistence_coordinator.save_pending:
+			if session.state.get("mode", "") == "story": save_narrative_quiet()
+			# A new challenge was already committed before replacing its session pair.
+			if command == "new" or _persist_profile(): _sync_meta_progress()
+		if _ui_command_pending and not _receipt_cursor.is_empty():
+			var receipts: Array=preload("res://application/acquisition_projection.gd").batches(session,_receipt_cursor)
+			_pending_receipt=preload("res://application/acquisition_projection.gd").pending(receipts)
 		# Ordinary departure into preparation: update the regions that changed instead
 		# of rebuilding the whole page. Every other transition keeps the full path.
 		if command=="voyage" and old_phase=="navigation" and session.phase()=="preparation" and message.is_empty() \
@@ -446,7 +521,7 @@ func handle_command(command: String, args: Dictionary = {}) -> void:
 			and update_after_departure():
 			return
 	render()
-	if not narrative_playing: _maybe_story()
+	if not narrative_playing and not _transition_command_running: _maybe_story()
 
 ## Difficulty unlocks are meta progress, so they are recorded at the moment a run
 ## ends, independently of the single-run save.
@@ -482,8 +557,8 @@ func pick_narrative(id: String) -> void:
 func _start_story_run(args: Dictionary) -> void:
 	narrative_coordinator._start_story_run(self, args)
 
-func load_story_run(id: String) -> bool:
-	return narrative_coordinator.load_story_run(self, id)
+func load_story_run(id: String, replace_current: bool = false) -> bool:
+	return narrative_coordinator.load_story_run(self, id, replace_current)
 
 func pick_new_narrative(label: String) -> void:
 	narrative_coordinator.pick_new_narrative(self, label)
@@ -513,6 +588,7 @@ func narrative_status() -> String:
 	return narrative_coordinator.narrative_status(self)
 
 func _maybe_story() -> void:
+	if _ui_command_pending: return
 	narrative_coordinator._maybe_story(self)
 
 func _open_narrative(scene: Dictionary) -> void:
@@ -531,7 +607,7 @@ func page(id: String, parent: Node, view: Dictionary) -> Control:
 	return page_host.page(self, id, parent, view)
 
 func _retained_hud_signature() -> String:
-	return preload("res://application/hud_projection.gd").signature(self)
+	return preload("res://application/hud_projection.gd").signature(self)+JSON.stringify(_pending_receipt)
 
 func _game_panel_id(view: Dictionary) -> String:
 	return page_host._game_panel_id(self, view)
@@ -552,6 +628,7 @@ func _refresh_hud_notice(panel_id: String) -> void:
 	page_host._refresh_hud_notice(self, panel_id)
 
 func render(staged: bool = false) -> void:
+	persistence_coordinator.refresh_notice(self)
 	await page_host.render(self, staged)
 
 func _build_modal(panel_id: String, view: Dictionary) -> void:

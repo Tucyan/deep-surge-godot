@@ -41,11 +41,10 @@ func _press(local_point: Vector2) -> void:
 	_press_point=app.world_view.get_global_transform()*local_point
 	_pressed=_pick_click(_press_point)
 func _pick_click(point: Vector2) -> Dictionary:
-	var target: Dictionary=surface.pick(point,policy.targets())
-	if not target.is_empty(): return target
-	var root_cell: Dictionary=app.world_view.raft_models.root_cells(app.world_view._raft_layout)[0].duplicate(true)
-	root_cell.kind="raft_details"
-	return surface.pick(point,[root_cell])
+	var roots: Array=app.world_view.raft_models.root_cells(app.world_view._raft_layout).duplicate(true)
+	roots[0].kind="raft_details"; roots[1].kind="collectibles"
+	# One depth comparison prevents a deck behind the chest stealing its click.
+	return surface.pick(point,policy.targets()+roots)
 func _release(local_point: Vector2) -> void:
 	if app.world_view.camera_controls.dragged:
 		_pressed={}; return
@@ -56,9 +55,9 @@ func _release(local_point: Vector2) -> void:
 		select_target(target)
 	_pressed={}
 func select_target(target: Dictionary) -> void:
-	if target.get("kind","")=="raft_details":
+	if target.get("kind","") in ["raft_details","collectibles"]:
 		select_target({})
-		app.handle_command.call_deferred("panel",{"id":"raft"})
+		app.request_command.call_deferred("panel",{"id":"collectibles" if target.kind=="collectibles" else "raft"})
 		return
 	selected=target; surface.select(target)
 	_popup_anchor_y=0.0; _popup_vertical_placed=false
@@ -116,7 +115,7 @@ func _action_hint(item: Dictionary) -> String:
 	if not item.allowed and not item.reason.is_empty(): lines.append(item.reason)
 	return "\n".join(lines)
 func _execute(item: Dictionary) -> void:
-	app.handle_command.call_deferred(item.command,item.args)
+	app.request_command.call_deferred(item.command,item.args)
 func _process(_delta: float) -> void:
 	if is_instance_valid(popup): _position_popup()
 func _position_popup() -> void:

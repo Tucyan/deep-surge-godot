@@ -335,6 +335,18 @@ static func _build_game(game_box: VBoxContainer, app: Control, view: Dictionary)
 	)
 	game_box.add_child(make_row("自动理牌 (Auto-Sort)", "抽牌与整理时按卡牌类型与稀有度自动排序手牌", opt_sort, 130))
 
+	var opt_auto_end := CheckButton.new()
+	opt_auto_end.name = "AutoEndVoyageToggle"
+	opt_auto_end.text = "自动结束航程"
+	opt_auto_end.button_pressed = prefs.auto_end_voyage
+	opt_auto_end.toggled.connect(func(enabled):
+		prefs.auto_end_voyage = enabled
+		app.session.auto_end_voyage = enabled
+		if app.persistence and prefs.save_preferences() != OK: app.message = "游戏设置保存失败"
+		app.refresh_hand_preferences.call_deferred()
+	)
+	game_box.add_child(make_row("自动结束航程 (Auto-End)", "收尾阶段没有有效操作时自动结算；关闭后停留在航行收尾页", opt_auto_end, 130))
+
 	# Row 2: 资源叠牌
 	var opt_stack := CheckButton.new()
 	opt_stack.name = "stack_resources"
@@ -413,7 +425,7 @@ static func sync_controls(app: Control) -> void:
 	if is_instance_valid(fps): fps.select(Display.FRAME_RATES.find(prefs.fps_limit))
 	var quality=app.find_child("MobileQuality",true,false)
 	if is_instance_valid(quality): quality.select(prefs.quality)
-	for item in [["MotionToggle",prefs.motion],["ViewLockToggle",prefs.view_locked]]:
+	for item in [["MotionToggle",prefs.motion],["ViewLockToggle",prefs.view_locked],["AutoEndVoyageToggle",prefs.auto_end_voyage]]:
 		var toggle=app.find_child(item[0],true,false)
 		if is_instance_valid(toggle): toggle.set_pressed_no_signal(item[1])
 	var notice=app.find_child("SettingsNotice",true,false)

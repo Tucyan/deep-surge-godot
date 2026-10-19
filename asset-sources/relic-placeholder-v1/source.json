@@ -1,0 +1,19 @@
+{
+  "tool": "built-in imagegen",
+  "date": "2026-10-19",
+  "selection": "simple low-poly variant; detailed first draft not used",
+  "style_reference": "assets/images/supplied-20261012/asset-09.png (card.wood)",
+  "description": "Single bronze compass talisman with four-point needle and turquoise inset; broad faceted planes, minimal detail, transparent background",
+  "runtime_asset_id": "texture.collectible.placeholder",
+  "file": "relic-placeholder-v1.png",
+  "dimensions": [
+    1254,
+    1254
+  ],
+  "sha256": "2d6b89218cb4bcd297c5297c56b2ad3e00efb56feb130d292cdd663f7db88502",
+  "alpha_extrema": [
+    0,
+    255
+  ],
+  "transparent_pixels": 986612
+}

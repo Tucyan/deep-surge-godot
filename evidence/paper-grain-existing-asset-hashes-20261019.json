@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ui.settlement",
+    "path": "pages/settlement_page.gd",
+    "same_as_head": true,
+    "already_mismatched_in_head": true
+  },
+  {
+    "id": "ui.hand.fan",
+    "path": "presentation/hand_fan.gd",
+    "same_as_head": true,
+    "already_mismatched_in_head": true
+  },
+  {
+    "id": "ui.hud.voyage-adapter",
+    "path": "pages/voyage_hud.gd",
+    "same_as_head": false,
+    "already_mismatched_in_head": false
+  },
+  {
+    "id": "ui.title.home",
+    "path": "pages/flow_home.gd",
+    "same_as_head": true,
+    "already_mismatched_in_head": true
+  },
+  {
+    "id": "ui.story.layout",
+    "path": "pages/story_page.gd",
+    "same_as_head": true,
+    "already_mismatched_in_head": true
+  },
+  {
+    "id": "ui.hand.capacity-badge",
+    "path": "pages/voyage_hud.gd",
+    "same_as_head": false,
+    "already_mismatched_in_head": false
+  },
+  {
+    "id": "ui.craft.circle-entry",
+    "path": "pages/voyage_hud.gd",
+    "same_as_head": false,
+    "already_mismatched_in_head": false
+  },
+  {
+    "id": "ui.starting-resources",
+    "path": "pages/new_game_setup.gd",
+    "same_as_head": true,
+    "already_mismatched_in_head": true
+  },
+  {
+    "id": "ui.modal-layout",
+    "path": "flow_app.gd",
+    "same_as_head": true,
+    "already_mismatched_in_head": true
+  },
+  {
+    "id": "ui.battle.equipment",
+    "path": "pages/flow_battle.gd",
+    "same_as_head": true,
+    "already_mismatched_in_head": true
+  },
+  {
+    "id": "ui.formal-shop",
+    "path": "pages/shop_page.gd",
+    "same_as_head": false,
+    "already_mismatched_in_head": false
+  },
+  {
+    "id": "ui.battle.salvage",
+    "path": "pages/voyage_hud.gd",
+    "same_as_head": false,
+    "already_mismatched_in_head": false
+  },
+  {
+    "id": "ui.battle.panels",
+    "path": "pages/battle_hud_view.gd",
+    "same_as_head": true,
+    "already_mismatched_in_head": true
+  },
+  {
+    "id": "ui.encyclopedia",
+    "path": "pages/paged_reference.gd",
+    "same_as_head": false,
+    "already_mismatched_in_head": false
+  },
+  {
+    "id": "ui.meta-shop",
+    "path": "pages/paged_reference.gd",
+    "same_as_head": false,
+    "already_mismatched_in_head": false
+  },
+  {
+    "id": "ui.origins.status",
+    "path": "pages/voyage_hud.gd",
+    "same_as_head": false,
+    "already_mismatched_in_head": false
+  }
+]

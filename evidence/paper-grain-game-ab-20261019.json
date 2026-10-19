@@ -1,0 +1,140 @@
+{
+	"gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+	"renderer": "gl_compatibility",
+	"rows": [
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 7370.0,
+				"p95": 7370.0
+			},
+			"frame_ms": {
+				"median": 30.07,
+				"p95": 37.604
+			},
+			"label": "legacy_paper_0",
+			"primitives": {
+				"median": 709411.0,
+				"p95": 709411.0
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 783.0,
+				"p95": 783.0
+			},
+			"frame_ms": {
+				"median": 6.952,
+				"p95": 7.272
+			},
+			"label": "batched_paper_0",
+			"primitives": {
+				"median": 709411.0,
+				"p95": 709411.0
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 7370.0,
+				"p95": 7370.0
+			},
+			"frame_ms": {
+				"median": 29.089,
+				"p95": 35.909
+			},
+			"label": "legacy_paper_1",
+			"primitives": {
+				"median": 709411.0,
+				"p95": 709411.0
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 783.0,
+				"p95": 783.0
+			},
+			"frame_ms": {
+				"median": 6.945,
+				"p95": 8.037
+			},
+			"label": "batched_paper_1",
+			"primitives": {
+				"median": 709411.0,
+				"p95": 709411.0
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 7370.0,
+				"p95": 7370.0
+			},
+			"frame_ms": {
+				"median": 26.558,
+				"p95": 30.473
+			},
+			"label": "legacy_paper_2",
+			"primitives": {
+				"median": 709411.0,
+				"p95": 709411.0
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 783.0,
+				"p95": 783.0
+			},
+			"frame_ms": {
+				"median": 6.973,
+				"p95": 9.16
+			},
+			"label": "batched_paper_2",
+			"primitives": {
+				"median": 709411.0,
+				"p95": 709411.0
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 60,
+			"draw_calls": {
+				"median": 1053.0,
+				"p95": 1066.0
+			},
+			"frame_ms": {
+				"median": 16.665,
+				"p95": 16.777
+			},
+			"label": "batched_motion_default_cap60",
+			"primitives": {
+				"median": 877483.0,
+				"p95": 878951.0
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		}
+	],
+	"rules_unchanged": true
+}

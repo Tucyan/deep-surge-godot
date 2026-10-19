@@ -18,6 +18,12 @@ func _init():
 	var s=fixture("aftermath",0,["wood"])
 	s.dispatch("resume")
 	check(s.phase()=="navigation" and s.state.voyage==2,"no actions auto settles and skips satisfied discard")
+	s=fixture("aftermath",0,["wood"]); s.auto_end_voyage=false; s.dispatch("resume")
+	check(s.phase()=="aftermath" and s.state.voyage==1,"auto-end preference can keep aftermath open")
+	check(s.dispatch("end_voyage") and s.state.voyage==2,"manual settlement ignores auto-end preference")
+	s=fixture("battle",1,[]); s.auto_end_voyage=false
+	s.dispatch("battle_action",{"action":"attack"})
+	check(s.state.battle.turn==2,"voyage preference does not disable automatic battle turns")
 	s=fixture("aftermath",0,[])
 	for i in range(12): s.give("wood")
 	s.dispatch("resume")

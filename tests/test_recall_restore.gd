@@ -46,5 +46,8 @@ func run() -> void:
 	check(app.narrative.export_data() == narrative_before, "review leaves independent narrative unchanged")
 	app.queue_free()
 	await settle()
+	# Audio playback is released by the mixer thread, independently of process frames.
+	# Match test_opening_intro's teardown before the engine resource leak check.
+	await create_timer(0.15).timeout
 	print("RECALL RESTORE: %d checks, %d failures" % [total, failures])
 	quit(1 if failures else 0)

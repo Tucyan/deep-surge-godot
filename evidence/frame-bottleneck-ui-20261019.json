@@ -1,0 +1,235 @@
+{
+	"gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+	"renderer": "gl_compatibility",
+	"rows": [
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 7370.0,
+				"p95": 7370.0
+			},
+			"frame_ms": {
+				"median": 26.593,
+				"p95": 33.891
+			},
+			"label": "ui_baseline_0",
+			"primitives": {
+				"median": 709411.0,
+				"p95": 709411.0
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 734.0,
+				"p95": 734.0
+			},
+			"frame_ms": {
+				"median": 6.947,
+				"p95": 7.03
+			},
+			"label": "paper_off_0",
+			"primitives": {
+				"median": 286079.0,
+				"p95": 286079.0
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 7370.0,
+				"p95": 7370.0
+			},
+			"frame_ms": {
+				"median": 25.971,
+				"p95": 30.808
+			},
+			"label": "paper_restored_0",
+			"primitives": {
+				"median": 709411.0,
+				"p95": 709411.0
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 720.0,
+				"p95": 720.0
+			},
+			"frame_ms": {
+				"median": 6.944,
+				"p95": 7.103
+			},
+			"label": "border_hidden_0",
+			"primitives": {
+				"median": 285844.0,
+				"p95": 285844.0
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 7370.0,
+				"p95": 7370.0
+			},
+			"frame_ms": {
+				"median": 30.356,
+				"p95": 35.032
+			},
+			"label": "ui_baseline_1",
+			"primitives": {
+				"median": 709411.0,
+				"p95": 709411.0
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 734.0,
+				"p95": 734.0
+			},
+			"frame_ms": {
+				"median": 6.943,
+				"p95": 7.111
+			},
+			"label": "paper_off_1",
+			"primitives": {
+				"median": 286079.0,
+				"p95": 286079.0
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 7370.0,
+				"p95": 7370.0
+			},
+			"frame_ms": {
+				"median": 25.046,
+				"p95": 28.684
+			},
+			"label": "paper_restored_1",
+			"primitives": {
+				"median": 709411.0,
+				"p95": 709411.0
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 720.0,
+				"p95": 720.0
+			},
+			"frame_ms": {
+				"median": 6.953,
+				"p95": 7.581
+			},
+			"label": "border_hidden_1",
+			"primitives": {
+				"median": 285844.0,
+				"p95": 285844.0
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 7370.0,
+				"p95": 7370.0
+			},
+			"frame_ms": {
+				"median": 24.973,
+				"p95": 31.396
+			},
+			"label": "ui_baseline_2",
+			"primitives": {
+				"median": 709411.0,
+				"p95": 709411.0
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 734.0,
+				"p95": 734.0
+			},
+			"frame_ms": {
+				"median": 6.941,
+				"p95": 7.765
+			},
+			"label": "paper_off_2",
+			"primitives": {
+				"median": 286079.0,
+				"p95": 286079.0
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 7370.0,
+				"p95": 7370.0
+			},
+			"frame_ms": {
+				"median": 24.514,
+				"p95": 27.831
+			},
+			"label": "paper_restored_2",
+			"primitives": {
+				"median": 709411.0,
+				"p95": 709411.0
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 720.0,
+				"p95": 720.0
+			},
+			"frame_ms": {
+				"median": 6.947,
+				"p95": 7.097
+			},
+			"label": "border_hidden_2",
+			"primitives": {
+				"median": 285844.0,
+				"p95": 285844.0
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		}
+	],
+	"rules_unchanged": true
+}

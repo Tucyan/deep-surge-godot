@@ -7,6 +7,10 @@ const Health = preload("res://core/health_balance.gd")
 const I = preload("res://core/inventory.gd")
 const R = preload("res://core/random_streams.gd")
 const Stats = preload("res://core/run_statistics.gd")
+const RelicRewards = preload("res://core/relic_rewards.gd")
+const Collectibles = preload("res://core/collectible_rules.gd")
+const Query = preload("res://core/effect_query.gd")
+const Effects = preload("res://core/effect_rules.gd")
 const PHASES := ["navigation","preparation","story","interaction","battle","aftermath","discard","finished","chapterComplete"]
 
 static func expansion_cost(state: Dictionary) -> Dictionary:
@@ -69,8 +73,11 @@ static func option(ctx, id: String) -> bool:
 	return ctx.Encounter.option(ctx,{"id":id})
 
 static func effects(ctx, list: Array) -> bool:
+	if not RelicRewards.valid_effects(ctx.catalog.table("relics"),list): return ctx.fail("潮汐遗物奖励配置无效")
 	for effect in list:
 		match effect.type:
+			"GiveRelic", "GiveRandomRelic":
+				if not RelicRewards.grant(ctx,[RelicRewards.effect_entry(effect)],[]): return false
 			"GiveCard": ctx.give(effect.id,int(effect.get("amount",1)))
 			"ChangeCurrent":
 				var delta: int = int(effect.delta)
@@ -332,9 +339,18 @@ static func raft_action(ctx, command: String, args: Dictionary) -> bool:
 		ctx.state.ap-=surcharge
 		if surcharge>0: ctx.state.environment.headwind_used_voyage=int(ctx.state.voyage)
 		cell.equipment = {"id":card.id,"level":int(card.get("level",1)),"fuel":0,"progress":0,"boost_cards":[],"production_bonus":0}
-		var installed_level: int=ctx.Origins.install_level(ctx.state,str(card.id),int(cell.equipment.level))
-		if installed_level>int(cell.equipment.level): ctx.log_text("设备匠·精工装配：新设备直接安装为Ⅱ级。")
+		var origin_plan: Dictionary=ctx.Origins.install_plan(ctx.state,str(card.id),int(cell.equipment.level))
+		var installed_level: int=int(origin_plan.level)
+		var uses: Array=[]
+		if installed_level>int(cell.equipment.level):
+			ctx.Origins.commit_install(ctx.state,origin_plan)
+			ctx.log_text("设备匠·精工装配：新设备直接安装为Ⅱ级。")
+		elif installed_level==1:
+			var effect_plan: Dictionary=Query.install_plan(ctx.state,ctx.catalog,card,cell)
+			installed_level=int(effect_plan.level)
+			if installed_level>1: uses=effect_plan.uses
 		cell.equipment.level=installed_level
+		Effects.commit_uses(ctx,uses)
 		I.remove(ctx.state,card.uid,"deployed"); ctx.log_text("安装" + ctx.catalog.entry("cards",card.id).name)
 		return true
 	if command == "repair_cell":
@@ -424,12 +440,15 @@ static func raft_action(ctx, command: String, args: Dictionary) -> bool:
 static func settle_survival(ctx) -> bool:
 	var s: Dictionary = ctx.state
 	var cost: int = int(s.flags.get("voyage_survival_cost",30))
+	var costs: Dictionary=Query.survival_costs(s,ctx.catalog,{"hunger":cost,"hydration":cost})
+	var hunger_cost: int=maxi(0,int(costs.hunger))
+	var hydration_cost: int=maxi(0,int(costs.hydration))
 	s.flags.erase("voyage_survival_cost")
-	ctx.change("hunger",-cost,"movement"); ctx.change("hydration",-cost,"movement")
+	ctx.change("hunger",-hunger_cost,"movement"); ctx.change("hydration",-hydration_cost,"movement")
 	var hunger_damage: int = Health.DEPRIVATION_EACH if s.player.hunger == 0 else 0
 	var thirst_damage: int = Health.DEPRIVATION_EACH if s.player.hydration == 0 else 0
 	ctx.change("hp",-mini(Health.DEPRIVATION_CAP,hunger_damage+thirst_damage),"deprivation")
-	ctx.log_text("轮末整理完成：食水各扣%d；饥饿/缺水造成%d生命损失。" % [cost,mini(Health.DEPRIVATION_CAP,hunger_damage+thirst_damage)])
+	ctx.log_text("轮末整理完成：食物扣%d、饮水扣%d；饥饿/缺水造成%d生命损失。" % [hunger_cost,hydration_cost,mini(Health.DEPRIVATION_CAP,hunger_damage+thirst_damage)])
 	return ctx.alive()
 
 static func settle(ctx) -> bool:
@@ -600,6 +619,7 @@ static func valid_save(ctx, data: Dictionary) -> bool:
 		if not integer(s.flags.voyage_survival_cost) or int(s.flags.voyage_survival_cost) not in [20,25,30]: return false
 		if s.phase in ["navigation","chapterComplete"]: return false
 	if not ctx.Origins.valid(s): return false
+	if not Collectibles.valid(ctx,s): return false
 	if not ctx.EnvironmentRules.valid(ctx,s): return false
 	if s.voyage < 1 or s.voyage > s.length or s.coins < 0 or s.ap < 0: return false
 	if s.mode != "tutorial" and (s.length < 10 or s.length > 15): return false
@@ -609,7 +629,7 @@ static func valid_save(ctx, data: Dictionary) -> bool:
 	for key in ["hp_max","hunger_max","hydration_max","sanity_max","base_ap","battle_ap","limit"]:
 		if s.player[key] < 1: return false
 	for stat in ["hp","hunger","hydration","sanity"]:
-		if s.player[stat] < 0 or s.player[stat] > s.player[stat+"_max"]: return false
+		if s.player[stat] < 0 or s.player[stat] > Query.effective_max(s,ctx.catalog,stat): return false
 	if s.phase != "finished" and (s.player.hp <= 0 or s.player.sanity <= 0): return false
 	var seen := []
 	for card in s.hand:

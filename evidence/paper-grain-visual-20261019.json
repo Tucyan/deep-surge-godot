@@ -1,0 +1,120 @@
+{
+	"cases": [
+		{
+			"changed_channels": 0,
+			"max_byte_error": 0,
+			"new_draws": 63,
+			"old_draws": 6650,
+			"paper": true,
+			"paper_opacity": 0.7,
+			"scale": 1.0,
+			"size": "(1244.0, 208.0)"
+		},
+		{
+			"changed_channels": 0,
+			"max_byte_error": 0,
+			"new_draws": 63,
+			"old_draws": 6650,
+			"paper": true,
+			"paper_opacity": 0.7,
+			"scale": 1.25,
+			"size": "(1244.0, 208.0)"
+		},
+		{
+			"changed_channels": 0,
+			"max_byte_error": 0,
+			"new_draws": 63,
+			"old_draws": 4066,
+			"paper": true,
+			"paper_opacity": 0.35,
+			"scale": 1.1,
+			"size": "(930.5, 173.75)"
+		},
+		{
+			"changed_channels": 0,
+			"max_byte_error": 0,
+			"new_draws": 63,
+			"old_draws": 11606,
+			"paper": true,
+			"paper_opacity": 1.0,
+			"scale": 1.0,
+			"size": "(1580.0, 280.0)"
+		},
+		{
+			"changed_channels": 0,
+			"max_byte_error": 0,
+			"new_draws": 63,
+			"old_draws": 158,
+			"paper": true,
+			"paper_opacity": 0.0,
+			"scale": 1.25,
+			"size": "(80.0, 80.0)"
+		},
+		{
+			"changed_channels": 0,
+			"max_byte_error": 0,
+			"new_draws": 14,
+			"old_draws": 14,
+			"paper": false,
+			"paper_opacity": 0.7,
+			"scale": 1.0,
+			"size": "(1244.0, 208.0)"
+		},
+		{
+			"changed_channels": 0,
+			"max_byte_error": 0,
+			"new_draws": 63,
+			"old_draws": 10500,
+			"paper": true,
+			"paper_opacity": 0.7,
+			"scale": 0.8,
+			"size": "(1555.0, 260.0)"
+		},
+		{
+			"changed_channels": 2,
+			"max_byte_error": 1,
+			"new_draws": 63,
+			"old_draws": 6650,
+			"paper": true,
+			"paper_opacity": 0.7,
+			"scale": 1.2,
+			"size": "(1244.0, 208.0)"
+		},
+		{
+			"new_draws": 63,
+			"old_draws": 6650,
+			"pixels_equal": true,
+			"resize": true,
+			"size": "(1244.0, 208.0)"
+		},
+		{
+			"new_draws": 63,
+			"old_draws": 158,
+			"pixels_equal": true,
+			"resize": true,
+			"size": "(80.0, 80.0)"
+		},
+		{
+			"new_draws": 0,
+			"old_draws": 0,
+			"pixels_equal": true,
+			"resize": true,
+			"size": "(20.0, 20.0)"
+		},
+		{
+			"new_draws": 63,
+			"old_draws": 3884,
+			"pixels_equal": true,
+			"resize": true,
+			"size": "(930.0, 170.0)"
+		},
+		{
+			"new_draws": 63,
+			"old_draws": 6650,
+			"pixels_equal": true,
+			"resize": true,
+			"size": "(1244.0, 208.0)"
+		}
+	],
+	"failures": 0
+}

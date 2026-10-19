@@ -48,12 +48,15 @@ func pick_narrative(app, id: String) -> void:
 ## Prepare the entire new run and slot before replacing any active memory.
 
 func _start_story_run(app, args: Dictionary) -> void:
+	if app.persistence_coordinator.blocks(app,"new"): app.render(); return
 	if pending_narrative.get("mode", "") != "new":
 		app.local_panel = "narrative"; app.setup_mode = ""; app.render(); return
 	if args.get("difficulty", "") == "tutorial":
 		app.message = "剧情模式请选择正式航程难度"; app.render(); return
 	var candidate = Session.new(app.catalog)
 	candidate.profile = app.session.profile.duplicate(true)
+	candidate.revision = app.session.revision
+	candidate.last_settlement = app.session.last_settlement.duplicate(true)
 	if not candidate.dispatch("new", args):
 		app.message = candidate.error; app.render(); return
 	var story = NarrativeSession.new(narrative_content)
@@ -61,19 +64,27 @@ func _start_story_run(app, args: Dictionary) -> void:
 	var payload: Dictionary = story.export_data()
 	payload.gameplay = candidate.snapshot()
 	var id: String = narrative_store.create_id()
+	var previous_id: String = narrative_store.active_id()
 	if not narrative_store.write(id, payload):
 		app.message = narrative_store.error; app.render(); return
+	if not app.persistence_coordinator.write_candidate(app,candidate):
+		var cause: String = app.message
+		if not narrative_store.rollback_new(id,previous_id): cause += "；" + narrative_store.error
+		app.message = cause; app.render(); return
 	app.session = candidate; narrative = story
 	pending_narrative = {}; app.setup_mode = ""; app.local_panel = ""; app.save_blocked = false
 	app.message = ""; app.hand_layout.order.clear(); app.ui_state.nav_select = ""
 	app.world_view.reset_camera_view()
 	app.meta.set_last_difficulty(str(args.get("difficulty", "standard")))
 	if app.persistence and not app.meta.write_meta(): app.message = app.meta.error
-	app._persist_profile()
 	app.render(); app._maybe_story()
 
 
-func load_story_run(app, id: String) -> bool:
+func load_story_run(app, id: String, replace_current: bool = false) -> bool:
+	# Reloading the same paired story remains an explicit reward recovery path.
+	var same_story: bool = narrative.has_save() and app.session.state.get("mode","") not in ["challenge","tutorial"] and id == narrative_store.active_id()
+	if not same_story and app.persistence_coordinator.blocks(app,"load_story"):
+		app.render(); return false
 	var payload: Dictionary = narrative_store.read(id)
 	if payload.get("chapter", "") != "chapter1" or payload.get("version", "") != narrative_content.version or not payload.get("gameplay") is Dictionary:
 		app.message = "此剧情档不含兼容的11节点航程；原档已保留，请新建剧情档。"
@@ -86,11 +97,18 @@ func load_story_run(app, id: String) -> bool:
 		app.message = story.error; app.render(); return false
 	if not story.matches_run_projection(int(game.state.voyage), game.phase()):
 		app.message = "剧情与航程节点不一致，已保留原文件。"; app.render(); return false
-	if not narrative_store.set_active(id):
-		app.message = narrative_store.error; app.render(); return false
 	# Profile is shared meta progress, not rewound by loading an older run slot.
 	game.profile = app.session.profile.duplicate(true)
 	var recovered: bool = game.Rewards.recover(game.profile, game.state, payload.gameplay.profile)
+	if not same_story:
+		if not app.persistence_coordinator.confirm_replacement(app,"load_story",{"id":id,"replace_current":replace_current}): return false
+	var previous_id: String = narrative_store.active_id()
+	if not narrative_store.set_active(id):
+		app.message = narrative_store.error; app.render(); return false
+	if not same_story and not app.persistence_coordinator.write_candidate(app,game):
+		var cause: String = app.message
+		if not narrative_store.set_active(previous_id): cause += "；" + narrative_store.error
+		app.message = cause; app.render(); return false
 	game.screen = "game"; game.panel = game.event_panel()
 	app.session = game; narrative = story
 	app.setup_mode = ""; app.local_panel = ""; pending_narrative = {}; app.message = ""
@@ -171,6 +189,7 @@ func narrative_status(app) -> String:
 
 func _maybe_story(app) -> void:
 	if app._defer_transition_render or app.transition_busy: return
+	if app.persistence_coordinator.save_pending or app.save_blocked: return
 	if narrative_playing or narrative == null or app.session == null: return
 	if app.session.state.is_empty() or app.session.screen != "game": return
 	# Narrative beats belong to story runs; challenge and tutorial are self-contained.
@@ -199,6 +218,9 @@ func _open_narrative(app, scene: Dictionary) -> void:
 
 
 func _on_narrative_completed(app, result: Dictionary) -> void:
+	if app.persistence_coordinator.save_pending:
+		app.message = app.persistence_coordinator.save_error
+		return
 	var changes: Dictionary = narrative.finish(result)
 	if not narrative.error.is_empty():
 		app.message = narrative.error

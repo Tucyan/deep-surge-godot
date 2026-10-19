@@ -7,6 +7,7 @@ static func fork(ctx):
 	copy.screen=ctx.screen; copy.panel=ctx.panel; copy.revision=ctx.revision
 	copy.last_settlement=ctx.last_settlement.duplicate(true)
 	copy._auto_advancing=true
+	copy._effect_preview=true
 	return copy
 
 static func quote(ctx, command: String, args: Dictionary = {}) -> Dictionary:
@@ -184,10 +185,14 @@ static func candidates(ctx) -> Array:
 		"interaction":
 			for id in ctx.state.get("shop",{}).get("stock",[]):
 				add(items,"buy",{"id":id,"payment":"coin"})
+			for row in ctx.Shop.view(ctx).get("relic_stock",[]):
+				add(items,"buy_collectible",{"id":row.id,"payment":"coin"})
 			for card in ctx.Shop.view(ctx).sellable: add(items,"sell",{"uid":card.uid})
 			add(items,"shop_leave")
 		"discard":
 			for card in ctx.state.hand: add(items,"discard",{"uid":card.uid})
 			if ctx.state.coins>0: add(items,"discard",{"uid":"coins"})
+	if ctx.base_action() and ctx.state.get("mode","")!="tutorial":
+		for row in ctx.Collectibles.project(ctx): add(items,"discard_collectible",{"uid":row.uid})
 	add(items,"abandon")
 	return items

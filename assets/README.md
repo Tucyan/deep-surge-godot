@@ -1,5 +1,9 @@
 # 素材登记
 
+2026-10-19 首页设置入口改为项目原创 SVG 齿轮图标 `icon.settings.gear`，版本1，无外部依赖；源尺寸64×64，运行映射为 `pages/flow_home.gd/HomeSettings/HomeSettingsGear`，来源与SHA-256登记在manifest。
+
+手牌纸张底板使用 `ui.hud.nautical-frame` v3：原有颗粒网格、圆点半径、颜色与透明度保留，由共享的 64 段圆形 ArrayMesh 和每个底板私有的 2D MultiMesh 批量绘制。实例缓冲仅在整数尺寸变化时重建，随底板释放；没有新增外部纹理、视口或规则随机。来源、hash 和生成方式见 `manifest.json`；图形回归与性能数据见[纸张绘制优化验证](../evidence/paper-grain-performance-20261019.md)。
+
 2026-10-18 应用图标采用用户选中候选04的白帆船/蓝海浪。稳定ID为 `app.icon`、`app.icon.windows`、`app.icon.android.foreground`、`app.icon.android.background`、`app.icon.android.monochrome`；均为v1。内置ImageGen独立源、候选原图和提示保存在[图标源目录](../asset-sources/app-icon-sail-v1/README.md)，`tools/register_app_icon.py` 生成平台PNG/ICO尺寸、系统自适应安全区和主题alpha蒙版并登记hash/依赖，无视觉随机。映射到project.godot、Windows ICO及Android普通/自适应/单色图标；不参与GameState。实际安装包图标与签名检查见[打包记录](../docs/android-export.md)。
 
 2026-10-18 全屏局外商店与两层科技：新增 `ui.meta-shop`、`rules.tech-tree`、`data.tech-tree`，复用已登记卡图；遗产与优惠券新增项目原创SVG `icon.meta.inheritance` / `icon.meta.coupon`，无下载依赖。同步图鉴共享预览卡片和全屏路由hash。详见[机制](../docs/meta-shop-and-tech.md)与[验证](../evidence/meta-shop-tech-v22-verification.md)。
@@ -263,3 +267,21 @@ HUD 控件统一位于 `presentation/hud/`，五张 HUD 图片位于 `assets/ui/
 当前首页使用用户提供的 `深潮_月下灯塔与远航帆船_去水印_2x超分2K_带边框.mp4`，运行资源为 `assets/title_ui/lighthouse_loop.ogv`（2560×1440、16:9、约5.09秒、Theora q7、静音循环）及同源首帧。完整画面等比居中，未覆盖区域纯黑，不裁剪画面。视频已含边框及Logo，移除独立 `TitleFrame`、透明Logo与圆形挡板实例，避免重复叠加；六个菜单按钮与设置入口保留。旧边框和Logo文件仅保留作历史资产。稳定AssetId沿用，来源、版本、依赖、映射和SHA-256由 `tools/register_title_v3.py` 更新。
 
 2026-10-18 发布前登记核对：同步18个现有脚本/数据资产绑定的实际SHA-256与版本（含剧情/事件页、教程初始选牌、手牌保护、航行HUD、设置、难度与入口）。保留稳定AssetId及既有来源、依赖与运行映射；没有替换外部美术。文件级完整性由 tools/check_supplied_assets.py 再次核验。
+
+
+### 航行轮次过渡
+
+`ui.voyage.transition` 为项目自绘的原生画布动画（`presentation/voyage_transition.gd`），复用 `ui.loading.transition` 的淡入淡出与输入拦截。深海蓝底默认透明度0.82，帆船轻浮、三层波纹流动；颜色由导出参数配置，不使用随机或新增图片。视口自适应，无位图尺寸；来源、版本、依赖、运行映射与 SHA-256 登记在 `manifest.json`。验证入口为 `tests/test_voyage_transition.gd`，图形证据为 `evidence/voyage-transition.png`。
+
+自动与手动航次结算统一复用 `ui.voyage.transition`；设置 → 游戏偏好新增“自动结束航程”（默认开启），本地保存，不新增图片。`ui.settings-panel`、显示偏好及筏格交互和入口脚本的现有资产条目同步当前版本和 SHA-256。设置与动画图形验证见 `evidence/auto-end-settings.png`、`evidence/auto-end-settings-game.png`、`evidence/voyage-transition.png`。
+
+
+### 获取提示与遗物仓库
+
+新增 `ui.acquisition.overlay`、`ui.acquisition.presenter`、`ui.collectible.placeholder`、`ui.collectibles.warehouse` 与 `icon.treasure`。界面使用项目原生画布/控件。遗物共用 `texture.collectible.placeholder` 透明PNG（1254×1254 RGBA），由 imagegen 生成，参照 `card.wood` 的低多边形画风；单件古铜/青绿护符，简化块面与细节。原图归档于 `asset-sources/relic-placeholder-v1/`，运行副本位于 `assets/collectibles/`，像素原样复制，保留真实alpha；所有遗物格、右侧详情和获取动画通过共享缓存使用同一图片，无规则或表现随机。宝箱图标为项目 SVG（64×64）。来源、版本、依赖、运行映射与 SHA-256 在 `manifest.json` 登记。既有航行HUD、筏格拾取与根格标签相关资产沿用稳定ID并同步脚本hash。原模型与纹理未改；卡牌画面复用 `ui.item-card` 和现有卡牌图片。
+
+GPU验证：`test_acquisition_ui.gd` 的获取/说明/飞行动画、`test_acquisition_layout.gd` 的960×540、1280×720、1600×900布局；证据为 `evidence/acquisition-*.png`。共用护符仍为临时占位美术，各遗物专属插画尚未制作。
+
+获取动画终点修正：确认前通过待收取投影隐藏新牌、叠牌数量和容量增量；确认后按最终手牌矩形与真实尺寸直接飞入，到达时显现，不经过旧动画临时坐标。共享图片与规则奖励不变。`ui.acquisition.overlay`、`ui.acquisition.presenter` 及入口关联hash已同步，验证为 `test_acquisition_arrival.gd`。
+
+发布前完整性核对同步了 18 个既有界面脚本的过期 SHA-256 登记值，仅更新 manifest 记录；270 个文件绑定校验通过，见[发布验证](../evidence/release-20261019-verification.md)。

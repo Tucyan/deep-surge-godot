@@ -118,6 +118,17 @@ func write(id: String, data: Dictionary) -> bool:
 func path_of(id: String) -> String:
 	return dir + "/" + id + ".json"
 
+## Only a newly created candidate may be removed after shared commit failure.
+## Restore the binding before deleting the uncommitted candidate slot.
+func rollback_new(id: String, previous_id: String) -> bool:
+	if not _valid_id(id) or id == previous_id:
+		error = "无法回滚剧情候选档"; return false
+	if not set_active(previous_id): return false
+	if DirAccess.remove_absolute(ProjectSettings.globalize_path(path_of(id))) != OK:
+		error = "未挂载的新剧情档清理失败"; return false
+	_saves_valid = false; _refresh_presence()
+	return true
+
 func _valid_id(id: String) -> bool:
 	return id.begins_with(ID_PREFIX) and id.is_valid_filename() and not id.contains("..") and not id.contains("/") and not id.contains("\\")
 

@@ -84,7 +84,7 @@ func category_bar(categories: Dictionary, default_id: String) -> String:
 func encyclopedia() -> void:
 	name = "Encyclopedia"
 	W.text(self,"图鉴",30,W.GOLD)
-	selected_table = category_bar({"cards":"卡牌","enemies":"怪物","relics":"藏品","endings":"结局"},"cards")
+	selected_table = category_bar({"cards":"卡牌","enemies":"怪物","relics":"潮汐遗物","endings":"结局"},"cards")
 	var ids: Array = ending_names().keys() if selected_table == "endings" else catalog.table(selected_table).keys()
 	body = HBoxContainer.new(); body.size_flags_vertical = Control.SIZE_EXPAND_FILL; add_child(body)
 	body.add_theme_constant_override("separation",18)

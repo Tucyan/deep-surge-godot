@@ -1,0 +1,398 @@
+{
+	"gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+	"renderer": "gl_compatibility",
+	"rows": [
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 7630.0,
+				"p95": 7652.0
+			},
+			"frame_ms": {
+				"median": 28.542,
+				"p95": 33.933
+			},
+			"label": "desktop_0",
+			"primitives": {
+				"median": 866619.0,
+				"p95": 872079.0
+			},
+			"process_ms": {
+				"median": 38.022,
+				"p95": 182.765
+			},
+			"render_size": "(960, 540)",
+			"vsync": 0,
+			"window": "(960, 540)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 7630.0,
+				"p95": 7653.0
+			},
+			"frame_ms": {
+				"median": 25.972,
+				"p95": 33.584
+			},
+			"label": "desktop_1",
+			"primitives": {
+				"median": 877999.0,
+				"p95": 882791.0
+			},
+			"process_ms": {
+				"median": 39.604,
+				"p95": 181.313
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 7649.0,
+				"p95": 7651.0
+			},
+			"frame_ms": {
+				"median": 27.958,
+				"p95": 38.954
+			},
+			"label": "desktop_2",
+			"primitives": {
+				"median": 948007.0,
+				"p95": 950747.0
+			},
+			"process_ms": {
+				"median": 38.146,
+				"p95": 210.359
+			},
+			"render_size": "(1920, 1080)",
+			"vsync": 0,
+			"window": "(1920, 1080)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 7631.0,
+				"p95": 7655.0
+			},
+			"frame_ms": {
+				"median": 30.761,
+				"p95": 34.136
+			},
+			"label": "desktop_3",
+			"primitives": {
+				"median": 945847.0,
+				"p95": 956119.0
+			},
+			"process_ms": {
+				"median": 36.836,
+				"p95": 257.655
+			},
+			"render_size": "(2560, 1440)",
+			"vsync": 0,
+			"window": "(2560, 1440)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 7647.0,
+				"p95": 7651.0
+			},
+			"frame_ms": {
+				"median": 30.169,
+				"p95": 38.416
+			},
+			"label": "mobile_scale_0",
+			"primitives": {
+				"median": 867721.0,
+				"p95": 868615.0
+			},
+			"process_ms": {
+				"median": 50.416,
+				"p95": 193.553
+			},
+			"render_size": "(640, 360)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 7648.0,
+				"p95": 7654.0
+			},
+			"frame_ms": {
+				"median": 28.867,
+				"p95": 33.996
+			},
+			"label": "mobile_scale_1",
+			"primitives": {
+				"median": 868719.0,
+				"p95": 872883.0
+			},
+			"process_ms": {
+				"median": 33.798,
+				"p95": 43.562
+			},
+			"render_size": "(960, 540)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 7648.0,
+				"p95": 7653.0
+			},
+			"frame_ms": {
+				"median": 27.576,
+				"p95": 31.063
+			},
+			"label": "mobile_scale_2",
+			"primitives": {
+				"median": 877615.0,
+				"p95": 883891.0
+			},
+			"process_ms": {
+				"median": 33.364,
+				"p95": 38.257
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 7650.0,
+				"p95": 7650.0
+			},
+			"frame_ms": {
+				"median": 28.813,
+				"p95": 34.026
+			},
+			"label": "mobile_scale_3",
+			"primitives": {
+				"median": 904671.0,
+				"p95": 906139.0
+			},
+			"process_ms": {
+				"median": 32.855,
+				"p95": 38.091
+			},
+			"render_size": "(1600, 900)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 7647.0,
+				"p95": 7653.0
+			},
+			"frame_ms": {
+				"median": 30.844,
+				"p95": 39.682
+			},
+			"label": "baseline",
+			"primitives": {
+				"median": 877615.0,
+				"p95": 883891.0
+			},
+			"process_ms": {
+				"median": 36.1,
+				"p95": 52.718
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 7370.0,
+				"p95": 7370.0
+			},
+			"frame_ms": {
+				"median": 27.782,
+				"p95": 32.46
+			},
+			"label": "motion_off",
+			"primitives": {
+				"median": 709411.0,
+				"p95": 709411.0
+			},
+			"process_ms": {
+				"median": 33.259,
+				"p95": 36.578
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 7370.0,
+				"p95": 7370.0
+			},
+			"frame_ms": {
+				"median": 26.461,
+				"p95": 30.203
+			},
+			"label": "world_and_ghost_process_off",
+			"primitives": {
+				"median": 709411.0,
+				"p95": 709411.0
+			},
+			"process_ms": {
+				"median": 32.66,
+				"p95": 33.628
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 7021.0,
+				"p95": 7021.0
+			},
+			"frame_ms": {
+				"median": 29.293,
+				"p95": 38.034
+			},
+			"label": "shadows_off",
+			"primitives": {
+				"median": 565055.0,
+				"p95": 565055.0
+			},
+			"process_ms": {
+				"median": 35.373,
+				"p95": 38.854
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 7365.0,
+				"p95": 7365.0
+			},
+			"frame_ms": {
+				"median": 29.084,
+				"p95": 34.739
+			},
+			"label": "ocean_hidden",
+			"primitives": {
+				"median": 628601.0,
+				"p95": 628601.0
+			},
+			"process_ms": {
+				"median": 40.622,
+				"p95": 42.448
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 7370.0,
+				"p95": 7370.0
+			},
+			"frame_ms": {
+				"median": 27.656,
+				"p95": 31.553
+			},
+			"label": "ocean_flat_shader",
+			"primitives": {
+				"median": 709411.0,
+				"p95": 709411.0
+			},
+			"process_ms": {
+				"median": 31.839,
+				"p95": 255.512
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 457.0,
+				"p95": 457.0
+			},
+			"frame_ms": {
+				"median": 6.95,
+				"p95": 7.397
+			},
+			"label": "hud_hidden",
+			"primitives": {
+				"median": 274352.0,
+				"p95": 274352.0
+			},
+			"process_ms": {
+				"median": 33.624,
+				"p95": 33.624
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 6914.0,
+				"p95": 6914.0
+			},
+			"frame_ms": {
+				"median": 26.52,
+				"p95": 30.715
+			},
+			"label": "3d_render_disabled",
+			"primitives": {
+				"median": 435061.0,
+				"p95": 435061.0
+			},
+			"process_ms": {
+				"median": 38.187,
+				"p95": 175.991
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		},
+		{
+			"cap": 0,
+			"draw_calls": {
+				"median": 7370.0,
+				"p95": 7370.0
+			},
+			"frame_ms": {
+				"median": 27.174,
+				"p95": 32.103
+			},
+			"label": "baseline_repeat",
+			"primitives": {
+				"median": 709411.0,
+				"p95": 709411.0
+			},
+			"process_ms": {
+				"median": 31.347,
+				"p95": 37.659
+			},
+			"render_size": "(1280, 720)",
+			"vsync": 0,
+			"window": "(1280, 720)"
+		}
+	],
+	"rules_unchanged": true
+}

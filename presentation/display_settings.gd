@@ -12,6 +12,7 @@ var resolution := Vector2i(1280,720)
 var free_aspect := false
 var fullscreen := false
 var motion := true
+var auto_end_voyage := true
 var view_locked := false
 var camera_mode := "oblique"
 var camera_orbit_button := MOUSE_BUTTON_RIGHT
@@ -22,6 +23,7 @@ var path := "user://display-settings.cfg"
 
 func _init(is_mobile: bool = OS.has_feature("mobile")) -> void:
 	mobile=is_mobile; ui_scale=1.25 if mobile else 1.0
+	free_aspect=mobile
 func supports_window_options() -> bool: return not mobile
 static func mouse_button_name(button: int) -> String:
 	return {MOUSE_BUTTON_LEFT:"左键",MOUSE_BUTTON_RIGHT:"右键",MOUSE_BUTTON_MIDDLE:"中键"}.get(button,"未绑定")
@@ -49,9 +51,10 @@ func load_preferences() -> void:
 	var size_value = config.get_value("display","resolution",resolution)
 	if size_value in RESOLUTIONS: resolution=size_value
 	elif size_value==Vector2i(1600,900): resolution=Vector2i(1280,720)
-	free_aspect=config.get_value("display","free_aspect",false)==true
+	free_aspect=config.get_value("display","free_aspect",mobile)==true
 	fullscreen=not mobile and config.get_value("display","fullscreen",false)==true
 	motion=config.get_value("display","motion",true)==true
+	auto_end_voyage=config.get_value("game","auto_end_voyage",true)==true
 	view_locked=config.get_value("display","view_locked",false)==true
 	var mode_value=config.get_value("display","camera_mode","oblique")
 	camera_mode=mode_value if mode_value in ["oblique","top"] else "oblique"
@@ -68,6 +71,7 @@ func load_preferences() -> void:
 func save_preferences() -> Error:
 	var config:=ConfigFile.new()
 	for key in ["ui_scale","quality","resolution","free_aspect","fullscreen","motion","view_locked","camera_mode","camera_orbit_button","camera_pan_button","camera_reset_key","fps_limit"]: config.set_value("display",key,get(key))
+	config.set_value("game","auto_end_voyage",auto_end_voyage)
 	return config.save(path)
 func apply_window(window: Window, change_mode: bool = true) -> void:
 	window.content_scale_factor=ui_scale

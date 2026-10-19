@@ -109,4 +109,8 @@ func decorative_root(world,font: Font,layout: String=Layout.ID) -> Node3D:
 	var first_root: Dictionary=root_cells(layout)[0]
 	var details_position:=Vector3((first_root.x-.5)*2.35,.48,(first_root.y-.5)*2.1+.84)
 	label(base,font,"木筏详情",base.transform.affine_inverse()*details_position)
+	var second_root: Dictionary=root_cells(layout)[1]
+	var collection_position:=Vector3((second_root.x-.5)*2.35,.64,(second_root.y-.5)*2.1+.84)
+	label(base,font,"潮汐遗物",base.transform.affine_inverse()*collection_position)
+	base.get_child(base.get_child_count()-1).name="CollectiblesRootLabel"
 	return base

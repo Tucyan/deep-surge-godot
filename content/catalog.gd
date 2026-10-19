@@ -40,6 +40,15 @@ func load_catalog() -> bool:
 		error="难度定义无效"; return false
 	if not preload("res://core/tech_rules.gd").valid_definitions(pending.tech):
 		error="科技分层定义无效"; return false
+	if not preload("res://core/collectible_rules.gd").valid_definitions(pending.relics):
+		error="潮汐遗物效果定义无效"; return false
+	for definition in pending.relics.values():
+		if not definition.get("enabled",false): continue
+		for effect in definition.effects:
+			if effect.type=="grant_card" and not pending.cards.has(effect.id):
+				error="潮汐遗物产物不存在："+str(effect.id); return false
+	if not preload("res://core/relic_rewards.gd").valid_content(pending.relics,pending.nodes):
+		error="节点潮汐遗物奖励配置无效"; return false
 	_tables = pending
 	_fingerprint = JSON.stringify(_tables).sha256_text()
 	return true

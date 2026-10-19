@@ -4,12 +4,19 @@ const I = preload("res://core/inventory.gd")
 const Stats = preload("res://core/run_statistics.gd")
 const R = preload("res://core/random_streams.gd")
 const Origins = preload("res://core/origin_rules.gd")
+const EffectQuery = preload("res://core/effect_query.gd")
+const RelicRewards = preload("res://core/relic_rewards.gd")
+const Effects = preload("res://core/effect_rules.gd")
 const COMBO := {"wood":{"attack":{"damage":0,"shield":1},"block":{"shield":2}},"iron":{"attack":{"damage":1},"block":{"shield":1,"counter":1}},"rope":{"attack":{"damage":0,"enemy_damage_delta":-1},"block":{"bind":true}},"plastic":{"block":{"shield":1,"extend":true}},"cloth":{"block":{"shield":0,"clean":true}}}
 
 static func enter(ctx, enemy_id: String = "", rewards: Dictionary = {}) -> bool:
 	var s: Dictionary = ctx.state
 	if ctx.phase() != "story" or s.story_step != "choice": return false
-	if enemy_id=="": enemy_id=s.node.get("monster","")
+	if enemy_id=="":
+		enemy_id=s.node.get("monster","")
+		rewards=s.node.get("rewards",{}).duplicate(true)
+	if not RelicRewards.valid_rewards(ctx.catalog.table("relics"),rewards): return ctx.fail("潮汐遗物奖励配置无效")
+	if s.get("mode","")=="tutorial" and not rewards.get("relics",[]).is_empty(): return ctx.fail("教程不能获得潮汐遗物")
 	var enemy: Dictionary = ctx.Difficulty.enemy(ctx.catalog,s,enemy_id)
 	if enemy.is_empty(): return ctx.fail("没有可迎战的敌人")
 	var raft_target := biter_target(ctx) if enemy_id=="biter" else ""
@@ -25,6 +32,7 @@ static func enter(ctx, enemy_id: String = "", rewards: Dictionary = {}) -> bool:
 	# Old saves could contain the repeatable punch card. It is now a free action.
 	for card in s.hand.duplicate(true):
 		if card.id == "punch": I.remove(s,card.uid,"cleared")
+	Effects.trigger(ctx,"battle_start")
 	supply(ctx)
 	ctx.log_text("迎战"+enemy.name)
 	return true
@@ -32,11 +40,15 @@ static func enter(ctx, enemy_id: String = "", rewards: Dictionary = {}) -> bool:
 static func preview(ctx, args: Dictionary = {}) -> Dictionary:
 	var copy = ctx.get_script().new(ctx.catalog)
 	copy.state = ctx.state.duplicate(true); copy.profile = ctx.profile.duplicate(true)
+	copy._effect_preview = true
 	var reason: String = preload("res://core/tutorial_rules.gd").guard(copy,"play" if args.has("uid") else "battle_action",args)
 	var ok := false
 	if reason.is_empty(): ok = copy.Rules.play(copy,args) if args.has("uid") else action(copy,args)
 	else: copy.error = reason
-	return {"valid":ok,"error":copy.error,"battle":copy.state.get("battle",{}).duplicate(true),"player":copy.state.get("player",{}).duplicate(true),"hand":copy.state.get("hand",[]).duplicate(true)}
+	var result: Dictionary={"valid":ok,"error":copy.error,"battle":copy.state.get("battle",{}).duplicate(true),"player":copy.state.get("player",{}).duplicate(true),"hand":copy.state.get("hand",[]).duplicate(true)}
+	var chance: float=EffectQuery.probability(ctx.state,ctx.catalog,"enchant_preserve")
+	if chance>0.0: result.enchant_preserve_chance=chance
+	return result
 
 static func action(ctx, args: Dictionary) -> bool:
 	if ctx.phase() != "battle": return false
@@ -57,15 +69,21 @@ static func action(ctx, args: Dictionary) -> bool:
 	if combo.get("bind",false) and s.battle.get("bind_used",false): return ctx.fail("本回合已用束缚效果")
 	var boost := find_boost(s,str(args.get("buff_uid",""))) if args.has("buff_uid") else {}
 	if args.has("buff_uid") and (boost.is_empty() or boost.id!="power" and boost.id!="barrier" or boost.id=="power" and action_id!="attack" or boost.id=="barrier" and action_id!="block" and int(combo.get("shield",0))<=0): return ctx.fail("该增益与行动类型不匹配")
+	# Only a fully validated enchanted action may sample the battle stream.
+	# Preview consumes material conservatively and exposes only the public chance.
+	var preserve_material:=false
+	var preserve_chance: float=EffectQuery.probability(s,ctx.catalog,"enchant_preserve")
+	if not resource.is_empty() and preserve_chance>0.0 and not ctx._effect_preview:
+		preserve_material=R.draw(s.rng,"battle")<preserve_chance
 	if action_id == "attack":
-		var damage: int = maxi(1,1+int(s.player.get("damage",0))+int(combo.get("damage",0)))
+		var damage: int = maxi(1,1+int(s.player.get("damage",0))+int(combo.get("damage",0))+EffectQuery.modifier(s,ctx.catalog,"battle.damage"))
 		if s.battle.turn <= int(s.battle.get("fear_until",0)): damage = maxi(1,damage-1)
 		if boost.get("id","") == "power": damage += int(ctx.catalog.entry("boosts","power").get("damageBonus",2))
 		var effective: int = mini(int(s.battle.hp),damage)
 		Stats.increment(s,"damage_dealt",effective); s.battle.hp = maxi(0,int(s.battle.hp)-damage)
 		if combo.has("enemy_damage_delta"): s.battle.enemy_damage_delta=mini(int(s.battle.get("enemy_damage_delta",0)),int(combo.enemy_damage_delta))
 	else:
-		add_shield(s,"action",1+int(combo.get("shield",0)),s.battle.turn, bool(combo.get("extend",false)))
+		add_shield(s,"action",1+int(combo.get("shield",0))+EffectQuery.modifier(s,ctx.catalog,"battle.shield"),s.battle.turn, bool(combo.get("extend",false)))
 		if boost.get("id","")=="barrier": add_shield(s,"barrier",int(ctx.catalog.entry("boosts","barrier").get("shieldBonus",2)),s.battle.turn+int(ctx.catalog.entry("boosts","barrier").get("lifetime",1)))
 		if not combo.is_empty() and combo.has("bind"):
 			s.battle.bound_effect = true; s.battle.bind_used=true
@@ -77,7 +95,7 @@ static func action(ctx, args: Dictionary) -> bool:
 		add_shield(s,"wood_attack",int(combo.shield),s.battle.turn)
 		if boost.get("id","")=="barrier": add_shield(s,"barrier",int(ctx.catalog.entry("boosts","barrier").get("shieldBonus",2)),s.battle.turn+int(ctx.catalog.entry("boosts","barrier").get("lifetime",1)))
 	if boost.get("id","") != "": consume_boost(s,boost.uid)
-	if not resource.is_empty(): I.remove(s,resource.uid,"cost_consumed")
+	if not resource.is_empty() and not preserve_material: I.remove(s,resource.uid,"cost_consumed")
 	pay(ctx,payment)
 	ctx.log_text("执行"+("攻击" if action_id=="attack" else "格挡")+("·"+ctx.catalog.entry("cards",resource.id).name if not resource.is_empty() else ""))
 	if s.battle.hp == 0: victory(ctx)
@@ -140,7 +158,12 @@ static func victory(ctx) -> void:
 	var bonus: int=Origins.victory_bonus(s)
 	for i in range(bonus): ctx.give(R.pick(s.rng,"rewards",I.RESOURCES),1,false,"origin_battle_reward")
 	if s.node.get("boss",false): s.boss_defeated = true
-	exit_battle(ctx,"战斗胜利；原战利品已领取。"+("战斗狂额外材料×%d（战后等级%d）。" % [bonus,s.level] if bonus>0 else ""))
+	# End the current battle before acquiring rewards with battle-start effects.
+	cleanup(ctx)
+	var relic_summary: Array=[]
+	if not RelicRewards.grant(ctx,rewards.get("relics",[]),relic_summary): return
+	s.battle={}
+	ctx.result_story("战斗胜利；原战利品已领取。"+("战斗狂额外材料×%d（战后等级%d）。" % [bonus,s.level] if bonus>0 else "")+"；".join(relic_summary))
 
 static func supply(ctx) -> void:
 	var s: Dictionary=ctx.state
@@ -183,7 +206,7 @@ static func play(ctx, card: Dictionary, definition: Dictionary, args: Dictionary
 	if definition.kind == "survival":
 		if not Origins.use_survival(ctx,card,definition): return false
 	elif definition.kind == "combat":
-		var damage: int = int(definition.damage) + s.player.damage + (int(ctx.catalog.entry("boosts","power").get("damageBonus",2)) if not boost.is_empty() else 0)
+		var damage: int = int(definition.damage) + s.player.damage + EffectQuery.modifier(s,ctx.catalog,"battle.damage") + (int(ctx.catalog.entry("boosts","power").get("damageBonus",2)) if not boost.is_empty() else 0)
 		if card.id == "spear" and int(card.get("level",1))>=2: damage += 2
 		if s.battle.turn <= s.battle.fear_until: damage -= 1
 		var effective: int = mini(int(s.battle.hp),maxi(1,damage))
@@ -282,6 +305,7 @@ static func battle_alive(ctx) -> bool:
 		exit_battle(ctx,"遗迹保护生效，恢复入场生命；没有奖励。")
 	else:
 		Stats.battle_result(ctx.state,"dead")
+		cleanup(ctx)
 		ctx.state.battle={}
 		ctx.finish("dead")
 	return false
@@ -291,12 +315,17 @@ static func retreat(ctx) -> bool:
 	if ctx.state.node.kind == "ruin": ctx.change("hp",int(ctx.state.battle.entry_hp)-int(ctx.state.player.hp))
 	else: ctx.change("hp",-Health.RETREAT)
 	Stats.battle_result(ctx.state,"dead" if ctx.state.player.hp<=0 else "retreated")
+	cleanup(ctx)
 	if ctx.alive():
 		exit_battle(ctx,"撤退，没有战斗奖励。")
 	return true
 
-static func exit_battle(ctx, text: String) -> void:
+static func cleanup(ctx) -> void:
+	Effects.trigger(ctx,"battle_end")
 	for card in ctx.state.hand.duplicate(true):
 		if card.temporary or card.id=="pollution": I.remove(ctx.state,card.uid,"cleared")
+
+static func exit_battle(ctx, text: String) -> void:
+	cleanup(ctx)
 	ctx.state.battle = {}
 	ctx.result_story(text)

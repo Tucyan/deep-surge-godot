@@ -15,9 +15,26 @@ for (const [table, source] of Object.entries({meta_shop:META_SHOP,relics:RELICS}
     const expected=structuredClone(source);
     if(table==='meta_shop') { expected.body.modifiers.hpMax=2; expected.body.description='永久生命上限+2，饱食、水分、精神上限各+5。'; }
     if(table==='relics') { expected.guardian.modifiers.hpMax=2; expected.guardian.description='生命上限+2。'; }
-    assert.deepEqual(read(table),expected);
+    const actual=read(table);
+    assert.deepEqual(table==='relics' ? Object.fromEntries(Object.keys(source).map(id=>[id,actual[id]])) : actual,expected);
   });
 }
+
+test('v26正式潮汐遗物只开放已接入的组合效果', () => {
+  const relics=read('relics');
+  const enabled=Object.entries(relics).filter(([,d])=>d.enabled);
+  assert.equal(enabled.length,6);
+  const supported=new Set(['grant_max','restore','modifier','grant_card','install_level','temporary_max','probability']);
+  for(const [id,d] of enabled) {
+    assert.ok(Number.isInteger(d.price)&&d.price>0,id);
+    assert.ok(d.effects.length>0,id);
+    assert.equal(new Set(d.effects.map(e=>e.key)).size,d.effects.length,id);
+    for(const effect of d.effects) assert.ok(supported.has(effect.type),effect.type);
+  }
+  assert.ok(relics.lifeboatTag.effects.some(e=>e.type==='grant_max'));
+  assert.ok(relics.lifeboatTag.effects.some(e=>e.target==='survival.hydration_cost'));
+  assert.equal(relics.fittersBadge.effects[0].uses,2);
+});
 
 test('v22科技为两层六节点，第一层任意两点开放第二层', () => {
   const tech=read('tech');
@@ -66,7 +83,7 @@ test('v10整合旧节点身份，普通战斗与遗迹数值契约保持不变',
   assert.deepEqual(nodes.altar.options.map(x=>x.id),['leave']);
   assert.deepEqual(nodes.trader.options.map(x=>x.id),['calm','leave']);
   assert.deepEqual(nodes.trader.options[0].effects,[{type:'ChangeCurrent',stat:'sanity',delta:5}]);
-  assert.equal(nodes.drift.variants.length,4);
+  assert.equal(nodes.drift.variants.length,3);
   assert.equal(nodes.storm.variants.length,2);
   for(const id of ['drift','storm']) assert.deepEqual(nodes[id].options,nodes[id].variants[0].options,`${id}兼容首变体`);
   assert.deepEqual(nodes.camp.options.filter(x=>x.id!=='leave').map(x=>x.id),['rest','provisions','rhythm']);

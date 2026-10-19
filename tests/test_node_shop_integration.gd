@@ -86,6 +86,8 @@ func test_candidates() -> void:
 	var s=fixture("camp"); var node=s.state.node.duplicate(true)
 	check(not s.Encounter.eligible(s,node),"冷却期内同事件不合格")
 func test_risk_statistics() -> void:
+	# Archived E12 is staged only to retain its generic risk-statistics regression.
+	# test_archived_target_nodes separately proves it cannot enter the public pool.
 	var safe=fixture("storm","surface")
 	check(safe.dispatch("option",{"id":"leave"}) and safe.state.stats.crises.is_empty(),"安全绕行不登记风险失败")
 	var cargo=fixture("storm","hold")

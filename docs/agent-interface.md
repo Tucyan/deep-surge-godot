@@ -1,5 +1,5 @@
 # Agent 游玩接口
-<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v02-25; reviewed: 2026-10-19 -->
+<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v02-26; reviewed: 2026-10-19 -->
 
 本文描述当前本地 JSONL 接口。协议 `deep-surge-agent-v1`、轨迹 `deep-surge-trace-v1`；实现依据 [AgentSession](../adapters/agent_session.gd)、[输入分帧](../tools/agent_stdio.gd)、[客户端](../tools/agent_client.py)、[操作查询](../core/action_query.gd)。
 
@@ -94,7 +94,8 @@ effective和allowed不同：满属性恢复牌可以合法消耗，但没有恢�
 - `salvage`、`craft`、`install`、`upgrade`、`battle_action` 自动应用当前出身；`origin_status` 只投影已公开效果，不暴露战斗狂隐藏保底计数。
 - 转化是一次3换2；可通过参数选择任意合法的三张资源UID，批量转化靠重复动作。Agent 不能覆盖 action 的固定参数或调用任意函数。
 - 节点事件按公开选项/目标提交，商店买入指定库存ID及coin付款，出售指定真实手牌UID。扩建列出全部合法位置，界面可以只提示下一个位置。
-- 普通观察包含当前 player、hand、cells、node/candidates、battle、shop、event_options、environments、navigation、survival_settlement、tech_tree 及revision；被迷雾隐藏的候选可能没有id/monster/options，选择仍使用visit_id。
+- 潮汐遗物购买为 `buy_collectible {id,payment:"coin"}`，仅列本店剩余货架；丢弃为 `discard_collectible {uid}`，只在非教程基地操作阶段提供。持有投影返回 uid、定义ID、名称、说明及各效果 remaining/active。战斗和事件可由内容配置获得遗物，仍通过原有战斗/选项命令执行；事件 `preview.relics` 只显示指定ID或随机池与数量，不给出随机结果。没有任意发放或重新持有的公开命令。商店潮汐遗物报价在 `shop.relic_stock`，不混入六项 `stock`；详见[潮汐遗物契约](collectible-effects.md)。
+- 普通观察包含当前 player、hand、cells、node/candidates、battle、shop、collectibles、event_options、environments、navigation、survival_settlement、tech_tree 及revision；被迷雾隐藏的候选可能没有id/monster/options，选择仍使用visit_id。
 - 观察不包含种子、规则随机流、未来池、完整统计、UI面板或隐藏剧情脚本；事件effects/outcomes不直接返回。战斗返回可见敌方数据和公开资源附魔组合。
 - ActionQuery 支持首页局外操作，但独立Agent的正常航程动作不提供返回首页购买玩家成长的入口。reset 的 `purchases` 字典是隔离测试配置，不读取真实账户进度；教程测试可使用 `difficulty=tutorial` 与固定教学起手资源，正式试玩CLI仅列三档。
 - 食水结算费用通过survival_settlement公开；当前实际结算在轮末容量达标后发生，精神/灯在出发时处理。新独立剧情没有旧夜间命令。细节见 [当前机制](current-game-mechanics.md)。
@@ -105,7 +106,7 @@ trace/replay/result是本地诊断能力，可能含内部信息。玩家信息�
 
 起始快照包含内容指纹、随机算法版本、run_id和初始profile；重放保留局身份，每步hash覆盖完整snapshot并归一JSON整数/浮点表示。最多接受10000步。自动后续动作由原dispatch再现，不需要Agent重复提交；重放失败不替换活动测试会话。
 
-当前玩法快照为schema 2、`godot-flow-v02-25`、`xorshift32-godot-v1`，需要匹配内容指纹。旧版本保存/轨迹不迁移；规则或内容变化后应重新生成并审阅当前路线。
+当前玩法快照为schema 2、`godot-flow-v02-26`、`xorshift32-godot-v1`，需要匹配内容指纹。旧版本保存/轨迹不迁移；规则或内容变化后应重新生成并审阅当前路线。
 
 ## 架构与扩展
 
@@ -132,4 +133,4 @@ python -m unittest discover -s tests -p test_agent_stdio.py -v
 
 `python tools/generate_regression_routes.py` 使用现有策略及真实公开动作重新生成并先重放，人工查看结果差异后更新基线；每条限45秒，超时不自动重试。生成操作会更新当前fixtures，不属于普通只读测试。策略样例不代表最优玩法或平衡结论。
 
-已执行的范围见 [架构验证](../evidence/architecture-health-verification.md)；GPU、触摸与发行导出须单独验收。先前分版本接口说明见 [历史快照](archive/context-20261019/docs--agent-interface.md)，不用于恢复旧夜间、旧规则或旧档迁移。
+潮汐遗物本次验收查[潮汐遗物 v26 验证](../evidence/collectible-effects-v26-verification.md)。其他已执行的范围见 [架构验证](../evidence/architecture-health-verification.md)；GPU、触摸与发行导出须单独验收。先前分版本接口说明见 [历史快照](archive/context-20261019/docs--agent-interface.md)，不用于恢复旧夜间、旧规则或旧档迁移。

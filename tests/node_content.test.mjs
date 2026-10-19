@@ -9,17 +9,23 @@ const event = id => entries.find(node => node.event === id);
 const option = (id, choice) => event(id).options.find(o => o.id === choice);
 const card = (id, amount=1) => ({type:'GiveCard',id,amount});
 
-test('十二事件整合旧节点，旧入口保留而祭坛明确退池', () => {
-  for(let n=1;n<=12;n++) assert.equal(entries.filter(x=>x.event===`E${String(n).padStart(2,'0')}`).length,1);
-  assert.deepEqual(nodes.drift.variants.map(x=>[x.id,x.event]), [['salvage','E01'],['sealed','E05'],['lostBag','E04'],['cargo','E03']]);
+test('E04移除，E08和E12保留定义但归档退池', () => {
+  for(let n=1;n<=12;n++) {
+    const id=`E${String(n).padStart(2,'0')}`;
+    assert.equal(entries.filter(x=>x.event===id).length,n===4?0:1);
+  }
+  assert.deepEqual(nodes.drift.variants.map(x=>[x.id,x.event]), [['salvage','E01'],['sealed','E05'],['cargo','E03']]);
   assert.deepEqual(nodes.storm.variants.map(x=>[x.id,x.event]), [['surface','E12'],['hold','E10']]);
+  assert.equal(nodes.workshop.retired,true);
+  assert.equal(event('E12').retired,true);
+  assert.equal(entries.filter(x=>!x.retired && /^E\d+$/.test(x.event)).length,9);
   assert.equal(nodes.jelly.event,'E06');
   assert.equal(nodes.altar.retired,true);
   assert.deepEqual(nodes.altar.options.map(x=>x.id),['leave']);
   assert.equal(nodes.fallback.fallback,true);
   assert.ok(nodes.fallback.options.every(x=>x.effects.length===0 && x.cost===0));
   for(const id of ['battle','jellyBattle','crabBattle','ruin','boss']) assert.ok(nodes[id].monster);
-  assert.doesNotMatch(nodes.ruin.description,/藏品|日记/);
+  assert.doesNotMatch(nodes.ruin.description,/藏品|收藏品|潮汐遗物|日记/);
 });
 
 test('类别、轮次、次数和冷却均显式定义', () => {
@@ -31,7 +37,7 @@ test('类别、轮次、次数和冷却均显式定义', () => {
     assert.ok(node.max_visits >= 1,node.id);
     assert.ok(node.cooldown >= 1,node.id);
   }
-  const limits = {E01:[1,1],E02:[1,1],E03:[1,1],E04:[1,1],E05:[3,1],E06:[3,1],E07:[1,1],E08:[3,1],E09:[4,1],E10:[5,1],E11:[4,1],E12:[5,1]};
+  const limits = {E01:[1,1],E02:[1,1],E03:[1,1],E05:[3,1],E06:[3,1],E07:[1,1],E08:[3,1],E09:[4,1],E10:[5,1],E11:[4,1],E12:[5,1]};
   for(const [id,[min,max]] of Object.entries(limits)) {
     assert.equal(event(id).min_voyage,min,id); assert.equal(event(id).max_visits,max,id); assert.equal(event(id).cooldown,3,id);
   }
@@ -48,8 +54,6 @@ test('免费收益与付费加码遵守确认数值', () => {
   assert.equal(option('E03','salvage').cost,1);
   assert.deepEqual(option('E03','net').conditions,{equipment:'fishingNet'});
   assert.deepEqual(option('E03','net').effects,[card('wood'),card('iron'),card('plastic')]);
-  assert.equal(option('E04','exchange').operation,'exchange');
-  assert.equal(option('E04','exchange').cost,0);
   assert.deepEqual(option('E06','listen').statCosts,{sanity:6});
   assert.deepEqual(option('E06','listen').effects,[card('iron'),card('rope')]);
   assert.deepEqual(option('E07','share').cardCosts,{wood:1});
@@ -62,7 +66,23 @@ test('免费收益与付费加码遵守确认数值', () => {
   assert.deepEqual(nodes.camp.options.find(x=>x.id==='rhythm').effects,[{type:'ChangeCurrent',stat:'sanity',delta:25},{type:'AddBuff',id:'rested'}]);
 });
 
-test('概率、目标格代价和事件战斗奖励明示并且不引入藏品', () => {
+test('正式节点不再提供按资源手牌展开的交换选项', () => {
+  assert.equal(event('E04'),undefined);
+  assert.ok(!nodes.drift.variants.some(v=>v.id==='lostBag'));
+  for(const node of [...Object.values(nodes),...entries]) {
+    const choices=[...(node.options??[]),...(node.stages??[]).flat()];
+    assert.ok(choices.every(o=>o.operation!=='exchange'),node.name);
+  }
+});
+
+test('正式投放事件不再提供筏格目标下拉选择', () => {
+  for(const node of entries.filter(x=>!x.retired)) {
+    const choices=[...(node.options??[]),...(node.stages??[]).flat()];
+    assert.ok(choices.every(o=>!o.conditions?.target),node.name);
+  }
+});
+
+test('概率、目标格代价和事件战斗奖励明示并且不引入潮汐遗物', () => {
   const open=option('E05','open');
   assert.equal(open.cost,1); assert.equal(open.cardCosts,undefined);
   assert.deepEqual(open.outcomes.map(x=>x.weight),[70,30]);
