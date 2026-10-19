@@ -17,7 +17,7 @@ func card_uid(s, id: String) -> String:
 
 func discard_any(s) -> bool:
 	for card in s.state.hand:
-		if card.id not in ["coin","pollution","punch"]:
+		if card.id not in ["coin","corpse","pollution","punch"]:
 			return s.dispatch("discard",{"uid":card.uid})
 	return false
 
@@ -72,6 +72,8 @@ func play(s) -> void:
 	check(s.phase() == "battle", "battle starts")
 	step(s,"play",{"uid":card_uid(s,"spear")})
 	check(int(s.state.battle.hp) == 3, "first spear deals three damage")
+	step(s,"battle_action",{"action":"attack","resource_uid":card_uid(s,"iron")})
+	step(s,"battle_action",{"action":"block","resource_uid":card_uid(s,"wood")})
 	step(s,"battle_end")
 	check(T.damaged_cells(s.state).size() == 1, "biter damages one outer cell")
 	step(s,"play",{"uid":card_uid(s,"spear")})
@@ -92,6 +94,7 @@ func play(s) -> void:
 	check(s.phase() == "interaction", "shop opens")
 	check(s.state.shop.stock == T.fixed_stock(), "shop stock is fixed")
 	step(s,"buy",{"id":"wood","payment":"coin"})
+	step(s,"sell",{"uid":card_uid(s,"corpse")})
 	step(s,"shop_leave"); step(s,"advance"); step(s,"end_voyage")
 	clear_discard(s)
 	check(s.phase() == "finished" and str(s.state.result) == "tutorial", "tutorial ends with its own result")

@@ -52,7 +52,9 @@ static func hand_limit(state: Dictionary, catalog: RefCounted) -> int:
 	for cell in state.get("cells", []):
 		if cell.get("status", "") != "intact": continue
 		var equipment: Dictionary = cell.get("equipment", {})
-		if equipment.get("id", "") == "crate": result += int(catalog.entry("equipment", "crate").get("capacity", [1,2,3])[clampi(int(equipment.get("level", 1))-1,0,2)])
+		if equipment.get("id", "") == "crate":
+			var level: int=clampi(int(equipment.get("level",1)),1,3)
+			result += int(catalog.entry("equipment", "crate").get("capacity", [1,2,3])[level-1])
 	return result
 
 static func find(state: Dictionary, uid: String) -> Dictionary:

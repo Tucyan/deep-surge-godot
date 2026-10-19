@@ -1,0 +1,12 @@
+{
+  "current": [
+    {"path": "README.md", "sources": ["project.godot", "launch.ps1", "application/persistence_coordinator.gd"]},
+    {"path": "docs/README.md", "sources": []},
+    {"path": "docs/documentation-governance.md", "sources": ["tools/check_docs.py", "tests/test_check_docs.py"]},
+    {"path": "docs/current-game-mechanics.md", "sources": ["core/game_session.gd", "core/run_rules.gd", "core/action_query.gd", "content/catalog.gd"]},
+    {"path": "docs/application-architecture.md", "sources": ["flow_app.gd", "application/page_host.gd", "application/session_coordinator.gd", "application/narrative_coordinator.gd", "application/persistence_coordinator.gd", "application/hud_projection.gd"]},
+    {"path": "docs/agent-interface.md", "sources": ["adapters/agent_session.gd", "tools/agent_stdio.gd", "tools/agent_client.py", "tests/test_routes.gd"]},
+    {"path": "docs/narrative-and-save.md", "sources": ["narrative/narrative_schedule.gd", "narrative/narrative_session.gd", "narrative/chapter1_effects.gd", "narrative/content/chapter_l1.json", "narrative/content/characters.json", "adapters/narrative_store.gd", "core/run_rewards.gd"]},
+    {"path": "docs/story-gallery.md", "sources": ["adapters/story_gallery_store.gd", "pages/story_gallery.gd", "tests/test_recall_restore.gd"]}
+  ]
+}

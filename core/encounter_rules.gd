@@ -2,6 +2,7 @@ extends RefCounted
 ## Data-driven ordinary events. No UI, storage, or transport dependencies.
 const I = preload("res://core/inventory.gd")
 const R = preload("res://core/random_streams.gd")
+const Origins = preload("res://core/origin_rules.gd")
 const WEIGHTS := {"supply":25,"trade":10,"service":15,"risk":10,"battle":20,"camp":10,"shop":10}
 
 static func key(node: Dictionary) -> String:
@@ -47,11 +48,11 @@ static func pick(ctx, nodes: Array) -> Dictionary:
 		if not categories.has(category): categories[category]=[]
 		categories[category].append(node)
 	var total := 0.0
-	for category in categories: total+=float(WEIGHTS.get(category,1))
+	for category in categories: total+=float(Origins.battle_weight(ctx.state,category,int(WEIGHTS.get(category,1))))
 	var roll: float=R.draw(ctx.state.rng,"nodes")*total
 	var selected: String=str(categories.keys()[-1])
 	for category in categories:
-		roll-=float(WEIGHTS.get(category,1))
+		roll-=float(Origins.battle_weight(ctx.state,category,int(WEIGHTS.get(category,1))))
 		if roll<0: selected=category; break
 	var choices: Array=categories[selected]; var weights: Array=[]; total=0
 	for node in choices:
@@ -96,10 +97,24 @@ static func candidates(ctx) -> void:
 				remaining.append(node)
 			if remaining.is_empty(): break
 			chosen.append(pick(ctx,remaining))
+		if Origins.active(s,"zealot") and int(s.origin_state.navigation_voyage)!=int(s.voyage):
+			if int(s.origin_state.battle_misses)>=2 and not chosen.any(func(node): return battle_opportunity(ctx,node)):
+				var battles: Array=available.filter(func(node): return battle_opportunity(ctx,node))
+				# Keep the early safe first candidate; replace a slot, never add one.
+				if not battles.is_empty(): chosen[chosen.size()-1]=pick(ctx,battles)
+			s.origin_state.navigation_voyage=int(s.voyage)
+			s.origin_state.battle_misses=0 if chosen.any(func(node): return battle_opportunity(ctx,node)) else mini(2,int(s.origin_state.battle_misses)+1)
 	s.candidates=[]
 	for node in chosen:
 		node.visit_id="candidate-%d" % int(s.next_id); s.next_id+=1
 		s.candidates.append(node)
+
+static func battle_opportunity(ctx, node: Dictionary) -> bool:
+	if node.get("boss",false) or node.get("category","")!="battle": return false
+	if not ctx.catalog.entry("enemies",str(node.get("monster",""))).is_empty(): return true
+	for option in node.get("options",[]):
+		if option.has("battle") and int(option.get("min_voyage",1))<=int(ctx.state.voyage) and not ctx.catalog.entry("enemies",str(option.battle.get("enemy",""))).is_empty(): return true
+	return false
 
 static func arrived(ctx) -> void:
 	var s: Dictionary=ctx.state

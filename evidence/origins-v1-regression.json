@@ -1,0 +1,268 @@
+[
+  {
+    "test": "test_battle_actions",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.56,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBATTLE ACTIONS: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_battle_salvage",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.66,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBATTLE SALVAGE: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_auto_progress",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.66,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nAUTO PROGRESS: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_craft_upgrade",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.67,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCRAFT UPGRADE: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_round_start_production",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.7,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCONTENT FINGERPRINT: d4fb145f708c1b06583dd4bce7479535a634cf8d0d3c7ad7bfc62f0b3bf8bc9f\nROUND START PRODUCTION: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_mechanics",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.67,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nMECHANICS: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_environment",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.84,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nENVIRONMENT: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_node_shop_integration",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.56,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nNODE SHOP INTEGRATION: PASS (89 checks, 0 failures)\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_tutorial",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.64,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTUTORIAL: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_tutorial_rules_repairs",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.78,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTUTORIAL REPAIRS: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_narrative_flow",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 2.78,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nNARRATIVE FLOW: 19 checks, 0 failures\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_recall_restore",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 2.25,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRECALL RESTORE: 9 checks, 0 failures\n",
+    "stderr": "WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).\n   at: cleanup (core/object/object.cpp:2536)\nERROR: 2 resources still in use at exit (run with --verbose for details).\n   at: clear (core/io/resource.cpp:822)\n"
+  },
+  {
+    "test": "test_agent_session",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.67,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nAGENT SESSION: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_session",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.56,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nFLOW SESSION: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_routes",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.67,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSTALE standard-challenge-22: recorded godot-flow-v02-22, current godot-flow-v02-24\nSTALE standard-challenge-39: recorded godot-flow-v02-22, current godot-flow-v02-24\nSTALE standard-challenge-9: recorded godot-flow-v02-22, current godot-flow-v02-24\nSTALE standard-challenge-73: recorded godot-flow-v02-22, current godot-flow-v02-24\nSTALE standard-challenge-1000: recorded godot-flow-v02-22, current godot-flow-v02-24\nSTALE standard-challenge-7919: recorded godot-flow-v02-22, current godot-flow-v02-24\nSTALE standard-challenge-20261016: recorded godot-flow-v02-22, current godot-flow-v02-24\nSTALE standard-challenge-4294967295: recorded godot-flow-v02-22, current godot-flow-v02-24\nSTALE standard-story-22: recorded godot-flow-v02-22, current godot-flow-v02-24\nSTALE hard-challenge-22: recorded godot-flow-v02-22, current godot-flow-v02-24\nSTALE hard-story-22: recorded godot-flow-v02-22, current godot-flow-v02-24\nSTALE nightmare-challenge-22: recorded godot-flow-v02-22, current godot-flow-v02-24\nSTALE nightmare-story-22: recorded godot-flow-v02-22, current godot-flow-v02-24\nROUTES: PASS (stale traces skipped: 13)\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_health_balance",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.66,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nHEALTH BALANCE: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_economy_balance",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.56,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nECONOMY BALANCE: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_spring_supply",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.75,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSPRING SUPPLY: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_new_equipment",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.67,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nNEW EQUIPMENT: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_transmute_and_install_ap",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 5.19,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTRANSMUTE AND INSTALL AP: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_action_query",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.78,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nACTION QUERY: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_formal_shop",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.61,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nFORMAL SHOP: PASS (82 checks)\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_tutorial_setup",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 3.47,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTUTORIAL SETUP: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_setup_settings_performance",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 2.47,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSETUP SETTINGS PERFORMANCE: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_hand_stack_hover",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 2.86,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nHAND STACK HOVER: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_partial_refresh",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 8.88,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_interaction_refresh",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 3.2,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nINTERACTION REFRESH: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_settlement_integration",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 4.16,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSETTLEMENT INTEGRATION: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_origins_v1",
+    "ok": true,
+    "exit_code": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nORIGINS V1: PASS (0 failures)\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_origins_edges",
+    "ok": true,
+    "exit_code": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nORIGINS EDGES: PASS (0 failures)\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_origins_ui",
+    "ok": true,
+    "exit_code": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nORIGINS UI: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_battle_equipment_ui",
+    "ok": true,
+    "exit_code": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBATTLE EQUIPMENT UI: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_tutorial_enchantment",
+    "ok": true,
+    "exit_code": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTUTORIAL ENCHANTMENT: PASS\n",
+    "stderr": ""
+  },
+  {
+    "test": "test_save",
+    "ok": true,
+    "exit_code": 0,
+    "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSAVE / RECOVERY: PASS\n",
+    "stderr": ""
+  }
+]

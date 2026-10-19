@@ -44,6 +44,7 @@ func run() -> void:
 	check(app.current_page.selected_resources().size() == 8, "player selected all eight starting cards")
 	check(not app.find_child("StartVoyage", true, false).disabled, "complete selection enables departure")
 	await press(app, "StartVoyage")
+	while app.transition_busy: await process_frame
 	check(app.session.state.get("mode", "") == "tutorial", "selected cards start tutorial mode")
 	check(app.session.state.get("hand", []).size() == 10, "opening has eight chosen resources and two survival cards")
 	app.queue_free(); await process_frame

@@ -120,9 +120,11 @@ static func navigate(ctx, command: String, args: Dictionary) -> bool:
 		return true
 	var id: String=str(args.get("id",""))
 	if not s.environment.visibility.has(id) or s.environment.visibility[id]=="full" or id in s.environment.revealed: return ctx.fail("此候选无需侦察或不存在")
-	if int(s.player.sanity)<=8: return ctx.fail("侦察需SAN8，支付后至少保留1")
-	ctx.change("sanity",-8,"scout"); s.environment.revealed.append(id)
-	ctx.log_text("消耗SAN8，揭示一个候选。")
+	var cost: int=ctx.Origins.scout_cost(s)
+	if int(s.player.sanity)<=cost: return ctx.fail("侦察需SAN%d，支付后至少保留1" % cost)
+	ctx.change("sanity",-cost,"scout"); s.environment.revealed.append(id)
+	if ctx.Origins.active(s,"fool"): s.origin_state.scout_voyage=int(s.voyage)
+	ctx.log_text("消耗SAN%d，揭示一个候选。" % cost)
 	return true
 
 static func target(ctx, planned: Dictionary) -> Dictionary:
@@ -147,7 +149,7 @@ static func project(ctx, view: Dictionary) -> void:
 		d.erase("weight"); d.erase("duration")
 		d.merge({"remaining":int(buff.remaining),"pending":int(buff.active_from)>int(s.voyage),"pending_refresh":int(buff.pending_refresh)},true)
 		view.environments.append(d)
-	view.navigation={"wrong_direction_chance":risk(ctx),"heading_locked":s.environment.heading_locked,"guided":int(s.environment.guidance_voyage)==int(s.voyage),"last_movement":s.environment.last_movement.duplicate(true)}
+	view.navigation={"wrong_direction_chance":risk(ctx),"heading_locked":s.environment.heading_locked,"guided":int(s.environment.guidance_voyage)==int(s.voyage),"last_movement":s.environment.last_movement.duplicate(true),"scout_cost":ctx.Origins.scout_cost(s)}
 	view.erase("environment"); view.erase("buffs")
 	if ctx.phase()!="navigation": return
 	var projected: Array=view.get("candidates",[]).duplicate(true)

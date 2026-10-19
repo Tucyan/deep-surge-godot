@@ -1,97 +1,47 @@
 # Deep Surge 文档索引
+<!-- doc-status: current; doc-role: entry; content-version: godot-flow-v02-25; reviewed: 2026-10-19 -->
 
-海面 CPU 采样与远景着色器的等值优化、前后实测及逐像素验证见[运行性能优化验证](../evidence/runtime-performance-verification.md)。
+当前工程为 Godot。先按任务选择下表主文档，再阅读专题；详细数值与行为只在对应主文档维护。文档、代码或测试冲突时需核对，不用历史条目覆盖现行实现。
 
-按钮/卡牌输入到绘制的实测及仍存在的整页重建停顿见[交互延迟检查](../evidence/interaction-latency-verification.md)；完整探针保留一次未收到回调的失败，未宣称全部交互无延迟。
+## 当前主文档
 
-后续已实施局部交互、模态生命周期和异步配方图片预热修复，见[刷新机制](interaction-refresh.md)及[交互延迟修复验证](../evidence/interaction-fix-verification.md)。
+| 任务 | 主文档 | 内容 |
+|---|---|---|
+| 启动与能力边界 | [工程 README](../README.md) | 模式、启动、保存范围及测试入口 |
+| 玩法总览 | [当前机制](current-game-mechanics.md) | 已实施的循环、资源、生存、战斗与局外 |
+| 架构/刷新 | [应用架构](application-architecture.md) | core/application/adapters/presentation 分工 |
+| Agent 接入 | [Agent 接口](agent-interface.md) | JSONL、观察、动作、重放与当前路线门禁 |
+| 剧情/保存 | [剧情与配对存档](narrative-and-save.md) | 11节点剧情、坏结局、存储与失败恢复 |
+| 旧剧情回看 | [回廊契约](story-gallery.md) | 五幕序章、旧归档只读例外 |
+| 修改文档 | [维护规则](documentation-governance.md) | 文档类型、读取顺序、同步与检查 |
 
-资源卡查看与常用设置的局部刷新修复及GPU/回归结果见 [点击卡顿修复验证](../evidence/partial-refresh-fix-verification.md)（含旧轨迹跳过与回廊退出日志说明）。
+## 专题参考
 
-导航候选/出发按钮的卡顿诊断与分阶段修复方案见 [导航按钮卡顿修复方案 v1](superpowers/plans/2026-10-18-navigation-stall-repair.md)（已测量，未实施修复）。
+专题补充其范围的细节。标题中的 v 数字可能是该功能引入时间，不代表当前全局内容版本；其过去测试记录只证明对应版本。
 
-首页按钮在宽屏、窄高窗口及 100%/125% UI 缩放下的布局修正见[首页按钮比例验证](../evidence/title-layout-verification.md)。
-
-剧情模式现为独立入口：固定 11 个节点、每个节点都有剧情，玩法部分复用本机挑战规则；选择挑战模式时不提供剧情新建/读档。剧情与玩法使用配对存档，导入冲突以本机规则为准。契约见 [剧情层与剧情存档](narrative-and-save.md)。旧剧情回廊仍按 [剧情回廊](story-gallery.md) 的临时恢复范围只读运行。
-
-首次进入的五幕世界观序章（逐字狸语与 BGM）见 [opening-intro.md](opening-intro.md)，验证见 [opening-intro-verification.md](../evidence/opening-intro-verification.md)。
-
-当前默认工程是 `deep-surge-godot/`。规则冲突时以当前 Godot 代码和测试为准。
-
-## 当前 Godot V0.2
-
-| 目的 | 文档 |
+| 范围 | 文档 |
 |---|---|
-| 难度与开局参数 | [difficulty.md](difficulty.md) |
-| 当前完整机制 | [current-game-mechanics.md](current-game-mechanics.md) |
-| 节点与候选事件展示 | [node-event-presentation.md](node-event-presentation.md) |
-| 正式局内商店 | [formal-shop.md](formal-shop.md) |
-| Agent 接口、观察与重放 | [agent-interface.md](agent-interface.md) |
-| 环境 Buff、侦察与偏航 | [environment-buffs.md](environment-buffs.md) |
-| 导航、合成与设备 | [navigation-and-crafting.md](navigation-and-crafting.md) |
-| 生存数值与生命试测 | [health-balance.md](health-balance.md) |
-| 涌泉与行动结束 | [spring-supply.md](spring-supply.md)、[automatic-action-end.md](automatic-action-end.md) |
-| 战斗与设备供给 | [battle-equipment.md](battle-equipment.md) |
-| 螺旋布局与视角操作 | [spiral-raft-and-camera.md](spiral-raft-and-camera.md) |
-| 木筏交互与状态 | [raft-direct-interaction.md](raft-direct-interaction.md)、[raft-state-models.md](raft-state-models.md) |
-| 剧情数据结构与 VN 接口 | [story-data.md](story-data.md)、[story-interface.md](story-interface.md) |
-| 剧情层、好感分支与剧情存档 | [narrative-and-save.md](narrative-and-save.md) |
-| 结算与评分 | [settlement.md](settlement.md) |
-| UI、布局与显示 | [frontend-guidelines.md](frontend-guidelines.md)、[display-settings.md](display-settings.md)、[hand-layout.md](hand-layout.md) |
-| 航海顶栏、手牌底板与行动点 | [nautical-hud.md](nautical-hud.md) |
-| 资产与 HUD | [../assets/README.md](../assets/README.md)、[supplied-hud.md](supplied-hud.md) |
-| 设计/实施计划 | [superpowers/plans/](superpowers/plans/) |
+| 难度、起手与出身 | [难度](difficulty.md)、[起手](starting-resources.md)、[出身 v2](origins-v2.md) |
+| 导航与经营 | [导航/制造](navigation-and-crafting.md)、[商店](formal-shop.md)、[环境](environment-buffs.md) |
+| 生存/补给/结束 | [生命试测](health-balance.md)、[涌泉](spring-supply.md)、[自动结束](automatic-action-end.md) |
+| 战斗与成长 | [设备供给](battle-equipment.md)、[结算](settlement.md)、[局外商店/科技](meta-shop-and-tech.md) |
+| 木筏、生产与镜头 | [螺旋与视角](spiral-raft-and-camera.md)、[直接交互](raft-direct-interaction.md)、[状态模型](raft-state-models.md)、[滤水器](filter-production-visuals.md)、[土盆](planter-growth-visuals.md) |
+| 剧情页面与序章 | [数据结构](story-data.md)、[VN 接口](story-interface.md)、[开局序章](opening-intro.md)、[事件呈现](node-event-presentation.md) |
+| UI/显示 | [前端约定](frontend-guidelines.md)、[显示设置](display-settings.md)、[手牌](hand-layout.md)、[航海 HUD](nautical-hud.md)、[首页](title-ui.md) |
+| 刷新与体验 | [交互刷新](interaction-refresh.md)、[加载与局部刷新](loading-and-minor-refresh.md)、[体验卡顿记录](experience-stall-backlog.md) |
+| 资产与海面 | [资产登记](../assets/README.md)、[HUD 素材](supplied-hud.md)、[海浪](wave-noise.md) |
+| 平台导出 | [Android 导出记录](android-export.md)（需核对记录的版本与当次导出范围） |
 
-### 当前验证记录
+## 设计、计划、验证与历史
 
-两种视角共享自由移动限位、从实际姿态连续平滑切换见[自由视角验证](../evidence/camera-free-view-verification.md)。
+| 类型 | 入口 | 使用方式 |
+|---|---|---|
+| 设计提案 | [design/](design/) | 待讨论方案，不直接覆盖当前契约 |
+| 实施计划 | [superpowers/plans/](superpowers/plans/) | 过程与验收进度，以各计划的状态及实际证据为准 |
+| 验证记录 | [evidence 索引](../evidence/README.md) | 记录执行版本、命令、结果和未验证项 |
+| 旧出身 | [出身 v1](origins-v1.md) | v24历史设计，当前使用上表 v2 |
+| 上下文快照 | [2026-10-19归档](archive/context-20261019/README.md) | 保留旧 README、接口增量和过去机制说明 |
 
-默认视角适配收缩顶栏、俯视模式及显示目标姿态的SVG切换按钮见[视角模式与居中](../evidence/camera-modes-verification.md)。
+导航局部刷新已经实施；覆盖范围和未达成项查 [原计划实施记录](superpowers/plans/2026-10-18-navigation-stall-repair.md)，不再将它标为尚未实施。当前应用架构检查见 [架构验证](../evidence/architecture-health-verification.md)；这不代表全部卡顿或所有平台均已验收。
 
-资源牌点击及设置更改触发画面停顿的调用路径与 GPU 耗时诊断见 [点击停顿排查](../evidence/click-stall-diagnostic.md)（原因已定位，尚未修复）。
-
-关闭 X、航行/设置复位图标及实际指针验证见[工具按钮验证](../evidence/utility-buttons-verification.md)。
-
-普通文字按钮四态素材接入、紧凑符号按钮及 GPU 布局检查见 [文字按钮验证](../evidence/text-buttons-verification.md)。
-
-正式资源叠牌、单张主卡悬停及两种设置见 [叠牌与悬停验证](../evidence/hand-stack-hover-verification.md)。
-
-战斗四大板块素材接入与 GPU/交互验证见 [battle-panels-verification.md](../evidence/battle-panels-verification.md)。
-
-最新横屏自由比例与首页素材更新见 [title-v3-display-verification.md](../evidence/title-v3-display-verification.md)。
-
-验证证据集中在 `deep-surge-godot/evidence/`。最新主动打捞修订见 [salvage-v19-verification.md](../evidence/salvage-v19-verification.md)。最新弃牌后生存结算见 [survival-v20-verification.md](../evidence/survival-v20-verification.md)。此前航末生存结算见 [survival-v17-verification.md](../evidence/survival-v17-verification.md)。最新视角平移限位验证见 [camera-pan-limit-verification.md](../evidence/camera-pan-limit-verification.md)。此前视角按键绑定验证见 [camera-bindings-verification.md](../evidence/camera-bindings-verification.md)。此前中键平移与R复位验证见 [camera-pan-reset-verification.md](../evidence/camera-pan-reset-verification.md)。此前螺旋与视角验证见 [spiral-camera-v16-verification.md](../evidence/spiral-camera-v16-verification.md)。此前扩建试测见 [expansion-v15-verification.md](../evidence/expansion-v15-verification.md)。此前战斗补给试测见 [battle-supply-v14-verification.md](../evidence/battle-supply-v14-verification.md)。此前难度验证见 [difficulty-v13-verification.md](../evidence/difficulty-v13-verification.md)。此前环境验证见 [environment-v12-verification.md](../evidence/environment-v12-verification.md)。历史经济验证见 [economy-v11-verification.md](../evidence/economy-v11-verification.md)。此前节点与商店改版见 [node-shop-v10-verification.md](../evidence/node-shop-v10-verification.md)。专项证据按主题命名；证据只对记录的代码版本和命令负责。
-
-### 常用命令
-
-```powershell
-Godot_v4.7.2-stable_win64_console.exe --headless --path . --script res://tests/test_routes.gd
-node --test tests/content.test.mjs tests/node_content.test.mjs
-python -m unittest discover -s tests -p test_agent_stdio.py -v
-```
-
-## 根目录历史与设计资料
-
-| 目录 | 用途 |
-|---|---|
-| `V0.2/` | 玩法设计、商店/藏品计划和测试剧本；实现冲突时服从 Godot 代码 |
-| `docs/archive/legacy-threejs-design/` | Three.js/Unity 时代的架构、导航和玩法设计；只作历史参考 |
-| `docs/archive/legacy-threejs-development/` | Three.js 旧 Demo 的开发规范、资产和首版验证 |
-| `docs/superpowers/` | 过程计划和工作流记录，不是运行时规则 |
-| `water-era/` | 独立 Three.js 历史工程 |
-| `unity-button-lab/`、`raft-model/` | Unity/Blender 资产实验 |
-
-根目录的玩法原稿、压缩包和实验记录不作为当前实现入口；需要追溯来源时再查阅。
-
-
-工作台材料大卡片、点击投入/撤回及问号帮助见[工作台交互验证](../evidence/workbench-material-selection-verification.md)。
-
-工作台配方图标、点击说明及边缘定位见 [配方提示验证](../evidence/recipe-tooltip-verification.md)。
-
-取消结算分数上限（v21）、完整路线和GPU页面验证见[结算评分不封顶](../evidence/settlement-uncapped-verification.md)。
-
-结算详情五个分类取消分页、完整列表滚动与GPU检查见[结算滚动验证](../evidence/settlement-scroll-verification.md)。
-
-全屏图鉴、预览卡片与故事／说明页签见[图鉴验证](../evidence/encyclopedia-verification.md)。
-
-全屏局外商店、两层科技节点与试测参数见[商店与科技](meta-shop-and-tech.md)，[验证记录](../evidence/meta-shop-tech-v22-verification.md)。
+根目录规则原稿、Three.js/Unity 实验、压缩包与本地 `.planning/` 记录按需追溯，不作为本工程当前规则入口。默认阅读不加载全部历史、计划或截图记录。

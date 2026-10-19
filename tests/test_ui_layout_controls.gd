@@ -54,6 +54,7 @@ func run() -> void:
 	app.handle_command("abandon"); await settle()
 	check(buttons(app.current_page,"返回首页").is_empty(),"Settlement has only X for exit")
 	app.current_page.find_child("CloseX",true,false).pressed.emit(); await settle()
+	while app.transition_busy: await process_frame
 	check(app.session.screen=="home","Settlement X closes to home")
 	app.handle_ui("setup","challenge"); await settle()
 	check(buttons(app.current_page,"返回模式选择").is_empty(),"Setup has no text return button")

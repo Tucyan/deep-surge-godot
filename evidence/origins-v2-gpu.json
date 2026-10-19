@@ -1,0 +1,16 @@
+[
+  {
+    "test": "test_origins_v2_ui",
+    "mode": "GPU gl_compatibility",
+    "ok": true,
+    "exit_code": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\nOpenGL API 3.3.0 NVIDIA 591.74 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 4060 Laptop GPU\r\n\r\nORIGINS V2 UI: PASS\r\n"
+  },
+  {
+    "test": "test_partial_refresh",
+    "mode": "GPU gl_compatibility",
+    "ok": true,
+    "exit_code": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\nOpenGL API 3.3.0 NVIDIA 591.74 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 4060 Laptop GPU\r\n\r\nPARTIAL REFRESH: PASS\r\n"
+  }
+]

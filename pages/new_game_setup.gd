@@ -11,6 +11,15 @@ func resource_limit() -> int:
 var chosen_origin := "strong"
 var chosen_seed := "22"
 var resource_counts := {}
+var _picker_art_requested:=false
+var _resource_controls: Dictionary={}
+var _selected_total: Label
+var _random_hint: Label
+var _start_button: Button
+
+func _warm_picker_art() -> void:
+	if not is_inside_tree(): return
+	await assets.warm_textures(RESOURCES.map(func(id):return "card."+id),self)
 
 func unlocked_ids() -> Array:
 	var meta: Dictionary = context.get("meta",{})
@@ -19,6 +28,7 @@ func unlocked_ids() -> Array:
 ## Default to the last difficulty the player actually picked. A first-time player
 ## who has not finished the tutorial lands on the tutorial instead.
 func default_difficulty() -> String:
+	if context.setup_mode == "tutorial": return "tutorial"
 	if context.setup_mode == "story":
 		var previous := str(context.get("meta", {}).get("last_difficulty", "standard"))
 		return previous if previous != "tutorial" and previous in unlocked_ids() else "standard"
@@ -29,6 +39,7 @@ func default_difficulty() -> String:
 	return "standard"
 
 func rebuild() -> void:
+	_resource_controls.clear()
 	for child in get_children(): remove_child(child); child.queue_free()
 	build()
 func selected_resources() -> Array:
@@ -41,10 +52,30 @@ func change_resource(id: String, delta: int) -> void:
 	if delta>0 and (count>=2 or selected_resources().size()>=resource_limit()): return
 	if chosen_difficulty == "tutorial" and delta > 0 and count >= Tutorial.STARTING.count(id): return
 	resource_counts[id]=clampi(count+delta,0,2)
-	rebuild()
+	refresh_resources()
+
+func refresh_resources() -> void:
+	if _resource_controls.is_empty(): return
+	var selected:=selected_resources()
+	var tutorial:=chosen_difficulty=="tutorial"
+	for id in RESOURCES:
+		var count: int=resource_counts.get(id,0)
+		var target: int=Tutorial.STARTING.count(id) if tutorial else 2
+		var controls: Dictionary=_resource_controls[id]
+		controls.count.text="%d/%d" % [count,target]
+		controls.minus.disabled=count==0
+		controls.plus.disabled=count>=target or selected.size()>=resource_limit()
+	_selected_total.text="已选 %d/%d" % [selected.size(),resource_limit()]
+	_random_hint.visible=selected.is_empty() and not tutorial
+	_start_button.text="开始航行" if tutorial else ("随心所欲" if selected.is_empty() else "正式开始")
+	_start_button.disabled=tutorial and selected.size()!=resource_limit()
 func build() -> void:
+	if not _picker_art_requested and DisplayServer.get_name()!="headless":
+		_picker_art_requested=true
+		_warm_picker_art.call_deferred()
 	if not initialized:
 		chosen_difficulty = default_difficulty()
+		if context.setup_mode == "tutorial": picking = true
 		initialized = true
 	var center:=CenterContainer.new(); center.size_flags_vertical=Control.SIZE_EXPAND_FILL; add_child(center)
 	if picking: resource_picker(center); return
@@ -80,9 +111,15 @@ func build() -> void:
 		W.text(box,"之后依次学习导航、打捞、制造、安装、事件、战斗、筏格、弃牌与商店。",16,W.MUTED)
 	else:
 		W.text(box,"出身",18)
-		choices=OptionButton.new()
-		for id in ids: choices.add_item(context.origins[id].name+" · "+context.origins[id].description)
+		choices=OptionButton.new(); choices.name="OriginChoice"
+		for id in ids:
+			choices.add_item(context.origins[id].name)
+			choices.set_item_disabled(choices.item_count-1,not context.origins[id].get("enabled",true))
 		choices.select(maxi(0,ids.find(chosen_origin))); box.add_child(choices)
+		var origin_description:=W.text(box,context.origins[ids[choices.selected]].description,16,W.MUTED)
+		origin_description.name="OriginDescription"; origin_description.custom_minimum_size.y=48
+		choices.item_selected.connect(func(selected: int):
+			chosen_origin=ids[selected]; origin_description.text=context.origins[chosen_origin].description)
 		W.text(box,"航程种子",18)
 		seed_input=LineEdit.new(); seed_input.text=chosen_seed; seed_input.placeholder_text="0～4294967295"; box.add_child(seed_input)
 	var error_label:=W.text(box,"",16,Color("df968b")); error_label.hide()
@@ -124,16 +161,19 @@ func resource_picker(center: Node) -> void:
 		var count: int=resource_counts.get(id,0)
 		var target: int=Tutorial.STARTING.count(id) if tutorial else 2
 		var minus:=W.button(row,"−",func(): change_resource(id,-1),count==0); minus.name="ResourceMinus_"+id
-		W.counter(row,"%d/%d" % [count,target])
+		var counter:=W.counter(row,"%d/%d" % [count,target]); counter.name="ResourceCount_"+id
 		var plus:=W.button(row,"+",func(): change_resource(id,1),count>=target or selected_resources().size()>=resource_limit()); plus.name="ResourcePlus_"+id
+		_resource_controls[id]={"count":counter,"plus":plus,"minus":minus}
 	var selected: Array=selected_resources()
-	W.text(box,"已选 %d/%d" % [selected.size(),resource_limit()],22,W.GOLD)
-	if selected.is_empty() and not tutorial: W.text(box,"随心所欲：额外获得2张，随机发放全部%d张资源牌。" % (resource_limit()+2),18,W.MUTED)
+	_selected_total=W.text(box,"已选 %d/%d" % [selected.size(),resource_limit()],22,W.GOLD)
+	_random_hint=W.text(box,"随心所欲：额外获得2张，随机发放全部%d张资源牌。" % (resource_limit()+2),18,W.MUTED)
+	_random_hint.visible=selected.is_empty() and not tutorial
 	var start:=W.button(box,"开始航行" if tutorial else ("随心所欲" if selected.is_empty() else "正式开始"),func():
 		var args: Dictionary=Tutorial.start_args() if tutorial else {"difficulty":chosen_difficulty,"mode":context.setup_mode,"origin":chosen_origin,"seed":int(chosen_seed)}
 		args.starting_resources=selected_resources()
 		send("new",args))
 	start.name="StartVoyage"
+	_start_button=start
 	start.disabled=tutorial and selected.size()!=resource_limit()
 	W.primary(start)
 	W.corner_close(box.get_parent(),func(): picking=false; rebuild())

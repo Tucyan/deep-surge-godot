@@ -27,8 +27,9 @@ func find_button(text: String) -> Button:
 func run() -> void:
 	root.size = Vector2i(1600,900)
 	app = load("res://scenes/main.tscn").instantiate(); app.persistence = false
-	root.add_child(app); await settle()
 	app.narrative_store = load("res://adapters/narrative_store.gd").new("user://chapter1-visual")
+	app.meta.data.tutorial_prompt_handled = true
+	root.add_child(app); await settle()
 	await click(app.find_child("Title_start", true, false))
 	check(find_button("剧情模式") != null, "mode chooser opens by mouse")
 	await capture("mode-1600")
@@ -40,7 +41,7 @@ func run() -> void:
 	app.current_page.find_child("NewGameNext",true,false).pressed.emit()
 	await settle()
 	app.current_page.find_child("StartVoyage",true,false).pressed.emit()
-	await settle()
+	await create_timer(0.8).timeout
 	check(app.narrative_playing,"first story automatically plays")
 	app.narrative_overlay.advance()
 	await capture("dialogue-1600")

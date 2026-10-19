@@ -20,7 +20,7 @@ func discard_rest():
 	for i in range(40):
 		if app.session.phase()!="discard": return
 		for c in app.session.state.hand:
-			if c.id not in ["coin","pollution","punch"]:
+			if c.id not in ["coin","corpse","pollution","punch"]:
 				step("discard",{"uid":c.uid}); break
 func run():
 	root.size=Vector2i(1680,720)
@@ -32,11 +32,11 @@ func run():
 	step("craft",{"id":"filter"}); step("install",{"uid":uid("filter"),"auto":true})
 	step("enter"); step("advance"); step("option",{"id":"wood"}); step("advance"); step("end_voyage"); discard_rest()
 	step("play",{"uid":uid("water")}); step("play",{"uid":uid("food")}); step("voyage",{"id":app.session.state.candidates[0].visit_id})
-	step("enter"); step("advance"); step("fight"); step("play",{"uid":uid("spear")}); step("battle_end"); step("play",{"uid":uid("spear")})
+	step("enter"); step("advance"); step("fight"); step("play",{"uid":uid("spear")}); step("battle_action",{"action":"attack","resource_uid":uid("iron")}); step("battle_action",{"action":"block","resource_uid":uid("wood")}); step("battle_end"); step("play",{"uid":uid("spear")})
 	step("advance"); step("end_voyage"); discard_rest()
 	step("play",{"uid":uid("water")}); step("play",{"uid":uid("food")}); step("voyage",{"id":app.session.state.candidates[0].visit_id})
 	step("repair_cell",{"cell":T.damaged_cells(app.session.state)[0]})
-	step("enter"); step("advance"); step("shop_enter"); step("buy",{"id":"wood","payment":"coin"}); step("shop_leave"); step("advance"); step("end_voyage"); discard_rest()
+	step("enter"); step("advance"); step("shop_enter"); step("buy",{"id":"wood","payment":"coin"}); step("sell",{"uid":uid("corpse")}); step("shop_leave"); step("advance"); step("end_voyage"); discard_rest()
 	for resolution in [Vector2i(1680,720),Vector2i(1260,540),Vector2i(2520,1080),Vector2i(1280,720)]:
 		root.size=resolution
 		app.display_settings.mobile=resolution.x!=1280
@@ -63,7 +63,7 @@ func run():
 					check(not banner.get_global_rect().intersects(button.get_global_rect()),"hint clears action %s / %s" %[id,button.name])
 					check(app.get_global_rect().encloses(button.get_global_rect()),"current action fits viewport %s / %s" %[id,button.name])
 			check(app.session.snapshot()==before,"view preserves rules "+id)
-			if id in ["nav1","read1","choose1","finish1","craft1-modal","buy3","leave3","repair3"]:
+			if id in ["nav1","read1","choose1","finish1","craft1-modal","buy3","sell3","leave3","repair3"]:
 				await RenderingServer.frame_post_draw
 				root.get_texture().get_image().save_png("res://evidence/tutorial-node-%dx%d-%s.png" %[resolution.x,resolution.y,id])
 	app.queue_free(); await settle()

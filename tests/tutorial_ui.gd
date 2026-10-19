@@ -11,7 +11,17 @@ func settle() -> void:
 func shot(id: String) -> void:
 	if DisplayServer.get_name()=="headless": return
 	await RenderingServer.frame_post_draw
-	root.get_texture().get_image().save_png("res://evidence/tutorial-repair-"+id+".png")
+	root.get_texture().get_image().save_png("res://evidence/tutorial-enchantment-"+id+".png")
+func card_click(id: String, double_click: bool = false) -> void:
+	var fan=app.find_child("hand_fan",true,false); fan._process(1.0)
+	var index: int=fan.cards.find(fan.cards.filter(func(c):return c.id==id)[0])
+	var point: Vector2=root.get_final_transform()*(fan.tiles[index].global_position+Vector2(40,140))
+	for pressed in [true,false]:
+		var event:=InputEventMouseButton.new()
+		event.button_index=MOUSE_BUTTON_LEFT; event.pressed=pressed; event.position=point
+		event.double_click=double_click and pressed
+		Input.parse_input_event(event); await process_frame
+	await settle()
 func click(button: Button) -> void:
 	var point: Vector2=root.get_final_transform()*button.get_global_rect().get_center()
 	for pressed in [true,false]:
@@ -36,7 +46,7 @@ func discard_until_clear() -> void:
 		guard+=1
 		var picked: Dictionary={}
 		for card in app.session.state.hand:
-			if card.id not in ["coin","pollution","punch"]: picked=card; break
+			if card.id not in ["coin","corpse","pollution","punch"]: picked=card; break
 		if picked.is_empty(): break
 		await command("discard",{"uid":picked.uid})
 func run() -> void:
@@ -53,6 +63,7 @@ func run() -> void:
 	for id in ["wood","wood","plastic","plastic","rope","rope","iron","cloth"]:
 		await click(app.find_child("ResourcePlus_"+id,true,false))
 	await click(app.find_child("StartVoyage",true,false))
+	while app.transition_busy: await process_frame
 	check(app.session.state.mode=="tutorial","tutorial started")
 	check(banner_text().contains("选择目的地"),"banner starts with destination choice")
 	var salvage=app.current_page.find_child("SalvageEntry",true,false)
@@ -111,7 +122,20 @@ func run() -> void:
 	check(banner_text().contains("第一次攻击"),"banner teaches the first attack")
 	await shot("battle-1600x900")
 	await command("play",{"uid":uid("spear")})
-	check(banner_text().contains("结束回合"),"banner teaches ending the turn")
+	check(banner_text().contains("攻击附魔"),"banner teaches enchantment after spear")
+	check(banner_text().contains("攻击附魔"),"banner teaches attack enchantment")
+	await shot("attack-lesson-1600x900")
+	await card_click("iron")
+	await card_click("action_attack")
+	check(app.find_child("BattleHUDView",true,false).preview_summary_label.text.contains("附魔"),"desktop resource and attack selection show enchantment preview")
+	await shot("attack-preview-1600x900")
+	await card_click("action_attack",true)
+	check(banner_text().contains("防御附魔"),"banner teaches defense enchantment")
+	await card_click("wood")
+	await card_click("action_block")
+	await shot("defense-preview-1600x900")
+	await card_click("action_block",true)
+	check(banner_text().contains("结束回合"),"both native enchantments complete")
 	await command("battle_end")
 	await command("play",{"uid":uid("spear")})
 	await command("advance"); await command("end_voyage")
@@ -129,6 +153,12 @@ func run() -> void:
 	check(banner_text().contains("购买物资"),"banner teaches buying")
 	await shot("shop-1600x900")
 	await command("buy",{"id":"wood","payment":"coin"})
+	check(banner_text().contains("出售手牌"),"banner teaches sale")
+	await click(app.find_child("ShopSellTab",true,false))
+	await shot("sale-1600x900")
+	await click(app.find_child("ShopSell_corpse",true,false))
+	check(app.current_page.confirmation.visible,"sale opens confirmation")
+	app.current_page.confirmation.confirmed.emit(); await settle()
 	check(banner_text().contains("离开商店"),"banner teaches leaving the shop")
 	await command("shop_leave"); await command("advance"); await command("end_voyage")
 	await discard_until_clear()

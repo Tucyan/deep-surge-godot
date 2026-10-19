@@ -1,0 +1,205 @@
+[
+  {
+    "test": "test_origins_v1",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.8,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nORIGINS V1: PASS (0 failures)\r\n"
+  },
+  {
+    "test": "test_origins_edges",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.87,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nORIGINS EDGES: PASS (0 failures)\r\n"
+  },
+  {
+    "test": "test_origins_v2",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.66,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nWeight probe /500: baseline=214 zealot=279\r\nORIGINS V2: PASS (0 failures)\r\n"
+  },
+  {
+    "test": "test_origins_ui",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 2.71,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nORIGINS UI: PASS\r\n"
+  },
+  {
+    "test": "test_origins_v2_ui",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 2.72,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nORIGINS V2 UI: PASS\r\n"
+  },
+  {
+    "test": "test_save",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.69,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nSAVE / RECOVERY: PASS\r\n"
+  },
+  {
+    "test": "test_battle_actions",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.69,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nBATTLE ACTIONS: PASS\r\n"
+  },
+  {
+    "test": "test_battle_salvage",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.67,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nBATTLE SALVAGE: PASS\r\n"
+  },
+  {
+    "test": "test_battle_equipment_ui",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 4.3,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nBATTLE EQUIPMENT UI: PASS\r\n"
+  },
+  {
+    "test": "test_auto_progress",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.7,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nAUTO PROGRESS: PASS\r\n"
+  },
+  {
+    "test": "test_action_query",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.73,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nACTION QUERY: PASS\r\n"
+  },
+  {
+    "test": "test_craft_upgrade",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.67,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nCRAFT UPGRADE: PASS\r\n"
+  },
+  {
+    "test": "test_environment",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 1.05,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nENVIRONMENT: PASS\r\n"
+  },
+  {
+    "test": "test_navigation_actions",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.7,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nNAVIGATION ACTIONS: PASS\r\n"
+  },
+  {
+    "test": "test_node_redesign",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.68,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nNODE REDESIGN: PASS (0 failures)\r\n"
+  },
+  {
+    "test": "test_node_balance_exploration",
+    "ok": false,
+    "exit_code": 1,
+    "seconds": 0.67,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n=====================================================================\r\nSTART: Node Design Balance Exploration Test (Cards, Raft, Combat, Nodes)\r\n=====================================================================\r\n  [OK] Load content catalog\r\n\r\n--- Testing Cards Balance (Hand Limit, Spring Draw, Attrition) ---\r\n  [OK] Base hand limit is 10\r\nFAIL: Hoarder origin increases hand limit by 1\r\n  [OK] Starting stats are hunger=40, hydration=40, sanity=80\r\n  [OK] Movement defers food and water until voyage end\r\n  [OK] Movement without burning lamp drains exactly 15 sanity (80 -> 65)\r\n  [OK] Double deprivation inflicts exactly 2 HP damage per voyage\r\nFAIL: Spring grants exactly 4 cards per voyage\r\n  [OK] Spring guarantees at least 1 wood, up to 4 wood\r\n  Cards Balance Insight: Starting hunger/hydration is 40. Without food/water, player reaches 0 and takes deprivation damage at the end of voyage 2!\r\n\r\n--- Testing Raft Maintenance Balance (Cell Decay, Repair, Wood Economy) ---\r\n  [OK] Initial raft has exactly 4 cells\r\n  [OK] Round 1 end_voyage succeeds\r\n  [OK] Cell remains damaged in round 1 (damaged_at = 1, voyage = 1)\r\n  [OK] Voyage advanced to 2\r\n  [OK] Round 2 end_voyage succeeds\r\n  [OK] Cell remains damaged in round 2 (voyage - damaged_at = 1 < 2)\r\n  [OK] Voyage advanced to 3\r\n  [OK] Round 3 end_voyage succeeds\r\n  [OK] Cell automatically detaches in round 3 (voyage - damaged_at = 2 >= 2)\r\n  Raft Balance Insight: Damaged cells detach in exactly 2 rounds; wood deficit occurs if storm/biter hits without supply nodes.\r\n\r\n--- Testing Combat Scaling, Damage Taken, and Weapon Gap ---\r\n  [OK] All 5 enemy archetypes present\r\n  [OK] Weapon gap creates an enormous delta (6 HP lost vs 0 HP lost against Crab)\r\n  Combat Balance Insight: Without Crossbow/Spear, medium enemies deal 50% max HP. Emergency weapon nodes are vital.\r\n\r\n--- Testing Node Pool Distribution, Weighting, and Candidate Diversity ---\r\nFAIL: Initial pool has 2*(length-1) candidates\r\nFAIL: Catalog currently has 11 non-boss node definitions\r\n  [OK] Navigation presents 2 to 3 candidates\r\n  [OK] Navigation strictly guarantees at least one safe/non-battle candidate\r\n  [OK] Visit penalty dampens visited nodes to 25% of initial weight\r\n\r\n--- Testing Arknights Integrated Strategies (黑流树海) Adaptation Mechanics ---\r\n  [OK] Scout mechanism maps to SetFlag flag control\r\n  [OK] Emergency tactical gear uses temporary card lifetime\r\n  [OK] Maelstrom core resolution maps cleanly to state flags\r\n  [OK] Corpse can be recycled for bio-cultivation, solving food crisis\r\n  [OK] Pre-existing avoidWave flag already supports hunger/thirst cost reduction\r\n  Integration Insight: All 5 Arknights IS6 mechanisms map directly to deep-surge-godot's existing core rules!\r\n=====================================================================\r\nBALANCE EXPLORATION RESULT: FAIL (Failures: 4)\r\n=====================================================================\r\n"
+  },
+  {
+    "test": "test_node_shop_integration",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.68,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nNODE SHOP INTEGRATION: PASS (89 checks, 0 failures)\r\n"
+  },
+  {
+    "test": "test_formal_shop",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.92,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nFORMAL SHOP: PASS (82 checks)\r\n"
+  },
+  {
+    "test": "test_difficulty",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 1.28,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nDIFFICULTY: PASS\r\n"
+  },
+  {
+    "test": "test_round_start_production",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.67,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nCONTENT FINGERPRINT: d4fb145f708c1b06583dd4bce7479535a634cf8d0d3c7ad7bfc62f0b3bf8bc9f\r\nROUND START PRODUCTION: PASS\r\n"
+  },
+  {
+    "test": "test_agent_session",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.67,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nAGENT SESSION: PASS\r\n"
+  },
+  {
+    "test": "test_recall_restore",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 2.66,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nRECALL RESTORE: 9 checks, 0 failures\r\n"
+  },
+  {
+    "test": "test_narrative",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.48,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nNARRATIVE: 53 checks, 0 failures\r\n"
+  },
+  {
+    "test": "test_tutorial",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.77,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nTUTORIAL: PASS\r\n"
+  },
+  {
+    "test": "test_tutorial_setup",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 3.53,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nTUTORIAL SETUP: PASS\r\n"
+  },
+  {
+    "test": "test_tutorial_rules_repairs",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.85,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nTUTORIAL REPAIRS: PASS\r\n"
+  },
+  {
+    "test": "test_tutorial_enchantment",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 0.67,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nTUTORIAL ENCHANTMENT: PASS\r\n"
+  },
+  {
+    "test": "test_partial_refresh",
+    "ok": false,
+    "exit_code": -1,
+    "seconds": 73.1,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n"
+  },
+  {
+    "test": "test_settlement_integration",
+    "ok": true,
+    "exit_code": 0,
+    "seconds": 5.6,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nSETTLEMENT INTEGRATION: PASS\r\n"
+  }
+]

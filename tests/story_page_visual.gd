@@ -9,8 +9,9 @@ func check(ok: bool, message: String) -> void:
 func capture(id: String) -> void:
 	await process_frame
 	await process_frame
-	await RenderingServer.frame_post_draw
-	root.get_texture().get_image().save_png("res://evidence/story-page-" + id + ".png")
+	if DisplayServer.get_name() != "headless":
+		await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png("res://evidence/story-page-" + id + ".png")
 func click(control: Control) -> void:
 	var pos := control.get_global_transform() * (control.size * 0.5)
 	var motion := InputEventMouseMotion.new()
@@ -37,8 +38,8 @@ func run() -> void:
 	await create_timer(0.4).timeout
 	var data = JSON.parse_string(FileAccess.get_file_as_string("res://story/demo_story.json"))
 	check(page.load_story(data).ok, "page loads story")
-	for image_control in page.find_children("*", "TextureRect", true, false):
-		check(image_control.texture == null or not image_control.texture.resource_path.begins_with("res://"), "story page uses no image assets")
+	var box_rect: TextureRect = page.find_child("DialogueBoxImage", true, false)
+	check(box_rect != null and box_rect.texture != null and box_rect.texture.resource_path.begins_with("res://"), "story page uses dialogue box image asset")
 	await create_timer(0.15).timeout
 	check(page.body.visible_characters < page.body.text.length(), "typewriter begins gradually")
 	await click(page.next_button)

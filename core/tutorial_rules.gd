@@ -10,8 +10,8 @@ const NODES := ["drift","battle","trader"]
 ## Every operation that mutates a run. Interface-only commands (panel, close,
 ## camera, home) stay available so the player can look around while learning.
 const MUTATING := ["voyage","scout","fix_heading","enter","advance","skip","option","shop_enter","shop_leave","buy","sell","fight","leave_encounter","play","battle_action","claim_boost","boost_device","battle_end","retreat","craft","salvage","transmute","install","fuel","repair_cell","heal","expand","upgrade","action_card","dismantle","end_voyage","discard","new","meta_buy","tech"]
-const ORDER := ["starting_cards","nav1","salvage1","craft1","install1","enter1","read1","choose1","finish1","end1","discard1","survival2","nav2","enter2","read2","fight2","attack2a","endturn2","attack2b","finish2","end2","discard2","survival3","nav3","repair3","enter3","read3","shop3","buy3","leave3","finish3","end3","done"]
-const TOTAL_STEPS := 32 # ORDER entries except the terminal done marker.
+const ORDER := ["starting_cards","nav1","salvage1","craft1","install1","enter1","read1","choose1","finish1","end1","discard1","survival2","nav2","enter2","read2","fight2","attack2a","enchant_attack2","enchant_block2","endturn2","attack2b","finish2","end2","discard2","survival3","nav3","repair3","enter3","read3","shop3","buy3","sell3","leave3","finish3","end3","done"]
+const TOTAL_STEPS := 35 # ORDER entries except terminal done.
 
 static func start_args() -> Dictionary:
 	return {"difficulty":"tutorial","mode":"challenge","origin":ORIGIN,"seed":SEED,"starting_resources":STARTING.duplicate()}
@@ -90,8 +90,10 @@ static func step_two(s: Dictionary) -> String:
 		"battle":
 			var battle: Dictionary = s.get("battle",{})
 			if int(battle.get("turn",1)) >= 2: return "attack2b"
-			if int(battle.get("ap",0)) < int(s.get("player",{}).get("battle_ap",3)): return "endturn2"
-			return "attack2a"
+			if int(battle.get("ap",0)) == int(s.get("player",{}).get("battle_ap",3)): return "attack2a"
+			if not s.get("tutorial",{}).get("enchant_attack_done",false): return "enchant_attack2"
+			if not s.get("tutorial",{}).get("enchant_block_done",false): return "enchant_block2"
+			return "endturn2"
 		"aftermath": return "end2"
 		"discard": return "discard2"
 	return ""
@@ -109,7 +111,8 @@ static func step_three(s: Dictionary) -> String:
 			var shop: Dictionary = s.get("shop",{})
 			var bought := 0
 			for id in shop.get("purchased",{}): bought += int(shop.purchased[id])
-			return "leave3" if bought > 0 else "buy3"
+			if bought == 0: return "buy3"
+			return "leave3" if s.get("tutorial",{}).get("sale_done",false) else "sell3"
 		"aftermath": return "end3"
 	return ""
 
@@ -131,18 +134,21 @@ const TEXTS := {
 	"read2":["准备迎战","读完说明后点『继续』，然后选择『迎战』。"],
 	"fight2":["迎战","点『迎战』进入战斗。战斗 AP 与基地 AP 分开计算，每回合刷新；战斗和航行共用手牌。"],
 	"attack2a":["第一次攻击","双击手牌『矛击』：消耗 1 战斗 AP，造成 3 点伤害。用后该牌移除。敌人有 6 点生命。"],
-	"endturn2":["结束回合","点『跳过当前回合』。敌人反击造成1点生命损失并咬坏一只外围筏格；破损格上的设备会停用。"],
+	"enchant_attack2":["攻击附魔","资源牌可以对操作牌进行附魔，暂时仅支持战斗中的攻击和防御。先单击『废铁』，再双击『攻击』操作牌打出攻击附魔：消耗废铁1和1战斗AP，本次伤害从1提高到2。选择和预览不会消耗，打出后资源移除。"],
+	"enchant_block2":["防御附魔","先单击『木头』，再双击『防御』操作牌打出防御附魔：消耗木头1和1战斗AP，本次护盾从1提高到3。不同资源的附魔效果不同，打出前可查看预览。"],
+	"endturn2":["结束回合","点『跳过当前回合』。护盾抵挡敌人本次1点生命伤害，但不会阻止啃咬筏格；敌人仍会咬坏一只外围筏格，破损格上的设备会停用。"],
 	"attack2b":["第二次攻击","第二回合战斗 AP 已刷新。再次双击『矛击』击败敌人，领取贝币、尸体和材料；留好贝币，随后学习交易。"],
 	"finish2":["完成战斗节点","点『结束节点』，再点『结束航行』。本轮手牌会超限，需要在轮末弃牌。"],
 	"end2":["结束航行","点『结束航行』。战斗奖励与涌泉让手牌超限，轮末需要弃到上限。"],
-	"discard2":["弃牌回到上限","点手牌弃置，直到容量不高于上限。保留贝币用于接下来的交易；尸体及其余可弃牌可以弃置，弃牌不会返还。"],
+	"discard2":["弃牌回到上限","点手牌弃置，直到容量不高于上限。保留贝币用于购买、尸体用于出售教学；选择其他可弃手牌，弃牌不会返还。"],
 	"survival3":["补充状态","先使用『淡水』和『食用植物』：0 AP，分别恢复水分和饱食各40，不超过上限。然后前往『海怪商人』。"],
 	"nav3":["前往商店","右侧目的地是『海怪商人』。点选它，再点『出发』。"],
 	"repair3":["修补筏格","上一场战斗咬坏了筏格。点击场景中破损的筏格（或右侧木筏详情），选择『修理』：消耗木头1或绳索2，以及1 AP。"],
 	"enter3":["进入商店","修补完成后，点右侧『进入节点』。"],
 	"read3":["商店说明","读完说明后点『继续』。"],
-	"shop3":["进入商店","点『进入商店』查看货架。商店用贝币或尸体交易，不消耗 AP。"],
+	"shop3":["进入商店","点『进入商店』查看货架。购买支付贝币；尸体可以出售换取贝币。买卖都不消耗 AP。"],
 	"buy3":["购买物资","购买 1 张『木头』，支付 1 贝币。购买会立即把卡牌放进手牌。"],
+	"sell3":["出售手牌","点『出售手牌』，选择『尸体』，再点『确认出售』。出售1张尸体获得3贝币，不消耗AP；基础材料不能出售。"],
 	"leave3":["离开商店","点『离开商店』保留剩余货币，继续航行。"],
 	"finish3":["完成商店节点","点『结束节点』，再点『结束航行』。"],
 	"end3":["完成教程","点『结束航行』。轮末结算后，新手教程就完成了；之后可以从难度选择开始正式航程。"],
@@ -173,8 +179,10 @@ static func operation_for(id: String) -> String:
 		"install1": return "install"
 		"survival2","survival3": return "play"
 		"attack2a","attack2b": return "play"
+		"enchant_attack2","enchant_block2": return "battle_action"
 		"repair3": return "repair"
 		"buy3": return "buy"
+		"sell3": return "sell"
 		"leave3": return "leave"
 		"discard1","discard2": return "discard"
 		"end1","end2","end3": return "end_voyage"
@@ -199,6 +207,8 @@ static func guard(ctx, command: String, args: Dictionary) -> String:
 	if step == "" or step == "done": return ""
 	if command == "discard" and str(args.get("uid","")) == "coins":
 		return "新手教程：请保留贝币用于接下来的交易，选择其他可弃手牌。"
+	if command == "discard" and step == "discard2" and str(args.get("uid","")) == hand_uid(s,"corpse"):
+		return "新手教程：请保留尸体用于接下来的出售教学，选择其他可弃手牌。"
 	if _allowed(s,step,command,args):
 		if command == "play": _note_play(s,args)
 		return ""
@@ -239,6 +249,10 @@ static func _allowed(s: Dictionary, step: String, command: String, args: Diction
 			return command == "fight"
 		"attack2a","attack2b":
 			return command == "play" and _plays_spear(s,args)
+		"enchant_attack2","enchant_block2":
+			var resource := "iron" if step == "enchant_attack2" else "wood"
+			var action := "attack" if step == "enchant_attack2" else "block"
+			return command == "battle_action" and args.get("action","") == action and _card_is(s,str(args.get("resource_uid","")),resource) and not args.has("buff_uid")
 		"endturn2":
 			return command == "battle_end"
 		"repair3":
@@ -247,10 +261,18 @@ static func _allowed(s: Dictionary, step: String, command: String, args: Diction
 			return command == "shop_enter"
 		"buy3":
 			return command == "buy" and str(args.get("id","")) == "wood"
+		"sell3":
+			return command == "sell" and _card_is(s,str(args.get("uid","")),"corpse")
 		"leave3":
 			return command == "shop_leave"
 		"end1","end2","end3":
 			return command == "end_voyage"
+	return false
+
+static func _card_is(s: Dictionary, uid: String, id: String) -> bool:
+	if uid.is_empty(): return false
+	for card in s.get("hand",[]):
+		if str(card.get("uid","")) == uid: return card.get("id","") == id and not card.get("temporary",false)
 	return false
 
 static func _is_scripted_destination(s: Dictionary, args: Dictionary) -> bool:
@@ -283,6 +305,9 @@ static func after_dispatch(ctx, command: String, args: Dictionary) -> void:
 	var s: Dictionary = ctx.state
 	if s.is_empty() or s.get("mode","") != "tutorial": return
 	if not s.get("tutorial") is Dictionary: s.tutorial = new_state()
+	if command == "battle_action" and args.get("action","") in ["attack","block"]:
+		s.tutorial["enchant_"+str(args.action)+"_done"] = true
+	if command == "sell": s.tutorial.sale_done = true
 	ensure_supplies(ctx)
 
 static func ensure_supplies(ctx) -> void:
@@ -292,6 +317,11 @@ static func ensure_supplies(ctx) -> void:
 	var t: Dictionary = s.tutorial
 	if not t.get("granted") is Dictionary: t.granted = {}
 	var voyage := int(s.get("voyage",1))
+	# Supply only missing materials once upon entering battle, after first discard.
+	if voyage == 2 and s.get("phase","") == "battle" and not t.granted.get("enchantment",false):
+		t.granted.enchantment = true
+		for id in ["iron","wood"]:
+			if hand_count(s,id) == 0: ctx.give(id,1,false,"tutorial")
 	if voyage < 2: return
 	# Only top up once per voyage: using a card later must not summon a replacement.
 	if int(t.get("supply_voyage",0)) >= voyage: return

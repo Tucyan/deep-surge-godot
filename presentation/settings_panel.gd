@@ -75,8 +75,104 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 	narrative_box.name = "NarrativeTabContent"
 	narrative_box.add_theme_constant_override("separation", 4 if compact else 6)
 	content_area.add_child(narrative_box)
-	NarrativeMenu.build_settings(narrative_box, app)
 
+	# --- Tab Switching Behavior (Instant, No Full Screen Reload) ---
+	var built: Dictionary={}
+	var boxes: Dictionary={"display":display_box,"game":game_box,"narrative":narrative_box}
+	var update_tabs = func(target: String):
+		if not built.has(target):
+			match target:
+				"display": _build_display(display_box,app,view)
+				"game": _build_game(game_box,app,view)
+				"narrative": NarrativeMenu.build_settings(narrative_box,app)
+			built[target]=true
+			if prefs.mobile: adapt_touch_controls(boxes[target])
+		sync_controls(app)
+		app.settings_tab = target
+		display_box.visible = (target == "display")
+		game_box.visible = (target == "game")
+		narrative_box.visible = (target == "narrative")
+
+		tab_display.set_meta("surge_primary", target == "display")
+		tab_game.set_meta("surge_primary", target == "game")
+		tab_narrative.set_meta("surge_primary", target == "narrative")
+		tab_display.queue_redraw(); tab_game.queue_redraw(); tab_narrative.queue_redraw()
+		tab_display.add_theme_color_override("font_color", Color("fff8e9") if target == "display" else Color("8ca1b0"))
+		tab_game.add_theme_color_override("font_color", Color("fff8e9") if target == "game" else Color("8ca1b0"))
+		tab_narrative.add_theme_color_override("font_color", Color("fff8e9") if target == "narrative" else Color("8ca1b0"))
+
+	tab_display.pressed.connect(func(): update_tabs.call("display"))
+	tab_game.pressed.connect(func(): update_tabs.call("game"))
+	tab_narrative.pressed.connect(func(): update_tabs.call("narrative"))
+	update_tabs.call(current_tab)
+
+	# --- Bottom Section: 航程管理 (Voyage Actions) ---
+	if view.screen == "game" or view.active:
+		var voyage_panel := PanelContainer.new()
+		voyage_panel.name = "VoyageControlPanel"
+		voyage_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		var vp_style := StyleBoxFlat.new()
+		vp_style.bg_color = Color(0.02, 0.04, 0.065, 0.8)
+		vp_style.border_color = Color(0.55, 0.45, 0.3, 0.45)
+		vp_style.set_border_width_all(1)
+		vp_style.set_corner_radius_all(4)
+		vp_style.content_margin_left = 12; vp_style.content_margin_right = 12
+		vp_style.content_margin_top = 8; vp_style.content_margin_bottom = 8
+		voyage_panel.add_theme_stylebox_override("panel", vp_style)
+		parent.add_child(voyage_panel)
+
+		var vp_vbox := VBoxContainer.new()
+		vp_vbox.add_theme_constant_override("separation", 6)
+		voyage_panel.add_child(vp_vbox)
+
+		var vp_header := HBoxContainer.new()
+		vp_vbox.add_child(vp_header)
+		var vp_title := Label.new()
+		vp_title.text = "◆ 航程管理 ◆"
+		vp_title.add_theme_font_size_override("font_size", 13)
+		vp_title.add_theme_color_override("font_color", W.GOLD)
+		vp_header.add_child(vp_title)
+
+		var vp_hint := Label.new()
+		vp_hint.text = "当前航行中，可安全暂停返回主页，或放弃航程结算"
+		if prefs.mobile:
+			vp_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+			vp_hint.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		vp_hint.add_theme_font_size_override("font_size", 12)
+		vp_hint.add_theme_color_override("font_color", Color("8ca1b0"))
+		vp_header.add_child(vp_hint)
+
+		var btn_row := HBoxContainer.new()
+		btn_row.add_theme_constant_override("separation", 10)
+		vp_vbox.add_child(btn_row)
+
+		if view.screen == "game":
+			var home_btn := Button.new()
+			home_btn.text = "返回首页"
+			home_btn.name = "SettingsHomeButton"
+			home_btn.tooltip_text = "安全保存当前航程进度，返回游戏主菜单"
+			home_btn.custom_minimum_size.y = 36
+			home_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			home_btn.pressed.connect(func(): app.request_command("home"))
+			btn_row.add_child(home_btn)
+			W.TextButtonArt.apply(home_btn)
+
+		if view.active:
+			var abandon_btn := Button.new()
+			abandon_btn.text = "放弃本局"
+			abandon_btn.name = "SettingsAbandonButton"
+			abandon_btn.tooltip_text = "放弃当前航行并按已完成节点进行结算"
+			abandon_btn.custom_minimum_size.y = 36
+			abandon_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			abandon_btn.pressed.connect(func(): app.confirm_abandon())
+			btn_row.add_child(abandon_btn)
+			W.TextButtonArt.apply(abandon_btn)
+			abandon_btn.set_meta("surge_danger", true)
+			abandon_btn.add_theme_color_override("font_color", Color("f09d92"))
+	if prefs.mobile: adapt_touch_controls(parent)
+
+static func _build_display(display_box: VBoxContainer, app: Control, view: Dictionary) -> void:
+	var prefs=app.display_settings
 	# --- TAB 1: 画面显示 ---
 	# Row 1: UI 缩放
 	var scale_row := HBoxContainer.new()
@@ -184,6 +280,9 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 		app.apply_display_settings.call_deferred(false, false)
 	)
 	display_box.add_child(make_row("海面与木筏动效 (Motion)", "开启后海面波浪与木筏随潮晃动；关闭可提升性能", toggle, 130))
+static func _build_game(game_box: VBoxContainer, app: Control, view: Dictionary) -> void:
+	var prefs=app.display_settings
+	var compact:=app.size.y<780
 	var camera_row:=HBoxContainer.new()
 	var view_lock:=CheckButton.new(); view_lock.name="ViewLockToggle"; view_lock.text="锁定视角"
 	view_lock.button_pressed=prefs.view_locked; camera_row.add_child(view_lock)
@@ -297,91 +396,6 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 			style.content_margin_top=maxf(4,style.content_margin_top-2)
 			style.content_margin_bottom=maxf(4,style.content_margin_bottom-2)
 			row.add_theme_stylebox_override("panel",style)
-
-	# --- Tab Switching Behavior (Instant, No Full Screen Reload) ---
-	var update_tabs = func(target: String):
-		app.settings_tab = target
-		display_box.visible = (target == "display")
-		game_box.visible = (target == "game")
-		narrative_box.visible = (target == "narrative")
-
-		tab_display.set_meta("surge_primary", target == "display")
-		tab_game.set_meta("surge_primary", target == "game")
-		tab_narrative.set_meta("surge_primary", target == "narrative")
-		tab_display.queue_redraw(); tab_game.queue_redraw(); tab_narrative.queue_redraw()
-		tab_display.add_theme_color_override("font_color", Color("fff8e9") if target == "display" else Color("8ca1b0"))
-		tab_game.add_theme_color_override("font_color", Color("fff8e9") if target == "game" else Color("8ca1b0"))
-		tab_narrative.add_theme_color_override("font_color", Color("fff8e9") if target == "narrative" else Color("8ca1b0"))
-
-	tab_display.pressed.connect(func(): update_tabs.call("display"))
-	tab_game.pressed.connect(func(): update_tabs.call("game"))
-	tab_narrative.pressed.connect(func(): update_tabs.call("narrative"))
-	update_tabs.call(current_tab)
-
-	# --- Bottom Section: 航程管理 (Voyage Actions) ---
-	if view.screen == "game" or view.active:
-		var voyage_panel := PanelContainer.new()
-		voyage_panel.name = "VoyageControlPanel"
-		voyage_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		var vp_style := StyleBoxFlat.new()
-		vp_style.bg_color = Color(0.02, 0.04, 0.065, 0.8)
-		vp_style.border_color = Color(0.55, 0.45, 0.3, 0.45)
-		vp_style.set_border_width_all(1)
-		vp_style.set_corner_radius_all(4)
-		vp_style.content_margin_left = 12; vp_style.content_margin_right = 12
-		vp_style.content_margin_top = 8; vp_style.content_margin_bottom = 8
-		voyage_panel.add_theme_stylebox_override("panel", vp_style)
-		parent.add_child(voyage_panel)
-
-		var vp_vbox := VBoxContainer.new()
-		vp_vbox.add_theme_constant_override("separation", 6)
-		voyage_panel.add_child(vp_vbox)
-
-		var vp_header := HBoxContainer.new()
-		vp_vbox.add_child(vp_header)
-		var vp_title := Label.new()
-		vp_title.text = "◆ 航程管理 ◆"
-		vp_title.add_theme_font_size_override("font_size", 13)
-		vp_title.add_theme_color_override("font_color", W.GOLD)
-		vp_header.add_child(vp_title)
-
-		var vp_hint := Label.new()
-		vp_hint.text = "当前航行中，可安全暂停返回主页，或放弃航程结算"
-		if prefs.mobile:
-			vp_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-			vp_hint.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		vp_hint.add_theme_font_size_override("font_size", 12)
-		vp_hint.add_theme_color_override("font_color", Color("8ca1b0"))
-		vp_header.add_child(vp_hint)
-
-		var btn_row := HBoxContainer.new()
-		btn_row.add_theme_constant_override("separation", 10)
-		vp_vbox.add_child(btn_row)
-
-		if view.screen == "game":
-			var home_btn := Button.new()
-			home_btn.text = "返回首页"
-			home_btn.name = "SettingsHomeButton"
-			home_btn.tooltip_text = "安全保存当前航程进度，返回游戏主菜单"
-			home_btn.custom_minimum_size.y = 36
-			home_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			home_btn.pressed.connect(func(): app.handle_command("home"))
-			btn_row.add_child(home_btn)
-			W.TextButtonArt.apply(home_btn)
-
-		if view.active:
-			var abandon_btn := Button.new()
-			abandon_btn.text = "放弃本局"
-			abandon_btn.name = "SettingsAbandonButton"
-			abandon_btn.tooltip_text = "放弃当前航行并按已完成节点进行结算"
-			abandon_btn.custom_minimum_size.y = 36
-			abandon_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			abandon_btn.pressed.connect(func(): app.confirm_abandon())
-			btn_row.add_child(abandon_btn)
-			W.TextButtonArt.apply(abandon_btn)
-			abandon_btn.set_meta("surge_danger", true)
-			abandon_btn.add_theme_color_override("font_color", Color("f09d92"))
-	if prefs.mobile: adapt_touch_controls(parent)
 
 static func adapt_touch_controls(node: Node) -> void:
 	if node is BaseButton:

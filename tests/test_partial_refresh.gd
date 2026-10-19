@@ -44,6 +44,7 @@ func run() -> void:
 	var fps=app.find_child("FrameRateLimit",true,false)
 	fps.select(1); fps.item_selected.emit(1); await settle()
 	check(before==instance_ids(app),"FPS callback preserves settings and HUD")
+	app.find_child("TabGame",true,false).pressed.emit(); await settle()
 	var orbit=app.find_child("CameraOrbitBinding",true,false)
 	orbit.select(0); orbit.item_selected.emit(0); await settle()
 	var pan=app.find_child("CameraPanBinding",true,false)

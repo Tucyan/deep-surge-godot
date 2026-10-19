@@ -6,7 +6,7 @@ static func build_choice(parent: Node, app) -> void:
 	W.text(parent, "剧情模式", 28, W.GOLD)
 	W.text(parent, "第一章共11个节点，每个节点出发前播放剧情。其余航行规则与挑战模式一致。", 15, W.MUTED)
 	W.text(parent, "读取将同时恢复这份剧情档的航程、选择和人物信任。", 15, W.MUTED)
-	var saves: Array = app.narrative_store.list_saves()
+	var saves: Array = app.narrative_store.list_saves(true)
 	if saves.is_empty(): W.text(parent, "还没有剧情存档，请先新建。", 16, W.MUTED)
 	var scroll := ScrollContainer.new()
 	scroll.custom_minimum_size.y = 150

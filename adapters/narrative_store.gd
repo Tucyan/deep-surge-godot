@@ -9,6 +9,9 @@ var error := ""
 var dir := DIR
 var active_path := ACTIVE_PATH
 var _active := ""
+var _saves: Array = []
+var _saves_valid := false
+var _has_saves := false
 
 func _init(base_dir: String = "") -> void:
 	if base_dir != "":
@@ -16,6 +19,7 @@ func _init(base_dir: String = "") -> void:
 		active_path = base_dir + "/active.json"
 	_ensure_dir()
 	_active = _read_active()
+	_refresh_presence()
 
 func active_id() -> String:
 	return _active
@@ -29,12 +33,26 @@ func set_active(id: String) -> bool:
 	if not _write_json(active_path, {"id": id}):
 		return false
 	_active = id
+	_saves_valid = false
 	return true
 
 func create_id() -> String:
 	return ID_PREFIX + Crypto.new().generate_random_bytes(5).hex_encode()
 
-func list_saves() -> Array:
+func has_saves() -> bool:
+	return _has_saves
+
+func _refresh_presence() -> void:
+	_has_saves = false
+	for file in DirAccess.get_files_at(dir):
+		if file.ends_with(".json") and file != "active.json" and _valid_id(file.trim_suffix(".json")):
+			_has_saves = true
+			return
+
+## Refresh explicitly on menu entry to notice external file changes. Normal HUD
+## reads only has_saves(); metadata is parsed once between committed mutations.
+func list_saves(refresh: bool = false) -> Array:
+	if _saves_valid and not refresh: return _saves.duplicate(true)
 	var result: Array = []
 	for file in DirAccess.get_files_at(dir):
 		if not file.ends_with(".json") or file == "active.json" or file.ends_with(".tmp"): continue
@@ -59,7 +77,10 @@ func list_saves() -> Array:
 			"paired": data.get("chapter", "") == "chapter1" and data.get("version", "") == "chapter1-local-v1" and game_state.get("mode", "") == "story"
 		})
 	result.sort_custom(func(a, b): return int(a.updated_at) > int(b.updated_at))
-	return result
+	_saves = result
+	_saves_valid = true
+	_has_saves = not result.is_empty()
+	return result.duplicate(true)
 
 func read(id: String) -> Dictionary:
 	if not _valid_id(id): return {}
@@ -90,6 +111,8 @@ func write(id: String, data: Dictionary) -> bool:
 		error = cause
 		return false
 	_active = id
+	_saves_valid = false
+	_has_saves = true
 	return true
 
 func path_of(id: String) -> String:

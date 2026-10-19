@@ -1,146 +1,75 @@
-# 剧情层与剧情存档 v0.3（第一章导入已实现）
+# 独立剧情与配对存档
+<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v02-25; reviewed: 2026-10-19 -->
 
-2026-10-18。第一章导入后，剧情模式保留为独立入口：只有选择剧情模式后才能新建或读取剧情进度；挑战模式不开放剧情新建/读档。本文是实现契约，代码路径与测试名均按当前工程核对。
+当前第一章11个导航节点；章节内容版本为 `chapter1-local-v1`，定义见 [chapter_l1.json](../narrative/content/chapter_l1.json)。本文描述正式入口的当前行为，历史好感演示与旧夜间流程不覆盖它。
 
-## 1. 边界
+## 边界与职责
 
-剧情是可选的独立层，与玩法**双向隔离**：
+- 叙事会话不直接读取或修改玩法生命、食水、SAN、AP、手牌、筏格或战斗，只接收voyage/phase投影；core不依赖narrative。
+- 好感、线索、剧情道具、休息次数、选项和节拍归叙事状态。剧情坏结局是明确例外：叙事返回ending，由应用协调层调用既有终局/结算路径结束当前航程，不在叙事层发放玩法增益。
+- 剧情模式复用挑战规则，仅固定第一章长度11；导入文本与玩法数字冲突时使用本机规则。原文及本地改写记录在 `narrative/content/source/`，不覆写原始来源。
 
-- 剧情层不读取 `GameState`（只接收 `voyage` 与 `phase` 两个只读投影），不写 AP、物资、生命、SAN、筏格和战斗。
-- 规则核心不认识剧情。`core/` 不 import `narrative/`，`GameState` 没有剧情字段。
-- 唯一耦合点是编排层 `flow_app.gd`：读取游戏阶段，决定何时打开剧情页；剧情结束写回剧情档。
-- 好感度当前只影响剧情分支、档位文本与后续结局判定，不提供任何玩法增益。
-- 剧情模式的玩法部分复用本机挑战规则；剧情层不替换本机资源、伤害、AP、候选或结算实现。
-- 导入包中与本机玩法冲突的数字、效果和流程以本机为准；原始文本保存在 `narrative/content/source/`，改写记录在 `narrative/content/source/local-adaptation.json` 与 `local-display-overrides.json`。
+| 模块 | 职责 |
+|---|---|
+| [NarrativeContent](../narrative/narrative_content.gd) | 加载角色、章节、场景并校验DAG、字段与来源 |
+| [NarrativeSchedule](../narrative/narrative_schedule.gd) | 纯调度；当前第一章在navigation按voyage匹配节拍 |
+| [NarrativeSession](../narrative/narrative_session.gd) | 剧情状态、准备/完成场景、幂等应用、导出/恢复及配对投影校验 |
+| [Chapter1Effects](../narrative/chapter1_effects.gd) | 当前导入章节的线索/道具条件、休息重定向、路径校验与叙事效果 |
+| [NarrativeCoordinator](../application/narrative_coordinator.gd) | 持有剧情会话/播放层，选择档案、触发剧情、输入锁和坏结局编排 |
+| [PersistenceCoordinator](../application/persistence_coordinator.gd) | 组合剧情与玩法快照、共享profile保存及失败提示 |
+| [NarrativeStore](../adapters/narrative_store.gd) | 多槽位文件、活动指针、元数据缓存和失败回滚 |
+| [StoryPage](../pages/story_page.gd) | VN播放、两步选项、完成结果；不直接结算玩法 |
+| [FlowApp](../flow_app.gd) | 依赖组合与已有页面/测试接口转发 |
 
-## 2. 分层与文件
+## 入口与播放
 
-| 路径 | 职责 |
-| --- | --- |
-| `narrative/narrative_content.gd` | 加载并校验角色、节拍、场景；复用 `story/story_player.gd` 的 DAG 校验 |
-| `narrative/narrative_schedule.gd` | 纯函数：稳定阶段判定、节拍优先级、好感门槛 |
-| `narrative/narrative_session.gd` | 剧情状态机：节拍、选项结算、好感度、导出/恢复 |
-| `adapters/narrative_store.gd` | 多档存储（`user://narrative/`），不改玩法存档 |
-| `pages/story_page.gd` | VN 播放页（原有，未改契约） |
-| `pages/narrative_menu.gd` | 首页剧情档选择、设置“剧情”页 |
-| `flow_app.gd` | 编排：触发、输入锁、存档、UI 刷新 |
-| `narrative/content/characters.json` | 角色与好感档位 |
-| `narrative/content/chapter1.json` | 第一章 11 个节点、节拍表、场景清单 |
-| `narrative/content/scenes/*.json` | 场景文本与选项 |
+1. 首页选择剧情模式，先新建或读取剧情档，再进入对应航程；挑战入口不提供剧情档操作。
+2. 当前第一章只在navigation且voyage为1～11时查找同号未应用节拍。章节间通用演示调度仍保留，但不是第一章逐节点播放的替代规则。
+3. 播放时应用层拒绝玩法命令，不修改规则phase、不消费玩法随机。场景与选项由当前内容提供；保存cursor用于叙事记录，不宣称能精确恢复半句打字进度。
+4. 完成结果先校验实际经过的节点/选项，再应用叙事效果并记录节拍；已应用节拍不重复结算。正常剧情结束保存配对槽位，再恢复游戏操作。
+5. 坏结局经应用层结束航程、生成结算并保存；当前常规第11节点仍先完成本机生存/终局流程。
 
-## 3. 触发时机
+当前导入章节的前置条件由Chapter1Effects处理，可能因缺少线索/道具禁用选项，或按休息次数重定向。原通用演示还支持好感门槛过滤及节拍优先级，不将演示的12～15航次样例当作现行第一章内容。信任值限制0～100，完整效果依章节数据；不产生玩法增益。
 
-只在稳定阶段触发，绝不在结算中途弹全屏：
+## 状态和文件布局
 
-| 阶段 | 已完成航行数 | 说明 |
-| --- | --- | --- |
-| `navigation` 且 `voyage` 在 1–11 | 当前航行节点 | 每个剧情节点进入航行前播放对应节拍 |
-| `chapterComplete` | `length`（11） | 兼容章节完成投影；正常第一章在第 11 节点沿本机终局路径完成 |
-| 其他阶段 | 不触发 | `battle` / `story` / `interaction` / `discard` / `finished` 都不触发 |
+| 文件 | 当前用途 |
+|---|---|
+| `user://narrative/<id>.json` | schema1、chapter/version/label/时间戳、叙事state及配对gameplay快照 |
+| `user://narrative/active.json` | 活动槽位ID指针；启动不隐式挂载剧情局 |
+| `user://godot-flow-v02.json` | 共享profile和最近结算；仅教程模式保留可恢复state，正式挑战state不落为继续档 |
+| `user://deep-surge-meta.json` | 教程完成、难度解锁与上次选择 |
 
-`narrative_schedule.completed_voyages()` 是唯一判定入口；`flow_app._maybe_story()` 每次命令成功后与启动恢复后调用一次。剧情模式的第 1–11 个导航节点均有节拍，挑战模式不会调用剧情档入口。
+叙事state包括affinity、flags、items、clues、rest_count、ending、applied_beats、skipped_beats、seen_scenes、choices、cursor和prefs。gameplay使用GameSession.snapshot，含schema2、内容版本、内容指纹、随机算法、revision、state/profile及最近结算。
 
-播放期间 `narrative_playing = true`，`handle_command()` 直接拒绝游戏命令并提示“请先读完当前剧情”；**不修改游戏阶段**，因此读档不会落在“剧情播到一半”的状态。
+剧情多槽位已经包含配对玩法快照；这不等于挑战模式拥有跨进程多槽位保存。剧情模式加载必须验证当前章节/版本、玩法长度11、mode=story及voyage/phase与已应用节拍一致，再同时替换有效会话。旧版本兼容或迁移不是要求；解析器可容忍的未知字段不代表正式入口承诺旧章节可载入。
 
-## 4. 节拍与分支
+## 原子性、奖励与失败恢复
 
-```jsonc
-{"id":"L1-B12-close","after_voyage":12,"scene":"L1.s12","priority":10,"requires_affinity":{"leader":12}},
-{"id":"L1-B12-far",  "after_voyage":12,"scene":"L1.s12b","priority":0}
-```
+- 槽位写入经过临时文件、flush/错误检查和rename，失败提示冒泡到app.message，不把失败当作保存成功。
+- 新建/挂载先准备候选；槽位与活动指针提交成功后才替换内存。跨档写入若指针提交失败，恢复旧槽位或移除未挂载新档；已挂载槽位保存不重写指针。解绑先成功写空指针。
+- `profile.run_rewards` 按玩法run_id记录 `{points,result}`；积分与领取凭据在同一共享文件原子写入，配对槽位保留对应凭据。两文件独立提交，任一失败均显示失败。
+- 共享文件先成功时，旧槽位再次结算按run_id去重；配对槽位先成功时，加载终局档仅补领缺失凭据/积分，不覆盖当前购买或其他航程记录。手动保存同时重试共享进度。
+- run_rewards是schema2可选字段；同内容版本缺少它的旧数据可被解析，但无凭据历史终局不自动补奖，不能可靠推断过去是否到账。此处不承诺跨文件断电事务，也不追溯修复引入凭据前的差异。
+- 自动保存失败提示优先于好感提示；成功重试清除错误。损坏、版本或配对不匹配时保留原文件，不替换当前有效状态。
+- 槽位元数据在成功写入/挂载后失效，进入选档页显式刷新；普通HUD只读存在标记。真实加载仍读取文件并做完整配对校验。
 
-- 同一 `after_voyage` 的节拍构成一个**检查点**。
-- 按 `priority` 从高到低，取第一个满足 `requires_affinity` 的节拍；都不满足则整组记为 `skipped_beats`。
-- 已应用的节拍记入 `applied_beats`；同组其他版本在应用时自动记入 `skipped_beats`。两者都不会再次触发。
-- 条件只允许好感度（`requires_affinity`），不读取游戏数值。新增条件类型必须另立契约，不能在内容里塞游戏判断。
+## 已实现与范围限制
 
-```jsonc
-// 选项级门槛：不满足时从场景中过滤，不显示灰色选项
-{"id":"stay","text":"请沈岚一起留下","next":"n4","affinity":{"leader":3},
- "set_flags":["ending_stay"],"requires_affinity":{"leader":18}}
-```
+已实现独立11节点章节、导入来源保留、叙事条件/效果、坏结局终局、多剧情槽位和配对玩法恢复。游戏命令失败或无效挑战新局不能丢失原剧情会话；挑战候选验证成功后才切换两个会话。
 
-内容校验要求：**每个有选项的节点至少有一个不带 `requires_affinity` 的选项**，保证过滤后不会出现死路。
+新独立剧情档的已读场景尚未接入回廊；旧回廊只展示五幕序章与原本地旧归档，见 [回廊契约](story-gallery.md)。第二章、完整角色语音系统、挑战跨进程多槽位等不在当前能力声明内。
 
-第一章导入文本中的人物门槛和分支只用于叙事呈现；导入包对玩法数值、资源、伤害、AP 和流程的描述均按本机规则适配。适配不会覆盖归档原文，具体段落映射见 `source/local-adaptation.json`。
-
-实际播放使用 `prepare_scene()` 过滤后的场景；`finish()` 同时按本段奖励结算前的好感校验提交结果。未满足门槛的选项会使整份结果被拒绝，保留当前节拍供有效结果重试，不发放好感或 flag、不记为已播放。
-
-## 5. 好感度
-
-- 取值 `0–100`，读档时 clamp。
-- 只由选项的 `affinity` 改变；档位由 `characters.json` 的 `levels[].min` 决定，仅用于显示。
-- 结算幂等：`applied_beats` 是唯一防重依据；重复调用 `finish()` 不会重复加好感。
-- 后续结局：在编排层读 `affinity` / `flags` 决定结局场景，核心不新增字段。
-
-## 6. 剧情存档
-
-```text
-user://narrative/<id>.json     单份剧情档
-user://narrative/active.json   当前挂载指针
-```
-
-```jsonc
-{
-  "schema": 1,
-  "chapter": "chapter1",
-  "version": "chapter1-local-v1",
-  "label": "初航",
-  "created_at": 0, "updated_at": 0,
-  "state": {
-    "affinity": {"leader": 10, "carpenter": 0},
-    "flags": {"convoy": true},
-    "applied_beats": ["L1-B03"],
-    "skipped_beats": ["L1-B12-close"],
-    "seen_scenes": ["L1.s03"],
-    "choices": [{"beat_id":"L1-B03","node_id":"n2","choice_id":"answer"}],
-    "cursor": {"beat_id":"", "scene_id":""},
-    "prefs": {"skip_seen": true}
-  }
-}
-```
-
-- 写入走 `临时文件 → rename`；失败不覆盖旧档，错误冒泡到 `app.message`。
-- 挂载/新建先准备候选剧情状态，存档与活动指针写入成功后才替换内存。失败保持原内存与绑定；解绑也须先成功写入空指针。
-- 跨档写入后若活动指针提交失败，恢复旧槽位数据或移除未挂载的新档；活动 ID 仅在提交成功后更新。已挂载槽位的保存无需重写活动指针。此处保证正常 I/O 失败返回时回滚，不承诺跨两个文件的断电事务。
-- 自动保存失败提示优先于好感提示；成功重试会清除存储器错误，并明确显示保存成功。
-- 剧情档与玩法存档逻辑上分层，但剧情模式使用成对槽位：剧情状态和对应玩法状态必须同时写入、同时恢复。挑战模式只使用本机挑战存档，不显示剧情档操作。
-- 挂载是 1:1（一个剧情档配对当前玩法局）；损坏、章节不匹配或配对校验失败时原子拒绝，不替换当前有效状态。
-- `version` 不同仍可读：未知节拍忽略，场景始终取当前内容。
-
-## 7. 流程
-
-- 首页“剧情模式”→ 剧情档选择：挂载已有 / 新建 → 新局准备；选择挑战模式时不显示剧情新建/读档。
-- 新局开始且模式为 `story` 时才应用剧情槽位；挑战模式无法挂载剧情槽位，非法尝试不会替换当前剧情会话。
-- 每次剧情结束自动保存配对槽位；损坏槽位在列表中安全标记并拒绝载入。
-
-## 8. 已实现 / 未实现
-
-已实现并有测试：
-
-- 内容加载与校验（第一章 11 个节点、408 个导入段落、DAG、门槛、兜底选项及来源校验）。
-- 好感门槛的分支选择、跳过记录、幂等结算、读档恢复与 clamp。
-- 多档存储（创建、写入、列表、切换、解绑、拒绝路径穿越）。
-- 编排集成：11 个导航节点稳定触发、输入锁、剧情/玩法配对落盘、已看节拍不重播。
-- 旧剧情模式、夜间页、夜间命令、`campaign_rules` 移除。2026-10-18 暂时恢复独立的旧 `story_gallery` 展示与只读回放，支持开局序章及原本地归档，不恢复旧剧情规则；见 [剧情回廊](story-gallery.md)。
-
-未实现（明确不在本次范围）：
-
-- 玩法存档多槽位（当前仍是单个 `user://godot-flow-v02.json` 自动存档）。
-- 剧情结局判定与结局场景（只保留好感度与 flag 数据）。
-- 新独立剧情档的已读场景回看（临时恢复的旧回廊仅展示序章及旧归档）。
-- 立绘、背景、语音、自动播放；当前使用 `story_page.gd` 的纯色版面。
-- 旧轨迹重录（`tech-v22` 轨迹按版本标记为 stale，未重新生成 v23 轨迹）。
-
-## 9. 验证
+## 验证入口
 
 ```powershell
 Godot_v4.7.2-stable_win64_console.exe --headless --path . --script res://tests/test_narrative.gd
 Godot_v4.7.2-stable_win64_console.exe --headless --path . --script res://tests/test_narrative_flow.gd
 Godot_v4.7.2-stable_win64_console.exe --headless --path . --script res://tests/test_narrative_repairs.gd
+Godot_v4.7.2-stable_win64_console.exe --headless --path . --script res://tests/test_reward_recovery.gd
+Godot_v4.7.2-stable_win64_console.exe --headless --path . --script res://tests/test_mode_contract.gd
 ```
 
-- `test_narrative.gd`：纯层，53 项检查。
-- `test_narrative_flow.gd`：编排集成，19 项检查（含首页与设置入口）。
-- `test_narrative_repairs.gd`：27 项检查；真实隔离目录注入指针/槽位写入失败，验证回滚与重试、实际播放过滤和结果校验、新档门槛可达性，以及噩梦通关无新难度解锁时的局外进度落盘。2026-10-18 当次运行：三份测试合计 99 项检查、0 失败；APPDATA 指向根 `.planning/fix-narrative-tutorial-20261018/narrative-appdata`，未接触用户存档。
-- 视觉验收需要 GPU 运行 `node_event_layout.gd` 或 `launch-story.ps1`；无头模式不声称通过。
+测试须隔离APPDATA/LOCALAPPDATA。奖励恢复测试以目录占用.tmp注入真实I/O失败，覆盖两种文件提交失败方向、磁盘重新加载、手动重试和去重；模式契约覆盖候选失败保留、当前revision和成对提交。
+
+已执行结果见 [2026-10-19架构验证](../evidence/architecture-health-verification.md)，不把此处的命令列表当作本次文档修改重新执行过游戏验收。GPU/触摸/发行包单独验证。改写前的说明保存在 [历史快照](archive/context-20261019/docs--narrative-and-save.md)。

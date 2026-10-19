@@ -18,6 +18,7 @@ func run() -> void:
 	check(app.session.snapshot()==before,"两页往返不改规则与随机")
 	app.handle_ui("settlement_exit","")
 	await process_frame
+	while app.transition_busy: await process_frame
 	check(app.session.screen=="home","结算返回首页")
 	app.handle_ui("narrative_choose","")
 	await process_frame

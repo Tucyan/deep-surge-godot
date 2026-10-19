@@ -34,7 +34,7 @@
     "name": "怪物尸体",
     "kind": "resource",
     "cost": 0,
-    "description": "灯燃料3节点，或与海怪商人交换。",
+    "description": "灯燃料3节点，或在商店出售获得3贝币。",
     "fuel": 3
   },
   "coin": {

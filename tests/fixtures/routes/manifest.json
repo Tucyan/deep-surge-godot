@@ -1,0 +1,96 @@
+{
+  "routes": [
+    {
+      "id": "standard-challenge",
+      "path": "res://tests/fixtures/routes/standard-challenge.trace.json",
+      "expected": {
+        "phase": "finished",
+        "outcome": "survived",
+        "completed": 12
+      },
+      "steps": 180,
+      "version": "godot-flow-v02-25"
+    },
+    {
+      "id": "standard-story",
+      "path": "res://tests/fixtures/routes/standard-story.trace.json",
+      "expected": {
+        "phase": "finished",
+        "outcome": "survived",
+        "completed": 11
+      },
+      "steps": 169,
+      "version": "godot-flow-v02-25"
+    },
+    {
+      "id": "hard-challenge",
+      "path": "res://tests/fixtures/routes/hard-challenge.trace.json",
+      "expected": {
+        "phase": "finished",
+        "outcome": "dead",
+        "completed": 11
+      },
+      "steps": 208,
+      "version": "godot-flow-v02-25"
+    },
+    {
+      "id": "hard-story",
+      "path": "res://tests/fixtures/routes/hard-story.trace.json",
+      "expected": {
+        "phase": "finished",
+        "outcome": "dead",
+        "completed": 10
+      },
+      "steps": 188,
+      "version": "godot-flow-v02-25"
+    },
+    {
+      "id": "nightmare-challenge",
+      "path": "res://tests/fixtures/routes/nightmare-challenge.trace.json",
+      "expected": {
+        "phase": "finished",
+        "outcome": "dead",
+        "completed": 11
+      },
+      "steps": 228,
+      "version": "godot-flow-v02-25"
+    },
+    {
+      "id": "nightmare-story",
+      "path": "res://tests/fixtures/routes/nightmare-story.trace.json",
+      "expected": {
+        "phase": "finished",
+        "outcome": "dead",
+        "completed": 10
+      },
+      "steps": 191,
+      "version": "godot-flow-v02-25"
+    },
+    {
+      "id": "standard-failure",
+      "path": "res://tests/fixtures/routes/standard-failure.trace.json",
+      "expected": {
+        "phase": "finished",
+        "outcome": "mad",
+        "completed": 7
+      },
+      "steps": 56,
+      "version": "godot-flow-v02-25"
+    }
+  ],
+  "historical_paths": [
+    "res://evidence/tech-v22-standard-challenge-22.trace.json",
+    "res://evidence/tech-v22-standard-challenge-39.trace.json",
+    "res://evidence/tech-v22-standard-challenge-9.trace.json",
+    "res://evidence/tech-v22-standard-challenge-73.trace.json",
+    "res://evidence/tech-v22-standard-challenge-1000.trace.json",
+    "res://evidence/tech-v22-standard-challenge-7919.trace.json",
+    "res://evidence/tech-v22-standard-challenge-20261016.trace.json",
+    "res://evidence/tech-v22-standard-challenge-4294967295.trace.json",
+    "res://evidence/tech-v22-standard-story-22.trace.json",
+    "res://evidence/tech-v22-hard-challenge-22.trace.json",
+    "res://evidence/tech-v22-hard-story-22.trace.json",
+    "res://evidence/tech-v22-nightmare-challenge-22.trace.json",
+    "res://evidence/tech-v22-nightmare-story-22.trace.json"
+  ]
+}

@@ -1,0 +1,407 @@
+[
+	{
+		"case": "new",
+		"elapsed": 0.0166666666666667,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "new",
+		"elapsed": 0.166267666666667,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "new",
+		"elapsed": 0.189405666666667,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "new",
+		"elapsed": 0.216666666666667,
+		"stage": "正在展开海图"
+	},
+	{
+		"case": "new",
+		"elapsed": 0.364741666666667,
+		"stage": "正在展开海图"
+	},
+	{
+		"case": "new",
+		"elapsed": 0.491000333333333,
+		"stage": "潮路已就绪"
+	},
+	{
+		"case": "new",
+		"elapsed": 0.521842333333333,
+		"stage": "潮路已就绪"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.0190723333333335,
+		"stage": "正在返回港湾"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.05,
+		"stage": "正在返回港湾"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.0728266666666668,
+		"stage": "正在返回港湾"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.0945686666666669,
+		"stage": "正在返回港湾"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.117286666666667,
+		"stage": "正在返回港湾"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.139777666666667,
+		"stage": "正在返回港湾"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.162112666666667,
+		"stage": "正在返回港湾"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.185029333333334,
+		"stage": "正在返回港湾"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.208362666666667,
+		"stage": "正在点亮灯塔"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.310173333333334,
+		"stage": "正在点亮灯塔"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.383333333333333,
+		"stage": "正在点亮灯塔"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.433333333333333,
+		"stage": "正在点亮灯塔"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.484501333333334,
+		"stage": "正在点亮灯塔"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.541295333333333,
+		"stage": "正在点亮灯塔"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.592914333333333,
+		"stage": "正在点亮灯塔"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.644447333333333,
+		"stage": "正在点亮灯塔"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.667857666666667,
+		"stage": "正在点亮灯塔"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.668732916695579,
+		"stage": "潮路已就绪"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.673420333333334,
+		"stage": "潮路已就绪"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.680339333333334,
+		"stage": "潮路已就绪"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.685894888888889,
+		"stage": "潮路已就绪"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.691450444444445,
+		"stage": "潮路已就绪"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.697006,
+		"stage": "潮路已就绪"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.702561555555556,
+		"stage": "潮路已就绪"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.70953,
+		"stage": "潮路已就绪"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.717864,
+		"stage": "潮路已就绪"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.726204,
+		"stage": "潮路已就绪"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.73453,
+		"stage": "潮路已就绪"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.742857,
+		"stage": "潮路已就绪"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.751186,
+		"stage": "潮路已就绪"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.759525,
+		"stage": "潮路已就绪"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.767902,
+		"stage": "潮路已就绪"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.776188,
+		"stage": "潮路已就绪"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.796255,
+		"stage": "潮路已就绪"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.805345909090909,
+		"stage": "潮路已就绪"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.814436818181818,
+		"stage": "潮路已就绪"
+	},
+	{
+		"case": "home",
+		"elapsed": 0.823527727272727,
+		"stage": "潮路已就绪"
+	},
+	{
+		"case": "resume",
+		"elapsed": 0.00833333333333333,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "resume",
+		"elapsed": 0.0166666666666667,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "resume",
+		"elapsed": 0.025,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "resume",
+		"elapsed": 0.0333333333333333,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "resume",
+		"elapsed": 0.0416666666666667,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "resume",
+		"elapsed": 0.05,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "resume",
+		"elapsed": 0.0583333333333333,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "resume",
+		"elapsed": 0.0666666666666667,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "resume",
+		"elapsed": 0.075,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "resume",
+		"elapsed": 0.0833333333333333,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "resume",
+		"elapsed": 0.0916666666666667,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "resume",
+		"elapsed": 0.1,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "resume",
+		"elapsed": 0.108333333333333,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "resume",
+		"elapsed": 0.116666666666667,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "resume",
+		"elapsed": 0.125,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "resume",
+		"elapsed": 0.133333333333333,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "resume",
+		"elapsed": 0.141666666666667,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "resume",
+		"elapsed": 0.15,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "resume",
+		"elapsed": 0.158333333333333,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "resume",
+		"elapsed": 0.166666666666667,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "resume",
+		"elapsed": 0.175,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "resume",
+		"elapsed": 0.183333333333333,
+		"stage": "正在展开海图"
+	},
+	{
+		"case": "resume",
+		"elapsed": 0.246695,
+		"stage": "正在展开海图"
+	},
+	{
+		"case": "resume",
+		"elapsed": 0.384333333333333,
+		"stage": "潮路已就绪"
+	},
+	{
+		"case": "reject",
+		"elapsed": 0.0166666666666667,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "reject",
+		"elapsed": 0.0370013333333335,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "reject",
+		"elapsed": 0.0598433333333335,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "reject",
+		"elapsed": 0.0806766666666668,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "reject",
+		"elapsed": 0.10151,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "reject",
+		"elapsed": 0.122343333333333,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "reject",
+		"elapsed": 0.144959,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "reject",
+		"elapsed": 0.167847,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "reject",
+		"elapsed": 0.192208,
+		"stage": "正在准备航程"
+	},
+	{
+		"case": "reject",
+		"elapsed": 0.221772,
+		"stage": "正在展开海图"
+	},
+	{
+		"case": "reject",
+		"elapsed": 0.316666666666667,
+		"stage": "正在展开海图"
+	},
+	{
+		"case": "reject",
+		"elapsed": 0.444312666666667,
+		"stage": "正在显示提示"
+	},
+	{
+		"case": "reject",
+		"elapsed": 0.466666666666667,
+		"stage": "正在显示提示"
+	}
+]

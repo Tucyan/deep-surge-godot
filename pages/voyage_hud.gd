@@ -132,6 +132,7 @@ func build() -> void:
 		ap.pivot_offset = Vector2.ZERO
 		ap.z_index = 2
 		_action_points = ap
+		ap.label_text="行动·战意%d" % int(context.battle.get("origin_ap",0)) if context.phase=="battle" and context.origin=="zealot" else "行动点"
 		ap.set_ap(context.battle.ap if context.phase == "battle" else context.ap,context.player.battle_ap if context.phase == "battle" else context.player.base_ap)
 	var counter := PanelContainer.new(); counter.name = "HandCapacityBadge"; topbar.add_child(counter)
 	counter.z_index = 2
@@ -144,6 +145,9 @@ func build() -> void:
 	count_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	count_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER; count_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_capacity_label = count_label
+	count_label.tooltip_text=str(context.get("origin_status",""))
+	count_label.mouse_filter=Control.MOUSE_FILTER_STOP
+	counter.tooltip_text=count_label.tooltip_text
 
 	# Shield badge at the far right of the card topbar (multiple small shield icons)
 	var shield_badge := PanelContainer.new()
@@ -393,7 +397,8 @@ func navigation_content(header_parent: Node, row_parent: Node) -> void:
 			option.tooltip_text = str(node.get("description",""))
 		_nav_track(route,true)
 		if node.get("visibility","full")!="full":
-			action(route,"侦察 · SAN8","scout",{"id":node.visit_id},int(context.player.sanity)<=8,"揭示此候选，不改变其内容")
+			var scout_cost: int=int(context.get("navigation",{}).get("scout_cost",8))
+			action(route,"侦察 · SAN%d" % scout_cost,"scout",{"id":node.visit_id},int(context.player.sanity)<=scout_cost,"揭示此候选，不改变其内容")
 
 ## Mark a node as part of the rebuildable navigation content.
 func _nav_track(node: Node, is_row: bool) -> Node:
@@ -488,8 +493,10 @@ func refresh_status() -> void:
 func refresh_capacity() -> void:
 	if is_instance_valid(_capacity_label):
 		_capacity_label.text = "%d/%d" % [int(context.get("capacity",0)),int(context.player.limit)]
+		_capacity_label.tooltip_text=str(context.get("origin_status",""))
+		_capacity_label.get_parent().tooltip_text=_capacity_label.tooltip_text
 	if not is_instance_valid(_action_points): return
-	_action_points.label_text = "行动点"
+	_action_points.label_text = "行动·战意%d" % int(context.battle.get("origin_ap",0)) if context.phase=="battle" and context.origin=="zealot" else "行动点"
 	_action_points.set_ap(context.battle.ap if context.phase == "battle" else context.ap,context.player.battle_ap if context.phase == "battle" else context.player.base_ap)
 
 func refresh_environments() -> void:

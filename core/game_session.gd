@@ -6,21 +6,16 @@ const Rules = preload("res://core/run_rules.gd")
 const Battle = preload("res://core/battle_rules.gd")
 const Stats = preload("res://core/run_statistics.gd")
 const Settlement = preload("res://core/settlement.gd")
+const Rewards = preload("res://core/run_rewards.gd")
 const AutoProgress = preload("res://core/auto_progress.gd")
 const Health = preload("res://core/health_balance.gd")
 const Encounter = preload("res://core/encounter_rules.gd")
 const Shop = preload("res://core/shop_rules.gd")
 const EnvironmentRules = preload("res://core/environment_rules.gd")
 const Tutorial = preload("res://core/tutorial_rules.gd")
-const VERSION := "godot-flow-v02-23"
-const ORIGINS := {
-	"strong":{"name":"强壮之人", "description":"生命上限+4，食水上限各+10"},
-	"fool":{"name":"愚者", "description":"非自愿精神损失少5"},
-	"restless":{"name":"多动症", "description":"基地/战斗AP上限各+1"},
-	"hoarder":{"name":"囤积癖", "description":"容量+1"},
-	"zealot":{"name":"战斗狂热", "description":"普通撤退免生命损失"},
-	"skeptic":{"name":"无魔之人", "description":"免疫敌方负面战斗Buff"}
-}
+const Origins = preload("res://core/origin_rules.gd")
+const VERSION := "godot-flow-v02-25"
+const ORIGINS = Origins.DEFINITIONS
 var catalog: RefCounted
 var state: Dictionary = {}
 var profile := {"points":0, "purchases":{}, "tech":[], "pending":{}, "discovered":[], "endings":[]}
@@ -148,6 +143,7 @@ func new_game(args: Dictionary) -> bool:
 	var seed: Variant = Tutorial.SEED if tutorial else args.get("seed", -1)
 	if not ORIGINS.has(origin) or not (seed is int or seed is float) or seed < 0 or seed > 4294967295 or float(seed) != floor(float(seed)):
 		return fail("请选择出身，并输入0～4294967295整数种子")
+	if not ORIGINS[origin].enabled: return fail("该出身暂未开放，请选择其他出身")
 	var baseline: Dictionary=Difficulty.profile(catalog,difficulty)
 	var starting = args.get("starting_resources",Tutorial.STARTING.duplicate() if tutorial else [])
 	if not starting is Array or starting.size()>int(baseline.starting_cards): return fail("起手资源最多选择%d张" % int(baseline.starting_cards))
@@ -159,11 +155,14 @@ func new_game(args: Dictionary) -> bool:
 	if tutorial and counts != {"wood":2,"plastic":2,"rope":2,"iron":1,"cloth":1}:
 		return fail("新手教程起手请选择木头2、塑料2、绳索2、废铁1、布条1，共8张")
 	var stats := {"hp":int(baseline.hp), "hunger":int(baseline.hunger), "hydration":int(baseline.hydration), "sanity":int(baseline.sanity), "hp_max":int(baseline.hp), "hunger_max":100, "hydration_max":100, "sanity_max":100, "base_ap":3, "battle_ap":3, "limit":10, "damage":0}
-	if origin == "strong": stats.hp += Health.STRONG_BONUS; stats.hp_max += Health.STRONG_BONUS; stats.hunger_max += 10; stats.hydration_max += 10
+	if origin == "strong":
+		stats.hp += Health.STRONG_BONUS; stats.hp_max += Health.STRONG_BONUS
+		if tutorial: stats.hunger_max += 10; stats.hydration_max += 10
 	if origin == "restless": stats.base_ap += 1; stats.battle_ap += 1
-	if origin == "hoarder": stats.limit += 1
+	if origin == "hoarder": stats.limit += 3
 	if not tutorial: Rules.profile_modifiers(self, stats)
 	state = {"difficulty":difficulty, "mode":mode, "origin":origin, "seed":int(seed), "rng":R.create(int(seed)), "phase":"navigation", "voyage":1, "length":0, "ap":0, "player":stats, "hand":[], "coins":0, "cells":[], "next_id":1, "node":{}, "candidates":[], "pool":[], "visits":{}, "story_step":"", "result_text":"", "battle":{}, "completed":0, "boss_defeated":false, "awarded":false, "flags":{}, "logs":[], "buffs":[], "xp":0, "level":1}
+	Origins.initialize(state)
 	if tutorial: state.tutorial=Tutorial.new_state()
 	state.shop = {}; state.encounter = {}
 	EnvironmentRules.initialize(state)
@@ -187,6 +186,7 @@ func new_game(args: Dictionary) -> bool:
 	if tutorial:
 		give("food",1,false,"tutorial"); give("water",1,false,"tutorial")
 	if not tutorial and int(profile.purchases.get("inheritance",0)) > 0: give("coin",3)
+	if Origins.active(state,"merchant"): give("coin",3,false,"origin")
 	if not tutorial and int(profile.pending.get("supply",0)) > 0: give("filter",1,false,"profile"); profile.pending.supply -= 1
 	EnvironmentRules.start_round(self)
 	Rules.candidates(self)
@@ -224,8 +224,7 @@ func finish(result: String) -> void:
 	state.erase("settlement")
 	state.phase = "finished"; state.result = result; panel = ""
 	if not state.awarded:
-		profile.points += state.completed
-		if result not in profile.endings: profile.endings.append(result)
+		Rewards.grant(profile, state)
 		state.awarded = true
 	log_text("本局结束：%s，结算涌潮点%d。" % [result,state.completed])
 
@@ -264,19 +263,24 @@ func view() -> Dictionary:
 	result.last_settlement=last_settlement.duplicate(true)
 	result.tech_tree=preload("res://core/tech_rules.gd").projection(catalog,profile,active())
 	result.erase("rng"); result.erase("pool"); result.erase("tutorial")
+	result.erase("origin_state")
 	var lesson: Dictionary = Tutorial.hint(state) if state.get("mode","") == "tutorial" else {}
 	result.tutorial_hint=lesson
 	result.tutorial_operation=str(lesson.get("operation","")) if not lesson.is_empty() else ""
 	result.tutorial_reason=str(lesson.get("text","")) if not lesson.is_empty() else ""
 	if not state.is_empty():
 		result.capacity = I.capacity(state)
+		result.origin_status=Origins.status(state)
 		result.player.limit = I.hand_limit(state,catalog)
 		result.can_base = base_action()
 		result.expansion_cost = Rules.expansion_cost(state)
 		result.survival_settlement = {"pending":state.flags.has("voyage_survival_cost"),"food_water_cost":int(state.flags.get("voyage_survival_cost",0))}
 		if int(state.flags.get("rested_until",0)) >= state.voyage:
 			result.player.base_ap += 1
-		for card in result.hand: card.definition = catalog.entry("cards",card.id)
+		for card in result.hand:
+			card.definition = catalog.entry("cards",card.id)
+			if phase()=="battle" and card.definition.get("kind","") in ["survival","combat","negative"]:
+				card.ap_quote=Battle.card_payment(self,card,card.definition)
 		if state.coins > 0:
 			result.hand.append({"uid":"coins", "id":"coin", "quantity":state.coins, "temporary":false, "source":"currency", "definition":catalog.entry("cards","coin")})
 		result.boost_cards=[]
@@ -285,7 +289,9 @@ func view() -> Dictionary:
 			for boost in cell.equipment.get("boost_cards",[]): result.boost_cards.append({"uid":boost.uid,"id":boost.id,"definition":catalog.entry("boosts",boost.id),"cell":cell.id,"expires_voyage":boost.get("expires_voyage",0),"temporary":boost.has("expires_voyage")})
 		result.battle_actions=[]
 		if phase()=="battle":
-			for action in ["attack","block"]: result.battle_actions.append({"action":action,"ap":1,"enabled":int(state.battle.get("ap",0))>0})
+			for action in ["attack","block"]:
+				var payment: Dictionary=Battle.action_payment(self)
+				result.battle_actions.append({"action":action,"ap":payment.ordinary_ap,"origin_ap":payment.origin_ap,"enabled":payment.allowed})
 			result.battle_preview=Battle.preview(self,{"action":"attack"})
 		if phase() == "story" and state.story_step == "choice":
 			for option in result.node.get("options",[]): option.disabled_reason = Rules.option_reason(self,option)

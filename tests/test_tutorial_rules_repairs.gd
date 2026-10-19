@@ -16,7 +16,7 @@ func discard_rest(s) -> void:
 		if s.phase() != "discard": return
 		var discarded := false
 		for card in s.state.hand:
-			if card.id not in ["coin","pollution","punch"]:
+			if card.id not in ["coin","corpse","pollution","punch"]:
 				discarded = s.dispatch("discard",{"uid":card.uid})
 				break
 		if not discarded: break
@@ -79,8 +79,10 @@ func _init() -> void:
 	step(s,"play",{"uid":spear_uid})
 	check(s.state.battle.hp == 3 and s.state.battle.ap == battle_ap-1,"spear does three damage for one battle AP")
 	check(not s.state.hand.any(func(c): return c.uid == spear_uid),"spear is removed from the shared hand")
+	step(s,"battle_action",{"action":"attack","resource_uid":uid(s,"iron")})
+	step(s,"battle_action",{"action":"block","resource_uid":uid(s,"wood")})
 	step(s,"battle_end")
-	check(s.state.player.hp == hp_before-1 and T.damaged_cells(s.state).size() == 1,"enemy counterattack damages HP and an outer cell")
+	check(s.state.player.hp == hp_before and T.damaged_cells(s.state).size() == 1,"enchanted shield absorbs HP damage while an outer cell is damaged")
 	step(s,"play",{"uid":uid(s,"spear")})
 	step(s,"advance"); step(s,"end_voyage")
 	check(s.phase() == "discard","battle rewards require discarding")
@@ -94,16 +96,17 @@ func _init() -> void:
 	check(fan.usage(coin).contains("保留"),"hand explains protected currency")
 	check(fan.action_name(coin).contains("保留"),"currency action is labelled retained")
 	fan.free()
-	step(s,"discard",{"uid":uid(s,"corpse")})
+	check(not s.dispatch("discard",{"uid":uid(s,"corpse")}),"corpse is retained for sale lesson")
 	discard_rest(s)
 	step(s,"play",{"uid":uid(s,"water")}); step(s,"play",{"uid":uid(s,"food")})
 	step(s,"voyage",{"id":s.state.candidates[0].visit_id})
 	step(s,"repair_cell",{"cell":T.damaged_cells(s.state)[0]})
 	step(s,"enter"); step(s,"advance"); step(s,"shop_enter")
 	step(s,"buy",{"id":"wood","payment":"coin"})
+	step(s,"sell",{"uid":uid(s,"corpse")})
 	step(s,"shop_leave"); step(s,"advance"); step(s,"end_voyage")
 	discard_rest(s)
-	check(s.phase() == "finished" and s.state.result == "tutorial","tutorial completes after discarding corpse")
+	check(s.phase() == "finished" and s.state.result == "tutorial","tutorial completes after selling corpse")
 	check(not s.state.logs.any(func(line): return str(line).contains("固定") or str(line).contains("无随机")),"tutorial logs do not explain scripted random outcomes")
 	print("TUTORIAL REPAIRS: %s" % ("PASS" if failures == 0 else "FAIL"))
 	quit(failures)

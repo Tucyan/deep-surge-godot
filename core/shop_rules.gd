@@ -26,6 +26,7 @@ static func enter(ctx) -> bool:
 	var purchased := {}
 	for id in stock: purchased[id]=0
 	ctx.state.shop={"visit_id":node.visit_id,"stock":stock,"purchased":purchased}
+	ctx.Origins.enter_shop(ctx.state,str(node.visit_id))
 	return true
 
 static func view(ctx) -> Dictionary:
@@ -52,10 +53,11 @@ static func _quote(ctx, id: String) -> Dictionary:
 			if stock_id in I.RESOURCES: resource_count+=int(ctx.state.shop.purchased.get(stock_id,0))
 	var base: int=(1 << resource_count) if resource else int(item.price)
 	var price: int=base-1 if base>1 and int(ctx.profile.purchases.get("coupon",0))>0 else base
-	var corpse: int=ceili(float(price)/2.0)
+	var discount: int=ctx.Origins.shop_discount(ctx.state) if not resource else 0
+	price=maxi(1,price-discount)
 	var limit: int=2 if resource else 1
 	var definition: Dictionary=ctx.catalog.entry("cards",id)
-	return {"id":id,"card":id,"kind":"resource" if resource else "equipment","name":definition.name,"description":definition.get("description",""),"purchased":count,"limit":limit,"remaining":limit-count,"base_price":base,"price":price,"corpse_price":corpse,"can_coin":count<limit and I.count(ctx.state,"coin")>=price,"can_corpse":count<limit and I.count(ctx.state,"corpse")>=corpse}
+	return {"id":id,"card":id,"kind":"resource" if resource else "equipment","name":definition.name,"description":definition.get("description",""),"purchased":count,"limit":limit,"remaining":limit-count,"base_price":base,"price":price,"origin_discount":discount,"can_coin":count<limit and I.count(ctx.state,"coin")>=price}
 
 static func _active(ctx) -> bool:
 	return ctx.phase()=="interaction" and ctx.state.get("node",{}).get("kind","")=="shop" and not ctx.state.get("shop",{}).is_empty() and ctx.state.shop.visit_id==ctx.state.node.get("visit_id","")
@@ -67,12 +69,12 @@ static func buy(ctx, args: Dictionary) -> bool:
 	var row: Dictionary=_quote(ctx,id)
 	if row.remaining<=0: return ctx.fail("商品已售罄")
 	var payment = args.get("payment","coin")
-	if payment not in ["coin","corpse"]: return ctx.fail("不支持的支付方式")
-	var amount: int=row.price if payment=="coin" else row.corpse_price
-	if not I.consume(ctx.state,payment,amount,"shop"): return ctx.fail("支付物资不足")
+	if payment!="coin": return ctx.fail("商店仅支持贝币支付")
+	var amount: int=row.price
+	if not I.consume(ctx.state,"coin",amount,"shop"): return ctx.fail("贝币不足")
 	ctx.state.shop.purchased[id]+=1
 	ctx.give(id,1,false,"shop")
-	ctx.log_text("购买%s，支付%d%s。" % [row.name,amount,"贝币" if payment=="coin" else "尸体"])
+	ctx.log_text("购买%s，支付%d贝币。" % [row.name,amount])
 	return true
 
 static func _sellable(ctx, card: Dictionary) -> bool:
@@ -83,7 +85,7 @@ static func _sellable(ctx, card: Dictionary) -> bool:
 	return true
 
 static func _sell_price(id: String) -> int:
-	return 2 if id=="corpse" else 1
+	return 3 if id=="corpse" else 1
 
 static func sell(ctx, args: Dictionary) -> bool:
 	if not _active(ctx): return ctx.fail("当前不在商店")

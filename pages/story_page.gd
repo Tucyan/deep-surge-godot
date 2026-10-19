@@ -5,6 +5,7 @@ const Player = preload("res://story/story_player.gd")
 const REFERENCE := Vector2(1600, 900)
 var player = Player.new()
 var composition: Control
+var dialogue_box_rect: TextureRect
 var body: Label
 var speaker: Label
 var description: Label
@@ -20,6 +21,66 @@ var log_text: Label
 var log_scroll: ScrollContainer
 var _elapsed := 0.0
 var characters_per_second := 32.0
+var _pending_speaker := ""
+
+const KNOWN_CHARACTERS := [
+	"塞琳", "主角", "涅德", "柯尔", "老木匠柯尔", "芮安", "哈克",
+	"水手甲", "水手乙", "水手 A", "水手", "阿棠", "沈岚", "？？？"
+]
+
+static func parse_dialogue_node(raw_text: String, declared_speaker: String = "") -> Dictionary:
+	var text := raw_text.strip_edges()
+	var spk := declared_speaker.strip_edges()
+	var was_explicit_narration := false
+	if spk == "旁白" or spk.to_lower() == "narrator":
+		spk = ""
+		was_explicit_narration = true
+
+	# Standalone narration line
+	if text == "旁白：" or text == "旁白:" or text == "旁白":
+		return {"speaker": "", "text": "", "is_empty": true, "pending_speaker": ""}
+
+	# Leading 旁白：or 旁白:
+	if text.begins_with("旁白：") or text.begins_with("旁白:"):
+		text = text.substr(3).strip_edges()
+		return {"speaker": spk, "text": text, "is_empty": text.is_empty(), "pending_speaker": ""}
+
+	# If explicitly declared as narration, don't parse arbitrary colons into speakers
+	if was_explicit_narration:
+		return {"speaker": "", "text": text, "is_empty": text.is_empty(), "pending_speaker": ""}
+
+	# Check for speaker prefix
+	var colon_pos := -1
+	for sep in ["：", ":"]:
+		var p := text.find(sep)
+		if p != -1 and (colon_pos == -1 or p < colon_pos):
+			colon_pos = p
+
+	if colon_pos > 0 and colon_pos <= 10:
+		var prefix := text.substr(0, colon_pos).strip_edges()
+		var rest := text.substr(colon_pos + 1).strip_edges()
+		if prefix == "旁白":
+			return {"speaker": "", "text": rest, "is_empty": rest.is_empty(), "pending_speaker": ""}
+		elif prefix in KNOWN_CHARACTERS or (!spk.is_empty() and prefix == spk) or (rest.begins_with("“") or rest.begins_with("\"") or rest.begins_with("（") or rest.begins_with("(")):
+			var non_speaker_starts := ["【", "[", "·", "（", "(", "💀", ">", "\"", "“", "'"]
+			var has_bad_start := false
+			for bad in non_speaker_starts:
+				if prefix.begins_with(bad):
+					has_bad_start = true
+					break
+			if not has_bad_start:
+				if rest.is_empty():
+					return {"speaker": prefix, "text": "", "is_empty": true, "pending_speaker": prefix}
+				else:
+					return {"speaker": prefix, "text": rest, "is_empty": false, "pending_speaker": ""}
+
+	if not spk.is_empty():
+		for sep in ["：", ":"]:
+			if text.begins_with(spk + sep):
+				text = text.substr(spk.length() + 1).strip_edges()
+				break
+
+	return {"speaker": spk, "text": text, "is_empty": text.is_empty(), "pending_speaker": ""}
 
 func _ready() -> void:
 	var plain_theme := Theme.new()
@@ -29,57 +90,100 @@ func _ready() -> void:
 	theme = plain_theme
 	clip_contents = true
 	var background := ColorRect.new()
-	background.color = Color("202020")
+	background.color = Color("181a1d")
 	background.mouse_filter = MOUSE_FILTER_IGNORE
 	add_child(background)
 	background.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
+
 	composition = Control.new()
 	composition.size = REFERENCE
 	composition.mouse_filter = MOUSE_FILTER_IGNORE
 	add_child(composition)
-	title_label = _label(composition, "", Vector2(82, 54), Vector2(940, 60), 35)
-	_label(composition, "DEEP SURGE  /  航海叙事", Vector2(86, 110), Vector2(680, 40), 18, Color("eeeeee"))
+
+	title_label = _label(composition, "", Vector2(82, 50), Vector2(940, 60), 35)
+	_label(composition, "DEEP SURGE  /  航海叙事", Vector2(86, 106), Vector2(680, 40), 18, Color("cccccc"))
+
+	# Top toolbar
+	log_button = _button(composition, "LOG  航海笔记", Vector2(1040, 42), Vector2(240, 72))
+	for state in ["normal", "hover", "pressed", "focus", "disabled"]:
+		log_button.add_theme_stylebox_override(state, StyleBoxEmpty.new())
+	log_button.tooltip_text = "查看已读剧情与选项记录"
+	log_button.pressed.connect(open_log)
+
 	skip_button = _button(composition, "SKIP  ▷▷", Vector2(1320, 42), Vector2(220, 72))
 	for state in ["normal", "hover", "pressed", "focus", "disabled"]:
 		skip_button.add_theme_stylebox_override(state, StyleBoxEmpty.new())
 	skip_button.tooltip_text = "跳过对白，遇到选项停止"
 	skip_button.pressed.connect(skip)
+
 	var desc_box := Panel.new()
 	desc_box.position = Vector2(94, 420)
 	desc_box.size = Vector2(720, 116)
 	desc_box.mouse_filter = MOUSE_FILTER_IGNORE
 	var style := StyleBoxFlat.new()
-	style.bg_color = Color("303030")
-	style.border_color = Color("707070")
+	style.bg_color = Color("232b32")
+	style.border_color = Color("5c6b75")
 	style.set_border_width_all(1)
 	desc_box.add_theme_stylebox_override("panel", style)
 	composition.add_child(desc_box)
 	description = _label(desc_box, "", Vector2(26, 18), Vector2(654, 84), 23, Color("eeeeee"))
+
 	choice_root = Control.new()
 	choice_root.mouse_filter = MOUSE_FILTER_IGNORE
 	composition.add_child(choice_root)
-	_panel(composition, Vector2(82, 630), Vector2(1452, 196))
-	var name_tag := Panel.new()
-	name_tag.position = Vector2(110, 642)
-	name_tag.size = Vector2(370, 48)
-	name_tag.mouse_filter = MOUSE_FILTER_IGNORE
-	var name_style := StyleBoxFlat.new()
-	name_style.bg_color = Color("303030")
-	name_style.border_color = Color("707070")
-	name_style.set_border_width_all(0)
-	name_tag.add_theme_stylebox_override("panel", name_style)
-	composition.add_child(name_tag)
-	speaker = _label(name_tag, "", Vector2(16, 5), Vector2(346, 40), 27, Color("eeeeee"))
-	body = _label(composition, "", Vector2(110, 706), Vector2(980, 100), 25)
-	log_button = _button(composition, "LOG  航海笔记", Vector2(92, 832), Vector2(286, 58))
-	log_button.pressed.connect(open_log)
-	next_button = _button(composition, "继续  ▷", Vector2(1270, 832), Vector2(232, 58))
+
+	# Dialogue box texture asset
+	dialogue_box_rect = TextureRect.new()
+	dialogue_box_rect.name = "DialogueBoxImage"
+	dialogue_box_rect.texture = preload("res://assets/story_ui/dialogue_box.png")
+	dialogue_box_rect.position = Vector2(67, 615)
+	dialogue_box_rect.size = Vector2(1466, 256)
+	dialogue_box_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	dialogue_box_rect.stretch_mode = TextureRect.STRETCH_SCALE
+	dialogue_box_rect.mouse_filter = MOUSE_FILTER_STOP
+	dialogue_box_rect.gui_input.connect(_on_box_gui_input)
+	composition.add_child(dialogue_box_rect)
+
+	# Speaker nickname label inside the top-left dark ornamental pill
+	speaker = _label(composition, "", Vector2(140, 622), Vector2(250, 46), 26, Color("f5f0e6"))
+	speaker.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	speaker.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+
+	# Dialogue body label on the cream parchment
+	body = _label(composition, "", Vector2(150, 700), Vector2(1120, 100), 25, Color("142028"))
+
+	# Next advance button on the lower right of dialogue box
+	next_button = _button(composition, "继续  ▷", Vector2(1280, 786), Vector2(200, 50))
+	var next_style := StyleBoxFlat.new()
+	next_style.bg_color = Color("23313d")
+	next_style.border_color = Color("8c7e68")
+	next_style.set_border_width_all(1)
+	next_style.set_corner_radius_all(6)
+	next_button.add_theme_stylebox_override("normal", next_style)
+	var next_hover := next_style.duplicate()
+	next_hover.bg_color = Color("34495e")
+	next_button.add_theme_stylebox_override("hover", next_hover)
+	var next_pressed := next_style.duplicate()
+	next_pressed.bg_color = Color("1a252f")
+	next_button.add_theme_stylebox_override("pressed", next_pressed)
+	var next_disabled := next_style.duplicate()
+	next_disabled.bg_color = Color("23313d", 0.5)
+	next_disabled.border_color = Color("8c7e68", 0.3)
+	next_button.add_theme_stylebox_override("disabled", next_disabled)
+	next_button.add_theme_color_override("font_color", Color("f0ead6"))
+	next_button.add_theme_color_override("font_hover_color", Color("ffffff"))
+	next_button.add_theme_color_override("font_disabled_color", Color("888888"))
 	next_button.pressed.connect(advance)
+
 	_build_log()
 	player.completed.connect(func(result): story_completed.emit(result.duplicate(true)))
 	resized.connect(_reflow)
 	_reflow()
 	_refresh()
+
+func _on_box_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		advance()
 
 func _label(parent: Node, text: String, pos: Vector2, dimensions: Vector2, font_size: int, color := Color("eeeeee")) -> Label:
 	var label := Label.new()
@@ -103,19 +207,6 @@ func _fit_text(label: Label, maximum: int, minimum: int) -> void:
 		font_size -= 1
 	label.add_theme_font_size_override("font_size", font_size)
 	label.size = bounds
-
-func _panel(parent: Node, pos: Vector2, dimensions: Vector2) -> Panel:
-	var panel := Panel.new()
-	panel.position = pos
-	panel.size = dimensions
-	panel.mouse_filter = MOUSE_FILTER_IGNORE
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color("303030")
-	style.border_color = Color("707070")
-	style.set_border_width_all(1)
-	panel.add_theme_stylebox_override("panel", style)
-	parent.add_child(panel)
-	return panel
 
 func _button(parent: Node, text: String, pos: Vector2, dimensions: Vector2) -> Button:
 	var button := Button.new()
@@ -141,8 +232,8 @@ func _build_log() -> void:
 	sheet.size = Vector2(1080, 630)
 	sheet.mouse_filter = MOUSE_FILTER_IGNORE
 	var paper := StyleBoxFlat.new()
-	paper.bg_color = Color("303030")
-	paper.border_color = Color("707070")
+	paper.bg_color = Color("232b32")
+	paper.border_color = Color("70808c")
 	paper.set_border_width_all(2)
 	sheet.add_theme_stylebox_override("panel", paper)
 	log_overlay.add_child(sheet)
@@ -171,6 +262,7 @@ func _reflow() -> void:
 	composition.position = (size - REFERENCE * fit) * 0.5
 
 func load_story(data: Variant) -> Dictionary:
+	_pending_speaker = ""
 	var result: Dictionary = player.load_story(data)
 	if result.ok and is_node_ready():
 		close_log()
@@ -181,20 +273,48 @@ func _refresh() -> void:
 	var view: Dictionary = player.get_view()
 	title_label.text = view.title
 	_fit_text(title_label, 35, 23)
+
 	var node: Dictionary = view.node
-	speaker.text = node.get("speaker", "旁白")
-	_fit_text(speaker, 27, 14)
+	var declared: String = node.get("speaker", "")
+	var raw_text: String = node.get("text", "")
+	var parsed: Dictionary = parse_dialogue_node(raw_text, declared)
+	if parsed.speaker.is_empty() and not _pending_speaker.is_empty():
+		parsed.speaker = _pending_speaker
+		_pending_speaker = ""
+
+	# Auto-advance past empty / standalone header nodes so player never sees blank screens
+	while parsed.is_empty and view.status == "playing" and view.node.get("choices", []).is_empty():
+		if not parsed.pending_speaker.is_empty():
+			_pending_speaker = parsed.pending_speaker
+		var step: Dictionary = player.advance()
+		if not step.get("ok", false):
+			break
+		view = player.get_view()
+		node = view.node
+		declared = node.get("speaker", "")
+		raw_text = node.get("text", "")
+		parsed = parse_dialogue_node(raw_text, declared)
+		if parsed.speaker.is_empty() and not _pending_speaker.is_empty():
+			parsed.speaker = _pending_speaker
+			_pending_speaker = ""
+
+	speaker.text = parsed.speaker
+	_fit_text(speaker, 26, 14)
+
 	description.text = node.get("description", "")
 	_fit_text(description, 23, 17)
 	description.get_parent().visible = not description.text.is_empty()
-	body.text = node.get("text", "")
+
+	body.text = parsed.text
 	_fit_text(body, 25, 18)
 	body.visible_characters = 0
 	_elapsed = 0.0
+
 	for button in choice_buttons:
 		button.get_parent().remove_child(button)
 		button.queue_free()
 	choice_buttons.clear()
+
 	var options: Array = node.get("choices", [])
 	for i in range(options.size()):
 		var choice: Dictionary = options[i]
@@ -209,6 +329,7 @@ func _refresh() -> void:
 		button.tooltip_text = str(choice.get("disabled_reason", ""))
 		button.pressed.connect(choose.bind(choice.id))
 		choice_buttons.append(button)
+
 	next_button.disabled = view.status != "playing" or not options.is_empty()
 	skip_button.disabled = view.status != "playing"
 	log_button.disabled = view.log_count == 0
@@ -261,9 +382,23 @@ func close_log() -> void:
 func _refresh_log() -> void:
 	var rows: Array = player.get_log()
 	var texts: PackedStringArray = []
+	var prev_spk := ""
 	for row in rows:
-		var line: String = "【" + row.speaker + "】\n" + row.description + "\n" + row.text
-		if not row.choice_text.is_empty(): line += "\n→ " + row.choice_text
+		var parsed: Dictionary = parse_dialogue_node(row.get("text", ""), row.get("speaker", ""))
+		if parsed.is_empty:
+			if not parsed.pending_speaker.is_empty():
+				prev_spk = parsed.pending_speaker
+			continue
+		var who: String = parsed.speaker
+		if who.is_empty() and not prev_spk.is_empty():
+			who = prev_spk
+			prev_spk = ""
+		var tag: String = "【" + (who if not who.is_empty() else "旁白") + "】"
+		var desc: String = str(row.get("description", ""))
+		var line: String = tag + "\n" + (desc + "\n" if not desc.is_empty() else "") + parsed.text
+		var choice_str: String = str(row.get("choice_text", ""))
+		if not choice_str.is_empty():
+			line += "\n→ " + choice_str
 		texts.append(line)
 	log_text.text = "\n\n".join(texts)
 

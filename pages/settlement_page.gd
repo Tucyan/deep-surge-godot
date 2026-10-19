@@ -280,7 +280,7 @@ func _origin() -> String:
 	var id := str(report.get("origin",""))
 	var origins = context.get("origins",{})
 	if origins is Dictionary and origins.get(id,{}) is Dictionary and origins.get(id,{}).get("name",null) is String: return origins[id].name
-	return {"strong":"强壮之人","fool":"愚者","restless":"多动症","hoarder":"囤积癖","zealot":"战斗狂热","skeptic":"无魔之人"}.get(id,"未知出身")
+	return {"strong":"强壮之人","fool":"愚者","restless":"行动派","hoarder":"囤积癖","zealot":"战斗狂","skeptic":"无魔之人","engineer":"设备匠","merchant":"海上掮客","scavenger":"拾荒者"}.get(id,"未知出身")
 func _mode() -> String: return {"challenge":"挑战模式","story":"剧情模式","tutorial":"新手教程"}.get(str(report.get("mode","")),_value(report,"mode"))
 func _outcome() -> String:
 	if report.get("outcome_name",null) is String: return report.outcome_name

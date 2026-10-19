@@ -14,7 +14,7 @@ func _init() -> void:
 
 func reset() -> void:
 	error = ""
-	data = {"version":VERSION,"tutorial_done":false,"cleared":{},"last_difficulty":""}
+	data = {"version":VERSION,"tutorial_done":false,"tutorial_prompt_handled":false,"cleared":{},"last_difficulty":""}
 
 func exists() -> bool:
 	return FileAccess.file_exists(path)
@@ -29,6 +29,7 @@ func read_meta() -> void:
 	var raw: Dictionary = json.data
 	if raw.get("version") != VERSION: return
 	data.tutorial_done = raw.get("tutorial_done",false) == true
+	data.tutorial_prompt_handled = raw.get("tutorial_prompt_handled",false) == true
 	var cleared := {}
 	if raw.get("cleared") is Dictionary:
 		for id in CHALLENGE_IDS:
@@ -72,7 +73,7 @@ func unlock_requirement(id: String) -> String:
 func last_difficulty() -> String:
 	var last: String = str(data.get("last_difficulty",""))
 	if last != "" and unlocked(last): return last
-	if not tutorial_done() and unlocked("tutorial"): return "tutorial"
+	if not tutorial_done() and not data.get("tutorial_prompt_handled",false) and unlocked("tutorial"): return "tutorial"
 	return "standard"
 
 ## Returns the tiers that this clear newly opened, so the UI can name them once.
@@ -97,4 +98,4 @@ func snapshot() -> Dictionary:
 	var unlocked_ids: Array = []
 	for id in ALL_IDS:
 		if unlocked(id): unlocked_ids.append(id)
-	return {"tutorial_done":tutorial_done(),"cleared":data.get("cleared",{}).duplicate(true),"last_difficulty":last_difficulty(),"unlocked":unlocked_ids,"error":error}
+	return {"tutorial_done":tutorial_done(),"tutorial_prompt_handled":data.get("tutorial_prompt_handled",false),"cleared":data.get("cleared",{}).duplicate(true),"last_difficulty":last_difficulty(),"unlocked":unlocked_ids,"error":error}

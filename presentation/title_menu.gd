@@ -13,6 +13,7 @@ var light: Array[Texture2D] = []
 var layout_debug: Control
 var selected := 0
 var _tweens: Dictionary = {}
+var building:=false
 func create_background() -> void:
 	clip_contents=true
 	var fill:=ColorRect.new(); fill.name="TitleBlackFill"; fill.color=Color.BLACK
@@ -28,6 +29,7 @@ func create_background() -> void:
 	add_child(background); background.play()
 	resized.connect(_reflow); _reflow()
 func create(view: Dictionary, with_background: bool = true) -> void:
+	building=true
 	clip_contents=true
 	if with_background:
 		create_background()
@@ -83,10 +85,14 @@ func create(view: Dictionary, with_background: bool = true) -> void:
 		b.focus_entered.connect(_hover.bind(i,true)); b.focus_exited.connect(_hover.bind(i,false))
 		b.pressed.connect(func(): menu_action.emit(ACTIONS[i]))
 		composition.add_child(b); buttons.append(b)
+		# Transition scheduling only: keep the same art/mask work, let the loading
+		# layer render between buttons instead of covering one long frozen frame.
+		if view.get("loading_transition",false): await get_tree().process_frame
 	if view.active: selected=1
 	_update_highlight()
 	if not resized.is_connected(_reflow): resized.connect(_reflow)
 	_reflow()
+	building=false
 func _reflow() -> void:
 	if size.x<1 or size.y<1:return
 	if composition!=null:

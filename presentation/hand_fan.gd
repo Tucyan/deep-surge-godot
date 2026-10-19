@@ -75,7 +75,7 @@ func create(assets: RefCounted, entries: Array, view: Dictionary) -> void:
 				"kind": "combat",
 				"cost": 1,
 				"damage": 1,
-				"description": "消耗 1 AP。基础造成 1 点伤害。可与材料牌组合出招。"
+				"description": "消耗 1 AP。基础造成 1 点伤害。可使用资源牌附魔，打出后消耗资源。"
 			}
 		}
 		var block_card: Dictionary = {
@@ -93,7 +93,7 @@ func create(assets: RefCounted, entries: Array, view: Dictionary) -> void:
 				"kind": "combat",
 				"cost": 1,
 				"damage": 0,
-				"description": "消耗 1 AP。基础获得 1 点护盾。可与材料牌组合出招。"
+				"description": "消耗 1 AP。基础获得 1 点护盾。可使用资源牌附魔，打出后消耗资源。"
 			}
 		}
 		cards.append(attack_card)
@@ -114,7 +114,9 @@ func create(assets: RefCounted, entries: Array, view: Dictionary) -> void:
 		var tile := ItemCard.new(); add_child(tile)
 		tile.z_index = 2
 		var disabled: bool = context.phase == "discard" and (card.id in ["punch","pollution"] or tutorial_currency(card))
-		if context.phase == "battle": disabled = card.definition.cost > context.battle.ap
+		if context.phase == "battle":
+			var quote: Dictionary=combat_quote(card)
+			disabled=not bool(quote.get("allowed",quote.get("enabled",card.definition.cost<=context.battle.ap)))
 		tile.create(assets,card,action_name(card),func():
 			if mobile: inspected.emit(card)
 			else: activated.emit(card),120,184,disabled)
@@ -124,7 +126,7 @@ func create(assets: RefCounted, entries: Array, view: Dictionary) -> void:
 		elif card.uid == "virtual_action_block": button.name = "BattleBlock"
 		elif card.definition.kind == "resource": button.name = "BattleFanResource_" + str(card.uid)
 		button.tooltip_text = ""; buttons.append(button)
-		button.focus_entered.connect(func(): focus_card(i))
+		button.focus_entered.connect(func(): focus_card(tiles.find(tile)))
 		tiles.append(tile)
 	tip = PanelContainer.new(); tip.mouse_filter = MOUSE_FILTER_IGNORE; tip.z_index = 100
 	var style := StyleBoxFlat.new(); style.bg_color = Color(0.025,0.065,0.09,0.97); style.border_color = W.GOLD; style.set_border_width_all(1)
@@ -179,9 +181,11 @@ func ignore_mouse(node: Control) -> void:
 	for child in node.get_children():
 		if child is Control: ignore_mouse(child)
 func tutorial_currency(card: Dictionary) -> bool:
-	return context.get("mode","") == "tutorial" and context.get("phase","") == "discard" and card.id == "coin"
+	return context.get("mode","") == "tutorial" and context.get("phase","") == "discard" and (card.id == "coin" or card.id == "corpse" and int(context.get("voyage",0)) == 2)
+func tutorial_trade_reason(card: Dictionary) -> String:
+	return "请保留尸体用于接下来的出售教学，选择其他可弃手牌。" if card.id == "corpse" else "请保留贝币用于接下来的交易，选择其他可弃手牌。"
 func action_name(card: Dictionary) -> String:
-	if tutorial_currency(card): return "保留 · 贝币"
+	if tutorial_currency(card): return "保留 · " + ("尸体" if card.id == "corpse" else "贝币")
 	if card.get("is_fixed_action", false): return "选择 · "+card.definition.name
 	if card.id == "coin": return "弃置全部 · 贝币" if context.phase == "discard" else "查看 · 贝币"
 	if context.phase == "discard": return "弃置 · "+card.definition.name
@@ -190,26 +194,36 @@ func action_name(card: Dictionary) -> String:
 	return "查看 · "+card.definition.name
 func usage(card: Dictionary) -> String:
 	if not mobile: return desktop_usage(card)
-	if tutorial_currency(card): return "请保留贝币用于接下来的交易，选择其他可弃手牌。"
+	if tutorial_currency(card): return tutorial_trade_reason(card)
 	if context.phase == "discard":
 		return "此牌不能主动弃置。" if card.id in ["punch","pollution"] else "按住0.05秒后向上滑出手牌区松开，弃置此牌；滑回取消。"
 	if context.phase == "battle":
-		if card.definition.kind == "resource": return "轻点选择材料，再拖出攻击或防御卡确认组合。"
+		if card.definition.kind == "resource": return "轻点资源牌，再拖出攻击或防御操作牌，打出附魔；打出后消耗资源。"
 		return "按住0.05秒后向上滑出手牌区松开，确认出牌；滑回取消。AP不足或无效组合不会消耗。"
 	if context.can_base and card.definition.kind == "survival": return "按住0.05秒后向上滑出手牌区松开使用；滑回取消。"
 	if card.definition.kind == "equipment": return "按住0.05秒后拖到木筏完好空格安装，或同类1级设备上升级；无效投放不消耗。"
 	if card.id in ["wood","corpse"] and context.can_base: return "按住0.05秒后拖到已安装的灯上松开投入燃料；无效投放不消耗。"
 	return desktop_usage(card).replace("点击", "轻点")
 
+func combat_quote(card: Dictionary) -> Dictionary:
+	if card.get("is_fixed_action",false) and not context.get("battle_actions",[]).is_empty(): return context.battle_actions[0]
+	return card.get("ap_quote",{})
+
 func desktop_usage(card: Dictionary) -> String:
-	if tutorial_currency(card): return "请保留贝币用于接下来的交易，选择其他可弃手牌。"
-	if context.phase == "battle" and card.definition.kind == "resource": return "选择该资源后，再选攻击或格挡；确认前不会消耗。"
+	if tutorial_currency(card): return tutorial_trade_reason(card)
+	if context.phase == "battle" and card.definition.kind == "resource": return "选择资源牌，再双击攻击或防御操作牌打出附魔；选择和预览不消耗，打出后消耗资源。"
 	if card.id in ["wood","corpse"] and context.can_base: return "长按后拖到已安装的灯上松开，投入一份燃料，不消耗 AP；也可用于合成。"
 	if card.id == "coin":
 		return "整理手牌：点击弃置全部 %d 贝币，腾出一张容量。" % card.stack_count if context.phase == "discard" else "在商店选择商品时自动支付贝币；点击查看，全部贝币共占一张容量。"
 	var cost := "消耗 %d AP" % card.definition.cost if card.definition.cost > 0 else "不消耗 AP"
 	if context.phase == "discard": return "整理手牌：点击弃置此牌。" if card.id not in ["punch","pollution"] else "此牌不能主动弃置。"
-	if context.phase == "battle": return ("AP 不足。" if card.definition.cost > context.battle.ap else "点击使用。")+cost
+	if context.phase == "battle":
+		var quote: Dictionary=combat_quote(card)
+		if not quote.is_empty():
+			var payable: bool=bool(quote.get("allowed",quote.get("enabled",false)))
+			var price: String="%d战意" % int(quote.get("origin_ap",0)) if int(quote.get("origin_ap",0))>0 else "%d AP" % int(quote.get("ordinary_ap",quote.get("ap",0)))
+			return ("点击使用。" if payable else "AP不足。")+"消耗"+price
+		return ("AP 不足。" if card.definition.cost > context.battle.ap else "点击使用。")+cost
 	match card.definition.kind:
 		"survival": return ("点击使用。" if context.can_base else "抵达后的准备或收尾阶段可以使用。")+cost
 		"equipment": return "长按拖到木筏空格安装，或拖到同类1级设备合并升级；双击自动安装。安装不消耗 AP，升级消耗 1 AP。"
@@ -423,10 +437,31 @@ func _input(event: InputEvent) -> void:
 			var max_dest := cards.size() - 1
 			if context.get("phase","") == "battle": max_dest = maxi(0, cards.size() - 3)
 			if destination!=index and destination>=0 and destination <= max_dest:
-				hand_layout.move_group(cards,index,destination); reordered.emit()
+				move_card_group(index,destination)
 		elif (hit_card(release_point)==index or (release_point.distance_to(press_origin)<=10 and get_viewport_rect().has_point(get_global_transform()*release_point))) and not buttons[index].disabled:
 			if mobile: inspected.emit(held_card)
 			else: activated.emit(held_card)
+
+## Reuse the controls and their current animation positions when sorting. Rebuilding
+## the HUD here used to block the release frame and recreate every card subtree.
+func move_card_group(from: int, to: int) -> void:
+	var sortable: Array=cards.filter(func(c): return not c.get("is_fixed_action",false))
+	hand_layout.move_group(sortable,from,to)
+	for entries in [cards,tiles,buttons,stack_bases]:
+		var moved=entries.pop_at(from)
+		entries.insert(to,moved)
+	# Equal z layers draw in sibling order; keep the hit test and stack painter
+	# order consistent with the new slots, leaving the tooltip above the cards.
+	var sibling := border.get_index()+1
+	for i in range(cards.size()):
+		if stack_bases[i]!=null:
+			move_child(stack_bases[i],sibling)
+			sibling+=1
+		move_child(tiles[i],sibling)
+		sibling+=1
+	hovered=to
+	arrange()
+	reordered.emit()
 
 func raft_draggable(card: Dictionary) -> bool:
 	return card.definition.kind=="equipment" or card.id in ["wood","corpse"]

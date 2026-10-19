@@ -1,5 +1,5 @@
 extends "res://pages/flow_base.gd"
-## Selection, payment choice, and pagination are presentation-only.
+## Selection and pagination are presentation-only.
 const PAGE_SIZE := 6
 var selling := false
 var sell_page := 0
@@ -13,8 +13,8 @@ var selected_quote: Dictionary = {}
 func build() -> void:
 	heading(context.get("node",{}).get("name","漂流商店"),"贝币 %d  ·  尸体 %d  ·  资源共用翻倍价，各限2张；设备各限1张" % [context.get("coins",0),amount("corpse")])
 	var tabs := HBoxContainer.new(); add_child(tabs)
-	W.button(tabs,"购买货物",func(): switch_mode(false))
-	W.button(tabs,"出售手牌 · 尸体2贝币",func(): switch_mode(true))
+	var buy_tab := W.button(tabs,"购买货物",func(): switch_mode(false)); buy_tab.name="ShopBuyTab"
+	var sell_tab := W.button(tabs,"出售手牌 · 尸体3贝币",func(): switch_mode(true)); sell_tab.name="ShopSellTab"
 	body=VBoxContainer.new()
 	body.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	body.size_flags_vertical=Control.SIZE_EXPAND_FILL
@@ -46,7 +46,7 @@ func build() -> void:
 	confirmation.confirmed.connect(confirm_selection)
 	confirmation.canceled.connect(cancel_selection)
 	_render()
-	action(self,"离开商店","shop_leave")
+	action(self,"离开商店","shop_leave",{},context.get("mode","")=="tutorial" and context.get("tutorial_operation","")!="leave",context.get("tutorial_reason",""))
 
 func switch_mode(value: bool) -> void:
 	cancel_selection()
@@ -68,19 +68,22 @@ func _render() -> void:
 			var box := _slot(grid)
 			W.text(box,row.name,20,W.GOLD)
 			W.text(box,"%s · %d / %d 剩余" % ["基本资源" if row.kind=="resource" else "设备",row.remaining,row.limit],14,W.MUTED)
-			var label: String="售罄" if row.remaining==0 else "%d 贝币 / %d 尸体" % [row.price,row.corpse_price]
-			W.button(box,label,func():select_buy(row),row.remaining==0)
+			var label: String="售罄" if row.remaining==0 else "%d 贝币" % row.price
+			var tutorial_locked: bool=context.get("mode","")=="tutorial" and (context.get("tutorial_operation","")!="buy" or row.id!="wood")
+			W.button(box,label,func():select_buy(row),row.remaining==0 or tutorial_locked)
 		return
 	var rows: Array=shop.get("sellable",[])
 	var pages: int=maxi(1,ceili(float(rows.size())/PAGE_SIZE))
 	sell_page=clampi(sell_page,0,pages-1)
-	W.text(body,"尸体每张2贝币，其余可售牌每张1贝币；基础材料、已安装设备、临时牌、战斗牌与污染牌不能出售。",15,W.MUTED)
+	W.text(body,"尸体每张3贝币，其余可售牌每张1贝币；基础材料、已安装设备、临时牌、战斗牌与污染牌不能出售。",15,W.MUTED)
 	var grid := W.grid(body,3)
 	for row in rows.slice(sell_page*PAGE_SIZE,(sell_page+1)*PAGE_SIZE):
 		var box := _slot(grid)
 		W.text(box,row.name,20,W.GOLD)
 		W.text(box,"单张 · %d贝币" % int(row.price),16,W.MUTED)
-		W.button(box,"选择出售",func():select_sell(row))
+		var sell_button := W.button(box,"选择出售",func():select_sell(row))
+		sell_button.name="ShopSell_"+str(row.id)
+		if context.get("mode","")=="tutorial" and (context.get("tutorial_operation","")!="sell" or row.id!="corpse"): sell_button.disabled=true
 	if rows.is_empty(): W.text(body,"当前没有可出售的手牌。",20,W.MUTED)
 	var pager := HBoxContainer.new(); body.add_child(pager)
 	W.button(pager,"上一页",func():sell_page-=1;_render(),sell_page==0)
@@ -107,16 +110,14 @@ func select_buy(row: Dictionary) -> void:
 	confirmation.ok_button_text="确认购买"
 	payment.clear(); payment.show()
 	payment.add_item("支付 %d 贝币%s" % [row.price,"" if row.can_coin else "（不足）"])
-	payment.add_item("支付 %d 尸体%s" % [row.corpse_price,"" if row.can_corpse else "（不足）"])
-	payment.select(0 if row.can_coin or not row.can_corpse else 1)
+	payment.select(0)
 	_refresh_payment()
 	confirmation.popup_centered(Vector2i(560,320))
 
 func _refresh_payment() -> void:
 	if pending.get("command","")!="buy": return
-	var use_coin: bool=payment.selected==0
-	pending.args.payment="coin" if use_coin else "corpse"
-	confirmation.get_ok_button().disabled=not bool(selected_quote.can_coin if use_coin else selected_quote.can_corpse)
+	pending.args.payment="coin"
+	confirmation.get_ok_button().disabled=not bool(selected_quote.can_coin)
 
 func select_sell(row: Dictionary) -> void:
 	pending={"command":"sell","args":{"uid":row.uid}}

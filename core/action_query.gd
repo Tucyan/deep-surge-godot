@@ -54,8 +54,14 @@ static func resolve_args(item: Dictionary, arguments: Variant = {}) -> Dictionar
 static func has_effective_action(ctx, free_battle_only: bool = false) -> bool:
 	var items: Array=[]
 	if free_battle_only:
+		if ctx.Origins.combat_ap(ctx.state)>0:
+			add(items,"battle_action",{"action":"attack"})
+			add(items,"battle_action",{"action":"block"})
 		for card in ctx.state.hand:
-			if int(ctx.catalog.entry("cards",card.id).get("cost",0))==0:
+			var definition: Dictionary=ctx.catalog.entry("cards",card.id)
+			if definition.get("kind","") not in ["survival","combat","negative"]: continue
+			var payment: Dictionary=ctx.Battle.card_payment(ctx,card,definition)
+			if payment.ordinary_ap==0:
 				add(items,"play",{"uid":card.uid})
 	else:
 		items=base_candidates(ctx)
@@ -88,6 +94,10 @@ static func base_candidates(ctx) -> Array:
 	for cell in s.cells:
 		if cell.status=="damaged":
 			for material in ["wood","rope"]: add(items,"repair_cell",{"cell":cell.id,"material":material})
+		# Dismantling is allowed on damaged installed devices too; quote() remains
+		# the authority for AP, phase and target validity.
+		if cell.status!="detached" and not cell.equipment.is_empty():
+			add(items,"dismantle",{"cell":cell.id})
 		if cell.status!="intact" or cell.equipment.is_empty(): continue
 		var device: Dictionary=cell.equipment
 		for card in s.hand:
@@ -173,7 +183,7 @@ static func candidates(ctx) -> Array:
 				if ctx.state.node.get("kind","")=="shop": add(items,"shop_enter")
 		"interaction":
 			for id in ctx.state.get("shop",{}).get("stock",[]):
-				for payment in ["coin","corpse"]: add(items,"buy",{"id":id,"payment":payment})
+				add(items,"buy",{"id":id,"payment":"coin"})
 			for card in ctx.Shop.view(ctx).sellable: add(items,"sell",{"uid":card.uid})
 			add(items,"shop_leave")
 		"discard":

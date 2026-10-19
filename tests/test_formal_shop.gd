@@ -54,15 +54,18 @@ func _run() -> void:
 	check(Shop.view(s).stock.filter(func(row):return row.id==device.id)[0].price==device.base_price-1,"优惠券按原报价减一")
 	s.give("corpse",10)
 	var corpse_count: int = s.I.count(s.state,"corpse")
-	check(Shop.buy(s,{"id":device.id,"payment":"corpse"}),"允许尸体支付")
-	check(s.I.count(s.state,"corpse")==corpse_count-ceili(float(device.base_price-1)/2.0),"尸体按优惠后币价除二向上取整")
+	before=s.snapshot()
+	check(not Shop.buy(s,{"id":device.id,"payment":"corpse"}) and s.snapshot()==before,"拒绝尸体购买设备且无副作用")
+	check(Shop.view(s).stock.all(func(row):return not row.has("corpse_price") and not row.has("can_corpse")),"报价只提供贝币付款")
+	check(Shop.buy(s,{"id":device.id,"payment":"coin"}) and s.I.count(s.state,"corpse")==corpse_count,"设备以贝币购买且不消耗尸体")
 	check(Shop.view(s).stock.filter(func(row):return row.id==device.id)[0].remaining==0,"设备限一")
 	check(Shop.view(s).stock.filter(func(row):return row.id==another.id)[0].base_price==4,"设备购买不推进资源阶梯")
 	check(Shop.buy(s,{"id":another.id,"payment":"coin"}),"购买不同资源使用共享第三档")
 	var third: Dictionary=Shop.view(s).stock.filter(func(row):return row.kind=="resource" and row.id!=resource.id and row.id!=another.id)[0]
-	check(third.base_price==8 and third.price==7 and third.corpse_price==4,"优惠券在共享八币原价后减一并换算尸体")
-	corpse_count=s.I.count(s.state,"corpse")
-	check(Shop.buy(s,{"id":third.id,"payment":"corpse"}) and s.I.count(s.state,"corpse")==corpse_count-4,"尸体购买资源也推进全店阶梯")
+	check(third.base_price==8 and third.price==7,"优惠券在共享八币原价后减一")
+	before=s.snapshot()
+	check(not Shop.buy(s,{"id":third.id,"payment":"corpse"}) and s.snapshot()==before,"拒绝尸体购买资源且不推进阶梯")
+	check(Shop.buy(s,{"id":third.id,"payment":"coin"}),"贝币购买资源推进全店阶梯")
 	check(Shop.view(s).stock.filter(func(row):return row.id==another.id)[0].base_price==16,"第四次资源购买后全店原价十六")
 	check(Shop.buy(s,{"id":another.id}),"第五张资源购买")
 	check(Shop.view(s).stock.filter(func(row):return row.id==third.id)[0].base_price==32,"第六张资源原价三十二")
@@ -82,7 +85,7 @@ func _run() -> void:
 	check(Shop.sell(s,{"uid":uid}) and s.state.coins==coins+1 and s.I.count(s.state,"medkit")==wood-1,"按UID单张出售换一币")
 	check(not Shop.sell(s,{"uid":uid}),"重复出售拒绝")
 	var corpse_coins: int=s.state.coins
-	check(corpse_row.price==2 and Shop.sell(s,{"uid":corpse_row.uid}) and s.state.coins==corpse_coins+2,"怪物尸体可出售并获得二币")
+	check(corpse_row.price==3 and Shop.sell(s,{"uid":corpse_row.uid}) and s.state.coins==corpse_coins+3,"怪物尸体可出售并获得三币")
 	for card in s.state.hand:
 		if card.temporary or card.id in ["pollution","arrow"]:
 			before=s.snapshot()
@@ -131,6 +134,7 @@ func _run() -> void:
 		page.command_requested.connect(func(command,args):commands.append({"command":command,"args":args}))
 		before=s.snapshot()
 		page.select_buy(projection.stock[0])
+		check(page.payment.item_count==1 and page.payment.get_item_text(0).contains("贝币"),"购买确认仅提供贝币付款")
 		await process_frame
 		await process_frame
 		check_dialog_bounds(page,"购买")
@@ -142,7 +146,7 @@ func _run() -> void:
 		check(page.body.get_child(0).get_child_count()==9,"购买网格准确九个位置")
 		check(not has_scroll(page),"页面无ScrollContainer")
 		page.select_buy(projection.stock[0]); page.confirm_selection()
-		check(commands.size()==1 and commands[0].command=="buy" and commands[0].args.revision==42,"确认才发购买与捕获revision")
+		check(commands.size()==1 and commands[0].command=="buy" and commands[0].args.payment=="coin" and commands[0].args.revision==42,"确认才发贝币购买与捕获revision")
 		page.select_sell(projection.sellable[0])
 		await process_frame
 		await process_frame

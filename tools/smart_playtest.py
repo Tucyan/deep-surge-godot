@@ -323,8 +323,7 @@ class SmartPlayer:
             stock = shop_data.get("stock", [])
             for equip_id in ("filter", "lamp", "planter", "crossbow", "shieldRack", "spearRack"):
                 if equip_id in stock and equip_id not in devices:
-                    buy_act = (find("buy", lambda a: a["args"].get("id") == equip_id and a["args"].get("payment") == "coin") or
-                               find("buy", lambda a: a["args"].get("id") == equip_id and a["args"].get("payment") == "corpse"))
+                    buy_act = find("buy", lambda a: a["args"].get("id") == equip_id and a["args"].get("payment") == "coin")
                     if buy_act:
                         return buy_act
 
@@ -596,7 +595,7 @@ if __name__ == "__main__":
     parser.add_argument("--difficulty", default="standard", choices=("standard", "hard", "nightmare"))
     parser.add_argument("--seed", type=int, default=22)
     parser.add_argument("--mode", default="challenge", choices=("challenge", "story"))
-    parser.add_argument("--origin", default="strong", choices=("strong", "fool", "restless", "hoarder", "zealot", "skeptic"))
+    parser.add_argument("--origin", default="strong", choices=("strong", "fool", "restless", "hoarder", "zealot", "skeptic", "engineer", "merchant"))
     parser.add_argument("--raft-4x4", action="store_true", default=False, help="Allow raft expansion up to 4x4")
     args = parser.parse_args()
     

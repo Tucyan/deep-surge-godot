@@ -42,14 +42,14 @@ func build() -> void:
 	var action_row:=HBoxContainer.new(); control_panel.add_child(action_row)
 	var attack:=W.button(action_row,"攻击 · 1 AP",func(): choose_action("attack")); attack.name="BattleAttack"
 	var block:=W.button(action_row,"格挡 · 1 AP",func(): choose_action("block")); block.name="BattleBlock"
-	attack.disabled=int(context.battle.get("ap",0))<1; block.disabled=attack.disabled
-	var salvage:=W.button(action_row,"打捞 · 1 AP",func():send("salvage"),attack.disabled)
+	attack.disabled=not session.Battle.action_payment(session).allowed; block.disabled=attack.disabled
+	var salvage:=W.button(action_row,"打捞 · 1 AP",func():send("salvage"),int(context.battle.get("ap",0))<1)
 	salvage.name="SalvageEntry"
 	salvage.tooltip_text=catalog.entry("equipment","fishingNet").description
 	var action_reason:=W.text(control_panel,"基础行动可重复使用，不占手牌。",15,W.MUTED)
 	action_reason.name="BattleActionHelp"
 	var material_row:=HBoxContainer.new(); control_panel.add_child(material_row)
-	W.text(material_row,"组合资源",16,W.GOLD)
+	W.text(material_row,"附魔资源",16,W.GOLD)
 	var selected:=selection()
 	for id in RESOURCES:
 		var found: Array=context.hand.filter(func(card):return card.id==id and not card.temporary)
@@ -82,7 +82,7 @@ func build() -> void:
 			var summary:=W.text(preview_panel,"预览 · 敌方生命 %d · 战斗AP %d · 自身生命 %d\n%s" % [int(battle_after.get("hp",0)),int(battle_after.get("ap",0)),int(player_after.get("hp",0)),preview_effect_summary(battle_after)],16,W.GOLD)
 			summary.name="BattlePreviewSummary"
 		else:
-			W.text(preview_panel,"无法执行：%s" % preview_data.get("error","组合不合法"),17,Color("df968b"))
+			W.text(preview_panel,"无法执行：%s" % preview_data.get("error","附魔不合法"),17,Color("df968b"))
 		var preview_actions:=HBoxContainer.new(); preview_panel.add_child(preview_actions)
 		var confirm:=W.button(preview_actions,"确认行动",func(): confirm_selection())
 		confirm.name="ConfirmBattleAction"; confirm.disabled=not preview_data.get("valid",false)

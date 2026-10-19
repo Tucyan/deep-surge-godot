@@ -1,6 +1,6 @@
 # 结算页面与记录契约
 
-2026-10-14。规则设计见[结算与评分](../../V0.2/结算与评分设计.md)，本文件描述 Godot 实际实现。评分版本 settlement-score-v2、统计版本 run-stats-v1、奖励版本 completed-nodes-v1；权重与评级仍为试测参数。
+2026-10-14。执行依据为 [结算评分](../core/settlement.gd) 和 [运行统计](../core/run_statistics.gd)，本文件描述 Godot 实际实现；原V0.2设计稿未随当前仓库提供。评分版本 settlement-score-v2、统计版本 run-stats-v1、奖励版本 completed-nodes-v1；权重与评级仍为试测参数。
 
 ## 页面
 

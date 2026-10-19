@@ -86,6 +86,7 @@ func observe() -> Dictionary:
 	for option in observation.get("event_options",[]):
 		for field in ["effects","outcomes","next_stage"]: option.erase(field)
 	observation.terminal=terminal()
+	if view.has("origin_status"): observation.origin_status=view.origin_status
 	observation.tech_tree=view.tech_tree.duplicate(true)
 	if _session.phase()=="battle":
 		observation.enemy=_session.Difficulty.enemy(_catalog,_session.state,str(_session.state.battle.id))

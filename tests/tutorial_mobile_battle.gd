@@ -16,7 +16,7 @@ func discard_rest():
 		if app.session.phase()!="discard": return
 		var found:=false
 		for card in app.session.state.hand:
-			if card.id not in ["coin","pollution","punch"]:
+			if card.id not in ["coin","corpse","pollution","punch"]:
 				step("discard",{"uid":card.uid}); found=true; break
 		if not found: break
 	check(app.session.phase()!="discard","discard clears")
@@ -26,9 +26,9 @@ func screen_touch(down: bool, point: Vector2):
 	var event:=InputEventScreenTouch.new(); event.index=0; event.pressed=down
 	event.position=root.get_final_transform()*point
 	Input.parse_input_event(event)
-func play_spear():
+func play_card(id: String = "spear"):
 	var fan=app.find_child("hand_fan",true,false); fan._process(1.0)
-	var index: int=fan.cards.find(fan.cards.filter(func(c):return c.id=="spear")[0])
+	var index: int=fan.cards.find(fan.cards.filter(func(c):return c.id==id)[0])
 	var start: Vector2=fan.tiles[index].global_position+Vector2(40,65)
 	screen_touch(true,start)
 	await create_timer(.07).timeout
@@ -37,6 +37,13 @@ func play_spear():
 	var drag:=InputEventScreenDrag.new(); drag.index=0; drag.position=root.get_final_transform()*finish
 	Input.parse_input_event(drag); await process_frame
 	screen_touch(false,finish); await settle()
+func select_resource(id: String):
+	var fan=app.find_child("hand_fan",true,false); fan._process(1.0)
+	var card: Dictionary=fan.cards.filter(func(c):return c.id==id)[0]
+	var index: int=fan.cards.find(card)
+	var point: Vector2=fan.tiles[index].global_position+Vector2(40,65)
+	screen_touch(true,point); screen_touch(false,point); await settle()
+	check(app.find_child("BattleHUDView",true,false).selected_resource_uid==card.uid,"native tap selects resource: "+id)
 func capture(id: String):
 	await RenderingServer.frame_post_draw
 	check(root.get_texture().get_image().save_png("res://evidence/tutorial-mobile-battle-"+id+".png")==OK,"capture "+id)
@@ -78,22 +85,30 @@ func run():
 	var before: Dictionary=app.session.snapshot()
 	var spear_uid:=uid("spear")
 	var hp_before: int=app.session.state.player.hp
-	await play_spear()
-	check(T.current_step(app.session.state)=="endturn2" and app.session.state.battle.hp==3,"first native drag advances lesson and deals 3")
-	check(app.find_child("BattleHUDView",true,false).preview_summary_label.text.contains("回合"),"preview directs the end-turn lesson")
+	await play_card()
+	check(T.current_step(app.session.state)=="enchant_attack2" and app.session.state.battle.hp==3,"first native drag advances to attack enchantment and deals 3")
+	check(app.find_child("BattleHUDView",true,false).preview_summary_label.text.contains("攻击附魔"),"preview directs attack enchantment")
 	check(app.session.state.battle.ap==2 and not app.session.state.hand.any(func(c):return c.uid==spear_uid),"first drag spends exactly one spear and AP")
 	await capture("1680x720-first-attack")
-	if T.current_step(app.session.state)!="endturn2": app.queue_free(); quit(failures); return
+	if T.current_step(app.session.state)!="enchant_attack2": app.queue_free(); quit(failures); return
+	await select_resource("iron")
+	await play_card("action_attack")
+	check(T.current_step(app.session.state)=="enchant_block2" and app.session.state.battle.hp==1,"native iron enchantment deals two damage")
+	await capture("1680x720-attack-enchantment")
+	await select_resource("wood")
+	await play_card("action_block")
+	check(T.current_step(app.session.state)=="endturn2" and app.session.state.battle.ap==0,"native wood enchantment completes defense")
+	await capture("1680x720-defense-enchantment")
 	# A second attack at the wrong lesson must leave the rule snapshot untouched.
-	before=app.session.snapshot(); await play_spear()
+	before=app.session.snapshot(); await play_card()
 	check(app.session.snapshot()==before,"wrong-step attack preserves inventory AP and RNG")
 	var skip=app.find_child("BattleSkipTurn",true,false)
 	var skip_point: Vector2=skip.get_global_rect().get_center()
 	screen_touch(true,skip_point); await process_frame; screen_touch(false,skip_point); await settle()
 	check(T.current_step(app.session.state)=="attack2b","native skip advances to second attack")
-	check(app.session.state.player.hp==hp_before-1 and T.damaged_cells(app.session.state).size()==1,"enemy counterattack damages HP and raft once")
+	check(app.session.state.player.hp==hp_before and T.damaged_cells(app.session.state).size()==1,"enchanted defense protects HP while enemy damages raft once")
 	await capture("1680x720-second-turn")
-	await play_spear()
+	await play_card()
 	check(app.session.phase()=="story" and T.current_step(app.session.state)=="finish2","second native drag wins tutorial fight")
 	await capture("1680x720-victory")
 	step("advance"); step("end_voyage"); discard_rest()

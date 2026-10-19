@@ -35,6 +35,7 @@ func run() -> void:
 	for id in ["wood","wood","plastic","plastic","rope","rope","iron","cloth"]:
 		first.find_child("ResourcePlus_"+id,true,false).pressed.emit(); await settle()
 	first.find_child("StartVoyage",true,false).pressed.emit(); await settle()
+	while first.transition_busy: await process_frame
 	check(first.session.state.get("mode","")=="tutorial","selected cards start the tutorial")
 	check(first.find_child("TutorialBanner",true,false)!=null,"first launch shows the lesson banner")
 	check(FileAccess.file_exists(save_path),"first launch writes the run save")

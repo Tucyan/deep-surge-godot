@@ -345,7 +345,7 @@ func build_action_preview_panel(parent: Control, preview_parent: Control) -> voi
 	preview_vbox.add_theme_constant_override("separation", 4)
 	preview_frame.add_child(preview_vbox)
 
-	preview_summary_label = W.text(preview_vbox, "请从下方手牌中点击选择「攻击」或「防御」卡牌出招；也可额外选择材料卡组合增强招式。", 16, Color("9ab0be"))
+	preview_summary_label = W.text(preview_vbox, "选择「攻击」或「防御」操作牌；可先选择资源牌附魔，增强本次操作。", 16, Color("9ab0be"))
 	preview_summary_label.name = "BattlePreviewSummary"
 	preview_summary_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 
@@ -516,12 +516,13 @@ func on_card_clicked(card: Dictionary) -> void:
 		else:
 			selected_resource_uid = uid
 			selected_card_uid = ""
-	elif kind in ["combat", "survival"]:
+	elif kind in ["combat", "survival", "negative"]:
 		if selected_card_uid == uid: selected_card_uid = ""
 		else:
 			selected_card_uid = uid
 			selected_action = ""
 			selected_resource_uid = ""
+			if kind!="combat": selected_buff_uid=""
 	
 	sync_selection_to_hud()
 	update_preview(true)
@@ -553,10 +554,12 @@ func update_preview(dispatch_to_app: bool = false) -> void:
 	if selected_card_uid != "":
 		# Tactial card play
 		var card_def: Dictionary = {}
+		var selected_card: Dictionary={}
 		for c in context.get("hand", []):
-			if str(c.uid) == selected_card_uid: card_def = c.definition; break
-		var cost: int = int(card_def.get("cost", 1))
-		title_text = "打出战术手牌 · %s (消耗 %d AP)" % [card_def.get("name", "战术牌"), cost]
+			if str(c.uid) == selected_card_uid: selected_card=c; card_def = c.definition; break
+		var payment: Dictionary=Battle.card_payment(session,selected_card,card_def)
+		var cost: int=int(payment.ordinary_ap)
+		title_text = "打出战术手牌 · %s (消耗 %s)" % [card_def.get("name", "战术牌"), Battle.payment_text(payment)]
 		var args: Dictionary = {"uid": selected_card_uid}
 		if selected_buff_uid != "": args["buff_uid"] = selected_buff_uid
 		preview_data = Battle.preview(session, args)
@@ -569,7 +572,7 @@ func update_preview(dispatch_to_app: bool = false) -> void:
 			detail_text = format_preview_effects(preview_data)
 		else:
 			is_valid = false
-			detail_text = "无法执行：%s" % preview_data.get("error", "无效组合")
+			detail_text = "无法执行：%s" % preview_data.get("error", "附魔无效")
 	elif selected_action != "":
 		var action_name_str := "基础攻击" if selected_action == "attack" else "基础防御"
 		var res_name := ""
@@ -581,13 +584,13 @@ func update_preview(dispatch_to_app: bool = false) -> void:
 					res_id = c.id
 					break
 		
-		if cur_ap < 1:
+		if not Battle.action_payment(session).allowed:
 			title_text = "【AP不足】需要 1 战斗AP（当前剩余 0 点）"
 			detail_text = "无法出牌。可点击卡牌取消选择，或点击右侧「跳过当前回合」。"
 			is_valid = false
 		elif res_id != "" and (not Battle.COMBO.has(res_id) or not Battle.COMBO[res_id].has(selected_action)):
-			title_text = "【无效组合】材料与行动不匹配"
-			detail_text = "「%s」无法与「%s」组合出招！请更换其它资源或取消该资源。" % [res_name, "攻击" if selected_action=="attack" else "防御"]
+			title_text = "【附魔无效】资源与操作不匹配"
+			detail_text = "「%s」无法附魔「%s」！请更换资源或取消该资源。" % [res_name, "攻击" if selected_action=="attack" else "防御"]
 			is_valid = false
 		else:
 			var args: Dictionary = {"action": selected_action}
@@ -598,31 +601,34 @@ func update_preview(dispatch_to_app: bool = false) -> void:
 				is_valid = true
 				var combo_title := action_name_str
 				if res_name != "":
-					combo_title = "%s · 附加 %s" % [action_name_str, res_name]
-				title_text = "拟出招：%s (消耗 1 AP%s)" % [combo_title, " + 1 " + res_name if res_name!="" else ""]
+					combo_title = "%s · %s附魔" % [action_name_str, res_name]
+				title_text = "拟出招：%s (消耗 %s%s)" % [combo_title, Battle.payment_text(Battle.action_payment(session)), " + 1 " + res_name if res_name!="" else ""]
 				detail_text = format_preview_effects(preview_data)
 			else:
 				is_valid = false
-				title_text = "【无效组合】"
-				detail_text = "无法执行：%s" % preview_data.get("error", "组合不合法")
+				title_text = "【附魔无效】"
+				detail_text = "无法执行：%s" % preview_data.get("error", "附魔不合法")
 	elif selected_resource_uid != "":
 		var res_name := ""
 		for c in context.get("hand", []):
 			if str(c.uid) == selected_resource_uid: res_name = catalog.entry("cards", c.id).name; break
-		title_text = "【未完成组合】已选择材料：「%s」" % res_name
-		detail_text = "请继续点击右侧最下方的「攻击」或「防御」卡牌组合出招！"
+		title_text = "【待附魔】已选择资源：「%s」" % res_name
+		detail_text = "再选择下方「攻击」或「防御」操作牌查看附魔预览；打出后才消耗资源。"
 		is_valid = false
 	else:
 		title_text = "从下方手牌选择「攻击」或「防御」。"
-		detail_text = "可附加材料卡，增强攻击、护盾或施加异常。"
+		detail_text = "资源牌可对操作牌附魔，暂仅支持战斗中的攻击和防御；打出后消耗资源。"
 		if context.get("mode","")=="tutorial":
 			var lesson_id: String=str(context.get("tutorial_hint",{}).get("id",""))
 			if lesson_id in ["attack2a","attack2b"]:
 				title_text="当前教学：使用手牌『矛击』。"
 				detail_text="按住0.05秒，向上拖出手牌区松开；滑回取消。" if mobile else "双击『矛击』，消耗1战斗AP，造成3点伤害。"
 			elif lesson_id=="endturn2":
-				title_text="攻击已完成，请结束当前回合。"
+				title_text="攻击与防御附魔已完成，请结束当前回合。"
 				detail_text="点右侧『跳过当前回合』，观察敌人反击。"
+			elif lesson_id in ["enchant_attack2","enchant_block2"]:
+				title_text="当前教学：" + ("废铁攻击附魔" if lesson_id=="enchant_attack2" else "木头防御附魔")
+				detail_text=str(context.tutorial_hint.get("text",""))
 		is_valid = false
 
 	# Update UI text
@@ -662,7 +668,6 @@ func update_preview(dispatch_to_app: bool = false) -> void:
 
 func format_preview_effects(preview_data: Dictionary) -> String:
 	var after_battle: Dictionary = preview_data.get("battle", {})
-	var after_player: Dictionary = preview_data.get("player", {})
 	var cur_battle: Dictionary = context.get("battle", {})
 	
 	var parts: PackedStringArray = []
@@ -690,6 +695,18 @@ func format_preview_effects(preview_data: Dictionary) -> String:
 	
 	if int(cur_battle.get("poison_until", 0)) >= int(cur_battle.get("turn", 1)) and int(after_battle.get("poison_until", 0)) < int(cur_battle.get("turn", 1)):
 		parts.append("清除中毒状态")
+
+	# Pollution is a hand card, so it does not appear in the battle diff above.
+	# Include the concrete removal in the preview, especially when the skeptic's
+	# first clear is free and the ordinary AP cost is zero.
+	var before_pollution := 0
+	for card in context.get("hand", []):
+		if str(card.get("id", "")) == "pollution": before_pollution += 1
+	var after_pollution := 0
+	for card in preview_data.get("hand", []):
+		if str(card.get("id", "")) == "pollution": after_pollution += 1
+	if before_pollution > after_pollution:
+		parts.append("清除%d张污染" % (before_pollution - after_pollution))
 		
 	return "预计效果：" + (" · ".join(parts) if not parts.is_empty() else "施展基础行动")
 
@@ -722,7 +739,7 @@ func on_action_double_clicked(card: Dictionary) -> void:
 		update_preview(false)
 		
 		var cur_ap: int = int(context.battle.get("ap", 0))
-		if cur_ap < 1:
+		if not Battle.action_payment(session).allowed:
 			flash_invalid_feedback("战斗AP不足（当前为 0 点），无法迎击！")
 			return
 		
@@ -736,7 +753,7 @@ func on_action_double_clicked(card: Dictionary) -> void:
 					break
 		
 		if res_id != "" and (not Battle.COMBO.has(res_id) or not Battle.COMBO[res_id].has(selected_action)):
-			flash_invalid_feedback("「%s」无法与「%s」组合出招！" % [res_name, "攻击" if selected_action == "attack" else "防御"])
+			flash_invalid_feedback("「%s」无法附魔「%s」！" % [res_name, "攻击" if selected_action == "attack" else "防御"])
 			return
 		
 		var args: Dictionary = {"action": selected_action}
@@ -744,7 +761,7 @@ func on_action_double_clicked(card: Dictionary) -> void:
 		if selected_buff_uid != "": args["buff_uid"] = selected_buff_uid
 		var preview_data: Dictionary = Battle.preview(session, args)
 		if not preview_data.get("valid", false):
-			var err_msg: String = str(preview_data.get("error", "无效组合"))
+			var err_msg: String = str(preview_data.get("error", "附魔无效"))
 			flash_invalid_feedback("无法出招：%s" % err_msg)
 			return
 		
@@ -758,8 +775,9 @@ func on_action_double_clicked(card: Dictionary) -> void:
 	var kind: String = str(def.get("kind", ""))
 	if kind in ["combat", "survival", "negative"] and card.get("id", "") not in ["coin", "corpse"]:
 		var cur_ap: int = int(context.battle.get("ap", 0))
-		var cost: int = int(def.get("cost", 1))
-		if cost > cur_ap:
+		var payment: Dictionary=Battle.card_payment(session,card,def)
+		var cost: int=int(payment.ordinary_ap)
+		if not payment.allowed:
 			flash_invalid_feedback("战斗AP不足（需要 %d 点，当前剩余 %d 点）！" % [cost, cur_ap])
 			return
 		var args: Dictionary = {"uid": card.uid}
@@ -780,7 +798,7 @@ func flash_invalid_feedback(reason: String) -> void:
 		preview_summary_label.text = "【无法出招】" + reason
 		preview_summary_label.add_theme_color_override("font_color", Color("ff4d4d"))
 	if is_instance_valid(preview_detail_label):
-		preview_detail_label.text = "当前组合无效或条件不满足，请调整组合后再试。"
+		preview_detail_label.text = "当前附魔无效或条件不满足，请调整资源和操作后再试。"
 		preview_detail_label.visible = true
 	
 	var pf = find_child("BattlePreview", true, false)
