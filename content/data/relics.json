@@ -2,6 +2,7 @@
   "sealedFishTin": {
     "name": "远航鱼罐",
     "enabled": true,
+    "unique": "run",
     "price": 3,
     "rarity": "normal",
     "archetype": "补给",
@@ -25,6 +26,7 @@
   "emberFuse": {
     "name": "熔火引信",
     "enabled": true,
+    "unique": "held",
     "price": 4,
     "rarity": "normal",
     "archetype": "强攻代价",
@@ -48,6 +50,7 @@
   "kelpRation": {
     "name": "潮晒海藻卷",
     "enabled": true,
+    "unique": "held",
     "price": 4,
     "rarity": "normal",
     "archetype": "节粮",
@@ -71,6 +74,7 @@
   "copperStill": {
     "name": "随身蒸馏壶",
     "enabled": true,
+    "unique": "run",
     "price": 5,
     "rarity": "normal",
     "archetype": "节水",
@@ -94,6 +98,7 @@
   "tideTablet": {
     "name": "静潮刻碑",
     "enabled": true,
+    "unique": "run",
     "price": 5,
     "rarity": "normal",
     "archetype": "精神",
@@ -117,6 +122,7 @@
   "homeCompass": {
     "name": "归航罗盘",
     "enabled": true,
+    "unique": "held",
     "price": 4,
     "rarity": "normal",
     "archetype": "轻装",
@@ -140,6 +146,7 @@
   "hunterSpear": {
     "name": "猎潮石矛",
     "enabled": true,
+    "unique": "held",
     "price": 5,
     "rarity": "normal",
     "archetype": "强攻",
@@ -157,6 +164,7 @@
   "rescueBadge": {
     "name": "余生浮标牌",
     "enabled": true,
+    "unique": "run",
     "price": 5,
     "rarity": "normal",
     "archetype": "救援",
@@ -186,6 +194,7 @@
   "tideBoneBlade": {
     "name": "缚潮骨刃",
     "enabled": true,
+    "unique": "held",
     "price": 4,
     "rarity": "normal",
     "archetype": "饥饿强攻",
@@ -226,6 +235,7 @@
   "crackedCarapace": {
     "name": "叠片残甲",
     "enabled": true,
+    "unique": "held",
     "price": 5,
     "rarity": "normal",
     "archetype": "格挡",
@@ -243,6 +253,7 @@
   "sunkenCoin": {
     "name": "沉海方孔钱",
     "enabled": true,
+    "unique": "held",
     "price": 3,
     "rarity": "normal",
     "archetype": "冒险",
@@ -283,6 +294,7 @@
   "barbedBundle": {
     "name": "三潮矛束",
     "enabled": true,
+    "unique": "held",
     "price": 5,
     "rarity": "normal",
     "archetype": "多场供给",
@@ -303,6 +315,7 @@
   "redCoral": {
     "name": "赤枝珊瑚",
     "enabled": true,
+    "unique": "run",
     "price": 5,
     "rarity": "normal",
     "archetype": "守护",
@@ -326,6 +339,7 @@
   "drifterQuiver": {
     "name": "备战箭筒",
     "enabled": true,
+    "unique": "held",
     "price": 4,
     "rarity": "normal",
     "archetype": "短期爆发",
@@ -346,6 +360,7 @@
   "crimsonVial": {
     "name": "赤潮血酿",
     "enabled": true,
+    "unique": "run",
     "price": 6,
     "rarity": "normal",
     "archetype": "永久成长",
@@ -375,6 +390,7 @@
   "scavengerSatchel": {
     "name": "拾荒行囊",
     "enabled": true,
+    "unique": "held",
     "price": 6,
     "rarity": "normal",
     "archetype": "扩容",
@@ -392,6 +408,7 @@
   "foldingRule": {
     "name": "筏匠折尺",
     "enabled": true,
+    "unique": "held",
     "price": 5,
     "rarity": "normal",
     "archetype": "装配",
@@ -415,6 +432,7 @@
   "sailorsKnot": {
     "name": "平安水手结",
     "enabled": true,
+    "unique": "held",
     "price": 5,
     "rarity": "normal",
     "archetype": "附魔续航",

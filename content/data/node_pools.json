@@ -147,84 +147,48 @@
         "cooldown": 3
       },
       {
-        "node": "sealedLarder",
+        "node": "restCove",
+        "weight": 1,
+        "min_voyage": 2,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "relicCache",
         "weight": 1,
         "min_voyage": 3,
         "max_voyage": 99,
         "max_visits": 1,
-        "scope": "run",
+        "scope": "layer",
         "cooldown": 3
       },
       {
-        "node": "powderWreck",
+        "node": "tollGate",
         "weight": 1,
         "min_voyage": 4,
         "max_voyage": 99,
         "max_visits": 1,
-        "scope": "run",
+        "scope": "layer",
         "cooldown": 3
       },
       {
-        "node": "kelpDryingRack",
-        "weight": 1,
-        "min_voyage": 3,
-        "max_voyage": 99,
-        "max_visits": 1,
-        "scope": "run",
-        "cooldown": 3
-      },
-      {
-        "node": "silentWayfinder",
-        "weight": 1,
-        "min_voyage": 4,
-        "max_voyage": 99,
-        "max_visits": 1,
-        "scope": "run",
-        "cooldown": 3
-      },
-      {
-        "node": "boneHunter",
-        "weight": 1,
-        "min_voyage": 4,
-        "max_voyage": 99,
-        "max_visits": 1,
-        "scope": "run",
-        "cooldown": 3
-      },
-      {
-        "node": "shellGraveyard",
+        "node": "luckyDrift",
         "weight": 1,
         "min_voyage": 5,
         "max_voyage": 99,
         "max_visits": 1,
-        "scope": "run",
+        "scope": "layer",
         "cooldown": 3
       },
       {
-        "node": "drownedMint",
+        "node": "deepCache",
         "weight": 1,
         "min_voyage": 5,
         "max_voyage": 99,
         "max_visits": 1,
-        "scope": "run",
-        "cooldown": 3
-      },
-      {
-        "node": "rescuePontoon",
-        "weight": 1,
-        "min_voyage": 3,
-        "max_voyage": 99,
-        "max_visits": 1,
-        "scope": "run",
-        "cooldown": 3
-      },
-      {
-        "node": "riggersCache",
-        "weight": 1,
-        "min_voyage": 3,
-        "max_voyage": 99,
-        "max_visits": 1,
-        "scope": "run",
+        "scope": "layer",
         "cooldown": 3
       }
     ]
@@ -350,102 +314,48 @@
         "cooldown": 3
       },
       {
-        "node": "sealedChest",
+        "node": "restCove",
+        "weight": 1,
+        "min_voyage": 2,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "relicCache",
         "weight": 1,
         "min_voyage": 3,
         "max_voyage": 99,
         "max_visits": 1,
         "scope": "layer",
-        "cooldown": 1
-      },
-      {
-        "node": "sealedLarder",
-        "weight": 1,
-        "min_voyage": 1,
-        "max_voyage": 99,
-        "max_visits": 1,
-        "scope": "run",
         "cooldown": 3
       },
       {
-        "node": "powderWreck",
+        "node": "tollGate",
         "weight": 1,
-        "min_voyage": 1,
+        "min_voyage": 4,
         "max_voyage": 99,
         "max_visits": 1,
-        "scope": "run",
+        "scope": "layer",
         "cooldown": 3
       },
       {
-        "node": "kelpDryingRack",
+        "node": "luckyDrift",
         "weight": 1,
-        "min_voyage": 1,
+        "min_voyage": 5,
         "max_voyage": 99,
         "max_visits": 1,
-        "scope": "run",
+        "scope": "layer",
         "cooldown": 3
       },
       {
-        "node": "silentWayfinder",
+        "node": "deepCache",
         "weight": 1,
-        "min_voyage": 1,
+        "min_voyage": 5,
         "max_voyage": 99,
         "max_visits": 1,
-        "scope": "run",
-        "cooldown": 3
-      },
-      {
-        "node": "boneHunter",
-        "weight": 1,
-        "min_voyage": 1,
-        "max_voyage": 99,
-        "max_visits": 1,
-        "scope": "run",
-        "cooldown": 3
-      },
-      {
-        "node": "shellGraveyard",
-        "weight": 1,
-        "min_voyage": 1,
-        "max_voyage": 99,
-        "max_visits": 1,
-        "scope": "run",
-        "cooldown": 3
-      },
-      {
-        "node": "drownedMint",
-        "weight": 1,
-        "min_voyage": 1,
-        "max_voyage": 99,
-        "max_visits": 1,
-        "scope": "run",
-        "cooldown": 3
-      },
-      {
-        "node": "rescuePontoon",
-        "weight": 1,
-        "min_voyage": 1,
-        "max_voyage": 99,
-        "max_visits": 1,
-        "scope": "run",
-        "cooldown": 3
-      },
-      {
-        "node": "coralShrine",
-        "weight": 1,
-        "min_voyage": 1,
-        "max_voyage": 99,
-        "max_visits": 1,
-        "scope": "run",
-        "cooldown": 3
-      },
-      {
-        "node": "riggersCache",
-        "weight": 1,
-        "min_voyage": 1,
-        "max_voyage": 99,
-        "max_visits": 1,
-        "scope": "run",
+        "scope": "layer",
         "cooldown": 3
       }
     ]
@@ -571,102 +481,48 @@
         "cooldown": 3
       },
       {
-        "node": "sealedChest",
+        "node": "restCove",
+        "weight": 1,
+        "min_voyage": 2,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "relicCache",
         "weight": 1,
         "min_voyage": 3,
         "max_voyage": 99,
         "max_visits": 1,
         "scope": "layer",
-        "cooldown": 1
-      },
-      {
-        "node": "sealedLarder",
-        "weight": 1,
-        "min_voyage": 1,
-        "max_voyage": 99,
-        "max_visits": 1,
-        "scope": "run",
         "cooldown": 3
       },
       {
-        "node": "powderWreck",
+        "node": "tollGate",
         "weight": 1,
-        "min_voyage": 1,
+        "min_voyage": 4,
         "max_voyage": 99,
         "max_visits": 1,
-        "scope": "run",
+        "scope": "layer",
         "cooldown": 3
       },
       {
-        "node": "kelpDryingRack",
+        "node": "luckyDrift",
         "weight": 1,
-        "min_voyage": 1,
+        "min_voyage": 5,
         "max_voyage": 99,
         "max_visits": 1,
-        "scope": "run",
+        "scope": "layer",
         "cooldown": 3
       },
       {
-        "node": "silentWayfinder",
+        "node": "deepCache",
         "weight": 1,
-        "min_voyage": 1,
+        "min_voyage": 5,
         "max_voyage": 99,
         "max_visits": 1,
-        "scope": "run",
-        "cooldown": 3
-      },
-      {
-        "node": "boneHunter",
-        "weight": 1,
-        "min_voyage": 1,
-        "max_voyage": 99,
-        "max_visits": 1,
-        "scope": "run",
-        "cooldown": 3
-      },
-      {
-        "node": "shellGraveyard",
-        "weight": 1,
-        "min_voyage": 1,
-        "max_voyage": 99,
-        "max_visits": 1,
-        "scope": "run",
-        "cooldown": 3
-      },
-      {
-        "node": "drownedMint",
-        "weight": 1,
-        "min_voyage": 1,
-        "max_voyage": 99,
-        "max_visits": 1,
-        "scope": "run",
-        "cooldown": 3
-      },
-      {
-        "node": "rescuePontoon",
-        "weight": 1,
-        "min_voyage": 1,
-        "max_voyage": 99,
-        "max_visits": 1,
-        "scope": "run",
-        "cooldown": 3
-      },
-      {
-        "node": "coralShrine",
-        "weight": 1,
-        "min_voyage": 1,
-        "max_voyage": 99,
-        "max_visits": 1,
-        "scope": "run",
-        "cooldown": 3
-      },
-      {
-        "node": "riggersCache",
-        "weight": 1,
-        "min_voyage": 1,
-        "max_voyage": 99,
-        "max_visits": 1,
-        "scope": "run",
+        "scope": "layer",
         "cooldown": 3
       }
     ]

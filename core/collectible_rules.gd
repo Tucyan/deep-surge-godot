@@ -11,6 +11,7 @@ static func valid_definitions(definitions: Dictionary) -> bool:
 	for id in definitions:
 		var d=definitions[id]
 		if not id is String or id.is_empty() or not d is Dictionary or not d.get("enabled",false) is bool: return false
+		if d.has("unique") and d.unique not in ["run","held"]: return false
 		if not d.get("enabled",false): continue
 		if not d.get("name") is String or not d.get("description") is String or not number(d.get("price")) or d.price<0 or not d.get("effects") is Array or d.effects.is_empty(): return false
 		var keys: Array=[]
@@ -34,21 +35,54 @@ static func valid_definitions(definitions: Dictionary) -> bool:
 static func initialize(state: Dictionary) -> void:
 	state.collectibles={"next_id":1,"items":[],"history":[]}
 
+static func eligible(ctx, id: String) -> bool:
+	var definition: Dictionary=ctx.catalog.entry("relics",id)
+	if not definition.get("enabled",false): return false
+	var policy: String=str(definition.get("unique",""))
+	if policy=="": return true
+	if not ctx.state.has("collectibles"): return true
+	var data: Variant=ctx.state.get("collectibles")
+	if not data is Dictionary: return false
+	if policy=="run":
+		var history: Variant=data.get("history",[])
+		if not history is Array: return false
+		for acquired in history:
+			if acquired is Dictionary and acquired.get("id","")==id: return false
+	elif policy=="held":
+		var items: Variant=data.get("items",[])
+		if not items is Array: return false
+		for item in items:
+			if item is Dictionary and item.get("id","")==id and item.get("held",false): return false
+	return true
+
+static func eligible_ids(ctx, ids: Array) -> Array:
+	var result: Array=[]
+	for id in ids:
+		if id is String and eligible(ctx,id): result.append(id)
+	return result
+
+static func held_by_other(ctx, id: String, uid: String) -> bool:
+	for item in ctx.state.get("collectibles",{}).get("items",[]):
+		if item is Dictionary and item.get("uid","")!=uid and item.get("id","")==id and item.get("held",false): return true
+	return false
+
 static func acquire(ctx, id: String, uid: String = "") -> bool:
 	if ctx.state.get("mode","")=="tutorial" or not ctx.state.get("player") is Dictionary: return false
 	var definition: Dictionary=ctx.catalog.entry("relics",id)
 	if not definition.get("enabled",false) or not valid_definitions({id:definition}): return false
 	for effect in definition.effects:
 		if effect.type=="grant_card" and ctx.catalog.entry("cards",effect.id).is_empty() and not ctx.catalog.table("cards").has(effect.id): return false
-	if not ctx.state.has("collectibles"): initialize(ctx.state)
-	var data: Dictionary=ctx.state.collectibles
 	if uid!="":
-		for item in data.items:
+		for item in ctx.state.get("collectibles",{}).get("items",[]):
 			if item.uid==uid:
 				if item.id!=id or item.held: return false
+				if definition.get("unique","") in ["run","held"] and held_by_other(ctx,id,uid): return false
 				item.held=true
 				return true
 		return false
+	if not eligible(ctx,id): return false
+	if not ctx.state.has("collectibles"): initialize(ctx.state)
+	var data: Dictionary=ctx.state.collectibles
 	uid="collectible-%d" % int(data.next_id); data.next_id+=1
 	var item: Dictionary={"uid":uid,"id":id,"held":true,"effects":{}}
 	for effect in definition.effects:
@@ -78,6 +112,8 @@ static func valid(ctx, state: Dictionary) -> bool:
 	if state.get("mode","")=="tutorial" and (not data.items.is_empty() or not data.history.is_empty()): return false
 	if int(data.next_id)!=data.items.size()+1: return false
 	var seen: Array=[]
+	var seen_run_ids: Array=[]
+	var seen_held_ids: Array=[]
 	for index in range(data.items.size()):
 		var item=data.items[index]
 		if not item is Dictionary or item.size()!=4 or not item.get("uid") is String or item.uid in seen or not item.get("id") is String or not item.get("held") is bool or not item.get("effects") is Dictionary: return false
@@ -86,6 +122,13 @@ static func valid(ctx, state: Dictionary) -> bool:
 		if data.history[index]!={"uid":item.uid,"id":item.id}: return false
 		var definition: Dictionary=ctx.catalog.entry("relics",item.id)
 		if not definition.get("enabled",false) or not valid_definitions({item.id:definition}) or item.effects.size()!=definition.effects.size(): return false
+		var unique: String=str(definition.get("unique",""))
+		if unique=="run":
+			if item.id in seen_run_ids: return false
+			seen_run_ids.append(item.id)
+		elif unique=="held" and item.held:
+			if item.id in seen_held_ids: return false
+			seen_held_ids.append(item.id)
 		for effect in definition.effects:
 			if effect.type=="grant_card" and not ctx.catalog.table("cards").has(effect.id): return false
 			var runtime=item.effects.get(effect.key)

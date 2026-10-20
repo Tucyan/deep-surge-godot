@@ -31,3 +31,5 @@
 其他截图、JSON、轨迹及专题记录保留在本目录。当前路线门禁使用 `tests/fixtures/routes/manifest.json`，历史 v22 轨迹按 stale 处理。本文不将历史证据数量或某个脚本退出0等同于当前版本全覆盖。
 
 - [2026-10-19 发布验证](release-20261019-verification.md)：Windows/Android 重新导出、七条当前路线、规则/存档及 GPU 检查和限制。
+
+- [藏品节点、唯一性与Boss精选掉落](collectible-nodes-20261021/README.md)：两批实施、规则/存档、GPU与当前Agent路线。

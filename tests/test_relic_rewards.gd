@@ -67,13 +67,33 @@ func test_random_and_restore() -> void:
 	check(copy.restore(JSON.parse_string(JSON.stringify(before))),"事件奖励领取前保存恢复")
 	copy._auto_advancing=true
 	check(s.dispatch("option",{"id":"take"}) and copy.dispatch("option",{"id":"take"}),"读档两侧领取随机奖励")
-	check(s.state.collectibles.items.size()==3 and s.state.collectibles.next_id==4,"每份随机奖励获得独立UID")
+	check(s.state.collectibles.items.size()==2 and s.state.collectibles.next_id==3 and s.state.coins==2,"run与held唯一遗物各发一次，耗尽请求兑换贝币")
 	check(same(s.state.collectibles,copy.state.collectibles) and same(s.state.rng,copy.state.rng),"同保存点随机奖励完全一致")
-	check(int(s.state.rng.rewards.cursor)==int(before.state.rng.rewards.cursor)+3,"每件随机奖励恰好抽取一次")
+	check(int(s.state.rng.rewards.cursor)==int(before.state.rng.rewards.cursor)+2,"唯一筛选后仅对实际遗物奖励抽取随机")
 	check(copy.restore(JSON.parse_string(JSON.stringify(s.snapshot()))),"随机发奖后保存恢复")
 	var single=fixture("camp",{"options":[{"id":"take","name":"补给","effects":[{"type":"GiveRandomRelic","pool":["crimsonVial"],"amount":2}]}]})
 	var base_max: int=single.state.player.hp_max
-	check(single.dispatch("option",{"id":"take"}) and single.state.player.hp_max==base_max+6,"有放回随机可重复种类并叠加获得效果")
+	check(single.dispatch("option",{"id":"take"}) and single.state.player.hp_max==base_max+3 and single.state.coins==2,"run唯一遗物只获得一次，剩余请求兑换贝币")
+
+func test_unique_random_pool() -> void:
+	var entry={"pool":["crimsonVial","sailorsKnot"],"amount":3}
+	var s=fixture("camp",{"options":[{"id":"take","name":"随机遗物","effects":[]} ]})
+	var summary: Array=[]
+	check(Rewards.grant(s,[entry],summary),"唯一过滤后的随机奖励仍成功")
+	check(s.state.collectibles.items.size()==2,"随机池内run唯一只发一次，held唯一可重复直到持有")
+	check(s.state.coins==2,"随机池耗尽时每个剩余请求兑换2贝币")
+	check(summary.size()==3 and summary[-1].contains("贝币2枚"),"随机池耗尽的兑换写入可见奖励摘要")
+	check(s.state.rng.rewards.cursor==2,"耗尽的随机请求不额外抽取随机数")
+	var exhausted=fixture("camp",{"options":[]})
+	var relics: Array=[]
+	for item in ["crimsonVial","sealedFishTin","tideTablet","copperStill","rescueBadge","redCoral"]:
+		check(Collectibles.acquire(exhausted,item),"预先获得run唯一遗物 "+item)
+	var cursor=int(exhausted.state.rng.rewards.cursor); var coins=exhausted.state.coins
+	summary=[]
+	check(Rewards.grant(exhausted,[{"pool":["crimsonVial","sealedFishTin"],"amount":2}],summary),"run唯一池全部耗尽仍成功")
+	check(exhausted.state.coins==coins+4 and exhausted.state.rng.rewards.cursor==cursor,"全部耗尽按请求兑换且不消耗随机数")
+
+const Collectibles=preload("res://core/collectible_rules.gd")
 func test_event_battle_and_stages() -> void:
 	var rewards={"coin":0,"corpse":0,"resources":0,"xp":0,"relics":[{"pool":["drifterQuiver"],"amount":1}]}
 	var offer={"id":"fight","name":"守护者","battle":{"enemy":"biter","rewards":rewards},"effects":[]}
@@ -150,6 +170,6 @@ func test_agent_routes() -> void:
 		print("RELIC REWARD AGENT ",id,": ",trace.steps.size()," steps (synthetic content)")
 func _init() -> void:
 	catalog=load("res://content/catalog.gd").new(); check(catalog.load_catalog(),"内容加载")
-	test_event(); test_battle(); test_random_and_restore(); test_event_battle_and_stages(); test_invalid(); test_agent_routes()
+	test_event(); test_battle(); test_random_and_restore(); test_unique_random_pool(); test_event_battle_and_stages(); test_invalid(); test_agent_routes()
 	print("RELIC REWARDS: %s (%d checks)" % ["PASS" if failures==0 else "FAIL",checks])
 	quit(failures)

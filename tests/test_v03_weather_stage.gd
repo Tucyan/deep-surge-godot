@@ -48,12 +48,13 @@ func _init() -> void:
 		trial.state.journey.layer_index=1; trial.state.journey.layer_voyage=3; trial.state.journey.cleared=["shallows"]; trial.state.voyage=8; trial.state.completed=7
 		start_round(trial); trial.Encounter.candidates(trial)
 		var chest: Dictionary=catalog.entry("nodes","sealedChest")
-		check(preload("res://core/navigation_rules.gd").eligible(trial,chest,trial.state),"chest opens III-3 "+difficulty)
+		check(not preload("res://core/navigation_rules.gd").eligible(trial,chest,trial.state),"retired chest stays outside the pool "+difficulty)
+		check(preload("res://core/navigation_rules.gd").eligible(trial,catalog.entry("nodes","relicCache"),trial.state),"replacement cache opens at layer voyage 3 "+difficulty)
 		for node in trial.view().candidates:
 			check(not node.has("outcomes") and not JSON.stringify(node).contains("crab_elite"),"public chest hides outcome "+difficulty)
 	test_random_stage_policy(catalog)
 	test_buffer_and_history(catalog)
-	test_chest_and_templates(catalog)
+	test_relic_cache_and_templates(catalog)
 	print("V03 WEATHER STAGE: %s" % ("PASS" if failures==0 else "FAIL")); quit(failures)
 
 
@@ -115,15 +116,15 @@ func test_buffer_and_history(catalog) -> void:
 	nightmare.state.buffs=[]
 	check(Weather.add(nightmare,"battleSquall",true) and not Weather.add(nightmare,"rain",true),"nightmare exclusivity symmetric")
 
-func test_chest_and_templates(catalog) -> void:
+func test_relic_cache_and_templates(catalog) -> void:
 	var nav=preload("res://core/navigation_rules.gd")
 	for difficulty in ["standard","hard","nightmare"]:
 		for layer_index in [1,2]:
 			var s=fresh(catalog,difficulty)
 			s.state.journey.layer_index=layer_index; s.state.journey.layer_voyage=2; s.state.journey.cleared=["shallows"] if layer_index==1 else ["shallows","open_sea"]
 			s.state.voyage=7 if layer_index==1 else 17; s.state.completed=s.state.voyage-1
-			var chest: Dictionary=catalog.entry("nodes","sealedChest")
-			check(not nav.eligible(s,chest,s.state),"chest closed before third voyage")
+			var cache: Dictionary=catalog.entry("nodes","relicCache")
+			check(not nav.eligible(s,cache,s.state),"replacement cache closed before third voyage")
 			s.state.voyage+=1; s.state.journey.layer_voyage=3; s.state.completed+=1
 			start_round(s)
 			s.state.buffs=[]
@@ -138,19 +139,19 @@ func test_chest_and_templates(catalog) -> void:
 			check(s.state.candidates==shown,"weather ending never deletes displayed encounters")
 			var altered: Dictionary=shown[0].duplicate(true); altered.template_layer="shallows"
 			check(not s.Encounter.valid_node(s,altered,"challenge"),"cross-layer template tampering rejected")
-			# Arrival quota and hidden branch use the common permanent definition.
+			# Arrival quota and persisted offer use the common permanent definition.
 			s.state.flags.node_visits={}; s.state.buffs=[]
-			chest.visit_id="chest-stage"; s.state.node=chest; s.Encounter.arrived(s); s.state.phase="story"; s.state.story_step="choice"
+			cache.visit_id="cache-stage"; s.state.node=cache; s.Encounter.arrived(s); s.state.phase="story"; s.state.story_step="choice"
 			var public: Dictionary=s.view()
-			check(public.event_options.size()>0 and public.event_options.all(func(o):return not o.has("outcomes") and not o.has("battle")),"three-tier chest event options hide branch")
-			check(not JSON.stringify(public.node).contains("crab_elite") and not JSON.stringify(public.node).contains("70"),"three-tier chest node hides probability and enemy")
-			check(not nav.eligible(s,chest,s.state),"one chest visit per layer")
-			check(s.dispatch("option",{"id":"open"}),"three-tier chest opens")
+			check(public.event_options.size()>0 and public.event_options.all(func(o):return not o.has("outcomes") and not o.has("battle")),"three-tier cache event options hide branch")
+			check(not JSON.stringify(public.node).contains("crab_elite") and not JSON.stringify(public.node).contains("70"),"three-tier cache node hides probability and enemy")
+			check(not nav.eligible(s,cache,s.state),"one cache visit per layer")
+			check(s.dispatch("option",{"id":"reveal_relics"}),"three-tier cache opens")
 			Weather.prepare_navigation(s)
 			var saved: Dictionary=JSON.parse_string(JSON.stringify(s.snapshot()))
 			var restored=Session.new(catalog)
-			check(restored.restore(saved),"three-tier chest branch saves")
-			check(restored.state.encounter==saved.state.encounter and s.R.SALTS.keys().all(func(k):return int(restored.state.rng[k].value)==int(s.state.rng[k].value) and int(restored.state.rng[k].cursor)==int(s.state.rng[k].cursor)),"chest restore preserves outcome and rng")
+			check(restored.restore(saved),"three-tier cache branch saves")
+			check(restored.state.encounter==saved.state.encounter and s.R.SALTS.keys().all(func(k):return int(restored.state.rng[k].value)==int(s.state.rng[k].value) and int(restored.state.rng[k].cursor)==int(s.state.rng[k].cursor)),"cache restore preserves outcome and rng")
 
 func test_random_stage_policy(catalog) -> void:
 	for difficulty in ["standard","hard","nightmare"]:

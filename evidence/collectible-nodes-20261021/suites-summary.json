@@ -1,0 +1,262 @@
+[
+  {
+    "test": "test_action_catalogue",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_battle_salvage",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_boss_collectible_pools",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_catalog",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_challenge_save_failure",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_chapter1_saves",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_collectible_agent",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_collectible_battle",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_collectible_effects",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_collectible_integration",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_collectible_nodes",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_collectible_shop_unique",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_collectible_unique",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_collectible_voyage_install",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_difficulty",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_environment",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_formal_shop",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_navigation_actions",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_navigation_partial_refresh",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_node_shop_integration",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_origins_edges",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_origins_v1",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_origins_v2",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_relic_expedition",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_relic_rewards",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_reward_recovery",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_save",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_settlement",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_settlement_integration",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_settlement_page",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_spring_supply",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_tutorial",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_tutorial_enchantment",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_tutorial_event_layout",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_tutorial_rules_repairs",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_tutorial_setup",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_v03_balance",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_v03_campaign",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_v03_difficulty_stage_design",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_v03_encounters",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_v03_event_exit",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_v03_journey_flow",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_v03_projection",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_v03_public",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_v03_relic_integration",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_v03_shop",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_v03_stage_balance",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_v03_survival",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_v03_weather",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_v03_weather_stage",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_voyage_survival",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "test": "test_relic_offer",
+    "exit": 0,
+    "failures": []
+  }
+]
