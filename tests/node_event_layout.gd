@@ -56,15 +56,33 @@ func run() -> void:
 	check(is_equal_approx(art.size.y, text.size.y) and is_equal_approx(text.size.y, choices.size.y), "三栏等高")
 	var viewport := Rect2(Vector2.ZERO, Vector2(root.size))
 	check(viewport.grow(1).encloses(art) and viewport.grow(1).encloses(text) and viewport.grow(1).encloses(choices), "三栏都在视口内")
-	# The plate covers the world utilities instead of deleting them.
+	# Node art is shown whole: contain instead of cover, so a landscape still is
+	# scaled down inside the column rather than cropped at both sides.
+	var illustration := node_of("NodeEventIllustration") as TextureRect
+	check(illustration != null and illustration.stretch_mode == TextureRect.STRETCH_KEEP_ASPECT_CENTERED, "立绘完整显示不裁切")
+	for i in range(4): await process_frame
+	if illustration != null and illustration.texture != null:
+		var source: Vector2 = illustration.texture.get_size()
+		var inside: Vector2 = illustration.size
+		var fit: float = minf(inside.x/source.x, inside.y/source.y)
+		var drawn := source * fit
+		check(inside.x > 0.0 and inside.y > 0.0, "立绘栏有可用尺寸 "+str(inside))
+		check(drawn.x <= inside.x+1.0 and drawn.y <= inside.y+1.0, "立绘整张缩进栏内 "+str(drawn)+" / "+str(inside))
+		check(drawn.x > inside.x-1.0 or drawn.y > inside.y-1.0, "立绘至少一边贴满栏位，等比缩放不拉伸 "+str(drawn))
+	# Node events own the screen: the left-edge utilities step aside instead of
+	# showing through the plate. Salvage stays (covered) because it belongs to
+	# the world actions that remain drawn under the event surface.
 	var surface := node_of("NodeEventSurface")
 	var reset_node := node_of("ResetRaftView")
 	var toggle_node := node_of("ToggleRaftView")
+	var treasure_node := node_of("CollectiblesEntry")
 	var salvage_node := node_of("SalvageEntry")
-	check(surface != null and surface.z_index > reset_node.z_index, "事件底板绘制在视角按钮之上")
-	check(reset_node.visible and toggle_node.visible, "视角按钮仍在，只是被底板覆盖")
+	check(surface != null, "事件底板存在")
+	check(reset_node != null and not reset_node.is_visible_in_tree(), "事件阶段隐藏视角复位")
+	check(toggle_node != null and not toggle_node.is_visible_in_tree(), "事件阶段隐藏视角切换")
+	check(treasure_node != null and not treasure_node.is_visible_in_tree(), "事件阶段隐藏遗物仓库入口")
 	check(salvage_node != null and salvage_node.visible, "打捞按钮仍在，只是被底板覆盖")
-	check(reset_node.focus_mode == Control.FOCUS_NONE and salvage_node.focus_mode == Control.FOCUS_NONE, "被覆盖的按钮不可用键盘触发")
+	check(salvage_node.focus_mode == Control.FOCUS_NONE, "被覆盖的打捞按钮不可用键盘触发")
 	check(node_of("VoyageNavigationBar").z_index > surface.z_index, "顶栏在事件底板之上")
 	# Desktop keeps the hand strip visible; the event page stops above the AP bar.
 	check(node_of("VoyageHandTopBar").z_index > surface.z_index, "手牌顶栏在事件底板之上")
@@ -165,6 +183,8 @@ func run() -> void:
 		check(reset == null or (reset.visible and reset.focus_mode != Control.FOCUS_NONE), "离开事件后视角按钮恢复可操作")
 		var salvage_after: Node = app.layout.find_child("SalvageEntry", true, false)
 		check(salvage_after == null or salvage_after.focus_mode != Control.FOCUS_NONE, "离开事件后打捞恢复可操作")
+		var treasure_after: Node = app.layout.find_child("CollectiblesEntry", true, false)
+		check(treasure_after == null or treasure_after.is_visible_in_tree(), "离开事件后遗物仓库入口恢复")
 
 	root.size = Vector2i(1600,900)
 	app.queue_free(); await process_frame

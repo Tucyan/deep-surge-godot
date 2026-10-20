@@ -35,18 +35,26 @@ func inspect_event(name: String):
 		check(column.is_visible_in_tree(),"column visible: "+name+" "+id)
 		check(app.get_global_rect().grow(2).encloses(column.get_global_rect()),"column in viewport: "+name+" "+id)
 		check(body.get_global_rect().grow(2).encloses(column.get_global_rect()),"column inside event host: "+name+" "+id)
-		check(column.get_global_rect().end.y>=app.size.y-40.0,"column reaches the bottom edge: "+name+" "+id)
 		rects.append(column.get_global_rect())
-	check(rects[0].size.y>400.0,"event columns use the freed card space: "+name+" "+str(rects[0].size.y))
-	# The illustration stays on phones and since 2026-10-20 owns the larger share:
-	# the prose column no longer absorbs every pixel the options leave behind.
-	check(rects[0].size.x>=200.0,"illustration keeps a usable width: "+name+" "+str(rects[0].size.x))
-	check(rects[1].size.x>=340.0,"prose keeps a usable width: "+name+" "+str(rects[1].size.x))
-	check(rects[0].size.x>=body.size.x*0.32,"illustration takes the larger share: "+name+" %d/%d" % [rects[0].size.x,body.size.x])
-	check(rects[1].size.x<=body.size.x*0.38,"prose column stays within its share: "+name+" %d/%d" % [rects[1].size.x,body.size.x])
+	# Phone layout since 2026-10-20: the illustration is the panel backdrop and
+	# the prose is a small plate inside it, so only the options stay a column.
+	check(rects[0].size.y>400.0,"image panel uses the freed card space: "+name+" "+str(rects[0].size.y))
+	check(rects[0].end.y>=app.size.y-40.0,"image panel reaches the bottom edge: "+name+" "+str(rects[0].end.y))
+	check(rects[0].size.x>=body.size.x*0.60,"image panel owns most of the row: "+name+" %d/%d" % [rects[0].size.x,body.size.x])
+	check(rects[2].size.x>=400.0,"options column keeps its width: "+name+" "+str(rects[2].size.x))
+	check(not rects[0].intersects(rects[2]),"image panel and options do not overlap: "+name)
+	# The prose plate lives inside the image panel, bottom-left, and stays small.
+	check(rects[0].grow(-2.0).encloses(rects[1]),"text plate sits inside the image panel: "+name)
+	check(rects[1].size.x<=rects[0].size.x*0.70,"text plate keeps the picture visible: "+name+" %d/%d" % [rects[1].size.x,rects[0].size.x])
+	check(rects[1].size.y<=rects[0].size.y*0.56,"text plate stays short: "+name+" %d/%d" % [rects[1].size.y,rects[0].size.y])
+	check(rects[0].end.y-rects[1].end.y<=60.0,"text plate hugs the panel bottom: "+name+" "+str(rects[0].end.y-rects[1].end.y))
 	var illustration=app.find_child("NodeEventIllustration",true,false)
-	check(illustration!=null and illustration.texture!=null and illustration.size.x>=180.0,"illustration renders art: "+name)
-	check(not rects[0].intersects(rects[1]) and not rects[1].intersects(rects[2]),"event columns do not overlap: "+name)
+	check(illustration!=null and illustration.texture!=null,"illustration renders art: "+name)
+	check(illustration.stretch_mode==TextureRect.STRETCH_KEEP_ASPECT_COVERED,"illustration fills the panel as a backdrop: "+name)
+	check(illustration.get_global_rect().grow(2).encloses(app.find_child("NodeEventArt",true,false).get_global_rect()),"illustration covers the panel: "+name)
+	var headline=app.find_child("NodeEventHeadline",true,false)
+	check(headline!=null and headline.is_visible_in_tree(),"event text stays readable on the plate: "+name)
+	check(rects[1].grow(2.0).encloses(headline.get_global_rect()),"event text sits on the plate: "+name)
 	var page=app.find_child("NodeEventBody",true,false)
 	for entry in page.entries:
 		check(entry.button.size.y>=44,"option touch height: "+name)

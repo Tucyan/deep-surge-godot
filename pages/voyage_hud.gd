@@ -140,7 +140,10 @@ func build() -> void:
 	toggle_view.tooltip_text="当前：%s\n点击切换为%s，并设为默认复位视角" % ["俯视" if top_view else "斜俯视","斜俯视" if top_view else "俯视"]
 	rect(toggle_view,Vector4(0,.4,0,.4),Vector4(58,-96,114,-40))
 	W.UtilityButtonArt.apply(toggle_view,"view")
-	var camera_utilities_visible: bool = context.phase != "battle"
+	# Battles and node events both own the screen, so the left-edge utilities
+	# (view reset, view toggle, treasure) step aside instead of poking above the
+	# event plate or the battle HUD. They are rebuilt when the phase ends.
+	var utilities_visible: bool = context.phase not in ["battle", "story"]
 	var collection:=W.button(stage,"",func():send("panel",{"id":"collectibles"}))
 	collection.name="CollectiblesEntry"; collection.z_index=ABOVE_EVENT
 	collection.accessibility_name="潮汐遗物"; collection.tooltip_text="潮汐遗物 · 已持有 %d 件" % context.get("collectibles",[]).size()
@@ -150,11 +153,12 @@ func build() -> void:
 	treasure.expand_mode=TextureRect.EXPAND_IGNORE_SIZE; treasure.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	treasure.mouse_filter=Control.MOUSE_FILTER_IGNORE; collection.add_child(treasure)
 	rect(treasure,Vector4(0,0,1,1),Vector4(10,10,-10,-10))
-	reset_view.visible = camera_utilities_visible
-	toggle_view.visible = camera_utilities_visible
-	# The event plate is drawn above these utilities: keep them visible but untouchable.
-	reset_view.focus_mode = Control.FOCUS_NONE if event_covered or not camera_utilities_visible else Control.FOCUS_ALL
-	toggle_view.focus_mode = Control.FOCUS_NONE if event_covered or not camera_utilities_visible else Control.FOCUS_ALL
+	reset_view.visible = utilities_visible
+	toggle_view.visible = utilities_visible
+	collection.visible = utilities_visible
+	reset_view.focus_mode = Control.FOCUS_ALL if utilities_visible else Control.FOCUS_NONE
+	toggle_view.focus_mode = Control.FOCUS_ALL if utilities_visible else Control.FOCUS_NONE
+	collection.focus_mode = Control.FOCUS_ALL if utilities_visible else Control.FOCUS_NONE
 	var view_icon:=TextureRect.new(); view_icon.name="ViewModeIcon"
 	view_icon.texture=assets.texture("icon.camera.oblique" if top_view else "icon.camera.top")
 	view_icon.expand_mode=TextureRect.EXPAND_IGNORE_SIZE; view_icon.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED

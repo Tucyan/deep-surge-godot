@@ -216,6 +216,15 @@ func render(app, staged: bool = false) -> void:
 		# Phones run the event page to the bottom edge and hide the frozen hand
 		# strip; desktop keeps the original 328 offset above the AP bar and hand.
 		event_body.offset_bottom=-18 if app.display_settings.mobile else -328
+		# The merged phone panel owns more of the screen; the tutorial banner
+		# still needs its top strip.
+		var story_page = preload("res://pages/flow_story.gd")
+		if story_page.merged_art_enabled(app.display_settings.mobile):
+			var tutorial: bool = view.get("mode","") == "tutorial"
+			event_body.offset_left=story_page.MERGED_INSET_X
+			event_body.offset_right=-story_page.MERGED_INSET_X
+			event_body.offset_top=story_page.MERGED_INSET_TOP_TUTORIAL if tutorial else story_page.MERGED_INSET_TOP
+			event_body.offset_bottom=-story_page.MERGED_INSET_BOTTOM
 		app.page("story",event_body,view)
 	current_page = app.page("setup" if view.screen == "home" and app.setup_mode != "" else view.screen,host,view)
 	var panel_id: String = app.local_panel if app.local_panel != "" else view.panel

@@ -23,9 +23,31 @@ const ART_BY_KIND := {
 }
 const PRESELECT_HINT := "再次点击该选项即可确认；也可点右上角“取消选择”返回。"
 const PRESELECT_HINT_MOBILE := "再次点击该选项即可确认；也可点选项右侧的“取消选择”返回。"
+## Merged phone layout: the illustration is the panel backdrop and the event
+## text sits on a small translucent plate. Phones use it by default; the
+## desktop keeps the three-column layout.
+const MERGED_PLATE_SHARE := 0.42
+const MERGED_PLATE_WIDE_SHARE := 0.62
+const MERGED_PLATE_MAX_HEIGHT_RATIO := 0.52
+const MERGED_PLATE_MIN_WIDTH := 300.0
+const MERGED_PLATE_MAX_WIDTH := 760.0
+const MERGED_MARGIN_X := 26.0
+const MERGED_MARGIN_Y := 22.0
+const MERGED_PLATE_ALPHA := 0.70
+## Inset of the merged event page: the panel owns more of the screen.
+const MERGED_INSET_X := 20.0
+const MERGED_INSET_TOP := 64.0
+const MERGED_INSET_TOP_TUTORIAL := 108.0
+const MERGED_INSET_BOTTOM := 12.0
 
 var art_view: TextureRect
 var art_column: Control
+var plate: PanelContainer
+var plate_holder: Control
+var plate_fade: TextureRect
+var merged_scroll: ScrollContainer
+## True while a long prose keeps the plate at its wide width.
+var plate_wide := false
 var options_frame: Control
 var prose: VBoxContainer
 var options_panel: VBoxContainer
@@ -53,19 +75,12 @@ func build() -> void:
 	columns.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	columns.clip_contents = true
 	add_child(columns)
-	build_art_column(columns)
-	var prose_column := build_frame_column(columns, 1.06, "NodeEventProse")
-	prose = VBoxContainer.new()
-	prose.name = "NodeEventText"
-	prose.add_theme_constant_override("separation", 10)
-	prose.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	var prose_scroll:=ScrollContainer.new()
-	prose_scroll.name="NodeEventProseScroll"
-	prose_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
-	prose_scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL
-	prose_column.add_child(prose_scroll)
-	prose_scroll.add_child(prose)
-	prose.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	if merged_art():
+		build_merged_column(columns)
+	else:
+		build_art_column(columns)
+		var prose_column := build_frame_column(columns, 1.06, "NodeEventProse")
+		build_prose_area(prose_column)
 	var choices_column := build_frame_column(columns, 0.0, "NodeEventOptions")
 	options_frame = choices_column.get_parent() as Control
 	choices_column.custom_minimum_size.x = CHOICES_WIDTH
@@ -92,7 +107,8 @@ func build() -> void:
 	pack_options()
 	paint_options()
 	paint_prose({})
-	if context.get("mobile",false): fit_art_width.call_deferred()
+	if merged_art(): fit_merged_plate.call_deferred()
+	elif context.get("mobile",false): fit_art_width.call_deferred()
 
 ## Desktop header: 请做出选择 on the left, 取消选择 on the right. The row keeps its
 ## height in every state so showing 取消选择 never moves the options.
@@ -168,7 +184,10 @@ func build_art_column(columns: Node) -> void:
 	art_view = TextureRect.new()
 	art_view.name = "NodeEventIllustration"
 	art_view.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	art_view.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	# Every illustration keeps its authored aspect and stays fully visible; the
+	# column is taller than a landscape still, so the leftover space becomes
+	# dark margin above and below instead of a cropped picture.
+	art_view.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	art_view.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	frame.add_child(art_view)
 
@@ -186,6 +205,140 @@ func fit_art_width() -> void:
 		target = minf(target, maxf(free - PROSE_MOBILE_MIN_WIDTH, ART_MOBILE_MIN_WIDTH))
 	if is_equal_approx(art_column.custom_minimum_size.x, target): return
 	art_column.custom_minimum_size.x = target
+
+## Compact plate keeps the picture visible: the text block hugs its content and
+## never grows past the panel, so long prose scrolls instead of covering the art.
+func build_merged_column(columns: Node) -> void:
+	var frame := preload("res://presentation/hud_frame.gd").new()
+	frame.name = "NodeEventArt"
+	frame.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	frame.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	frame.size_flags_stretch_ratio = 1.0
+	frame.custom_minimum_size.x = MERGED_PLATE_MIN_WIDTH + MERGED_MARGIN_X*2.0
+	var style: StyleBoxFlat = VoyagePage.compact_style()
+	style.bg_color = Color(0.02,0.045,0.065,0.96)
+	# The illustration is a backdrop, so it reaches the frame edge.
+	style.content_margin_left = 0; style.content_margin_right = 0
+	style.content_margin_top = 0; style.content_margin_bottom = 0
+	frame.add_theme_stylebox_override("panel", style)
+	columns.add_child(frame)
+	art_column = frame
+	art_view = TextureRect.new()
+	art_view.name = "NodeEventIllustration"
+	art_view.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	art_view.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	art_view.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	frame.add_child(art_view)
+	var overlay := MarginContainer.new()
+	overlay.name = "NodeEventArtOverlay"
+	overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	overlay.add_theme_constant_override("margin_left", int(MERGED_MARGIN_X))
+	overlay.add_theme_constant_override("margin_right", int(MERGED_MARGIN_X))
+	overlay.add_theme_constant_override("margin_top", int(MERGED_MARGIN_Y))
+	overlay.add_theme_constant_override("margin_bottom", int(MERGED_MARGIN_Y))
+	frame.add_child(overlay)
+	var row := HBoxContainer.new()
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	overlay.add_child(row)
+	plate = PanelContainer.new()
+	plate.name = "NodeEventProse"
+	# Bottom-left keeps the plate clear of the round utility strip that stays
+	# above the event surface (treasure/view buttons at the panel's left edge).
+	plate.size_flags_vertical = Control.SIZE_SHRINK_END
+	var plate_style := StyleBoxFlat.new()
+	plate_style.bg_color = Color(0.015,0.035,0.05,MERGED_PLATE_ALPHA)
+	plate_style.set_corner_radius_all(10)
+	plate_style.set_border_width_all(1)
+	plate_style.border_color = Color(1,1,1,0.10)
+	plate_style.content_margin_left = 18; plate_style.content_margin_right = 18
+	plate_style.content_margin_top = 14; plate_style.content_margin_bottom = 14
+	plate.add_theme_stylebox_override("panel", plate_style)
+	row.add_child(plate)
+	var spacer := Control.new()
+	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(spacer)
+	plate_holder = Control.new()
+	plate_holder.name = "NodeEventProseHolder"
+	plate.add_child(plate_holder)
+	build_prose_area(plate_holder)
+	merged_scroll = plate.find_child("NodeEventProseScroll", true, false) as ScrollContainer
+	if merged_scroll != null:
+		merged_scroll.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		# The prose keeps its own height inside the plate, so a long text scrolls
+		# instead of being clipped by the plate. Phones scroll with a finger, so
+		# no scrollbar is drawn here.
+		prose.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+		merged_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	plate_fade = TextureRect.new()
+	plate_fade.name = "NodeEventProseFade"
+	var gradient := Gradient.new()
+	gradient.set_color(0, Color(0.015,0.035,0.05,0.0))
+	gradient.set_color(1, Color(0.015,0.035,0.05,0.95))
+	var fade_texture := GradientTexture2D.new()
+	fade_texture.gradient = gradient
+	fade_texture.fill_from = Vector2(0,0)
+	fade_texture.fill_to = Vector2(0,1)
+	fade_texture.width = 8; fade_texture.height = 64
+	plate_fade.texture = fade_texture
+	plate_fade.stretch_mode = TextureRect.STRETCH_SCALE
+	plate_fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	plate_fade.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
+	plate_fade.offset_top = -34
+	plate_fade.visible = false
+	plate_holder.add_child(plate_fade)
+	frame.resized.connect(fit_merged_plate)
+
+## One decision for the plate: short prose keeps the narrow plate, long prose
+## widens it once, and anything longer than the cap scrolls inside so the
+## picture keeps most of the panel.
+func fit_merged_plate() -> void:
+	if plate == null or not is_instance_valid(plate): return
+	if art_column == null or not is_instance_valid(art_column): return
+	if plate_holder == null or not is_instance_valid(plate_holder) or prose == null: return
+	var limit: float = maxf(120.0, art_column.size.y * MERGED_PLATE_MAX_HEIGHT_RATIO)
+	var needed: float = prose.get_combined_minimum_size().y
+	var base := clampf(art_column.size.x*MERGED_PLATE_SHARE, MERGED_PLATE_MIN_WIDTH, MERGED_PLATE_MAX_WIDTH)
+	var wide := clampf(art_column.size.x*MERGED_PLATE_WIDE_SHARE, MERGED_PLATE_MIN_WIDTH, MERGED_PLATE_MAX_WIDTH)
+	if needed > limit:
+		if not plate_wide and wide > base:
+			plate_wide = true
+			plate.custom_minimum_size.x = wide
+			fit_merged_plate.call_deferred()
+			return
+		plate_holder.custom_minimum_size.y = limit
+		if plate_fade != null and is_instance_valid(plate_fade): plate_fade.visible = true
+		return
+	if plate_wide:
+		# The prose fits again: go back to the narrow plate.
+		plate_wide = false
+		plate.custom_minimum_size.x = base
+		fit_merged_plate.call_deferred()
+		return
+	plate.custom_minimum_size.x = base
+	plate_holder.custom_minimum_size.y = needed
+	if plate_fade != null and is_instance_valid(plate_fade): plate_fade.visible = false
+
+func build_prose_area(parent: Node) -> void:
+	prose = VBoxContainer.new()
+	prose.name = "NodeEventText"
+	prose.add_theme_constant_override("separation", 10)
+	prose.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	var prose_scroll:=ScrollContainer.new()
+	prose_scroll.name="NodeEventProseScroll"
+	prose_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
+	prose_scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL
+	parent.add_child(prose_scroll)
+	prose_scroll.add_child(prose)
+	prose.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+
+## Phones run the merged layout; the desktop keeps the three columns.
+static func merged_art_enabled(mobile: bool) -> bool:
+	return mobile
+
+func merged_art() -> bool:
+	if context.has("merged_art"): return bool(context.merged_art)
+	return merged_art_enabled(context.get("mobile",false))
 
 func build_frame_column(columns: Node, ratio: float, frame_name: String) -> VBoxContainer:
 	var frame := preload("res://presentation/hud_frame.gd").new()
@@ -212,7 +365,9 @@ func apply_art() -> void:
 	if target == "" and monster != "" and not assets.show_label("enemy."+monster): target = "enemy."+monster
 	if target == "":
 		target = str(ART_BY_KIND.get(str(node.get("kind", "")), ART_DEFAULT))
-	art_view.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED if target.begins_with("enemy.") or target.begins_with("relic.") else TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	# Node art never crops in the column layout. As a merged backdrop it fills the
+	# panel instead, which is fine because the shipped backdrops are 16:9.
+	art_view.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED if merged_art() else TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	art_view.texture = visible_still(assets.texture(target), target)
 	art_view.set_meta("asset_id", target)
 
@@ -438,6 +593,7 @@ func paint_lines(eyebrow: String, headline: String, lines: Array, hint: String =
 	if hint != "":
 		var note := W.text(prose, hint, 14, W.MUTED)
 		note.name = "NodeEventHint"
+	if merged_art(): fit_merged_plate.call_deferred()
 
 ## Equal spacers keep every option on the same rhythm and remove the empty bottom.
 func pack_options() -> void:
