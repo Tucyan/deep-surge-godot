@@ -1,13 +1,125 @@
 {
   "current": [
-    {"path": "README.md", "sources": ["project.godot", "launch.ps1", "application/persistence_coordinator.gd"]},
-    {"path": "docs/README.md", "sources": []},
-    {"path": "docs/documentation-governance.md", "sources": ["tools/check_docs.py", "tests/test_check_docs.py"]},
-    {"path": "docs/current-game-mechanics.md", "sources": ["core/game_session.gd", "core/run_rules.gd", "core/action_query.gd", "content/catalog.gd"]},
-    {"path": "docs/application-architecture.md", "sources": ["flow_app.gd", "application/page_host.gd", "application/session_coordinator.gd", "application/narrative_coordinator.gd", "application/persistence_coordinator.gd", "application/hud_projection.gd", "application/acquisition_projection.gd", "application/acquisition_presenter.gd", "presentation/acquisition_overlay.gd"]},
-    {"path": "docs/agent-interface.md", "sources": ["adapters/agent_session.gd", "tools/agent_stdio.gd", "tools/agent_client.py", "tests/test_routes.gd"]},
-    {"path": "docs/narrative-and-save.md", "sources": ["narrative/narrative_schedule.gd", "narrative/narrative_session.gd", "narrative/chapter1_effects.gd", "narrative/content/chapter_l1.json", "narrative/content/characters.json", "adapters/narrative_store.gd", "core/run_rewards.gd"]},
-    {"path": "docs/story-gallery.md", "sources": ["adapters/story_gallery_store.gd", "pages/story_gallery.gd", "tests/test_recall_restore.gd"]},
-    {"path": "docs/collectible-effects.md", "sources": ["core/collectible_rules.gd", "core/relic_rewards.gd", "tests/test_relic_rewards.gd", "core/effect_query.gd", "core/effect_rules.gd", "core/shop_rules.gd", "content/data/relics.json", "pages/collectibles_page.gd"]}
+    {
+      "path": "README.md",
+      "sources": [
+        "project.godot",
+        "launch.ps1",
+        "application/persistence_coordinator.gd"
+      ]
+    },
+    {
+      "path": "docs/README.md",
+      "sources": []
+    },
+    {
+      "path": "docs/documentation-governance.md",
+      "sources": [
+        "tools/check_docs.py",
+        "tests/test_check_docs.py"
+      ]
+    },
+    {
+      "path": "docs/current-game-mechanics.md",
+      "sources": [
+        "core/game_session.gd",
+        "core/run_rules.gd",
+        "core/action_query.gd",
+        "content/catalog.gd",
+        "core/campaign_rules.gd",
+        "core/survival_rules.gd",
+        "core/navigation_rules.gd",
+        "core/environment_rules.gd",
+        "content/data/balance.json"
+      ]
+    },
+    {
+      "path": "docs/application-architecture.md",
+      "sources": [
+        "flow_app.gd",
+        "application/page_host.gd",
+        "application/session_coordinator.gd",
+        "application/narrative_coordinator.gd",
+        "application/persistence_coordinator.gd",
+        "application/hud_projection.gd",
+        "application/acquisition_projection.gd",
+        "application/acquisition_presenter.gd",
+        "presentation/acquisition_overlay.gd"
+      ]
+    },
+    {
+      "path": "docs/agent-interface.md",
+      "sources": [
+        "adapters/agent_session.gd",
+        "tools/agent_stdio.gd",
+        "tools/agent_client.py",
+        "tests/test_routes.gd",
+        "tests/test_v03_projection.gd"
+      ]
+    },
+    {
+      "path": "docs/narrative-and-save.md",
+      "sources": [
+        "narrative/narrative_schedule.gd",
+        "narrative/narrative_session.gd",
+        "narrative/chapter1_effects.gd",
+        "narrative/content/chapter_l1.json",
+        "narrative/content/characters.json",
+        "adapters/narrative_store.gd",
+        "core/run_rewards.gd",
+        "core/campaign_rules.gd",
+        "core/survival_rules.gd"
+      ]
+    },
+    {
+      "path": "docs/story-gallery.md",
+      "sources": [
+        "adapters/story_gallery_store.gd",
+        "pages/story_gallery.gd",
+        "tests/test_recall_restore.gd"
+      ]
+    },
+    {
+      "path": "docs/collectible-effects.md",
+      "sources": [
+        "core/collectible_rules.gd",
+        "core/relic_rewards.gd",
+        "tests/test_relic_rewards.gd",
+        "core/effect_query.gd",
+        "core/effect_rules.gd",
+        "core/shop_rules.gd",
+        "content/data/relics.json",
+        "pages/collectibles_page.gd"
+      ]
+    },
+    {
+      "path": "docs/v03-configuration.md",
+      "sources": [
+        "core/campaign_rules.gd",
+        "core/survival_rules.gd",
+        "core/navigation_rules.gd",
+        "core/environment_rules.gd",
+        "core/encounter_rules.gd",
+        "core/difficulty_rules.gd",
+        "content/catalog.gd",
+        "content/manifest.json",
+        "content/data/journeys.json",
+        "content/data/layers.json",
+        "content/data/balance.json",
+        "content/data/node_pools.json",
+        "content/data/navigation_profiles.json",
+        "content/data/weather_profiles.json",
+        "content/data/battle_templates.json",
+        "tests/test_v03_campaign.gd",
+        "tests/test_v03_survival.gd",
+        "tests/test_v03_journey_flow.gd",
+        "tests/test_v03_encounters.gd",
+        "tests/test_v03_weather.gd",
+        "tests/test_v03_projection.gd",
+        "core/shop_rules.gd",
+        "content/data/shop_profiles.json",
+        "tests/test_v03_shop.gd"
+      ]
+    }
   ]
 }

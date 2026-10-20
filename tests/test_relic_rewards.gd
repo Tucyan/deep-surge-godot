@@ -20,7 +20,9 @@ func fixture(id: String, changes: Dictionary = {}):
 	var s=Session.new(local_catalog)
 	s.dispatch("new",{"mode":"challenge","origin":"strong","seed":22})
 	s._auto_advancing=true; s.state.phase="story"; s.state.story_step="choice"
-	s.state.voyage=7; s.state.environment.rolled_voyage=7
+	s.state.voyage=7; s.state.journey={"profile_id":"challenge","layer_index":1,"layer_voyage":2,"cleared":["shallows"]}; s.state.environment.rolled_voyage=1
+	preload("res://tests/weather_history_fixture.gd").complete_before_start(s)
+	s.EnvironmentRules.start_round(s); s.Survival.lock_costs(s)
 	s.state.node=local_catalog.entry("nodes",id); s.state.node.visit_id="reward-test"
 	s.state.candidates=[]; s.Encounter.arrived(s)
 	return s
@@ -119,6 +121,7 @@ func test_agent_routes() -> void:
 			if node not in [id,"boss","fallback"]: content._tables.nodes[node].retired=true
 		if id=="camp": content._tables.nodes[id].options=[{"id":"take","name":"取走遗物","effects":[{"type":"GiveRandomRelic","pool":["luckyKnot","spearParcel"]}]}]
 		else: content._tables.nodes[id].rewards={"relics":[{"id":"borrowedPulse"}]}
+		content._tables.node_pools.shallows.entries=[{"node":id,"weight":1,"min_voyage":1,"max_voyage":99,"max_visits":99,"scope":"layer","cooldown":1}]
 		content._tables=JSON.parse_string(JSON.stringify(content._tables))
 		content._fingerprint=JSON.stringify(content._tables).sha256_text()
 		var agent=load("res://adapters/agent_session.gd").new(content)

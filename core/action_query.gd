@@ -116,7 +116,8 @@ static func base_candidates(ctx) -> Array:
 					if id!="ready": add(items,"claim_boost",{"cell":cell.id,"id":id})
 			elif boost.id=="production":
 				for target in s.cells: add(items,"boost_device",{"cell":target.id,"buff_uid":boost.uid})
-	if s.ap>=ctx.Rules.EXPANSION_AP and ctx.I.count(s,"wood")>=int(ctx.Rules.expansion_cost(s).wood):
+	var expansion: Dictionary=ctx.Rules.expansion_cost(s,ctx.catalog)
+	if s.ap>=int(expansion.ap) and ctx.I.count(s,"wood")>=int(expansion.wood):
 		var side: int=4 if int(ctx.profile.purchases.get("raft",0))>0 else 3
 		for point in ctx.Rules.Layout.positions(side):
 			if not ctx.Rules.Layout.is_root(point.x,point.y): add(items,"expand",{"x":point.x,"y":point.y})

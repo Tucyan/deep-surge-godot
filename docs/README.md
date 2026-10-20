@@ -1,5 +1,5 @@
 # Deep Surge 文档索引
-<!-- doc-status: current; doc-role: entry; content-version: godot-flow-v02-26; reviewed: 2026-10-19 -->
+<!-- doc-status: current; doc-role: entry; content-version: godot-flow-v03-01; reviewed: 2026-10-20 -->
 
 当前工程为 Godot。先按任务选择下表主文档，再阅读专题；详细数值与行为只在对应主文档维护。文档、代码或测试冲突时需核对，不用历史条目覆盖现行实现。
 
@@ -8,6 +8,7 @@
 | 任务 | 主文档 | 内容 |
 |---|---|---|
 | 启动与能力边界 | [工程 README](../README.md) | 模式、启动、保存范围及测试入口 |
+| 三层与配置来源 | [0.3配置契约](v03-configuration.md) | 航程、层、独立池/天气/模板、生存与验证入口 |
 | 玩法总览 | [当前机制](current-game-mechanics.md) | 已实施的循环、资源、生存、战斗与局外 |
 | 架构/刷新 | [应用架构](application-architecture.md) | core/application/adapters/presentation 分工 |
 | Agent 接入 | [Agent 接口](agent-interface.md) | JSONL、观察、动作、重放与当前路线门禁 |
@@ -38,6 +39,8 @@
 | 类型 | 入口 | 使用方式 |
 |---|---|---|
 | 设计提案 | [design/](design/) | 待讨论方案，不直接覆盖当前契约 |
+| 0.3更新范围 | [范围定稿](design/v03-release-scope.md)、[配置解耦审查](design/v03-layer-configuration-audit.md) | 已接入功能的范围依据及试测参数边界；完整验收状态见[0.3验证草稿](../evidence/v03-development-verification.md) |
+| 0.3三档关卡 | [设计方案](design/v03-difficulty-stage-design.md)、[分任务计划](superpowers/plans/2026-10-20-v03-difficulty-stage-design.md) | 三档各层节奏与参数依据；当次结果见[节奏验证](../evidence/v03-difficulty-stage-verification.md) |
 | 实施计划 | [superpowers/plans/](superpowers/plans/) | 过程与验收进度，以各计划的状态及实际证据为准 |
 | 验证记录 | [evidence 索引](../evidence/README.md) | 记录执行版本、命令、结果和未验证项 |
 | 旧出身 | [出身 v1](origins-v1.md) | v24历史设计，当前使用上表 v2 |

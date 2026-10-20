@@ -76,15 +76,14 @@ func observe() -> Dictionary:
 	var observation: Dictionary={}
 	# Explicit player-facing projection; no seed/RNG, future pool, full stats,
 	# profile/debug reports, UI pages or hidden narrative state.
-	for key in ["survival_settlement","expansion_count","expansion_cost","difficulty","environments","navigation","revision","phase","mode","origin","voyage","length","ap","player","hand","coins","cells","node","candidates","story_step","result_text","battle","completed","level","xp","capacity","can_base","boost_cards","battle_actions","scene","shop","encounter","event_options"]:
+	for key in ["journey","survival_settlement","expansion_count","expansion_cost","difficulty","environments","navigation","revision","phase","mode","origin","voyage","length","ap","player","hand","coins","cells","node","candidates","story_step","result_text","battle","completed","level","xp","capacity","can_base","boost_cards","battle_actions","scene","shop","encounter","event_options"]:
 		if view.has(key): observation[key]=view[key]
 	for node in observation.get("candidates",[])+[observation.get("node",{})]:
-		for key in ["lines","choices","handler","outcomes","effects"]: node.erase(key)
-		node.erase("stages")
-		for option in node.get("options",[]):
-			for key in ["outcomes","effects"]: option.erase(key)
-	for option in observation.get("event_options",[]):
-		for field in ["effects","outcomes","next_stage"]: option.erase(field)
+		keep_fields(node,["id","name","kind","description","category","visit_id","visibility","variant_id","boss","monster","options"])
+		for option in node.get("options",[]): public_option(option)
+	for option in observation.get("event_options",[]): public_option(option)
+	if observation.has("battle"):
+		keep_fields(observation.battle,["id","hp","turn","ap","origin_ap","poison_until","fear_until","bleed_until","shields","raft_target_cell","intent","enemy_direct_damage","enemy_damage_delta","bind_used","bound_effect","counter_ready","attack_absorbed"])
 	observation.terminal=terminal()
 	if view.has("origin_status"): observation.origin_status=view.origin_status
 	observation.collectibles=view.get("collectibles",[]).duplicate(true)
@@ -93,6 +92,13 @@ func observe() -> Dictionary:
 		observation.enemy=_session.Difficulty.enemy(_catalog,_session.state,str(_session.state.battle.id))
 		observation.battle_combinations=_session.Battle.COMBO.duplicate(true)
 	return observation
+
+static func keep_fields(value: Dictionary, fields: Array) -> void:
+	for key in value.keys():
+		if key not in fields: value.erase(key)
+
+static func public_option(option: Dictionary) -> void:
+	keep_fields(option,["id","name","description","cost","cardCosts","statCosts","disabled_reason","actions","preview"])
 
 func terminal() -> bool:
 	return _session.phase() in ["finished","chapterComplete"]

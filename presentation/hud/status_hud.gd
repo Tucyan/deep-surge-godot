@@ -44,12 +44,12 @@ const CREAM := Color("f2e6cd")
     set(v): font_size = clampi(v,12,48); queue_redraw()
 
 func _ready() -> void:
-    mouse_filter = MOUSE_FILTER_IGNORE
+    mouse_filter = MOUSE_FILTER_PASS
     texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
     if size == Vector2.ZERO:
         custom_minimum_size = DESIGN_SIZE
     resized.connect(queue_redraw)
-    tooltip_text="生命 / 饱食 / 水分 / 理智"
+    if tooltip_text.is_empty(): tooltip_text="生命 / 饱食 / 水分 / 理智"
     queue_redraw()
 
 func _get_minimum_size() -> Vector2:

@@ -114,7 +114,7 @@ func build() -> void:
 	rect(view_icon,Vector4(0,0,1,1),Vector4(6,6,-6,-6))
 	var voyage_line=HBoxContainer.new(); voyage_line.name="VoyageHeading"; voyage_line.mouse_filter=Control.MOUSE_FILTER_IGNORE; title.add_child(voyage_line)
 	rect(voyage_line,Vector4(0,0,1,1),Vector4(0,0,0,0))
-	var voyage_label=W.text(voyage_line,"第 %d / %d 次航行  %s" % [context.voyage,context.length,PHASES[context.phase]],19,W.INK)
+	var voyage_label=W.text(voyage_line,heading_text(),19,W.INK)
 	voyage_label.autowrap_mode=TextServer.AUTOWRAP_OFF; voyage_label.vertical_alignment=VERTICAL_ALIGNMENT_CENTER
 	voyage_label.text_overrun_behavior=TextServer.OVERRUN_TRIM_ELLIPSIS
 	_heading_label=voyage_label
@@ -126,6 +126,8 @@ func build() -> void:
 	if context.get("mobile",false): status.font_size=22
 	navigation.add_child(status)
 	_status_hud=status
+	status.tooltip_text="生命 / 饱食 / 水分 / 理智\n"+survival_text()
+	status.mouse_filter=Control.MOUSE_FILTER_PASS
 	rect(status,Vector4(.42,0,1,1),Vector4(4,0,-22,0))
 	for key in {"hp":"health","hunger":"satiety","hydration":"water","sanity":"sanity"}:
 		status.set_stat({"hp":"health","hunger":"satiety","hydration":"water","sanity":"sanity"}[key],context.player[key],context.player[key+"_max"])
@@ -353,7 +355,7 @@ func operation_content(box: Node) -> void:
 			W.primary(box.get_child(box.get_child_count()-1))
 		"aftermath":
 			W.text(box,"节点已完成，可继续使用剩余AP。",17,W.MUTED)
-			W.text(box,"轮末弃牌后食水各扣%d，归零各扣1生命。" % int(context.get("survival_settlement",{}).get("food_water_cost",30)),16,W.MUTED)
+			W.text(box,survival_text(),16,W.MUTED)
 			action(box,"结束航行","end_voyage")
 			W.primary(box.get_child(box.get_child_count()-1))
 		"discard": W.text(box,"手牌超限，选择要弃置的物资；达标后自动进入导航。",18)
@@ -498,12 +500,28 @@ func refresh_after_departure(view: Dictionary) -> bool:
 	style_operation_buttons(_operation_actions)
 	return true
 
+func heading_text() -> String:
+	var journey: Dictionary=context.get("journey",{})
+	var phase_title: String=PHASES.get(context.phase,context.phase)
+	if context.get("mode","")=="challenge" and not journey.is_empty():
+		return "%s · 航行 %d/%d  %s" % [journey.layer_label,journey.layer_voyage,journey.layer_length,phase_title]
+	return "第 %d / %d 次航行  %s" % [context.voyage,context.length,phase_title]
+
+func survival_text() -> String:
+	var quote: Dictionary=context.get("survival_settlement",{})
+	if quote.is_empty(): return "轮末生存结算以当前食水与航耗为准。"
+	var costs: Dictionary=quote.get("costs",{})
+	var damage: Dictionary=quote.get("deprivation",{})
+	var counts: Dictionary=quote.get("counts",{})
+	return "轮末弃牌后：饱食扣%d，水分扣%d。\n累计饥饿%d次、缺水%d次。\n按当前食水预计损失%d生命（饥饿%d、缺水%d）。" % [int(costs.get("hunger",0)),int(costs.get("hydration",0)),int(counts.get("hunger",0)),int(counts.get("hydration",0)),int(damage.get("total",0)),int(damage.get("hunger",0)),int(damage.get("hydration",0))]
+
 func refresh_heading() -> void:
 	if is_instance_valid(_heading_label):
-		_heading_label.text = "第 %d / %d 次航行  %s" % [context.voyage,context.length,PHASES.get(context.phase,context.phase)]
+		_heading_label.text = heading_text()
 
 func refresh_status() -> void:
 	if not is_instance_valid(_status_hud): return
+	_status_hud.tooltip_text="生命 / 饱食 / 水分 / 理智\n"+survival_text()
 	for key in {"hp":"health","hunger":"satiety","hydration":"water","sanity":"sanity"}:
 		_status_hud.set_stat({"hp":"health","hunger":"satiety","hydration":"water","sanity":"sanity"}[key],context.player[key],context.player[key+"_max"])
 

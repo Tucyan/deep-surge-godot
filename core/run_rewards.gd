@@ -28,7 +28,7 @@ static func recover(profile: Dictionary, state: Dictionary, saved_profile: Dicti
 	if receipt.result not in profile.endings: profile.endings.append(receipt.result)
 	return true
 
-static func valid(receipts: Variant) -> bool:
+static func valid(receipts: Variant, maximum_points: int = -1) -> bool:
 	if not receipts is Dictionary: return false
 	for id in receipts:
 		if not id is String or id.is_empty(): return false
@@ -36,6 +36,6 @@ static func valid(receipts: Variant) -> bool:
 		if not receipt is Dictionary: return false
 		var points: Variant = receipt.get("points")
 		if not (points is int or points is float): return false
-		if not is_finite(float(points)) or float(points) != floor(float(points)) or points < 0 or points > 15: return false
+		if not is_finite(float(points)) or float(points) != floor(float(points)) or points < 0 or maximum_points>0 and points>maximum_points: return false
 		if not receipt.get("result") is String or receipt.result.is_empty(): return false
 	return true

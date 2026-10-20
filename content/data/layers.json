@@ -1,0 +1,7 @@
+{
+  "shallows":{"id":"shallows","name":"浅潮","length":5,"boss_node":"boss_shallows","node_pool":"shallows","navigation_profile":"shallows","weather_profile":"weather_shallows","survival_delta":{"hunger":-10,"hydration":-10,"sanity":0},"enemy_hp_bonus":0.0,"enemy_damage_bonus":0.0},
+  "open_sea":{"id":"open_sea","name":"外海","length":10,"boss_node":"boss_open_sea","node_pool":"open_sea","navigation_profile":"open_sea","weather_profile":"weather_open_sea","survival_delta":{"hunger":0,"hydration":0,"sanity":0},"enemy_hp_bonus":0.15,"enemy_damage_bonus":0.0},
+  "abyss":{"id":"abyss","name":"深潮","length":10,"boss_node":"boss_abyss","node_pool":"abyss","navigation_profile":"abyss","weather_profile":"weather_abyss","survival_delta":{"hunger":10,"hydration":10,"sanity":0},"enemy_hp_bonus":0.25,"enemy_damage_bonus":0.0},
+  "story":{"id":"story","name":"剧情航程","length":11,"boss_node":"boss","node_pool":"story","navigation_profile":"story","weather_profile":"weather_legacy","survival_delta":{"hunger":0,"hydration":0,"sanity":0},"enemy_hp_bonus":0.0,"enemy_damage_bonus":0.0},
+  "tutorial":{"id":"tutorial","name":"教学航程","length":3,"boss_node":"","node_pool":"tutorial","navigation_profile":"tutorial","weather_profile":"weather_tutorial","survival_delta":{"hunger":0,"hydration":0,"sanity":0},"enemy_hp_bonus":0.0,"enemy_damage_bonus":0.0}
+}

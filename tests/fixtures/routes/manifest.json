@@ -6,21 +6,10 @@
       "expected": {
         "phase": "finished",
         "outcome": "survived",
-        "completed": 12
+        "completed": 25.0
       },
-      "steps": 181,
-      "version": "godot-flow-v02-26"
-    },
-    {
-      "id": "standard-story",
-      "path": "res://tests/fixtures/routes/standard-story.trace.json",
-      "expected": {
-        "phase": "finished",
-        "outcome": "survived",
-        "completed": 11
-      },
-      "steps": 177,
-      "version": "godot-flow-v02-26"
+      "steps": 389,
+      "version": "godot-flow-v03-01"
     },
     {
       "id": "hard-challenge",
@@ -28,21 +17,32 @@
       "expected": {
         "phase": "finished",
         "outcome": "survived",
-        "completed": 12
+        "completed": 25.0
       },
-      "steps": 223,
-      "version": "godot-flow-v02-26"
+      "steps": 435,
+      "version": "godot-flow-v03-01"
+    },
+    {
+      "id": "standard-story",
+      "path": "res://tests/fixtures/routes/standard-story.trace.json",
+      "expected": {
+        "phase": "finished",
+        "outcome": "survived",
+        "completed": 11.0
+      },
+      "steps": 160,
+      "version": "godot-flow-v03-01"
     },
     {
       "id": "hard-story",
       "path": "res://tests/fixtures/routes/hard-story.trace.json",
       "expected": {
         "phase": "finished",
-        "outcome": "dead",
-        "completed": 10
+        "outcome": "survived",
+        "completed": 11.0
       },
-      "steps": 203,
-      "version": "godot-flow-v02-26"
+      "steps": 180,
+      "version": "godot-flow-v03-01"
     },
     {
       "id": "nightmare-challenge",
@@ -50,10 +50,10 @@
       "expected": {
         "phase": "finished",
         "outcome": "dead",
-        "completed": 11
+        "completed": 24.0
       },
-      "steps": 231,
-      "version": "godot-flow-v02-26"
+      "steps": 346,
+      "version": "godot-flow-v03-01"
     },
     {
       "id": "nightmare-story",
@@ -61,21 +61,21 @@
       "expected": {
         "phase": "finished",
         "outcome": "dead",
-        "completed": 10
+        "completed": 10.0
       },
-      "steps": 209,
-      "version": "godot-flow-v02-26"
+      "steps": 190,
+      "version": "godot-flow-v03-01"
     },
     {
       "id": "standard-failure",
       "path": "res://tests/fixtures/routes/standard-failure.trace.json",
       "expected": {
         "phase": "finished",
-        "outcome": "mad",
-        "completed": 7
+        "outcome": "dead",
+        "completed": 5
       },
-      "steps": 57,
-      "version": "godot-flow-v02-26"
+      "steps": 51,
+      "version": "godot-flow-v03-01"
     }
   ],
   "historical_paths": [

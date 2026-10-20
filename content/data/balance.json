@@ -1,0 +1,6 @@
+{
+  "survival":{"hunger":30,"hydration":30,"sanity":15,"start_damage":1,"step":1,"hunger_cap":5,"hydration_cap":5,"progressive_modes":["challenge"]},
+  "combat":{"retreat_damage":4,"retreat_turn":2,"fatigue_turn":7,"fatigue_damage":1},
+  "growth":{"xp_per_level":5,"hp_interval":3,"ap_interval":15,"ap_remainder":5,"capacity_remainder":10},
+  "economy":{"spring_fixed":{"wood":1},"spring_random":1,"repair_wood":1,"repair_rope":2,"repair_ap":1,"expansion_wood":2,"discount_expansions":3,"discount_wood":1,"expansion_ap":1,"aging_voyages":2}
+}

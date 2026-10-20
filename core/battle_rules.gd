@@ -150,20 +150,22 @@ static func victory(ctx) -> void:
 		var drop: String = preload("res://core/tutorial_rules.gd").fixed_resource(s) if s.get("mode","")=="tutorial" else R.pick(s.rng,"rewards",I.RESOURCES)
 		ctx.give(drop,1,false,"battle_reward")
 	s.xp += int(rewards.get("xp",20 if s.node.get("boss",false) else 5))
-	while s.xp >= 5:
-		s.xp -= 5; s.level += 1
-		if (int(s.level)-1) % Health.LEVEL_INTERVAL == 0: s.player.hp_max += 1
-		if int(s.level)%15==5: s.player.base_ap+=1; s.player.battle_ap+=1
-		if int(s.level)%15==10: s.player.limit+=1
+	var growth: Dictionary=ctx.catalog.entry("balance","growth")
+	var xp_step: int=int(growth.get("xp_per_level",5))
+	while s.xp >= xp_step:
+		s.xp -= xp_step; s.level += 1
+		if (int(s.level)-1) % int(growth.get("hp_interval",3)) == 0: s.player.hp_max += 1
+		if int(s.level)%int(growth.get("ap_interval",15))==int(growth.get("ap_remainder",5)): s.player.base_ap+=1; s.player.battle_ap+=1
+		if int(s.level)%int(growth.get("ap_interval",15))==int(growth.get("capacity_remainder",10)): s.player.limit+=1
 	var bonus: int=Origins.victory_bonus(s)
 	for i in range(bonus): ctx.give(R.pick(s.rng,"rewards",I.RESOURCES),1,false,"origin_battle_reward")
-	if s.node.get("boss",false): s.boss_defeated = true
+	if s.node.get("boss",false): ctx.Campaign.record_boss(ctx)
 	# End the current battle before acquiring rewards with battle-start effects.
 	cleanup(ctx)
 	var relic_summary: Array=[]
 	if not RelicRewards.grant(ctx,rewards.get("relics",[]),relic_summary): return
 	s.battle={}
-	ctx.result_story("战斗胜利；原战利品已领取。"+("战斗狂额外材料×%d（战后等级%d）。" % [bonus,s.level] if bonus>0 else "")+"；".join(relic_summary))
+	exit_battle(ctx,"战斗胜利；原战利品已领取。"+("战斗狂额外材料×%d（战后等级%d）。" % [bonus,s.level] if bonus>0 else "")+"；".join(relic_summary))
 
 static func supply(ctx) -> void:
 	var s: Dictionary=ctx.state
@@ -245,8 +247,8 @@ static func end_turn(ctx) -> bool:
 		if enemy.buff == "poisoned": s.battle.poison_until = s.battle.turn + 3
 		if enemy.buff == "fearful": s.battle.fear_until = s.battle.turn + 2
 	if enemy.get("pollution",false) and int(s.battle.turn) % 2 == 1: ctx.give("pollution",1,true,"battle")
-	if s.battle.turn >= 7:
-		ctx.change("hp",-Health.FATIGUE)
+	if s.battle.turn >= int(ctx.catalog.entry("balance","combat").get("fatigue_turn",7)):
+		ctx.change("hp",-int(ctx.catalog.entry("balance","combat").get("fatigue_damage",1)))
 		if not battle_alive(ctx): return true
 	if counter_hit:
 		s.battle.hp=maxi(0,int(s.battle.hp)-1); Stats.increment(s,"damage_dealt",1)
@@ -299,7 +301,7 @@ static func damage_raft_cell(state: Dictionary) -> void:
 
 static func battle_alive(ctx) -> bool:
 	if ctx.state.player.hp > 0: return true
-	if ctx.state.node.kind == "ruin":
+	if protected_exit(ctx):
 		ctx.change("hp",int(ctx.state.battle.entry_hp)-int(ctx.state.player.hp))
 		Stats.battle_result(ctx.state,"protected")
 		exit_battle(ctx,"遗迹保护生效，恢复入场生命；没有奖励。")
@@ -311,11 +313,12 @@ static func battle_alive(ctx) -> bool:
 	return false
 
 static func retreat(ctx) -> bool:
-	if ctx.phase() != "battle" or ctx.state.battle.turn < 2: return ctx.fail("第二回合起才可撤退")
-	if ctx.state.node.kind == "ruin": ctx.change("hp",int(ctx.state.battle.entry_hp)-int(ctx.state.player.hp))
-	else: ctx.change("hp",-Health.RETREAT)
+	if ctx.phase() != "battle" or ctx.state.battle.turn < int(ctx.catalog.entry("balance","combat").get("retreat_turn",2)): return ctx.fail("第二回合起才可撤退")
+	if protected_exit(ctx): ctx.change("hp",int(ctx.state.battle.entry_hp)-int(ctx.state.player.hp))
+	else: ctx.change("hp",-int(ctx.catalog.entry("balance","combat").get("retreat_damage",4)),"retreat")
+	if ctx.state.node.get("boss",false): ctx.state.flags.boss_withdrawn=true
 	Stats.battle_result(ctx.state,"dead" if ctx.state.player.hp<=0 else "retreated")
-	cleanup(ctx)
+	if ctx.state.player.hp<=0:cleanup(ctx)
 	if ctx.alive():
 		exit_battle(ctx,"撤退，没有战斗奖励。")
 	return true
@@ -325,7 +328,18 @@ static func cleanup(ctx) -> void:
 	for card in ctx.state.hand.duplicate(true):
 		if card.temporary or card.id=="pollution": I.remove(ctx.state,card.uid,"cleared")
 
+static func protected_exit(ctx) -> bool:
+	return ctx.state.node.get("kind","")=="ruin" or ctx.state.get("encounter",{}).get("battle_request",{}).get("exit_rule","")=="protected"
+
 static func exit_battle(ctx, text: String) -> void:
-	cleanup(ctx)
+	if not ctx.state.battle.is_empty(): cleanup(ctx)
 	ctx.state.battle = {}
-	ctx.result_story(text)
+	var continuation: int=int(ctx.state.get("encounter",{}).get("battle_continuation",-1))
+	if continuation>=0 and continuation<ctx.state.node.get("stages",[]).size():
+		ctx.state.encounter.last_battle_source={"source_stage":int(ctx.state.encounter.stage)}
+		for field in ["battle_option","battle_outcome","battle_request","battle_continuation"]:
+			if ctx.state.encounter.has(field):ctx.state.encounter.last_battle_source[field]=ctx.state.encounter[field].duplicate(true) if ctx.state.encounter[field] is Dictionary else ctx.state.encounter[field]
+		ctx.state.encounter.stage=continuation
+		for field in ["battle_option","battle_outcome","battle_request","battle_continuation"]:ctx.state.encounter.erase(field)
+		ctx.state.encounter.last_result=text; ctx.state.phase="story";ctx.state.story_step="choice";ctx.panel="story";ctx.log_text(text)
+	else:ctx.result_story(text)

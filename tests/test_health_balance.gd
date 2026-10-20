@@ -36,7 +36,7 @@ func _init() -> void:
 	check(s.dispatch("battle_end") and s.state.player.hp==9,"two pollution plus fatigue bypass shields for three total")
 	s=session(); s.state.phase="battle"; s.state.node=catalog.entry("nodes","battle")
 	s.state.battle={"id":"biter","hp":6,"ap":3,"turn":2,"entry_hp":12,"poison_until":0,"fear_until":0,"shields":[]}
-	check(s.dispatch("retreat") and s.state.player.hp==10,"retreat costs two")
+	check(s.dispatch("retreat") and s.state.player.hp==8,"retreat costs four")
 	s=session("strong")
 	var old=s.snapshot(); old.content_version="godot-flow-v02-6"; old.fingerprint="998c32db7b38083bd0c9503b6dc79d7b3b274ae501ea986db24bda8c2ff29f4a"
 	old.state.player.hp=20; old.state.player.hp_max=40

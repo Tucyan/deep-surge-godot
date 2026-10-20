@@ -1,0 +1,93 @@
+{
+  "weather_shallows": {
+    "id": "weather_shallows",
+    "protected_first": true,
+    "protected_boss": true,
+    "min_local_voyage": 2,
+    "negative_multiplier": 1.0,
+    "positive_multiplier": 1.0,
+    "pool": {
+      "fog1": 4,
+      "fog2": 1,
+      "bloodMoon": 3,
+      "confusion": 2,
+      "current": 3,
+      "spring": 1
+    },
+    "battle_templates": [],
+    "navigation_effects": true
+  },
+  "weather_open_sea": {
+    "id": "weather_open_sea",
+    "protected_first": true,
+    "protected_boss": true,
+    "min_local_voyage": 2,
+    "negative_multiplier": 1.0,
+    "positive_multiplier": 1.0,
+    "pool": {
+      "fog1": 4,
+      "fog2": 1,
+      "bloodMoon": 3,
+      "confusion": 2,
+      "current": 3,
+      "spring": 1,
+      "rain": 3,
+      "battleSquall": 3
+    },
+    "battle_templates": [
+      "open_sea_patrol"
+    ],
+    "navigation_effects": true
+  },
+  "weather_abyss": {
+    "id": "weather_abyss",
+    "protected_first": true,
+    "protected_boss": true,
+    "min_local_voyage": 2,
+    "negative_multiplier": 1.0,
+    "positive_multiplier": 1.0,
+    "pool": {
+      "fog1": 4,
+      "fog2": 1,
+      "bloodMoon": 3,
+      "confusion": 2,
+      "current": 3,
+      "spring": 1,
+      "rain": 3,
+      "battleSquall": 3
+    },
+    "battle_templates": [
+      "abyss_patrol"
+    ],
+    "navigation_effects": true
+  },
+  "weather_legacy": {
+    "id": "weather_legacy",
+    "protected_first": true,
+    "protected_boss": true,
+    "min_local_voyage": 2,
+    "negative_multiplier": 1.0,
+    "positive_multiplier": 1.0,
+    "pool": {
+      "fog1": 4,
+      "fog2": 1,
+      "bloodMoon": 3,
+      "confusion": 2,
+      "current": 3,
+      "spring": 1
+    },
+    "battle_templates": [],
+    "navigation_effects": false
+  },
+  "weather_tutorial": {
+    "id": "weather_tutorial",
+    "protected_first": true,
+    "protected_boss": true,
+    "min_local_voyage": 2,
+    "negative_multiplier": 1.0,
+    "positive_multiplier": 1.0,
+    "pool": {},
+    "battle_templates": [],
+    "navigation_effects": false
+  }
+}

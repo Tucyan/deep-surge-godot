@@ -1,0 +1,58 @@
+[
+  {
+    "run_index": 1,
+    "difficulty": "standard",
+    "seed": 42,
+    "outcome": "survived",
+    "completed": 25,
+    "steps": 466,
+    "hp": "19/20",
+    "hunger": 40,
+    "hydration": 40,
+    "sanity": 100,
+    "battles_count": 11,
+    "cells": 7
+  },
+  {
+    "run_index": 2,
+    "difficulty": "standard",
+    "seed": 1024,
+    "outcome": "survived",
+    "completed": 25,
+    "steps": 442,
+    "hp": "19/20",
+    "hunger": 50,
+    "hydration": 60,
+    "sanity": 87,
+    "battles_count": 11,
+    "cells": 7
+  },
+  {
+    "run_index": 3,
+    "difficulty": "hard",
+    "seed": 42,
+    "outcome": "survived",
+    "completed": 25,
+    "steps": 492,
+    "hp": "16/18",
+    "hunger": 52,
+    "hydration": 44,
+    "sanity": 55,
+    "battles_count": 10,
+    "cells": 7
+  },
+  {
+    "run_index": 4,
+    "difficulty": "hard",
+    "seed": 1024,
+    "outcome": "dead",
+    "completed": 19,
+    "steps": 320,
+    "hp": "0/16",
+    "hunger": 35,
+    "hydration": 0,
+    "sanity": 60,
+    "battles_count": 6,
+    "cells": 7
+  }
+]

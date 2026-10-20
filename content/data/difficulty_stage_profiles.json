@@ -1,0 +1,546 @@
+{
+  "standard:shallows": {
+    "survival_multipliers": {
+      "hunger": 1.0,
+      "hydration": 1.0
+    },
+    "id": "standard:shallows",
+    "difficulty": "standard",
+    "layer": "shallows",
+    "node_pool": "shallows",
+    "navigation_profile": "shallows",
+    "weather_profile": "weather_shallows",
+    "boss_node": "boss_shallows",
+    "battle_templates": [
+      "shallows_patrol"
+    ],
+    "voyage_bands": [
+      {
+        "min_voyage": 1,
+        "max_voyage": 2,
+        "minimum_battles": 0,
+        "all_battles": false
+      },
+      {
+        "min_voyage": 3,
+        "max_voyage": 3,
+        "minimum_battles": 0,
+        "all_battles": false
+      },
+      {
+        "min_voyage": 4,
+        "max_voyage": 4,
+        "minimum_battles": 1,
+        "all_battles": false
+      },
+      {
+        "min_voyage": 5,
+        "max_voyage": 5,
+        "minimum_battles": 0,
+        "all_battles": true
+      }
+    ],
+    "minimum_battles": 0,
+    "all_battles": false,
+    "category_weights": {
+      "battle": 1.0
+    },
+    "weather_multipliers": {
+      "negative": 1.0,
+      "positive": 1.0
+    },
+    "recovery_floor": 1,
+    "continuous_battle_limit": 3,
+    "boss_target": {
+      "hp": 10,
+      "damage": 1
+    },
+    "weather_weights": {},
+    "weather_safe_voyages": 2,
+    "all_battle_weather_limit": 2,
+    "all_battle_weather_episode_limit": 0,
+    "all_battle_weather_last_start": 0,
+    "weather_exclusive_groups": []
+  },
+  "standard:open_sea": {
+    "survival_multipliers": {
+      "hunger": 1.0,
+      "hydration": 1.0
+    },
+    "id": "standard:open_sea",
+    "difficulty": "standard",
+    "layer": "open_sea",
+    "node_pool": "open_sea",
+    "navigation_profile": "open_sea",
+    "weather_profile": "weather_open_sea",
+    "boss_node": "boss_open_sea",
+    "battle_templates": [
+      "open_sea_patrol"
+    ],
+    "voyage_bands": [
+      {
+        "min_voyage": 1,
+        "max_voyage": 9,
+        "minimum_battles": 1,
+        "all_battles": false
+      },
+      {
+        "min_voyage": 10,
+        "max_voyage": 10,
+        "minimum_battles": 0,
+        "all_battles": true
+      }
+    ],
+    "minimum_battles": 1,
+    "all_battles": false,
+    "category_weights": {
+      "battle": 1.0
+    },
+    "weather_multipliers": {
+      "negative": 1.0,
+      "positive": 1.0
+    },
+    "recovery_floor": 1,
+    "continuous_battle_limit": 3,
+    "boss_target": {
+      "hp": 22,
+      "damage": 2
+    },
+    "weather_weights": {
+      "rain": 0.65,
+      "battleSquall": 0.5
+    },
+    "weather_safe_voyages": 0,
+    "all_battle_weather_limit": 2,
+    "all_battle_weather_episode_limit": 1,
+    "all_battle_weather_last_start": 7,
+    "weather_exclusive_groups": []
+  },
+  "standard:abyss": {
+    "survival_multipliers": {
+      "hunger": 1.0,
+      "hydration": 1.0
+    },
+    "id": "standard:abyss",
+    "difficulty": "standard",
+    "layer": "abyss",
+    "node_pool": "abyss",
+    "navigation_profile": "abyss",
+    "weather_profile": "weather_abyss",
+    "boss_node": "boss_abyss",
+    "battle_templates": [
+      "abyss_patrol"
+    ],
+    "voyage_bands": [
+      {
+        "min_voyage": 1,
+        "max_voyage": 9,
+        "minimum_battles": 1,
+        "all_battles": false
+      },
+      {
+        "min_voyage": 10,
+        "max_voyage": 10,
+        "minimum_battles": 0,
+        "all_battles": true
+      }
+    ],
+    "minimum_battles": 1,
+    "all_battles": false,
+    "category_weights": {
+      "battle": 1.0
+    },
+    "weather_multipliers": {
+      "negative": 1.0,
+      "positive": 1.0
+    },
+    "recovery_floor": 1,
+    "continuous_battle_limit": 3,
+    "boss_target": {
+      "hp": 30,
+      "damage": 3
+    },
+    "weather_weights": {
+      "rain": 0.65,
+      "battleSquall": 0.5
+    },
+    "weather_safe_voyages": 0,
+    "all_battle_weather_limit": 2,
+    "all_battle_weather_episode_limit": 1,
+    "all_battle_weather_last_start": 7,
+    "weather_exclusive_groups": []
+  },
+  "hard:shallows": {
+    "survival_multipliers": {
+      "hunger": 1.1,
+      "hydration": 1.1
+    },
+    "id": "hard:shallows",
+    "difficulty": "hard",
+    "layer": "shallows",
+    "node_pool": "shallows",
+    "navigation_profile": "shallows",
+    "weather_profile": "weather_shallows",
+    "boss_node": "boss_shallows",
+    "battle_templates": [
+      "shallows_patrol"
+    ],
+    "voyage_bands": [
+      {
+        "min_voyage": 1,
+        "max_voyage": 1,
+        "minimum_battles": 0,
+        "all_battles": false
+      },
+      {
+        "min_voyage": 2,
+        "max_voyage": 4,
+        "minimum_battles": 1,
+        "all_battles": false
+      },
+      {
+        "min_voyage": 5,
+        "max_voyage": 5,
+        "minimum_battles": 0,
+        "all_battles": true
+      }
+    ],
+    "minimum_battles": 0,
+    "all_battles": false,
+    "category_weights": {
+      "battle": 1.25
+    },
+    "weather_multipliers": {
+      "negative": 1.25,
+      "positive": 0.8
+    },
+    "recovery_floor": 1,
+    "continuous_battle_limit": 2,
+    "boss_target": {
+      "hp": 12,
+      "damage": 1
+    },
+    "weather_weights": {},
+    "weather_safe_voyages": 1,
+    "all_battle_weather_limit": 2,
+    "all_battle_weather_episode_limit": 0,
+    "all_battle_weather_last_start": 0,
+    "weather_exclusive_groups": []
+  },
+  "hard:open_sea": {
+    "survival_multipliers": {
+      "hunger": 1.1,
+      "hydration": 1.1
+    },
+    "id": "hard:open_sea",
+    "difficulty": "hard",
+    "layer": "open_sea",
+    "node_pool": "open_sea",
+    "navigation_profile": "open_sea",
+    "weather_profile": "weather_open_sea",
+    "boss_node": "boss_open_sea",
+    "battle_templates": [
+      "open_sea_patrol"
+    ],
+    "voyage_bands": [
+      {
+        "min_voyage": 1,
+        "max_voyage": 7,
+        "minimum_battles": 1,
+        "all_battles": false
+      },
+      {
+        "min_voyage": 8,
+        "max_voyage": 9,
+        "minimum_battles": 2,
+        "all_battles": false
+      },
+      {
+        "min_voyage": 10,
+        "max_voyage": 10,
+        "minimum_battles": 0,
+        "all_battles": true
+      }
+    ],
+    "minimum_battles": 1,
+    "all_battles": false,
+    "category_weights": {
+      "battle": 1.35
+    },
+    "weather_multipliers": {
+      "negative": 1.25,
+      "positive": 0.8
+    },
+    "recovery_floor": 1,
+    "continuous_battle_limit": 2,
+    "boss_target": {
+      "hp": 28,
+      "damage": 3
+    },
+    "weather_weights": {
+      "rain": 1.15,
+      "battleSquall": 1.15
+    },
+    "weather_safe_voyages": 0,
+    "all_battle_weather_limit": 2,
+    "all_battle_weather_episode_limit": 0,
+    "all_battle_weather_last_start": 8,
+    "weather_exclusive_groups": []
+  },
+  "hard:abyss": {
+    "survival_multipliers": {
+      "hunger": 1.1,
+      "hydration": 1.1
+    },
+    "id": "hard:abyss",
+    "difficulty": "hard",
+    "layer": "abyss",
+    "node_pool": "abyss",
+    "navigation_profile": "abyss",
+    "weather_profile": "weather_abyss",
+    "boss_node": "boss_abyss",
+    "battle_templates": [
+      "abyss_patrol"
+    ],
+    "voyage_bands": [
+      {
+        "min_voyage": 1,
+        "max_voyage": 5,
+        "minimum_battles": 1,
+        "all_battles": false
+      },
+      {
+        "min_voyage": 6,
+        "max_voyage": 9,
+        "minimum_battles": 2,
+        "all_battles": false
+      },
+      {
+        "min_voyage": 10,
+        "max_voyage": 10,
+        "minimum_battles": 0,
+        "all_battles": true
+      }
+    ],
+    "minimum_battles": 1,
+    "all_battles": false,
+    "category_weights": {
+      "battle": 1.45
+    },
+    "weather_multipliers": {
+      "negative": 1.25,
+      "positive": 0.8
+    },
+    "recovery_floor": 1,
+    "continuous_battle_limit": 2,
+    "boss_target": {
+      "hp": 38,
+      "damage": 4
+    },
+    "weather_weights": {
+      "rain": 1.15,
+      "battleSquall": 1.15
+    },
+    "weather_safe_voyages": 0,
+    "all_battle_weather_limit": 2,
+    "all_battle_weather_episode_limit": 0,
+    "all_battle_weather_last_start": 8,
+    "weather_exclusive_groups": []
+  },
+  "nightmare:shallows": {
+    "survival_multipliers": {
+      "hunger": 1.2,
+      "hydration": 1.2
+    },
+    "id": "nightmare:shallows",
+    "difficulty": "nightmare",
+    "layer": "shallows",
+    "node_pool": "shallows",
+    "navigation_profile": "shallows",
+    "weather_profile": "weather_shallows",
+    "boss_node": "boss_shallows",
+    "battle_templates": [
+      "shallows_patrol"
+    ],
+    "voyage_bands": [
+      {
+        "min_voyage": 1,
+        "max_voyage": 1,
+        "minimum_battles": 0,
+        "all_battles": false
+      },
+      {
+        "min_voyage": 2,
+        "max_voyage": 4,
+        "minimum_battles": 1,
+        "all_battles": false
+      },
+      {
+        "min_voyage": 5,
+        "max_voyage": 5,
+        "minimum_battles": 0,
+        "all_battles": true
+      }
+    ],
+    "minimum_battles": 0,
+    "all_battles": false,
+    "category_weights": {
+      "battle": 1.5
+    },
+    "weather_multipliers": {
+      "negative": 1.5,
+      "positive": 0.65
+    },
+    "recovery_floor": 1,
+    "continuous_battle_limit": 2,
+    "boss_target": {
+      "hp": 14,
+      "damage": 2
+    },
+    "weather_weights": {
+      "bloodMoon": 0,
+      "rain": 0,
+      "battleSquall": 0
+    },
+    "weather_safe_voyages": 1,
+    "all_battle_weather_limit": 2,
+    "all_battle_weather_episode_limit": 0,
+    "all_battle_weather_last_start": 0,
+    "weather_exclusive_groups": [
+      [
+        "rain",
+        "battleSquall"
+      ]
+    ]
+  },
+  "nightmare:open_sea": {
+    "survival_multipliers": {
+      "hunger": 1.2,
+      "hydration": 1.2
+    },
+    "id": "nightmare:open_sea",
+    "difficulty": "nightmare",
+    "layer": "open_sea",
+    "node_pool": "open_sea",
+    "navigation_profile": "open_sea",
+    "weather_profile": "weather_open_sea",
+    "boss_node": "boss_open_sea",
+    "battle_templates": [
+      "open_sea_patrol"
+    ],
+    "voyage_bands": [
+      {
+        "min_voyage": 1,
+        "max_voyage": 4,
+        "minimum_battles": 1,
+        "all_battles": false
+      },
+      {
+        "min_voyage": 5,
+        "max_voyage": 9,
+        "minimum_battles": 2,
+        "all_battles": false
+      },
+      {
+        "min_voyage": 10,
+        "max_voyage": 10,
+        "minimum_battles": 0,
+        "all_battles": true
+      }
+    ],
+    "minimum_battles": 1,
+    "all_battles": false,
+    "category_weights": {
+      "battle": 1.6
+    },
+    "weather_multipliers": {
+      "negative": 1.5,
+      "positive": 0.65
+    },
+    "recovery_floor": 1,
+    "continuous_battle_limit": 2,
+    "boss_target": {
+      "hp": 34,
+      "damage": 3
+    },
+    "weather_weights": {
+      "rain": 1.5,
+      "battleSquall": 1.5
+    },
+    "weather_safe_voyages": 0,
+    "all_battle_weather_limit": 2,
+    "all_battle_weather_episode_limit": 0,
+    "all_battle_weather_last_start": 8,
+    "weather_exclusive_groups": [
+      [
+        "rain",
+        "battleSquall"
+      ]
+    ]
+  },
+  "nightmare:abyss": {
+    "survival_multipliers": {
+      "hunger": 1.2,
+      "hydration": 1.2
+    },
+    "id": "nightmare:abyss",
+    "difficulty": "nightmare",
+    "layer": "abyss",
+    "node_pool": "abyss",
+    "navigation_profile": "abyss",
+    "weather_profile": "weather_abyss",
+    "boss_node": "boss_abyss",
+    "battle_templates": [
+      "abyss_patrol"
+    ],
+    "voyage_bands": [
+      {
+        "min_voyage": 1,
+        "max_voyage": 2,
+        "minimum_battles": 1,
+        "all_battles": false
+      },
+      {
+        "min_voyage": 3,
+        "max_voyage": 9,
+        "minimum_battles": 2,
+        "all_battles": false
+      },
+      {
+        "min_voyage": 10,
+        "max_voyage": 10,
+        "minimum_battles": 0,
+        "all_battles": true
+      }
+    ],
+    "minimum_battles": 1,
+    "all_battles": false,
+    "category_weights": {
+      "battle": 1.7
+    },
+    "weather_multipliers": {
+      "negative": 1.5,
+      "positive": 0.65
+    },
+    "recovery_floor": 1,
+    "continuous_battle_limit": 2,
+    "boss_target": {
+      "hp": 46,
+      "damage": 5
+    },
+    "weather_weights": {
+      "rain": 1.5,
+      "battleSquall": 1.5
+    },
+    "weather_safe_voyages": 0,
+    "all_battle_weather_limit": 2,
+    "all_battle_weather_episode_limit": 0,
+    "all_battle_weather_last_start": 8,
+    "weather_exclusive_groups": [
+      [
+        "rain",
+        "battleSquall"
+      ]
+    ]
+  }
+}

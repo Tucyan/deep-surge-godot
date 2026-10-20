@@ -1,0 +1,13 @@
+{
+  "default": {
+    "resource_slots": 3,
+    "equipment_slots": 3,
+    "relic_slots": 3,
+    "resource_limit": 2,
+    "equipment_limit": 1,
+    "resource_base_price": 1,
+    "resource_price_multiplier": 2,
+    "corpse_sell_price": 3,
+    "other_sell_price": 1
+  }
+}

@@ -4,6 +4,7 @@ const I = preload("res://core/inventory.gd")
 const R = preload("res://core/random_streams.gd")
 const RelicRewards = preload("res://core/relic_rewards.gd")
 const Origins = preload("res://core/origin_rules.gd")
+const Navigation = preload("res://core/navigation_rules.gd")
 const WEIGHTS := {"supply":25,"trade":10,"service":15,"risk":10,"battle":20,"camp":10,"shop":10}
 
 static func key(node: Dictionary) -> String:
@@ -26,10 +27,13 @@ static func definitions(ctx) -> Array:
 
 static func eligible(ctx, node: Dictionary, state: Dictionary = {}) -> bool:
 	var s: Dictionary=ctx.state if state.is_empty() else state
-	var id: String=key(node)
-	if node.get("boss",false): return s.mode in ["challenge", "story"] and int(s.voyage)==int(s.length)
-	if s.mode in ["challenge", "story"] and int(s.voyage)==int(s.length): return false
-	return not node.get("retired",false) and int(s.voyage)>=int(node.get("min_voyage",1)) and int(s.flags.get("event_visits",{}).get(id,0))<int(node.get("max_visits",99)) and int(s.voyage)-int(s.flags.get("event_last",{}).get(id,-999))>=int(node.get("cooldown",1))
+	if s.mode=="tutorial":
+		var scripted: Array=preload("res://core/tutorial_rules.gd").NODES
+		return int(s.voyage)>=1 and int(s.voyage)<=scripted.size() and node.get("id","")==scripted[int(s.voyage)-1]
+	if node.has("template_id"):return valid_node(ctx,node,str(s.mode),s)
+	if node.get("boss",false): return ctx.Campaign.is_layer_end(ctx.catalog,s) and ctx.Campaign.boss_node(ctx.catalog,s).get("id","")==node.id
+	if ctx.Campaign.is_layer_end(ctx.catalog,s): return false
+	return not node.get("retired",false) and Navigation.eligible(ctx,node,s)
 
 static func free_benefit(ctx, node: Dictionary, food_only: bool = false) -> bool:
 	var list: Array=node.stages[0] if node.has("stages") else node.get("options",[])
@@ -43,29 +47,7 @@ static func free_benefit(ctx, node: Dictionary, food_only: bool = false) -> bool
 	return false
 
 static func pick(ctx, nodes: Array) -> Dictionary:
-	var categories: Dictionary={}
-	for node in nodes:
-		var category: String=node.get("category","supply")
-		if not categories.has(category): categories[category]=[]
-		categories[category].append(node)
-	var total := 0.0
-	for category in categories: total+=float(Origins.battle_weight(ctx.state,category,int(WEIGHTS.get(category,1))))
-	var roll: float=R.draw(ctx.state.rng,"nodes")*total
-	var selected: String=str(categories.keys()[-1])
-	for category in categories:
-		roll-=float(Origins.battle_weight(ctx.state,category,int(WEIGHTS.get(category,1))))
-		if roll<0: selected=category; break
-	var choices: Array=categories[selected]; var weights: Array=[]; total=0
-	for node in choices:
-		var amount: int=int(ctx.state.flags.get("event_visits",{}).get(key(node),0))
-		var weight: float=1.0/(1+3*amount)
-		if ctx.state.get("last_node","")==node.id: weight*=0.25
-		weights.append(weight); total+=weight
-	roll=R.draw(ctx.state.rng,"nodes")*total
-	for i in range(choices.size()):
-		roll-=weights[i]
-		if roll<0: return choices[i].duplicate(true)
-	return choices[-1].duplicate(true)
+	return Navigation.pick(ctx,nodes)
 
 static func candidates(ctx) -> void:
 	var s: Dictionary=ctx.state; var chosen: Array=[]
@@ -76,35 +58,13 @@ static func candidates(ctx) -> void:
 		node.visit_id="candidate-%d" % int(s.next_id); s.next_id+=1
 		s.candidates=[node]
 		return
-	if s.voyage==s.length: chosen=[ctx.catalog.entry("nodes","boss")]
+	if ctx.Campaign.is_layer_end(ctx.catalog,s): chosen=[ctx.Campaign.boss_node(ctx.catalog,s)]
 	else:
 		var available: Array=[]
 		for node in definitions(ctx):
 			if eligible(ctx,node): available.append(node)
-		var safe: Array=[]
-		var early: bool=s.mode in ["challenge", "story"] and int(s.voyage)<=2
-		if early:
-			for node in available:
-				if free_benefit(ctx,node,true): safe.append(node)
-		if not safe.is_empty(): chosen.append(pick(ctx,safe))
-		elif not available.is_empty(): chosen.append(pick(ctx,available))
-		else: chosen.append(ctx.catalog.entry("nodes","fallback"))
-		while chosen.size()<3:
-			var remaining: Array=[]
-			for node in available:
-				# One family per candidate set keeps variants from crowding out other roles.
-				if chosen.any(func(other): return other.id==node.id): continue
-				if node.get("category","") in ["camp","shop"] and chosen.any(func(other): return other.get("category","")==node.get("category","")): continue
-				remaining.append(node)
-			if remaining.is_empty(): break
-			chosen.append(pick(ctx,remaining))
-		if Origins.active(s,"zealot") and int(s.origin_state.navigation_voyage)!=int(s.voyage):
-			if int(s.origin_state.battle_misses)>=2 and not chosen.any(func(node): return battle_opportunity(ctx,node)):
-				var battles: Array=available.filter(func(node): return battle_opportunity(ctx,node))
-				# Keep the early safe first candidate; replace a slot, never add one.
-				if not battles.is_empty(): chosen[chosen.size()-1]=pick(ctx,battles)
-			s.origin_state.navigation_voyage=int(s.voyage)
-			s.origin_state.battle_misses=0 if chosen.any(func(node): return battle_opportunity(ctx,node)) else mini(2,int(s.origin_state.battle_misses)+1)
+		chosen=Navigation.generate(ctx,available)
+
 	s.candidates=[]
 	for node in chosen:
 		node.visit_id="candidate-%d" % int(s.next_id); s.next_id+=1
@@ -119,8 +79,15 @@ static func battle_opportunity(ctx, node: Dictionary) -> bool:
 
 static func arrived(ctx) -> void:
 	var s: Dictionary=ctx.state
+	if s.get("mode","")=="challenge":
+		s.flags.navigation_battle_streak=mini(ctx.Campaign.total_length(ctx.catalog,s),int(s.flags.get("navigation_battle_streak",0))+1) if battle_opportunity(ctx,s.node) else 0
 	if not s.flags.has("event_visits"): s.flags.event_visits={}
 	if not s.flags.has("event_last"): s.flags.event_last={}
+	for name in ["node_visits","node_last"]:
+		if not s.flags.has(name): s.flags[name]={}
+	var counter: String=Navigation.counter_key(ctx,s.node)
+	s.flags.node_visits[counter]=int(s.flags.node_visits.get(counter,0))+1
+	s.flags.node_last[counter]=int(s.voyage)
 	var id: String=key(s.node)
 	s.flags.event_visits[id]=int(s.flags.event_visits.get(id,0))+1
 	s.flags.event_last[id]=int(s.voyage)
@@ -247,6 +214,8 @@ static func option(ctx, args: Dictionary) -> bool:
 	if not ctx.active():
 		ctx.Stats.resolve_crisis(s,false); return true
 	var continuation: int=int(chosen.get("next_stage",-1))
+	var request: Dictionary=chosen.get("battle",{}).duplicate(true)
+	s.encounter.battle_outcome=""
 	var succeeded := true
 	if chosen.has("outcomes"):
 		if s.get("mode","")=="tutorial":
@@ -254,24 +223,31 @@ static func option(ctx, args: Dictionary) -> bool:
 			var first: Dictionary=chosen.outcomes[0]
 			if not apply(ctx,first.get("effects",[]),args,summary): return false
 			succeeded=bool(first.get("success",true))
+			s.encounter.battle_outcome=str(first.get("id","0"))
+			request=first.get("battle",request).duplicate(true)
 			continuation=int(first.get("next_stage",-1))
 		else:
 			var total := 0.0
 			for outcome in chosen.outcomes: total+=float(outcome.weight)
 			var roll: float=R.draw(s.rng,"rewards")*total
-			for outcome in chosen.outcomes:
+			for outcome_index in range(chosen.outcomes.size()):
+				var outcome: Dictionary=chosen.outcomes[outcome_index]
 				roll-=float(outcome.weight)
 				if roll<0:
 					if not apply(ctx,outcome.get("effects",[]),args,summary): return false
 					succeeded=bool(outcome.get("success",true))
+					s.encounter.battle_outcome=str(outcome.get("id",str(outcome_index)))
+					request=outcome.get("battle",request).duplicate(true)
 					continuation=int(outcome.get("next_stage",-1)); break
 	if not ctx.active():
 		ctx.Stats.resolve_crisis(s,false); return true
 	var text: String=chosen.name+"："+("；".join(summary) if not summary.is_empty() else "保留已有物资，结束停留。")
 	s.encounter.last_result=text
-	if chosen.has("battle"):
+	if not request.is_empty():
 		s.encounter.battle_option=chosen.id
-		if not ctx.Battle.enter(ctx,str(chosen.battle.enemy),chosen.battle.get("rewards",{})): return false
+		s.encounter.battle_request=request.duplicate(true)
+		s.encounter.battle_continuation=int(request.get("return_stage",continuation))
+		if not ctx.Battle.enter(ctx,str(request.enemy),request.get("rewards",{})): return false
 	elif continuation>=0:
 		if continuation>=s.node.get("stages",[]).size(): return ctx.fail("事件段落无效")
 		s.encounter.stage=continuation; ctx.log_text(text)
@@ -307,6 +283,27 @@ static func reward_preview(option: Dictionary) -> Dictionary:
 			"GuideNavigation": result.guidance=true
 	return result
 
+static func public_option(option: Dictionary) -> Dictionary:
+	# Public views must not disclose random outcomes or hidden battle requests.
+	# Keep only fields that describe an option or are needed by presentation.
+	var result: Dictionary = option.duplicate(true)
+	for key in result.keys():
+		if key not in ["id", "name", "description", "cost", "cardCosts", "statCosts", "conditions", "min_voyage", "operation"]:
+			result.erase(key)
+	return result
+
+static func public_node(node: Dictionary) -> Dictionary:
+	var result: Dictionary = node.duplicate(true)
+	for key in result.keys():
+		if key not in ["id", "name", "kind", "description", "category", "visit_id", "visibility", "variant_id", "boss", "monster", "options"]:
+			result.erase(key)
+	if result.has("options"):
+		var options: Array = []
+		for option in result.options:
+			if option is Dictionary: options.append(public_option(option))
+		result.options = options
+	return result
+
 static func project(ctx, view: Dictionary) -> void:
 	if ctx.state.is_empty(): return
 	view.encounter={"stage":stage(ctx),"last_result":ctx.state.get("encounter",{}).get("last_result","")}
@@ -314,33 +311,168 @@ static func project(ctx, view: Dictionary) -> void:
 	view.event_options=[]
 	for item in options(ctx):
 		if item.get("conditions",{}).get("target","")=="damaged_cell" and targets(ctx,item).is_empty(): continue
-		var option: Dictionary=item.duplicate(true); option.actions=[]; option.preview=reward_preview(item)
+		var option: Dictionary=public_option(item); option.actions=[]; option.preview=reward_preview(item)
 		for args in arguments(ctx,item): option.actions.append({"args":args,"label":action_label(ctx,args),"reason":reason(ctx,item,args)})
 		view.event_options.append(option)
 
 static func valid_state(ctx, s: Dictionary) -> bool:
 	var runtime: Variant=s.get("encounter")
 	if not runtime is Dictionary: return false
+	if runtime.has("last_battle_source"):
+		var source: Variant=runtime.last_battle_source
+		if not source is Dictionary or not integral(source.get("source_stage"),0) or not source.get("battle_request") is Dictionary:return false
+		var probe: Dictionary=s.duplicate(true)
+		probe.phase="story";probe.encounter.erase("last_battle_source")
+		probe.encounter.merge(source,true);probe.encounter.stage=int(source.source_stage)
+		if not valid_state(ctx,probe):return false
 	for name in ["event_visits","event_last"]:
 		if not s.flags.get(name) is Dictionary: return false
 		for id in s.flags[name]:
 			if not id is String or not ctx.Rules.integer(s.flags[name][id]) or s.flags[name][id]<0: return false
-	if s.phase=="battle":
-		if s.battle.has("rewards"):
-			var verified := false
-			var offers: Array=s.node.get("options",[])
-			if s.node.has("stages"):
-				var index: int=int(runtime.get("stage",-1))
-				if index<0 or index>=s.node.stages.size(): return false
-				offers=s.node.stages[index]
-			if s.battle.id==s.node.get("monster","") and not runtime.has("battle_option") and s.battle.rewards==s.node.get("rewards",{}): verified=true
-			for option in offers:
-				if option.id==runtime.get("battle_option","") and option.get("battle",{}).get("enemy","")==s.battle.id and option.battle.get("rewards",{})==s.battle.rewards: verified=true
-			if not verified: return false
-		elif s.battle.get("id","")!=s.node.get("monster","") or not s.node.get("rewards",{}).is_empty(): return false
+	for name in ["node_visits","node_last"]:
+		if not s.flags.get(name,{}) is Dictionary: return false
+		for id in s.flags.get(name,{}):
+			if not id is String or not ctx.Rules.integer(s.flags[name][id]) or s.flags[name][id]<0: return false
+	if runtime.has("battle_request"):
+		var offers: Array=s.node.get("options",[])
+		if s.node.has("stages"):
+			var index: int=int(runtime.get("stage",-1))
+			if index<0 or index>=s.node.stages.size(): return false
+			offers=s.node.stages[index]
+		var verified:=false
+		for option in offers:
+			if option.id!=runtime.get("battle_option",""):continue
+			var request: Dictionary=option.get("battle",{})
+			var continuation: int=int(option.get("next_stage",-1))
+			var outcome_id: String=str(runtime.get("battle_outcome",""))
+			if not outcome_id.is_empty():
+				var found:=false
+				for i in range(option.get("outcomes",[]).size()):
+					var outcome: Dictionary=option.outcomes[i]
+					if str(outcome.get("id",str(i)))==outcome_id:
+						request=outcome.get("battle",request);continuation=int(outcome.get("next_stage",-1));found=true;break
+				if not found:return false
+			if request.is_empty() or request!=runtime.battle_request:return false
+			if not ctx.Rules.integer(runtime.get("battle_continuation")) or int(runtime.battle_continuation)!=int(request.get("return_stage",continuation)):return false
+			if s.phase=="battle" and (request.enemy!=s.battle.id or request.get("rewards",{})!=s.battle.get("rewards",{})):return false
+			verified=true
+		if not verified:return false
+	elif s.phase=="battle":
+		if s.battle.get("id","")!=s.node.get("monster","") or s.battle.get("rewards",{})!=s.node.get("rewards",{}):return false
+
 	if runtime.is_empty(): return not s.node.has("stages")
 	if not runtime.get("visit_id") is String or runtime.visit_id!=s.node.get("visit_id","") or not ctx.Rules.integer(runtime.get("stage")) or runtime.stage<0 or not runtime.get("last_result") is String or not runtime.get("resolved") is bool: return false
 	if s.node.has("stages"):
 		if runtime.stage>=s.node.stages.size(): return false
 	elif runtime.stage!=0: return false
+	return true
+
+static func leave(ctx) -> bool:
+	if ctx.phase()!="story" or ctx.state.get("story_step","")!="choice" or not ctx.state.node.has("monster"):return ctx.fail("当前不能离开遭遇")
+	ctx.Stats.resolve_crisis(ctx.state,false)
+	if ctx.state.get("mode","")=="tutorial":return ctx.fail("教程不能离开遭遇")
+	if ctx.state.node.get("boss",false):ctx.state.flags.boss_withdrawn=true
+	if ctx.state.node.get("monster","")!="" and ctx.state.node.get("kind","")!="ruin":
+		ctx.change("hp",-int(combat(ctx).get("retreat_damage",4)),"retreat")
+		if not ctx.alive():return true
+	ctx.result_story("离开遭遇，没有战斗奖励。")
+	return true
+
+static func combat(ctx) -> Dictionary:
+	return ctx.catalog.entry("balance","combat")
+
+static func valid_node(ctx,node: Dictionary,mode: String = "challenge",state: Dictionary = {}) -> bool:
+	var source: Dictionary=ctx.state if state.is_empty() else state
+	var definition: Dictionary={}
+	if node.has("template_id"):
+		var layer: Dictionary=ctx.Campaign.layer(ctx.catalog,source)
+		if node.get("template_layer","")!=layer.get("id","") or mode=="tutorial":return false
+		if node.template_id not in ctx.Campaign.navigation(ctx.catalog,source).get("template_ids",[]):return false
+		var template: Dictionary=ctx.catalog.entry("battle_templates",node.template_id)
+		if template.is_empty():return false
+		definition=template.node.duplicate(true)
+		definition.template_id=node.template_id; definition.template_layer=node.template_layer
+	else:
+		definition=ctx.catalog.entry("nodes",node.get("id",""))
+		if definition.is_empty():return false
+		var base_id: String=str(definition.id)
+		if node.has("variant_id"):
+			var found:=false
+			for variant in definition.get("variants",[]):
+				if variant.id==node.variant_id:definition.merge(variant,true);definition.id=base_id;found=true;break
+			if not found:return false
+	definition.erase("variants")
+	var actual: Dictionary=node.duplicate(true)
+	actual.erase("visit_id");actual.erase("variant_id");actual.erase("variants")
+	return actual==definition
+
+static func valid_content(tables: Dictionary) -> bool:
+	for name in ["node_pools","navigation_profiles","battle_templates"]:
+		if not tables.get(name) is Dictionary or tables[name].is_empty():return false
+	for id in tables.battle_templates:
+		var template: Variant=tables.battle_templates[id]
+		if not template is Dictionary or template.get("id")!=id or not template.get("repeatable") is bool:return false
+		var node: Variant=template.get("node")
+		if not node is Dictionary or node.get("boss",false) or node.get("kind","")!="battle" or node.get("category","")!="battle" or not tables.enemies.has(node.get("monster","")):return false
+		if not valid_battle_rewards(tables,node.get("rewards",{})):return false
+	for id in tables.navigation_profiles:
+		var profile: Variant=tables.navigation_profiles[id]
+		if not profile is Dictionary or profile.get("id")!=id:return false
+		if not integral(profile.get("slots"),1) or profile.slots>3 or not integral(profile.get("minimum_battles"),0) or not integral(profile.get("safe_voyages"),0):return false
+		if not profile.get("template_ids") is Array:return false
+		var seen: Array=[]
+		if int(profile.get("minimum_battles",0))<0 or int(profile.get("minimum_battles",0))>int(profile.slots) or int(profile.get("safe_voyages",0))<0:return false
+		for template_id in profile.get("template_ids",[]):
+			if not template_id is String or template_id in seen or not tables.battle_templates.has(template_id):return false
+			seen.append(template_id)
+	for id in tables.node_pools:
+		var pool: Variant=tables.node_pools[id]
+		if not pool is Dictionary or pool.get("id")!=id or not pool.get("entries") is Array or pool.entries.is_empty():return false
+		for category in pool.get("category_weights",{}):
+			if not positive(pool.category_weights[category]):return false
+		for entry in pool.entries:
+			if not entry is Dictionary or not entry.get("node") is String:return false
+			var parts: PackedStringArray=entry.node.split("/")
+			if not tables.nodes.has(parts[0]):return false
+			if parts.size()>1 and not tables.nodes[parts[0]].get("variants",[]).any(func(v):return v.id==parts[1]):return false
+			if not positive(entry.get("weight")) or not integral(entry.get("min_voyage"),1) or not integral(entry.get("max_voyage"),1) or entry.max_voyage<entry.min_voyage or not integral(entry.get("max_visits"),1) or not integral(entry.get("cooldown"),0) or entry.get("scope","") not in ["run","layer"]:return false
+	for node in tables.nodes.values():
+		if not valid_battle_content(tables,node,node.get("stages",[]).size()):return false
+	return true
+
+static func valid_battle_content(tables: Dictionary,value: Variant,stage_count: int = 0) -> bool:
+	if value is Dictionary:
+		if value.has("battle"):
+			var request: Variant=value.battle
+			if not request is Dictionary or not tables.enemies.has(request.get("enemy","")) or not valid_battle_rewards(tables,request.get("rewards",{})):return false
+			if request.get("exit_rule","ordinary") not in ["ordinary","protected"]:return false
+			if request.has("return_stage") and (not integral(request.return_stage,0) or request.return_stage>=stage_count):return false
+		if value.has("rewards") and not valid_battle_rewards(tables,value.rewards):return false
+		if value.has("outcomes"):
+			if not value.outcomes is Array or value.outcomes.is_empty():return false
+			var ids: Array=[]
+			for i in range(value.outcomes.size()):
+				var outcome: Variant=value.outcomes[i]
+				if not outcome is Dictionary or not positive(outcome.get("weight")):return false
+				var outcome_id: Variant=outcome.get("id",str(i))
+				if not outcome_id is String or outcome_id.is_empty() or outcome_id in ids:return false
+				ids.append(outcome_id)
+		for item in value.values():
+			if not valid_battle_content(tables,item,stage_count):return false
+	elif value is Array:
+		for item in value:
+			if not valid_battle_content(tables,item,stage_count):return false
+	return true
+
+
+static func integral(value: Variant,minimum: int) -> bool:
+	return (value is int or value is float) and is_finite(float(value)) and floor(float(value))==float(value) and value>=minimum
+
+static func positive(value: Variant) -> bool:
+	return (value is int or value is float) and is_finite(float(value)) and value>0
+
+static func valid_battle_rewards(tables: Dictionary,rewards: Variant) -> bool:
+	if not RelicRewards.valid_rewards(tables.relics,rewards):return false
+	for field in ["coin","corpse","resources","xp"]:
+		if rewards.has(field) and not integral(rewards[field],0):return false
 	return true

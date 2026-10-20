@@ -13,8 +13,9 @@ const Query = preload("res://core/effect_query.gd")
 const Effects = preload("res://core/effect_rules.gd")
 const PHASES := ["navigation","preparation","story","interaction","battle","aftermath","discard","finished","chapterComplete"]
 
-static func expansion_cost(state: Dictionary) -> Dictionary:
-	return {"wood":1 if int(state.get("expansion_count",0)) < DISCOUNTED_EXPANSIONS else int(EXPANSION_COST.wood)}
+static func expansion_cost(state: Dictionary, catalog = null) -> Dictionary:
+	var economy: Dictionary=catalog.entry("balance","economy") if catalog!=null else {}
+	return {"wood":int(economy.get("discount_wood",1)) if int(state.get("expansion_count",0))<int(economy.get("discount_expansions",DISCOUNTED_EXPANSIONS)) else int(economy.get("expansion_wood",EXPANSION_COST.wood)),"ap":int(economy.get("expansion_ap",EXPANSION_AP))}
 
 static func candidates(ctx) -> void:
 	if ctx.Origins.active(ctx.state,"zealot") and int(ctx.state.origin_state.navigation_voyage)==int(ctx.state.voyage) and not ctx.state.candidates.is_empty(): return
@@ -40,16 +41,14 @@ static func voyage(ctx, id: String) -> bool:
 	s.visits[node.id] = int(s.visits.get(node.id,0)) + 1
 	s.last_node = node.id
 	ctx.discover("node." + node.id)
-	var reduction: int = (5 if s.flags.get("avoidWave",false) else 0)+(5 if ctx.EnvironmentRules.active(s,"current") else 0)
-	s.flags.avoidWave = false
-	s.flags.voyage_survival_cost = 30-reduction
-	var sanity_cost: int = 10 if ctx.Origins.active(s,"fool") else 15
+	var departure: Dictionary=ctx.Survival.lock_costs(ctx)
+	var sanity_cost: int=int(departure.sanity)
 	ctx.change("sanity",-sanity_cost,"movement")
 	for cell in s.cells:
 		if cell.status == "intact" and cell.equipment.get("id","") == "lamp" and cell.equipment.fuel > 0:
 			ctx.change("sanity",15+5*(int(cell.equipment.level)-1),"lamp"); cell.equipment.fuel -= 1
 			Stats.device_used(s,"lamp",cell.id)
-	ctx.log_text("抵达%s；移动支付SAN%d，食水各%d在轮末弃牌完成后结算。" % [node.name,sanity_cost,30-reduction])
+	ctx.log_text("抵达%s；移动支付SAN%d，食物%d、饮水%d在轮末弃牌完成后结算。" % [node.name,sanity_cost,departure.hunger,departure.hydration])
 	if not ctx.alive(): return true
 	s.phase = "preparation"
 	return true
@@ -279,9 +278,10 @@ static func raft_action(ctx, command: String, args: Dictionary) -> bool:
 				if c.status != "detached": return ctx.fail("该位置已有筏格")
 				old = c
 			if c.status != "detached" and absi(c.x-x)+absi(c.y-y) == 1: adjacent = true
-		var wood_cost: int = int(expansion_cost(ctx.state).wood)
-		if not adjacent or ctx.state.ap < EXPANSION_AP or not I.consume(ctx.state,"wood",wood_cost,"expand"): return ctx.fail("邻接位置扩建需要木头%d与AP1" % wood_cost)
-		ctx.state.ap -= EXPANSION_AP
+		var quote: Dictionary=expansion_cost(ctx.state,ctx.catalog)
+		var wood_cost: int=int(quote.wood)
+		if not adjacent or ctx.state.ap < int(quote.ap) or not I.consume(ctx.state,"wood",wood_cost,"expand"): return ctx.fail("邻接位置扩建需要木头%d与AP%d" % [wood_cost,quote.ap])
+		ctx.state.ap -= int(quote.ap)
 		ctx.state.expansion_count += 1
 		if not old.is_empty(): old.status = "intact"; old.equipment = {}; old.damaged_at = 0
 		else: ctx.state.cells.append({"id":"cell-%d-%d" % [x,y],"x":x,"y":y,"status":"intact","damaged_at":0,"equipment":{}})
@@ -354,23 +354,24 @@ static func raft_action(ctx, command: String, args: Dictionary) -> bool:
 		I.remove(ctx.state,card.uid,"deployed"); ctx.log_text("安装" + ctx.catalog.entry("cards",card.id).name)
 		return true
 	if command == "repair_cell":
-		if cell.status != "damaged" or ctx.state.ap < 1: return ctx.fail("修理需要破损格与AP1")
+		var repair: Dictionary=ctx.catalog.entry("balance","economy")
+		if cell.status != "damaged" or ctx.state.ap < int(repair.repair_ap): return ctx.fail("修理需要破损格与AP%d" % repair.repair_ap)
 		var material: String = args.get("material","")
 		var consumed_mat := "wood"
-		var consumed_amount := 1
+		var consumed_amount: int=int(repair.repair_wood)
 		if material == "rope":
-			consumed_mat = "rope"; consumed_amount = 2
+			consumed_mat = "rope"; consumed_amount = int(repair.repair_rope)
 		elif material == "wood":
-			consumed_mat = "wood"; consumed_amount = 1
+			consumed_mat = "wood"; consumed_amount = int(repair.repair_wood)
 		else:
-			if I.count(ctx.state,"wood") >= 1:
-				consumed_mat = "wood"; consumed_amount = 1
-			elif I.count(ctx.state,"rope") >= 2:
-				consumed_mat = "rope"; consumed_amount = 2
+			if I.count(ctx.state,"wood") >= int(repair.repair_wood):
+				consumed_mat = "wood"; consumed_amount = int(repair.repair_wood)
+			elif I.count(ctx.state,"rope") >= int(repair.repair_rope):
+				consumed_mat = "rope"; consumed_amount = int(repair.repair_rope)
 			else:
-				return ctx.fail("修理需要木头1或绳索2与AP1")
+				return ctx.fail("修理需要木头%d或绳索%d与AP%d" % [repair.repair_wood,repair.repair_rope,repair.repair_ap])
 		if not I.consume(ctx.state,consumed_mat,consumed_amount,"repair"): return ctx.fail("修理材料不足")
-		cell.status = "intact"; cell.damaged_at = 0; ctx.state.ap -= 1
+		cell.status = "intact"; cell.damaged_at = 0; ctx.state.ap -= int(repair.repair_ap)
 		ctx.log_text("修补筏格："+cell.id)
 		return true
 	if cell.status != "intact": return ctx.fail("破损/脱落格上的设备不可用")
@@ -438,25 +439,14 @@ static func raft_action(ctx, command: String, args: Dictionary) -> bool:
 	return false
 
 static func settle_survival(ctx) -> bool:
-	var s: Dictionary = ctx.state
-	var cost: int = int(s.flags.get("voyage_survival_cost",30))
-	var costs: Dictionary=Query.survival_costs(s,ctx.catalog,{"hunger":cost,"hydration":cost})
-	var hunger_cost: int=maxi(0,int(costs.hunger))
-	var hydration_cost: int=maxi(0,int(costs.hydration))
-	s.flags.erase("voyage_survival_cost")
-	ctx.change("hunger",-hunger_cost,"movement"); ctx.change("hydration",-hydration_cost,"movement")
-	var hunger_damage: int = Health.DEPRIVATION_EACH if s.player.hunger == 0 else 0
-	var thirst_damage: int = Health.DEPRIVATION_EACH if s.player.hydration == 0 else 0
-	ctx.change("hp",-mini(Health.DEPRIVATION_CAP,hunger_damage+thirst_damage),"deprivation")
-	ctx.log_text("轮末整理完成：食物扣%d、饮水扣%d；饥饿/缺水造成%d生命损失。" % [hunger_cost,hydration_cost,mini(Health.DEPRIVATION_CAP,hunger_damage+thirst_damage)])
-	return ctx.alive()
+	return ctx.Survival.settle(ctx)
 
 static func settle(ctx) -> bool:
 	var s: Dictionary = ctx.state
 	if ctx.phase() != "aftermath": return ctx.fail("先完成当前节点结果剧情")
 	s.ap = 0
 	for cell in s.cells:
-		if cell.status == "damaged" and s.voyage - cell.damaged_at >= 2:
+		if cell.status == "damaged" and s.voyage - cell.damaged_at >= int(ctx.catalog.entry("balance","economy").aging_voyages):
 			cell.status = "detached"; cell.equipment = {}; ctx.log_text("筏格老化脱落："+cell.id)
 		if not cell.equipment.is_empty():
 			for i in range(cell.equipment.get("boost_cards",[]).size()-1,-1,-1):
@@ -504,6 +494,9 @@ static func next_voyage(ctx) -> void:
 	var s: Dictionary = ctx.state
 	# Capacity is satisfied: charge survival before production or any successful ending.
 	if not settle_survival(ctx): return
+	if s.flags.get("boss_withdrawn",false) or not ctx.Campaign.can_advance(ctx):
+		ctx.finish("withdrawn")
+		return
 	if s.voyage == s.length:
 		if s.mode == "tutorial":
 			ctx.log_text("新手教程完成：你已经走完一次完整的航行循环。")
@@ -511,7 +504,8 @@ static func next_voyage(ctx) -> void:
 			return
 		ctx.finish("survived" if s.boss_defeated else "withdrawn")
 		return
-	s.voyage += 1; s.phase = "navigation"; s.node = {}; s.battle = {}; s.encounter = {}; ctx.panel = ""
+	ctx.Campaign.advance(ctx)
+	s.phase = "navigation"; s.node = {}; s.battle = {}; s.encounter = {}; ctx.panel = ""
 	ctx.EnvironmentRules.start_round(ctx)
 	refresh_voyage_ap(ctx)
 	produce_at_round_start(ctx)
@@ -524,8 +518,9 @@ static func next_voyage(ctx) -> void:
 		return
 	var spring_extra: int=ctx.EnvironmentRules.spring_bonus(ctx)
 	for i in range(spring_extra): ctx.give(R.pick(s.rng,"initial",I.RESOURCES),1,false,"spring")
-	ctx.give("wood",1,false,"spring")
-	ctx.give(R.pick(s.rng,"initial",I.RESOURCES),1,false,"spring")
+	var economy: Dictionary=ctx.catalog.entry("balance","economy")
+	for id in economy.spring_fixed: ctx.give(id,int(economy.spring_fixed[id]),false,"spring")
+	for i in range(int(economy.spring_random)): ctx.give(R.pick(s.rng,"initial",I.RESOURCES),1,false,"spring")
 	candidates(ctx)
 	ctx.log_text("领取本轮涌泉：固定木头1份＋随机基础资源1张（可含木头）；开放导航。")
 
@@ -582,7 +577,7 @@ static func valid_save(ctx, data: Dictionary) -> bool:
 		if not p.has(key): return false
 	if not p.purchases is Dictionary or not p.tech is Array or not p.pending is Dictionary or not p.discovered is Array or not p.endings is Array: return false
 	if not integer(p.points) or p.points < 0: return false
-	if not preload("res://core/run_rewards.gd").valid(p.get("run_rewards", {})): return false
+	if not preload("res://core/run_rewards.gd").valid(p.get("run_rewards", {}),ctx.Campaign.total_length(ctx.catalog,{"mode":"story"})): return false
 	for id in p.purchases:
 		var item: Dictionary = ctx.catalog.entry("meta_shop",id)
 		if item.is_empty() or not integer(p.purchases[id]) or p.purchases[id] < 0 or p.purchases[id] > item.maxPurchases: return false
@@ -614,15 +609,16 @@ static func valid_save(ctx, data: Dictionary) -> bool:
 		if not integer(s[key]) or s[key] < 0: return false
 	if s.seed > 4294967295: return false
 	if not s.node is Dictionary or not s.battle is Dictionary or not s.candidates is Array or not s.cells is Array or not s.logs is Array or not s.pool is Array or not s.flags is Dictionary or not s.visits is Dictionary: return false
+	if s.mode=="challenge":
+		if not integer(s.flags.get("navigation_battle_streak")) or int(s.flags.navigation_battle_streak)<0 or int(s.flags.navigation_battle_streak)>ctx.Campaign.total_length(ctx.catalog,s): return false
+	elif s.flags.has("navigation_battle_streak"): return false
 	if s.flags.get("raft_layout","") != Layout.ID: return false
-	if s.flags.has("voyage_survival_cost"):
-		if not integer(s.flags.voyage_survival_cost) or int(s.flags.voyage_survival_cost) not in [20,25,30]: return false
-		if s.phase in ["navigation","chapterComplete"]: return false
+	if not ctx.Campaign.valid(ctx.catalog,s) or not ctx.Survival.valid(ctx,s): return false
 	if not ctx.Origins.valid(s): return false
 	if not Collectibles.valid(ctx,s): return false
 	if not ctx.EnvironmentRules.valid(ctx,s): return false
 	if s.voyage < 1 or s.voyage > s.length or s.coins < 0 or s.ap < 0: return false
-	if s.mode != "tutorial" and (s.length < 10 or s.length > 15): return false
+	if s.length!=ctx.Campaign.total_length(ctx.catalog,s): return false
 	if s.phase == "navigation" and (s.candidates.is_empty() or s.candidates.size() > 3): return false
 	for key in ["hp","hunger","hydration","sanity","hp_max","hunger_max","hydration_max","sanity_max","base_ap","battle_ap","limit","damage"]:
 		if not s.player.has(key) or not integer(s.player[key]): return false
@@ -663,8 +659,8 @@ static func valid_save(ctx, data: Dictionary) -> bool:
 					else: permanent_count+=1
 				if permanent_count>cap or boosts.size()>cap+1: return false
 			elif not cell.equipment.get("boost_cards",[]).is_empty(): return false
-	if s.phase in ["preparation","story","interaction","battle","aftermath","chapterComplete"] and ctx.catalog.entry("nodes",s.node.get("id","")).is_empty(): return false
-	if not s.node.is_empty() and not valid_node(ctx,s.node,s.mode,false,false): return false
+	if s.phase in ["preparation","story","interaction","battle","aftermath","chapterComplete"] and s.node.is_empty(): return false
+	if not s.node.is_empty() and not valid_node(ctx,s.node,s.mode,false,false,s): return false
 	if s.phase == "story" and s.story_step not in ["intro","choice","result"]: return false
 	if s.phase == "interaction" and s.node.get("kind") != "shop": return false
 	if s.phase == "battle" and (s.battle.is_empty() or not s.battle.has("hp") or not s.battle.has("turn") or not s.battle.has("ap") or not s.battle.has("entry_hp") or ctx.catalog.entry("enemies",s.battle.get("id","")).is_empty()): return false
@@ -688,7 +684,7 @@ static func valid_save(ctx, data: Dictionary) -> bool:
 		if int(s.next_boost_id)<=boost_sequence: return false
 	for node in s.candidates:
 		if not node is Dictionary or not node.has("visit_id"): return false
-		if not valid_node(ctx,node,s.mode,false,false): return false
+		if not valid_node(ctx,node,s.mode,false,false,s): return false
 		if s.phase=="navigation" and not ctx.Encounter.eligible(ctx,node,s): return false
 	if current and s.phase=="battle" and (not integer(s.battle.get("turn")) or s.battle.turn<1 or not integer(s.battle.get("hp")) or s.battle.hp<0 or not integer(s.battle.get("ap")) or s.battle.ap<0): return false
 	return ctx.Encounter.valid_state(ctx,s) and ctx.Shop.valid_state(ctx,s,p)
@@ -702,21 +698,5 @@ static func uid_suffix(uid: String,prefix: String) -> int:
 static func integer(value) -> bool:
 	return (value is int or value is float) and is_finite(float(value)) and float(value) == floor(float(value))
 
-static func valid_node(ctx, node: Dictionary, mode: String = "challenge", allow_old_hard_marker: bool = false, allow_old_production_text: bool = false) -> bool:
-	var definition: Dictionary = ctx.catalog.entry("nodes",node.get("id",""))
-	if definition.is_empty(): return false
-	var node_id: String = definition.id
-	if node.has("variant_id"):
-		var found := false
-		for variant in definition.get("variants",[]):
-			if variant.id == node.variant_id:
-				definition.merge(variant,true); definition.id = node_id; found = true; break
-		if not found: return false
-	definition.erase("variants")
-	var actual := node.duplicate(true)
-	actual.erase("visit_id"); actual.erase("variant_id"); actual.erase("variants")
-	if allow_old_production_text and node_id=="ST.L1.T02" and actual.get("lines") is Array:
-		for i in range(actual.lines.size()):
-			if actual.lines[i] is String: actual.lines[i]=actual.lines[i].replace("Ⅱ级滤水器每次轮末产水","Ⅱ级滤水器每轮开始产水")
-	if allow_old_hard_marker and actual.get("id","")=="ruin" and not actual.has("difficulty") and definition.get("difficulty","")=="hard": actual.difficulty="hard"
-	return JSON.stringify(actual) == JSON.stringify(definition)
+static func valid_node(ctx, node: Dictionary, mode: String = "challenge", _allow_old_hard_marker: bool = false, _allow_old_production_text: bool = false, state: Dictionary = {}) -> bool:
+	return ctx.Encounter.valid_node(ctx,node,mode,state)

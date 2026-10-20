@@ -1,0 +1,43 @@
+{
+  "shallows": {
+    "id": "shallows",
+    "slots": 3,
+    "safe_voyages": 2,
+    "template_ids": [
+      "shallows_patrol"
+    ],
+    "minimum_battles": 0
+  },
+  "open_sea": {
+    "id": "open_sea",
+    "slots": 3,
+    "safe_voyages": 0,
+    "template_ids": [
+      "open_sea_patrol"
+    ],
+    "minimum_battles": 1
+  },
+  "abyss": {
+    "id": "abyss",
+    "slots": 3,
+    "safe_voyages": 0,
+    "template_ids": [
+      "abyss_patrol"
+    ],
+    "minimum_battles": 1
+  },
+  "story": {
+    "id": "story",
+    "slots": 3,
+    "safe_voyages": 2,
+    "template_ids": [],
+    "minimum_battles": 0
+  },
+  "tutorial": {
+    "id": "tutorial",
+    "slots": 3,
+    "safe_voyages": 0,
+    "template_ids": [],
+    "minimum_battles": 0
+  }
+}

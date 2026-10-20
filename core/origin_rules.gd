@@ -110,7 +110,7 @@ static func low_stock_bonus(s: Dictionary) -> bool:
 	return active(s,"hoarder") and stock_count(s)<=7 and int(s.origin_state.salvage_voyage)!=int(s.voyage)
 
 static func battle_weight(s: Dictionary, category: String, base: int) -> int:
-	return 30 if category=="battle" and active(s,"zealot") else base
+	return roundi(base*1.5) if category=="battle" and active(s,"zealot") else base
 
 static func status(s: Dictionary) -> String:
 	if active(s,"hoarder"):

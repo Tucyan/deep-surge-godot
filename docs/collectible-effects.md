@@ -1,7 +1,7 @@
 # 潮汐遗物组合效果契约
-<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v02-26; reviewed: 2026-10-19 -->
+<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v03-01; reviewed: 2026-10-20 -->
 
-当前内容 v26；潮汐遗物是独立于手牌、设备与海况的实例系统。规则依据 [实例规则](../core/collectible_rules.gd)、[纯查询](../core/effect_query.gd)、[效果执行](../core/effect_rules.gd) 和 [定义表](../content/data/relics.json)。本文描述已经接入的范围，不包含旧定义描述中的未实现能力。
+当前内容0.3；潮汐遗物是独立于手牌、设备与海况的实例系统。规则依据 [实例规则](../core/collectible_rules.gd)、[纯查询](../core/effect_query.gd)、[效果执行](../core/effect_rules.gd) 和 [定义表](../content/data/relics.json)。本文描述已经接入的范围，不包含旧定义描述中的未实现能力。
 
 ## 获得、货架与持有
 
@@ -56,7 +56,7 @@
 
 战斗只在胜利时发遗物，先清理本场临时效果再发放；新获得的下一场战斗效果保留次数到下场，获得时恢复与永久上限立即生效。撤退、死亡及离开不发战斗遗物；胜利后再次提交攻击不能重复领取。教程禁止获得遗物。内容加载拒绝未知、禁用遗物、空池、重复池条目和非法数量，执行前再次校验；dispatch 失败回滚状态与随机。
 
-保存仍使用现有实例结构；战斗中的奖励必须与原节点或当前事件阶段的原选项精确匹配，不能删改保存中的奖励清单。领取前保存恢复不重掷，领取后恢复不重发。此扩展不新增运行状态字段或正式节点配置，不改变内容版本。
+保存仍使用现有实例结构；战斗中的奖励必须与原节点或当前事件阶段的原选项精确匹配，不能删改保存中的奖励清单。领取前保存恢复不重掷，领取后恢复不重发。遗物奖励支持保持既有实例结构；0.3通用节点战斗请求新增来源/随机结果/续段状态，由Encounter验证，详见[配置契约](v03-configuration.md)。
 
 ## 当前六种启用定义
 
@@ -102,7 +102,7 @@
 
 公开 `collectibles` 投影只列持有实例，含 uid/id/name/description 与效果 key/type/remaining/active，不暴露完整历史或随机流。规则查询只读，效果执行才改变计数和状态，应用与页面不直接操作这些字段。
 
-快照为 schema2、内容 `godot-flow-v02-26`、随机算法 `xorshift32-godot-v1`，必须匹配内容指纹。恢复核对连续唯一UID、next_id、history、启用定义、完整效果键、次数范围及 active 与战斗阶段/开战标记的关系；不重发获得效果、不重抽商店、不补充已消耗次数。配对剧情档包含完整 gameplay 快照；挑战仍没有跨进程继续承诺，见[保存契约](narrative-and-save.md)。旧版本或内容指纹不符的玩法档拒绝且保留文件，不做迁移。
+快照为 schema2、内容 `godot-flow-v03-01`、随机算法 `xorshift32-godot-v1`，必须匹配内容指纹。恢复核对连续唯一UID、next_id、history、启用定义、完整效果键、次数范围及 active 与战斗阶段/开战标记的关系；不重发获得效果、不重抽商店、不补充已消耗次数。配对剧情档包含完整 gameplay 快照；挑战单档可从最后一次成功保存的完整操作跨进程继续，见[保存契约](narrative-and-save.md)。旧版本或内容指纹不符的玩法档拒绝且保留文件，不做迁移。
 
 ## 验证入口
 

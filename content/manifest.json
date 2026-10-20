@@ -30,6 +30,15 @@
     "tech": "res://content/data/tech.json",
     "relics": "res://content/data/relics.json",
     "environments": "res://content/data/environments.json",
-    "difficulties": "res://content/data/difficulties.json"
+    "difficulties": "res://content/data/difficulties.json",
+    "journeys": "res://content/data/journeys.json",
+    "layers": "res://content/data/layers.json",
+    "balance": "res://content/data/balance.json",
+    "node_pools": "res://content/data/node_pools.json",
+    "navigation_profiles": "res://content/data/navigation_profiles.json",
+    "weather_profiles": "res://content/data/weather_profiles.json",
+    "battle_templates": "res://content/data/battle_templates.json",
+    "shop_profiles": "res://content/data/shop_profiles.json",
+    "difficulty_stage_profiles": "res://content/data/difficulty_stage_profiles.json"
   }
 }

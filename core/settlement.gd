@@ -23,7 +23,7 @@ static func score(input: Dictionary) -> Dictionary:
 static func create(state: Dictionary, catalog, scope: String = "run") -> Dictionary:
 	var stats: Dictionary = state.stats.duplicate(true)
 	var outcome: String = state.get("result","") if scope=="run" else "chapter"
-	var report := {"report_id":state.get("run_id","legacy")+"/"+scope+"/L1","run_id":state.get("run_id","legacy"),"scope":scope,"mode":state.mode,"origin":state.origin,"seed":state.seed,"outcome":outcome,"outcome_name":OUTCOMES.get(outcome,outcome),"completed":state.completed,"length":state.length,"complete":stats.complete,"score_version":SCORE_VERSION,"reward_policy_version":REWARD_VERSION,"fingerprint":catalog.fingerprint(),"score":{},"points":{"granted":state.completed if scope=="run" else 0,"pending":state.completed if scope=="chapter" else 0,"bonus":0},"logs":state.logs.duplicate(true),"stats":stats,"cards":[],"analysis":[]}
+	var report := {"report_id":state.get("run_id","legacy")+"/"+scope+"/"+str(state.get("journey",{}).get("profile_id",state.mode)),"run_id":state.get("run_id","legacy"),"scope":scope,"mode":state.mode,"origin":state.origin,"seed":state.seed,"outcome":outcome,"outcome_name":OUTCOMES.get(outcome,outcome),"completed":state.completed,"length":state.length,"complete":stats.complete,"score_version":SCORE_VERSION,"reward_policy_version":REWARD_VERSION,"fingerprint":catalog.fingerprint(),"score":{},"points":{"granted":state.completed if scope=="run" else 0,"pending":state.completed if scope=="chapter" else 0,"bonus":0},"logs":state.logs.duplicate(true),"stats":stats,"cards":[],"analysis":[]}
 	var remaining := {}
 	var temporary := {}
 	for item in state.hand:
@@ -40,6 +40,7 @@ static func create(state: Dictionary, catalog, scope: String = "run") -> Diction
 		row.merge({"id":id,"name":definition.get("name",id),"kind":definition.get("kind","resource"),"remaining":int(remaining.get(id,0)),"remaining_temporary":int(temporary.get(id,0)),"remaining_permanent":int(remaining.get(id,0))-int(temporary.get(id,0))},true)
 		report.cards.append(row)
 	report.player=state.player.duplicate(true)
+	report.journey=preload("res://core/campaign_rules.gd").project(catalog,state)
 	report.prior_chapters=[]
 	if state.has("chapter_report"):
 		report.prior_chapters.append({"outcome":state.chapter_report.outcome,"score":state.chapter_report.score.duplicate(true)})

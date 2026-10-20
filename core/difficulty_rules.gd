@@ -53,8 +53,21 @@ static func enemy(catalog, state: Dictionary, id: String) -> Dictionary:
 	var is_boss: bool = id=="boss" or definition.get("boss",false)
 	var hp_bonus: float=float(d.boss_bonus if is_boss else d.enemy_bonus)
 	var dmg_bonus: float=float(d.get("boss_damage_bonus",d.boss_bonus) if is_boss else d.enemy_bonus)
+	var layer: Dictionary=preload("res://core/campaign_rules.gd").layer(catalog,state)
+	hp_bonus+=float(layer.get("enemy_hp_bonus",0.0))
+	dmg_bonus+=float(layer.get("enemy_damage_bonus",0.0))
 	var old_damage: int=int(definition.damage)
-	definition.hp=maxi(1,roundi(float(definition.hp)*(1.0+hp_bonus)))
-	definition.damage=maxi(0,roundi(float(old_damage)*(1.0+dmg_bonus)))
+	var target: Dictionary={}
+	if state.get("mode","")=="challenge" and is_boss:
+		var boss_node: Dictionary=catalog.entry("nodes",str(layer.get("boss_node","")))
+		if boss_node.get("monster","")==id:
+			target=catalog.entry("difficulty_stage_profiles",str(state.get("difficulty","standard"))+":"+str(layer.get("id",""))).get("boss_target",{})
+	if not target.is_empty():
+		# Current-layer challenge target replaces both generic and layer bonuses.
+		definition.hp=int(target.hp)
+		definition.damage=int(target.damage)
+	else:
+		definition.hp=maxi(1,roundi(float(definition.hp)*(1.0+hp_bonus)))
+		definition.damage=maxi(0,roundi(float(old_damage)*(1.0+dmg_bonus)))
 	definition.intent=str(definition.get("intent","")).replace("生命−"+str(old_damage),"生命−"+str(definition.damage))
 	return definition

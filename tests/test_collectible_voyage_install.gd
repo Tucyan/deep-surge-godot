@@ -7,7 +7,7 @@ func check(ok: bool, message: String) -> void:
 	if not ok: failures+=1; printerr("FAIL: "+message)
 func fresh(origin: String="strong"):
 	var s=Session.new(catalog)
-	check(s.dispatch("new",{"mode":"challenge","origin":origin,"seed":22}),"new session")
+	check(s.dispatch("new",{"mode":"story","origin":origin,"seed":22}),"new session")
 	s.state.hand=[]
 	return s
 func acquire(s,id: String) -> void:

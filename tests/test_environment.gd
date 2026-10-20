@@ -22,7 +22,7 @@ func _init() -> void:
 	check(not s.EnvironmentRules.active(s.state,"fog1"),"node effect starts next voyage")
 	s.EnvironmentRules.end_round(s)
 	check(s.state.buffs[0].remaining==2,"pending effect not decremented")
-	s.state.voyage=2; s.EnvironmentRules.start_round(s)
+	s.state.voyage=2; s.state.journey.layer_voyage=2; s.EnvironmentRules.start_round(s)
 	check(s.EnvironmentRules.active(s.state,"fog1"),"next voyage activates")
 	effect(s,"fog1",false)
 	s.EnvironmentRules.end_round(s)
@@ -86,7 +86,7 @@ func _init() -> void:
 	s.dispatch("voyage",{"id":s.state.candidates[0].visit_id})
 	check(s.state.player.hunger==40 and s.state.player.hydration==40,"current costs wait until settlement")
 	s.state.phase="aftermath"; check(s.dispatch("end_voyage"),"settle current voyage")
-	check(s.state.player.hunger==15 and s.state.player.hydration==15,"current reduces both survival costs by5")
+	check(s.state.player.hunger==25 and s.state.player.hydration==25,"current reduces both layer-I survival costs by5")
 	s=fresh(); effect(s,"spring")
 	s.EnvironmentRules.end_round(s)
 	check(s.EnvironmentRules.active(s.state,"spring"),"harvest waits for actual spring")
@@ -120,12 +120,12 @@ func _init() -> void:
 	s.state.phase="story"; s.state.story_step="choice"; s.state.node=catalog.entry("nodes","fogGuide"); s.state.node.visit_id="guide-fixture"
 	check(s.dispatch("option",{"id":"navigation"}),"lighthouse offers actual guidance")
 	check(s.state.environment.guidance_voyage==2,"guidance applies next voyage")
-	s.state.voyage=2; s.state.phase="navigation"; effect(s,"confusion"); effect(s,"fog2")
+	s.state.voyage=2; s.state.journey.layer_voyage=2; s.state.phase="navigation"; effect(s,"confusion"); effect(s,"fog2")
 	s.EnvironmentRules.prepare_navigation(s)
 	check(is_equal_approx(s.view().navigation.wrong_direction_chance,0.10) and s.view().candidates.all(func(n):return n.visibility=="full"),"lighthouse reveals all and lowers confusion to10percent")
 	var observed: Dictionary={}
 	for seed in range(128):
-		s=fresh(seed*104729); s.state.voyage=2; s.EnvironmentRules.start_round(s)
+		s=fresh(seed*104729); s.state.voyage=3; s.state.journey.layer_voyage=3; s.EnvironmentRules.start_round(s)
 		var rng_before: Dictionary=s.state.rng.duplicate(true)
 		s.EnvironmentRules.start_round(s)
 		check(s.state.rng==rng_before,"round start is idempotent")
@@ -134,7 +134,7 @@ func _init() -> void:
 	check(not observed.has("headwind") and not observed.has("fog3"),"event-only weather never randomly drawn")
 	# First and last rounds do not draw new weather; existing weather survives to boss.
 	s=fresh(); check(s.state.rng.environment.cursor==0,"first round no weather roll")
-	s.state.voyage=s.state.length; s.EnvironmentRules.start_round(s); effect(s,"confusion"); effect(s,"bloodMoon")
+	s.state.voyage=s.state.length; s.state.journey.layer_index=2; s.state.journey.layer_voyage=10; s.state.journey.cleared=["shallows","open_sea"]; s.EnvironmentRules.start_round(s); effect(s,"confusion"); effect(s,"bloodMoon")
 	s.Rules.candidates(s)
 	check(s.state.rng.environment.cursor==0 and s.view().candidates[0].visibility=="full" and s.view().navigation.wrong_direction_chance==0,"boss visible and no new weather")
 	print("ENVIRONMENT: %s" % ("PASS" if failures==0 else "FAIL")); quit(failures)

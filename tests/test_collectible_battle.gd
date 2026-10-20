@@ -20,6 +20,7 @@ func enter(s, ruin: bool=false) -> void:
 	s.state.node=catalog.entry("nodes","crabBattle"); s.state.node.visit_id="collectible-battle"
 	if ruin: s.state.node.kind="ruin"
 	s.state.phase="story"; s.state.story_step="choice"
+	s.Survival.lock_costs(s); s.Encounter.arrived(s)
 	check(s.dispatch("fight"),"enter accepted combat")
 	s.state.battle.hp=100
 func temporary_count(s) -> int:

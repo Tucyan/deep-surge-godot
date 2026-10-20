@@ -10,6 +10,7 @@ func fixture(net: bool = false):
 	check(s.dispatch("new",{"mode":"challenge","seed":22,"difficulty":"nightmare","origin":"strong"}),"new game")
 	s.state.hand=[]; s.state.phase="story"; s.state.story_step="choice"
 	s.state.node=catalog.entry("nodes","ruin"); s.state.node.visit_id="net-test"
+	s.Survival.lock_costs(s); s.Encounter.arrived(s)
 	if net: s.state.cells[0].equipment={"id":"fishingNet","level":1,"fuel":0,"progress":0,"boost_cards":[],"production_bonus":1}
 	check(s.dispatch("fight"),"enter real battle")
 	s.state.next_shield_id=1; s.state.next_boost_id=1

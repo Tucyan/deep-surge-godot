@@ -131,7 +131,7 @@ class SmartPlayer:
             # 6. Upgrade production equipment (filter/planter) to Lv 2
             if obs["ap"] >= 1:
                 for target_dev in ("filter", "planter", "fishingNet"):
-                    if target_dev in devices and devices[target_dev].get("level", 1) < 2:
+                    if target_dev in devices and devices[target_dev].get("level", 1) < (3 if obs.get("difficulty") != "standard" and target_dev in ("filter", "planter") else 2):
                         upg = find("upgrade", lambda a: any(c["id"] == a["args"].get("cell") and c["equipment"].get("id") == target_dev for c in cells))
                         if upg:
                             return upg
@@ -189,8 +189,6 @@ class SmartPlayer:
                             return 45  # Good for bounty/corpse/coin
                         else:
                             return 10  # Risky
-                    if cand.get("risk"):
-                        return 15
                     return val
 
                 best_cand = max(obs["candidates"], key=score_node)
@@ -288,10 +286,6 @@ class SmartPlayer:
                         s -= cost * (4.0 if stat == "hp" else 1.2)
                     for r_card, cost in opt.get("cardCosts", {}).items():
                         s -= cost * 2.0
-                    if opt.get("risk"):
-                        s -= 10.0
-                    if opt.get("battle"):
-                        s -= 15.0
                     return s
 
                 best_opt = max(options, key=score_opt)
@@ -320,12 +314,17 @@ class SmartPlayer:
                 return sell_other
 
             # 3. Buy equipment if affordable
-            stock = shop_data.get("stock", [])
+            stock = {item["id"] for item in shop_data.get("stock", [])}
+            owned = set(devices) | {c["id"] for c in hand.values()}
             for equip_id in ("filter", "lamp", "planter", "crossbow", "shieldRack", "spearRack"):
-                if equip_id in stock and equip_id not in devices:
+                if equip_id in stock and equip_id not in owned:
                     buy_act = find("buy", lambda a: a["args"].get("id") == equip_id and a["args"].get("payment") == "coin")
                     if buy_act:
                         return buy_act
+
+            relic = find("buy_collectible")
+            if relic:
+                return relic
 
             # 4. Buy cheap materials if price is 1 coin and we have coins
             buy_res = find("buy", lambda a: a["args"].get("payment") == "coin" and a["args"].get("id") in ("plastic", "iron", "wood"))
@@ -340,9 +339,9 @@ class SmartPlayer:
             battle = obs.get("battle", {})
             b_ap = battle.get("ap", 0)
             enemy = obs.get("enemy", {})
-            e_hp = enemy.get("hp", 0)
-            e_dmg = enemy.get("damage", 1)
-            b_hp = battle.get("hp", p["hp"])
+            e_hp = battle.get("hp", enemy.get("hp", 0))
+            e_dmg = battle.get("enemy_direct_damage", enemy.get("damage", 1))
+            b_hp = p["hp"]
             shields = sum(s["amount"] for s in battle.get("shields", []))
             turn = battle.get("turn", 1)
 
@@ -359,16 +358,18 @@ class SmartPlayer:
             # 3. Check for Lethal on Enemy:
             # Under fear, attack damage is reduced by 1 (min 1), so basic attack is 1, iron attack is 1!
             is_feared = battle.get("fear_until", 0) >= turn
-            dmg_per_ap = 1 if is_feared else 2
-            max_damage_possible = b_ap * dmg_per_ap
-            if max_damage_possible >= e_hp or (turn >= 7 and e_hp <= 4):
+            dmg_per_ap = max(1, 1 + p.get("damage", 0) - int(is_feared))
+            attacks = find_all("battle_action", lambda a: a["args"].get("action") == "attack")
+            def attack_damage(action):
+                resource = hand.get(action["args"].get("resource_uid"), {}).get("id")
+                bonus = obs.get("battle_combinations", {}).get(resource, {}).get("attack", {}).get("damage", 0)
+                return max(1, 1 + p.get("damage", 0) + bonus - int(is_feared))
+            best_attack = max(attacks, key=attack_damage) if attacks else None
+            bonuses = sorted((max(0, attack_damage(a) - dmg_per_ap) for a in attacks), reverse=True)
+            max_damage_possible = int(b_ap) * dmg_per_ap + sum(bonuses[:int(b_ap)])
+            if best_attack and (max_damage_possible >= e_hp or (turn >= 7 and e_hp <= 4)):
                 # Attack to finish!
-                atk_iron = find("battle_action", lambda a: a["args"].get("action") == "attack" and hand.get(a["args"].get("resource_uid"), {}).get("id") == "iron")
-                if atk_iron:
-                    return atk_iron
-                atk_basic = find("battle_action", lambda a: a["args"].get("action") == "attack" and not a["args"].get("resource_uid"))
-                if atk_basic:
-                    return atk_basic
+                return best_attack
 
             # 4. Cleanse poison if poisoned and have cloth
             if battle.get("poison_until", 0) >= turn and counts["cloth"] > 0:

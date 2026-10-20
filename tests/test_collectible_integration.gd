@@ -14,6 +14,7 @@ func _init() -> void:
 	s._auto_advancing=true
 	s.state.node=catalog.entry("nodes","trader"); s.state.node.visit_id="collectible-shop"
 	s.state.phase="story"; s.state.story_step="choice"; s.state.candidates=[]
+	s.Survival.lock_costs(s); s.Encounter.arrived(s)
 	check(s.dispatch("shop_enter"),"enter actual shop")
 	var view=s.view()
 	if not view.shop.has("relic_stock"):

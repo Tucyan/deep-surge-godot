@@ -12,7 +12,10 @@ func same(a, b) -> bool:
 func fixture(id: String, variant: String = ""):
 	var s=Session.new(catalog); s.dispatch("new",{"mode":"challenge","origin":"strong","seed":22})
 	s._auto_advancing=true; s.state.phase="story"; s.state.story_step="choice"; s.state.hand=[]
-	s.state.voyage=7; s.state.environment.rolled_voyage=7; s.state.node=catalog.entry("nodes",id)
+	s.state.voyage=7; s.state.journey={"profile_id":"challenge","layer_index":1,"layer_voyage":2,"cleared":["shallows"]}; s.state.completed=6
+	preload("res://tests/weather_history_fixture.gd").complete_before_start(s)
+	s.EnvironmentRules.start_round(s); s.Survival.lock_costs(s)
+	s.state.node=catalog.entry("nodes",id)
 	if variant!="":
 		for v in s.state.node.variants:
 			if v.id==variant: s.state.node.merge(v,true); s.state.node.id=id; s.state.node.variant_id=variant; break
@@ -35,7 +38,7 @@ func test_saved_stages() -> void:
 func test_battle_rewards() -> void:
 	var s=fixture("duel")
 	check(s.dispatch("option",{"id":"elite"}),"选项进入实际强敌战斗")
-	check(s.state.battle.id=="crab_elite" and s.state.battle.hp==12,"新敌人数值")
+	check(s.state.battle.id=="crab_elite" and s.state.battle.hp==14,"新敌人数值")
 	var copy=Session.new(catalog)
 	check(copy.restore(JSON.parse_string(JSON.stringify(s.snapshot()))),"强敌战斗保存恢复")
 	var bad=s.snapshot(); bad.state.battle.rewards.coin=999; bad.state.encounter={}
@@ -69,14 +72,15 @@ func test_shop_commands() -> void:
 	var before=s.snapshot()
 	check(not s.dispatch("buy",{"id":resource,"revision":s.revision-1}) and s.snapshot()==before,"过期交易完全回滚")
 	check(s.dispatch("shop_leave") and s.state.story_step=="result","离店恢复节点结果")
-	check(s.dispatch("advance") and s.state.completed==1,"单访问仅完成一次")
+	var completed_before: int=s.state.completed
+	check(s.dispatch("advance") and s.state.completed==completed_before+1,"单访问仅完成一次")
 func test_candidates() -> void:
 	for seed in [0,1,2,7,22,42]:
 		var s=Session.new(catalog); check(s.dispatch("new",{"mode":"challenge","origin":"strong","seed":seed}),"新候选开局")
 		check(s.state.candidates.size()<=3 and s.state.candidates.size()>0,"候选1至3项")
 		check(s.state.candidates.any(func(n): return s.Encounter.free_benefit(s,n,true)),"前两轮有免费食水选择")
-		check(not s.state.candidates.any(func(n):return n.id=="altar" or n.id=="boss" or n.get("min_voyage",1)>1),"退休或过早节点不出现")
-		var bad=s.snapshot(); var replacement=catalog.entry("nodes","duel")
+		check(not s.state.candidates.any(func(n):return n.id=="altar" or n.id=="boss" or int(preload("res://core/navigation_rules.gd").entry(s,n).get("min_voyage",1))>1),"退休或过早节点不出现")
+		var bad=s.snapshot(); var replacement=catalog.entry("nodes","crabBattle")
 		replacement.visit_id=bad.state.candidates[0].visit_id; bad.state.candidates[0]=replacement
 		var loaded=Session.new(catalog)
 		check(not loaded.restore(bad),"存档也拒绝尚未到航次的候选")

@@ -28,6 +28,7 @@ func _init() -> void:
 		check(not rejected.dispatch("new",{"mode":"challenge","origin":"fool","seed":22,"difficulty":row[0],"starting_resources":selected}) and rejected.snapshot()==before,"too many resources rejected atomically")
 		for enemy_row in [["sentinel",row[5],row[6]],["boss",row[7],row[8]]]:
 			s=fresh(row[0]); s.state.phase="story"; s.state.story_step="choice"; s.state.node=catalog.entry("nodes","boss" if enemy_row[0]=="boss" else "ruin"); s.state.node.visit_id="difficulty-test"
+			s.Survival.lock_costs(s) # Manual arrival fixture includes the real departure contract.
 			check(s.dispatch("fight"),"enter scaled battle")
 			check(s.state.battle.hp==enemy_row[1] and s.Battle.incoming_damage(s)==enemy_row[2],"rounded normal/boss HP and damage")
 			var snapshot: Dictionary=s.snapshot(); var rng: Dictionary=s.state.rng.duplicate(true)
@@ -38,6 +39,9 @@ func _init() -> void:
 			check(s.EnvironmentRules.add(s,"bloodMoon",true) and s.Battle.incoming_damage(s)==enemy_row[2]+1,"blood moon adds after rounding")
 			var old_hp: int=s.state.player.hp
 			check(s.dispatch("battle_end") and s.state.player.hp==old_hp-enemy_row[2]-1,"actual incoming damage matches projected damage")
+		# Difficulty frequency uses the unchanged story weather profile, independent of challenge protection.
+		s=Session.new(catalog); check(s.dispatch("new",{"mode":"story","origin":"fool","seed":22,"difficulty":row[0]}),"legacy weather fixture")
+		s.state.journey.layer_voyage=2
 		var negative_count := 0
 		for seed in range(1000):
 			s.state.rng=s.R.create((seed*2654435761)&0xffffffff); s.state.voyage=2; s.state.buffs=[]; s.EnvironmentRules.initialize(s.state); s.EnvironmentRules.start_round(s)

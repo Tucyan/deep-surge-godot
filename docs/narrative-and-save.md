@@ -1,5 +1,5 @@
 # 独立剧情与配对存档
-<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v02-26; reviewed: 2026-10-19 -->
+<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v03-01; reviewed: 2026-10-20 -->
 
 当前第一章11个导航节点；章节内容版本为 `chapter1-local-v1`，定义见 [chapter_l1.json](../narrative/content/chapter_l1.json)。本文描述正式入口的当前行为，历史好感演示与旧夜间流程不覆盖它。
 
@@ -7,7 +7,7 @@
 
 - 叙事会话不直接读取或修改玩法生命、食水、SAN、AP、手牌、筏格或战斗，只接收voyage/phase投影；core不依赖narrative。
 - 好感、线索、剧情道具、休息次数、选项和节拍归叙事状态。剧情坏结局是明确例外：叙事返回ending，由应用协调层调用既有终局/结算路径结束当前航程，不在叙事层发放玩法增益。
-- 剧情模式复用挑战规则，仅固定第一章长度11；导入文本与玩法数字冲突时使用本机规则。原文及本地改写记录在 `narrative/content/source/`，不覆写原始来源。
+- 剧情模式使用单层11航次story档，共用规则执行系统；节点池/天气档独立，饥渴每项1点且不累计挑战式伤害；导入文本与玩法数字冲突时使用本机规则。原文及本地改写记录在 `narrative/content/source/`，不覆写原始来源。
 
 | 模块 | 职责 |
 |---|---|
@@ -42,7 +42,7 @@
 
 叙事state包括affinity、flags、items、clues、rest_count、ending、applied_beats、skipped_beats、seen_scenes、choices、cursor和prefs。gameplay使用GameSession.snapshot，含schema2、内容版本、内容指纹、随机算法、revision、state/profile及最近结算。
 
-当前玩法内容为 `godot-flow-v02-26`，指纹包含潮汐遗物定义。配对快照同时保存 `state.collectibles` 的实例、历史、剩余次数与激活标记，以及商店的 `relics/relic_purchased`；恢复进行结构、定义、唯一UID、次数范围及战斗激活阶段校验。恢复不重新执行获得奖励、开战触发或抽取货架，详见[潮汐遗物契约](collectible-effects.md)。旧内容版本和指纹不符的玩法档明确拒绝，不作迁移，并保留原文件。
+当前玩法内容为 `godot-flow-v03-01`，指纹包含潮汐遗物及journeys/layers/balance/node_pools/navigation_profiles/weather_profiles/battle_templates/shop_profiles全部定义。玩法状态保存journey（档案ID、层索引、层内航次、Boss胜利记录）、deprivation独立计数、锁定费用及层/天气/避浪来源、临时节点模板与来源、事件已选随机结果及环境rain_voyage一次性标记。恢复逐项核对，不接受任意临时敌人、奖励或伪造航耗。配对快照同时保存 `state.collectibles` 的实例、历史、剩余次数与激活标记，以及商店的 `relics/relic_purchased`；恢复进行结构、定义、唯一UID、次数范围及战斗激活阶段校验。恢复不重新执行获得奖励、开战触发或抽取货架，详见[潮汐遗物契约](collectible-effects.md)。旧内容版本和指纹不符的玩法档明确拒绝，不作迁移，并保留原文件。
 
 剧情多槽位已经包含配对玩法快照；这不等于挑战模式拥有跨进程多槽位保存。剧情模式加载必须验证当前章节/版本、玩法长度11、mode=story及voyage/phase与已应用节拍一致，再同时替换有效会话。旧版本兼容或迁移不是要求；解析器可容忍的未知字段不代表正式入口承诺旧章节可载入。
 
@@ -69,6 +69,8 @@
 挑战单档跨进程续玩已接入；只承诺最后一次成功保存的完整操作。临时文件、flush和rename经过进程强杀及I/O失败验证，不等于物理断电保证；写入/rename系统调用内部杀死、触摸和发行包尚未验证。实际结果见[挑战中断恢复验证](../evidence/challenge-resume-verification-20261019.md)。
 
 新独立剧情档的已读场景尚未接入回廊；旧回廊只展示五幕序章与原本地旧归档，见 [回廊契约](story-gallery.md)。第二章、完整角色语音系统、挑战跨进程多槽位等不在当前能力声明内。
+
+0.3挑战为25航次三层，Ⅰ/ⅡBoss获胜不生成整局成功/难度解锁；最终存活结算才成功。转层保留筏格、设备、资源、成长、环境剩余时间及随机流；无额外恢复/重复生产。旧剧情11航次、章节版本及旧回廊例外保留，见[配置契约](v03-configuration.md)。
 
 ## 验证入口
 

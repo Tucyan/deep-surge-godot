@@ -1212,5 +1212,110 @@
         "cost": 0
       }
     ]
+  },
+  "boss_shallows": {
+    "id": "boss_shallows",
+    "name": "浅海守门者",
+    "kind": "battle",
+    "description": "本层最后的阻拦。Boss会污染手牌。",
+    "monster": "boss_shallows",
+    "boss": true,
+    "event": "existing-boss",
+    "category": "battle",
+    "min_voyage": 1,
+    "max_visits": 99,
+    "cooldown": 1,
+    "rewards": {
+      "coin": 2,
+      "corpse": 1,
+      "resources": 2,
+      "xp": 5
+    }
+  },
+  "boss_open_sea": {
+    "id": "boss_open_sea",
+    "name": "外海吞潮者",
+    "kind": "battle",
+    "description": "本层最后的阻拦。Boss会污染手牌。",
+    "monster": "boss_open_sea",
+    "boss": true,
+    "event": "existing-boss",
+    "category": "battle",
+    "min_voyage": 1,
+    "max_visits": 99,
+    "cooldown": 1,
+    "rewards": {
+      "coin": 5,
+      "corpse": 1,
+      "resources": 3,
+      "xp": 10
+    }
+  },
+  "boss_abyss": {
+    "id": "boss_abyss",
+    "name": "深渊潮心",
+    "kind": "battle",
+    "description": "本层最后的阻拦。Boss会污染手牌。",
+    "monster": "boss_abyss",
+    "boss": true,
+    "event": "existing-boss",
+    "category": "battle",
+    "min_voyage": 1,
+    "max_visits": 99,
+    "cooldown": 1,
+    "rewards": {
+      "coin": 5,
+      "corpse": 1,
+      "resources": 3,
+      "xp": 10
+    }
+  },
+  "sealedChest": {
+    "id": "sealedChest",
+    "name": "密封宝箱",
+    "kind": "event",
+    "category": "risk",
+    "description": "箱内传来物资碰撞的声音。打开可获得金币3、食物1。",
+    "options": [
+      {
+        "id": "open",
+        "name": "打开宝箱",
+        "effects": [
+          {
+            "type": "GiveCard",
+            "id": "coin",
+            "amount": 3
+          },
+          {
+            "type": "GiveCard",
+            "id": "food",
+            "amount": 1
+          }
+        ],
+        "outcomes": [
+          {
+            "id": "guard",
+            "weight": 70,
+            "battle": {
+              "enemy": "crab_elite",
+              "rewards": {
+                "coin": 2,
+                "resources": 2,
+                "corpse": 1,
+                "xp": 5
+              }
+            }
+          },
+          {
+            "id": "quiet",
+            "weight": 30
+          }
+        ]
+      },
+      {
+        "id": "leave",
+        "name": "离开"
+      }
+    ]
   }
 }

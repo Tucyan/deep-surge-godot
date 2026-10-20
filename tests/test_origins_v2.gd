@@ -16,6 +16,7 @@ func stocked(origin: String, count: int):
 func battle(s):
 	s.state.node=catalog.entry("nodes","crabBattle"); s.state.node.visit_id="v2-test"
 	s.state.phase="story"; s.state.story_step="choice"
+	s.Survival.lock_costs(s); s.Encounter.arrived(s)
 	check(s.dispatch("fight"),"enter battle"); s.state.battle.hp=100
 func shield(s) -> int:
 	var total:=0
@@ -93,12 +94,14 @@ func test_navigation():
 		if zealot.Encounter.pick(zealot,pool).get("category","")=="battle": counts[1]+=1
 	check(counts[1]>counts[0],"battle weight increased on same random stream")
 	print("Weight probe /500: baseline=%d zealot=%d" % counts)
-	zealot=fresh("zealot"); zealot.state.voyage=3
+	zealot=fresh("zealot"); zealot.state.voyage=3; zealot.state.journey.layer_voyage=3
+	preload("res://tests/weather_history_fixture.gd").complete_before_start(zealot)
 	zealot.EnvironmentRules.start_round(zealot)
 	zealot.state.origin_state.battle_misses=2; zealot.state.origin_state.navigation_voyage=2
 	# Retire all battles except one, while retaining ordinary alternatives.
+	zealot.state.flags.node_visits={}
 	for node in zealot.Encounter.definitions(zealot):
-		if node.get("category","")=="battle" and node.id!="crabBattle": zealot.state.flags.event_visits[zealot.Encounter.key(node)]=99
+		if node.get("category","")=="battle" and node.id!="crabBattle": zealot.state.flags.node_visits["shallows:"+zealot.Encounter.key(node)]=99
 	zealot.Rules.candidates(zealot)
 	check(zealot.state.candidates.any(func(n): return n.id=="crabBattle"),"third navigation offers eligible battle")
 	check(zealot.state.origin_state.get("battle_misses",-1)==0,"offered opportunity resets misses")
@@ -110,7 +113,7 @@ func test_navigation():
 	# Prove the guarantee changes an otherwise battle-free draw, not a lucky draw.
 	var forced:=false
 	for seed in range(1,30):
-		var probe=fresh("zealot"); probe.state.voyage=3; probe.EnvironmentRules.start_round(probe)
+		var probe=fresh("zealot"); probe.state.voyage=3; probe.state.journey.layer_voyage=3; probe.EnvironmentRules.start_round(probe)
 		probe.state.origin_state.navigation_voyage=2; probe.state.origin_state.battle_misses=0
 		probe.state.rng=load("res://core/random_streams.gd").create(seed)
 		var start=probe.state.duplicate(true)
@@ -123,14 +126,18 @@ func test_navigation():
 		check(probe.state.candidates.size()==3 and probe.state.candidates.any(func(n): return probe.Encounter.battle_opportunity(probe,n)),"pity injects battle into otherwise battle-free draw")
 		forced=true; break
 	check(forced,"found deterministic pity fixture")
-	zealot=fresh("zealot"); zealot.state.voyage=4; zealot.state.origin_state.battle_misses=2; zealot.state.origin_state.navigation_voyage=3
+	
+	# I3 has no mandatory stage battle; exhaustion must leave origin pity pending.
+	# I4 now authorizes a minimum battle template even after ordinary pool exhaustion.
+	zealot=fresh("zealot"); zealot.state.voyage=3; zealot.state.journey.layer_voyage=3; zealot.state.origin_state.battle_misses=2; zealot.state.origin_state.navigation_voyage=2
+	zealot.state.flags.node_visits={}
 	for node in zealot.Encounter.definitions(zealot):
-		if node.get("category","")=="battle": zealot.state.flags.event_visits[zealot.Encounter.key(node)]=99
+		if node.get("category","")=="battle": zealot.state.flags.node_visits["shallows:"+zealot.Encounter.key(node)]=99
 	zealot.Rules.candidates(zealot)
 	check(not zealot.state.candidates.any(func(n): return n.get("category","")=="battle"),"guarantee respects exhaustion")
 	check(zealot.state.origin_state.get("battle_misses",-1)==2,"unavailable guarantee remains pending, capped")
-	zealot.state.voyage=zealot.state.length; zealot.Rules.candidates(zealot)
-	check(zealot.state.candidates.size()==1 and zealot.state.candidates[0].id=="boss","fixed final boss preserved")
+	zealot.state.voyage=5; zealot.state.journey.layer_voyage=5; zealot.Rules.candidates(zealot)
+	check(zealot.state.candidates.size()==1 and zealot.state.candidates[0].id=="boss_shallows","fixed final boss preserved")
 func test_quotas_and_guards():
 	for origin in ["hoarder","engineer","zealot"]:
 		var s=fresh(origin); var saved=s.snapshot()

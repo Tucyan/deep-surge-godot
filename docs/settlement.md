@@ -1,6 +1,6 @@
 # 结算页面与记录契约
 
-2026-10-14。执行依据为 [结算评分](../core/settlement.gd) 和 [运行统计](../core/run_statistics.gd)，本文件描述 Godot 实际实现；原V0.2设计稿未随当前仓库提供。评分版本 settlement-score-v2、统计版本 run-stats-v1、奖励版本 completed-nodes-v1；权重与评级仍为试测参数。
+2026-10-20核对，内容godot-flow-v03-01。执行依据为 [结算评分](../core/settlement.gd) 和 [运行统计](../core/run_statistics.gd)，本文件描述 Godot 实际实现；原V0.2设计稿未随当前仓库提供。评分版本 settlement-score-v2、统计版本 run-stats-v1、奖励版本 completed-nodes-v1；权重与评级仍为试测参数。
 
 ## 页面
 
@@ -24,21 +24,21 @@ chapterComplete保持活动局，只展示章节成绩与待结算节点，实�
 
 ## 存档
 
-实际Godot版本升级为schema=2、content_version=godot-flow-v02-4，规则随机仍为xorshift32-godot-v1，内容表及指纹算法未改。snapshot增加last_settlement，与当前state/profile在同一JSON中原子写入。此版本与V0.2文档的目标schema3不是同一协议。
+当前schema2、内容godot-flow-v03-01、随机xorshift32-godot-v1，内容指纹须一致。state/profile/last_settlement同文件原子提交；旧版本与旧指纹明确拒绝且保留，不做迁移。保存报告及完整航程/层/计数/模板来源，恢复不重算或重发终局奖励，异常完成数、身份、分数公式与进度拒绝。
 
-旧godot-flow-v02-3/schema1档及上一版v02-2挑战档仍走明确兼容路径。缺少历史统计的旧局从恢复处开始记录，complete=false；页面注明统计覆盖范围，显示已知终点属性和原日志，正式分数不提供。旧终局awarded=true不重复发点。新版本拒绝空的当前终局/章节报告、异常计数、重复身份/成果、分数公式或进度矛盾等损坏字段，恢复失败保留原存档及当前会话。
+挑战共25航次，Ⅰ/ⅡBoss胜利不会触发整局结算报告或局外发奖；正常完成生存后跨层。ⅢBoss获胜并生存才survived；Boss退出withdrawn不能跨层，死亡优先。整局涌潮点仍等于真实全局completed，失败/放弃亦如此，只发一次。剧情仍11航次及run_id配对领取去重；教程独立完成。见[配置契约](v03-configuration.md)和[保存契约](narrative-and-save.md)。
 
 ## 资源与验证
 
 程序化页面资产登记ui.settlement v1；源pages/settlement_page.gd，复用flow_base/widgets的字体与StyleBox，没有新图片、Shader或网络素材。页面私有节点随页面释放，日志内容均来自冻结报告。日志与统计详情均使用ScrollContainer；统计详情只手动滚动，日志保留原播放行为。
 
-当次测试与实际截图见[结算验证](../evidence/settlement-verification.md)。未验证独立发行导出、真实移动设备触控、任意极端窗口比例或多层评分聚合。
+0.3专项入口为`tests/test_v03_journey_flow.gd`、`test_v03_survival.gd`、`test_v03_campaign.gd`，本次验收见[0.3验证草稿](../evidence/v03-development-verification.md)。历史当次测试与实际截图见[结算验证](../evidence/settlement-verification.md)。未验证独立发行导出、真实移动设备触控、任意极端窗口比例或多层评分聚合。
 
 2026-10-16 v11修复：四舍五入在半分阈值增加1e-9浮点容差，避免HP10/12等比例经JSON后产生1分偏差、导致同版本章节档被校验拒绝；权重、评级阈值和点数规则不变。专项见`tests/test_economy_balance.gd`。
 
-## 2026-10-17：取消结算分数上限
+## 历史：2026-10-17取消结算分数上限
 
-当前内容版本 godot-flow-v02-21，评分版本 settlement-score-v2，schema 仍为2。探索与建设改为 `round(推进比例 × 25 × max(成果标签数, 0))`，取消原最多4项的截断；总分继续由四项相加，可超过1000。现有五种有效成果全部达成、满推进且其余三项满分时为1025分；这是当前成果集合可取得的分数，不是新增上限。推进比例、成功率、生存比例仍按原规则计算，零推进仍为0分。评级阈值和节点涌潮点发放不变。
+当时内容版本 godot-flow-v02-21，评分版本 settlement-score-v2，schema 仍为2。探索与建设改为 `round(推进比例 × 25 × max(成果标签数, 0))`，取消原最多4项的截断；总分继续由四项相加，可超过1000。现有五种有效成果全部达成、满推进且其余三项满分时为1025分；这是当前成果集合可取得的分数，不是新增上限。推进比例、成功率、生存比例仍按原规则计算，零推进仍为0分。评级阈值和节点涌潮点发放不变。
 
 结算页探索项移除 `/ 100` 并标注不封顶。旧内容版本存档及旧评分版本报告明确拒绝，不迁移或重算；同版本JSON恢复继续校验完整报告。无新图片资产，`ui.settlement` 登记版本与源文件hash同步更新。验证见[取消评分上限验证](../evidence/settlement-uncapped-verification.md)。
 

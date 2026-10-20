@@ -1,7 +1,7 @@
 # 应用编排与刷新边界
-<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v02-26; reviewed: 2026-10-19 -->
+<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v03-01; reviewed: 2026-10-20 -->
 
-2026-10-19。当前工程为 Godot；根目录 Three.js 契约仅供历史追溯。
+2026-10-20。当前工程为 Godot；根目录 Three.js 契约仅供历史追溯。
 
 ## 职责
 
@@ -15,6 +15,8 @@
 | `application/hud_projection.gd` | 对可见输入生成保留签名，不包含增长的统计事件、规则随机流、未来池或非战斗日志历史 |
 | `core/collectible_rules.gd` / `effect_query.gd` / `effect_rules.gd` | 潮汐遗物实例与恢复校验 / 纯查询组合修正 / 获得、使用计数及战斗激活清理；详细生命周期见[潮汐遗物契约](collectible-effects.md) |
 | `core/relic_rewards.gd` | 潮汐遗物奖励描述校验、固定/随机抽取及统一发放；战斗、事件与商店复用，目录加载校验节点奖励引用 |
+| `core/campaign_rules.gd` / `survival_rules.gd` | 纯航程/层查询与跨层进度；逐项费用锁定、饥渴计数及共用预览/结算，均不依赖UI或存储 |
+| `core/navigation_rules.gd` / `environment_rules.gd` | 当前层合法池、天气请求、授权模板补位与环境生命周期；仅真实换轮生成，不由页面重抽 |
 | `core/game_session.gd` | 唯一玩法命令边界；规则与可恢复随机保持独立，不依赖上述应用模块 |
 
 潮汐遗物规则不依赖页面或文件存储，运行状态保存在 `state.collectibles`，海况继续使用 `state.buffs`。`pages/collectibles_page.gd` 读取公开持有投影，通过 dispatch 丢弃；商店分别读取 `stock` 与 `relic_stock`，不直接写规则状态。
@@ -37,6 +39,8 @@
 - 手牌底板的静态纸张颗粒以共享圆形网格和实例私有 MultiMesh 批量绘制，整数尺寸变化才重建实例数据；普通重绘复用缓存，销毁底板释放私有资源。画布缩放继承 CanvasItem 变换，不因 3D 清晰度变化重建颗粒，也不介入规则或随机流。图形验证入口：`test_paper_grain.gd`；资产登记见[素材说明](../assets/README.md)。
 
 回归入口：`test_application_boundaries.gd`、`test_interaction_refresh.gd`、`test_navigation_partial_refresh.gd`、`test_narrative_flow.gd`、`test_narrative_repairs.gd`、`test_reward_recovery.gd`、`test_recall_restore.gd`、`test_loading_transition.gd`。
+
+0.3配置与状态来源见[配置契约](v03-configuration.md)，新增测试入口为`test_v03_campaign.gd`、`test_v03_survival.gd`、`test_v03_journey_flow.gd`、`test_v03_encounters.gd`、`test_v03_weather.gd`、`test_v03_projection.gd`；本轮整体验收见[验证草稿](../evidence/v03-development-verification.md)。
 
 结构和行为测试不代表 GPU 帧耗时、手机触摸或发行包验证。运行结果见 `evidence/architecture-health-verification.md`。
 

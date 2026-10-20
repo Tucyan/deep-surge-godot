@@ -425,8 +425,20 @@ func build_combat_log_panel(parent: Control) -> void:
 	skip_btn.name = "BattleSkipTurn"
 	W.primary(skip_btn)
 
-	var can_retreat: bool = int(context.battle.get("turn", 1)) >= 2 and not context.get("scene", {}).get("combat", false)
-	var retreat_btn := W.button(btn_row, "放弃战斗", func(): hud.send("retreat"), not can_retreat, "第二回合起可撤退" if not can_retreat else "")
+	var combat_config: Dictionary=catalog.entry("balance","combat")
+	var retreat_turn: int=int(combat_config.get("retreat_turn",2))
+	var tutorial: bool=context.get("mode","")=="tutorial"
+	var can_retreat: bool = int(context.battle.get("turn",1)) >= retreat_turn and not tutorial and not context.get("scene",{}).get("combat",false)
+	var protected: bool=session!=null and Battle.protected_exit(session)
+	var retreat_label: String="撤退·保护" if protected else "撤退-%d生命" % int(combat_config.get("retreat_damage",4))
+	var retreat_hint: String="保护退出：恢复至入场生命，没有战斗胜利奖励。" if protected else "撤退直接扣除%d生命，可致死，不受护盾抵挡，没有战斗胜利奖励。" % int(combat_config.get("retreat_damage",4))
+	if tutorial: retreat_hint="教程不开放撤退。"
+	elif context.get("scene",{}).get("combat",false): retreat_hint="当前剧情战斗不能撤退。"
+	else:
+		if not can_retreat: retreat_hint="第%d回合起可撤退。\n" % retreat_turn+retreat_hint
+		if session!=null and session.state.node.get("boss",false): retreat_hint+="\nBoss撤离将结束本局，不能进入下一层。"
+	var retreat_btn := W.button(btn_row,retreat_label,func(): hud.send("retreat"),not can_retreat,retreat_hint)
+	retreat_btn.clip_text = true
 	retreat_btn.size_flags_horizontal = SIZE_EXPAND_FILL
 	retreat_btn.custom_minimum_size.y = 34
 	retreat_btn.add_theme_font_size_override("font_size", 14)

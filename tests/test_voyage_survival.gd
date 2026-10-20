@@ -9,9 +9,12 @@ func fresh(mode: String = "challenge"):
 	return s
 func _init() -> void:
 	catalog = load("res://content/catalog.gd").new(); check(catalog.load_catalog(),"catalog")
-	for values in [[40,40,10,10,0],[30,100,0,70,1],[0,0,0,0,2]]:
+	for values in [[40,40,20,20,0],[20,100,0,80,1],[0,0,0,0,2]]:
 		var s = fresh(); s.state.player.hunger=values[0]; s.state.player.hydration=values[1]
 		check(s.dispatch("voyage",{"id":s.state.candidates[0].visit_id}),"depart")
+		var quoted: Dictionary=s.Survival.quote(s)
+		check(quoted.food_water_cost==20,"I1 quote has concrete 20 fee")
+		check(maxi(0,int(values[0])-int(quoted.costs.hunger))==values[2] and maxi(0,int(values[1])-int(quoted.costs.hydration))==values[3] and quoted.deprivation.total==values[4],"quote matches concrete food/water/deprivation expectations")
 		check(s.state.player.hunger==values[0] and s.state.player.hydration==values[1] and s.state.player.hp==16,"departure preserves food water HP")
 		s.state.phase="aftermath"
 		var saved = s.snapshot(); var twin = fresh()
@@ -51,24 +54,30 @@ func _init() -> void:
 	s=fresh(); s.state.flags.avoidWave=true
 	s.EnvironmentRules.add(s,"current",true)
 	s.dispatch("voyage",{"id":s.state.candidates[0].visit_id})
-	var cost = int(s.state.flags.get("voyage_survival_cost",30))
-	check(cost==20,"departure freezes stacked reductions")
+	var cost: int=int(s.Survival.quote(s).food_water_cost)
+	check(cost==10,"departure freezes stacked reductions")
 	var saved_cost = fresh(); check(saved_cost.restore(JSON.parse_string(JSON.stringify(s.snapshot()))),"discounted cost roundtrip")
-	check(saved_cost.state.flags.voyage_survival_cost==20,"discount survives restore")
+	check(saved_cost.state.flags.voyage_survival_cost==10,"discount survives restore")
 	s.state.phase="aftermath"
 	var before_query = s.snapshot()
 	check(load("res://core/action_query.gd").quote(s,"end_voyage").allowed,"end-voyage preview legal")
 	check(s.snapshot()==before_query,"preview does not settle survival")
 	s.state.flags.avoidWave=true; s.state.phase="aftermath"
 	check(s.dispatch("end_voyage") and s.state.player.hunger==40-cost and s.state.flags.avoidWave,"arrival bonus remains for next voyage")
-	s=fresh(); s.state.voyage=s.state.length; s.state.phase="aftermath"; s.state.player.hunger=30
+	s=fresh(); s.state.voyage=s.state.length; s.state.journey={"profile_id":"challenge","layer_index":2,"layer_voyage":10,"cleared":["shallows","open_sea"]}
+	s.state.completed=s.state.length-1
+	preload("res://tests/weather_history_fixture.gd").complete_before_start(s)
+	s.EnvironmentRules.start_round(s); s.Survival.lock_costs(s)
+	s.state.node=catalog.entry("nodes","boss_abyss"); s.state.node.visit_id="final-survival"
+	s.state.candidates=[]; s.Encounter.arrived(s); s.state.phase="aftermath"; s.state.player.hunger=40; s.state.player.hydration=100
+	check(s.Survival.quote(s).food_water_cost==40,"last layer concrete 40 fee")
 	check(s.dispatch("end_voyage") and s.phase()=="finished" and s.state.player.hunger==0 and s.state.player.hp==15,"last voyage also settles before ending")
 	s=fresh(); s.dispatch("voyage",{"id":s.state.candidates[0].visit_id})
 	var old = s.snapshot(); old.content_version="godot-flow-v02-19"
 	check(not s.restore(old),"v19 saves explicitly rejected")
 	var invalid = s.snapshot(); invalid.state.flags.voyage_survival_cost=0
 	check(not s.restore(invalid),"invalid pending cost rejected")
-	check(s.view().survival_settlement.pending and s.view().survival_settlement.food_water_cost==30,"visible pending cost")
+	check(s.view().survival_settlement.pending and s.view().survival_settlement.food_water_cost==20,"visible pending cost")
 	s.state.phase="aftermath"; s.state.ap=0; s.state.hand=[]
-	check(s.dispatch("resume") and s.state.player.hunger==10 and s.state.voyage==2,"automatic end also settles survival once")
+	check(s.dispatch("resume") and s.state.player.hunger==20 and s.state.voyage==2,"automatic end also settles survival once")
 	print("VOYAGE SURVIVAL: %s" % ("PASS" if failures==0 else "FAIL")); quit(0 if failures==0 else 1)

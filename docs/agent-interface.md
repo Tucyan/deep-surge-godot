@@ -1,5 +1,5 @@
 # Agent 游玩接口
-<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v02-26; reviewed: 2026-10-19 -->
+<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v03-01; reviewed: 2026-10-20 -->
 
 本文描述当前本地 JSONL 接口。协议 `deep-surge-agent-v1`、轨迹 `deep-surge-trace-v1`；实现依据 [AgentSession](../adapters/agent_session.gd)、[输入分帧](../tools/agent_stdio.gd)、[客户端](../tools/agent_client.py)、[操作查询](../core/action_query.gd)。
 
@@ -95,9 +95,11 @@ effective和allowed不同：满属性恢复牌可以合法消耗，但没有恢�
 - 转化是一次3换2；可通过参数选择任意合法的三张资源UID，批量转化靠重复动作。Agent 不能覆盖 action 的固定参数或调用任意函数。
 - 节点事件按公开选项/目标提交，商店买入指定库存ID及coin付款，出售指定真实手牌UID。扩建列出全部合法位置，界面可以只提示下一个位置。
 - 潮汐遗物购买为 `buy_collectible {id,payment:"coin"}`，仅列本店剩余货架；丢弃为 `discard_collectible {uid}`，只在非教程基地操作阶段提供。持有投影返回 uid、定义ID、名称、说明及各效果 remaining/active。战斗和事件可由内容配置获得遗物，仍通过原有战斗/选项命令执行；事件 `preview.relics` 只显示指定ID或随机池与数量，不给出随机结果。没有任意发放或重新持有的公开命令。商店潮汐遗物报价在 `shop.relic_stock`，不混入六项 `stock`；详见[潮汐遗物契约](collectible-effects.md)。
-- 普通观察包含当前 player、hand、cells、node/candidates、battle、shop、collectibles、event_options、environments、navigation、survival_settlement、tech_tree 及revision；被迷雾隐藏的候选可能没有id/monster/options，选择仍使用visit_id。
+- 普通观察包含当前 journey、player、hand、cells、node/candidates、battle、shop、collectibles、event_options、environments、navigation、survival_settlement、tech_tree 及revision；临时战斗保留正常visit_id供选择，但观察不公开template_id/template_layer或未来授权池；被迷雾隐藏的候选可能没有id/monster/options，选择仍使用visit_id。
 - 观察不包含种子、规则随机流、未来池、完整统计、UI面板或隐藏剧情脚本；事件effects/outcomes不直接返回。战斗返回可见敌方数据和公开资源附魔组合。
 - ActionQuery 支持首页局外操作，但独立Agent的正常航程动作不提供返回首页购买玩家成长的入口。reset 的 `purchases` 字典是隔离测试配置，不读取真实账户进度；教程测试可使用 `difficulty=tutorial` 与固定教学起手资源，正式试玩CLI仅列三档。
+- `journey`公开layer_id/layer_index/layer_label/layer_voyage/layer_length/layer_count/completed_layers，挑战UI显示`Ⅱ · 航行 3/10`；全局voyage仍单调递增。`completed_layers`对应通过Boss后生存结算的层；`defeated_bosses`单独表示Boss胜利记录。
+- `survival_settlement={pending,costs:{hunger,hydration},deprivation:{hunger,hydration,total},counts:{hunger,hydration}}`公开实际本次费用、预计伤害与累计次数；兼容只读food_water_cost标量，策略应使用逐项costs。
 - 食水结算费用通过survival_settlement公开；当前实际结算在轮末容量达标后发生，精神/灯在出发时处理。新独立剧情没有旧夜间命令。细节见 [当前机制](current-game-mechanics.md)。
 
 ## 重放与保存
@@ -106,7 +108,7 @@ trace/replay/result是本地诊断能力，可能含内部信息。玩家信息�
 
 起始快照包含内容指纹、随机算法版本、run_id和初始profile；重放保留局身份，每步hash覆盖完整snapshot并归一JSON整数/浮点表示。最多接受10000步。自动后续动作由原dispatch再现，不需要Agent重复提交；重放失败不替换活动测试会话。
 
-当前玩法快照为schema 2、`godot-flow-v02-26`、`xorshift32-godot-v1`，需要匹配内容指纹。旧版本保存/轨迹不迁移；规则或内容变化后应重新生成并审阅当前路线。
+当前玩法快照为schema 2、`godot-flow-v03-01`、`xorshift32-godot-v1`，需要匹配内容指纹。旧版本保存/轨迹不迁移；规则或内容变化后应重新生成并审阅当前路线。
 
 ## 架构与扩展
 
@@ -129,7 +131,7 @@ Godot_v4.7.2-stable_win64_console.exe --headless --path . --script res://tests/t
 python -m unittest discover -s tests -p test_agent_stdio.py -v
 ```
 
-`tests/fixtures/routes/manifest.json` 的七条必需路线覆盖两种模式、三个难度与明确失败场景；必须实际重放，校验终局、物资守恒、同版本恢复，并覆盖成功和失败结果。历史13条v22轨迹单列stale，不能代替当前覆盖。
+`tests/fixtures/routes/manifest.json` 定义当前必需路线，覆盖两种模式、三个难度与明确失败场景；当前登记的7条路线均为`godot-flow-v03-01`，已完成独立重放和同版本恢复校验，状态见[验证草稿](../evidence/v03-development-verification.md)。历史轨迹单列stale，不能代替当前覆盖。
 
 `python tools/generate_regression_routes.py` 使用现有策略及真实公开动作重新生成并先重放，人工查看结果差异后更新基线；每条限45秒，超时不自动重试。生成操作会更新当前fixtures，不属于普通只读测试。策略样例不代表最优玩法或平衡结论。
 

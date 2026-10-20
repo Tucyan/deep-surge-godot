@@ -1,0 +1,756 @@
+{
+  "shallows": {
+    "id": "shallows",
+    "category_weights": {
+      "supply": 25,
+      "trade": 10,
+      "service": 15,
+      "risk": 10,
+      "battle": 12,
+      "camp": 10,
+      "shop": 10
+    },
+    "entries": [
+      {
+        "node": "drift/salvage",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "drift/sealed",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "drift/cargo",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "camp",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "trader",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 2,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "jelly",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "storm/hold",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "fogGuide",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "battle",
+        "weight": 1,
+        "min_voyage": 3,
+        "max_voyage": 99,
+        "max_visits": 99,
+        "scope": "layer",
+        "cooldown": 1
+      },
+      {
+        "node": "jellyBattle",
+        "weight": 1,
+        "min_voyage": 3,
+        "max_voyage": 99,
+        "max_visits": 99,
+        "scope": "layer",
+        "cooldown": 1
+      },
+      {
+        "node": "crabBattle",
+        "weight": 1,
+        "min_voyage": 3,
+        "max_voyage": 99,
+        "max_visits": 99,
+        "scope": "layer",
+        "cooldown": 1
+      },
+      {
+        "node": "ruin",
+        "weight": 1,
+        "min_voyage": 3,
+        "max_voyage": 99,
+        "max_visits": 99,
+        "scope": "layer",
+        "cooldown": 1
+      },
+      {
+        "node": "provision",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "sharedMeal",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "winch",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "duel",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      }
+    ]
+  },
+  "open_sea": {
+    "id": "open_sea",
+    "category_weights": {
+      "supply": 25,
+      "trade": 10,
+      "service": 15,
+      "risk": 10,
+      "battle": 35,
+      "camp": 10,
+      "shop": 10
+    },
+    "entries": [
+      {
+        "node": "drift/salvage",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "drift/sealed",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "drift/cargo",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "camp",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "trader",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 2,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "jelly",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "storm/hold",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "fogGuide",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "crabBattle",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 99,
+        "scope": "layer",
+        "cooldown": 1
+      },
+      {
+        "node": "ruin",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 99,
+        "scope": "layer",
+        "cooldown": 1
+      },
+      {
+        "node": "provision",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "sharedMeal",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "winch",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "sealedChest",
+        "weight": 1,
+        "min_voyage": 3,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 1
+      }
+    ]
+  },
+  "abyss": {
+    "id": "abyss",
+    "category_weights": {
+      "supply": 25,
+      "trade": 10,
+      "service": 15,
+      "risk": 10,
+      "battle": 45,
+      "camp": 10,
+      "shop": 10
+    },
+    "entries": [
+      {
+        "node": "drift/salvage",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "drift/sealed",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "drift/cargo",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "camp",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "trader",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 2,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "jelly",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "storm/hold",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "fogGuide",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "crabBattle",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 99,
+        "scope": "layer",
+        "cooldown": 1
+      },
+      {
+        "node": "ruin",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 99,
+        "scope": "layer",
+        "cooldown": 1
+      },
+      {
+        "node": "provision",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "sharedMeal",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "winch",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 3
+      },
+      {
+        "node": "sealedChest",
+        "weight": 1,
+        "min_voyage": 3,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "layer",
+        "cooldown": 1
+      }
+    ]
+  },
+  "story": {
+    "id": "story",
+    "category_weights": {
+      "supply": 25,
+      "trade": 10,
+      "service": 15,
+      "risk": 10,
+      "battle": 20,
+      "camp": 10,
+      "shop": 10
+    },
+    "entries": [
+      {
+        "node": "drift/salvage",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "run",
+        "cooldown": 3
+      },
+      {
+        "node": "drift/sealed",
+        "weight": 1,
+        "min_voyage": 3,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "run",
+        "cooldown": 3
+      },
+      {
+        "node": "drift/cargo",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "run",
+        "cooldown": 3
+      },
+      {
+        "node": "camp",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "run",
+        "cooldown": 3
+      },
+      {
+        "node": "trader",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 2,
+        "scope": "run",
+        "cooldown": 3
+      },
+      {
+        "node": "jelly",
+        "weight": 1,
+        "min_voyage": 3,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "run",
+        "cooldown": 3
+      },
+      {
+        "node": "storm/hold",
+        "weight": 1,
+        "min_voyage": 5,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "run",
+        "cooldown": 3
+      },
+      {
+        "node": "fogGuide",
+        "weight": 1,
+        "min_voyage": 3,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "run",
+        "cooldown": 3
+      },
+      {
+        "node": "battle",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 99,
+        "scope": "run",
+        "cooldown": 1
+      },
+      {
+        "node": "jellyBattle",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 99,
+        "scope": "run",
+        "cooldown": 1
+      },
+      {
+        "node": "crabBattle",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 99,
+        "scope": "run",
+        "cooldown": 1
+      },
+      {
+        "node": "ruin",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 99,
+        "scope": "run",
+        "cooldown": 1
+      },
+      {
+        "node": "provision",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "run",
+        "cooldown": 3
+      },
+      {
+        "node": "sharedMeal",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "run",
+        "cooldown": 3
+      },
+      {
+        "node": "winch",
+        "weight": 1,
+        "min_voyage": 4,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "run",
+        "cooldown": 3
+      },
+      {
+        "node": "duel",
+        "weight": 1,
+        "min_voyage": 4,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "run",
+        "cooldown": 3
+      }
+    ]
+  },
+  "tutorial": {
+    "id": "tutorial",
+    "category_weights": {
+      "supply": 25,
+      "trade": 10,
+      "service": 15,
+      "risk": 10,
+      "battle": 20,
+      "camp": 10,
+      "shop": 10
+    },
+    "entries": [
+      {
+        "node": "drift/salvage",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "run",
+        "cooldown": 3
+      },
+      {
+        "node": "drift/sealed",
+        "weight": 1,
+        "min_voyage": 3,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "run",
+        "cooldown": 3
+      },
+      {
+        "node": "drift/cargo",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "run",
+        "cooldown": 3
+      },
+      {
+        "node": "camp",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "run",
+        "cooldown": 3
+      },
+      {
+        "node": "trader",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 2,
+        "scope": "run",
+        "cooldown": 3
+      },
+      {
+        "node": "jelly",
+        "weight": 1,
+        "min_voyage": 3,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "run",
+        "cooldown": 3
+      },
+      {
+        "node": "storm/hold",
+        "weight": 1,
+        "min_voyage": 5,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "run",
+        "cooldown": 3
+      },
+      {
+        "node": "fogGuide",
+        "weight": 1,
+        "min_voyage": 3,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "run",
+        "cooldown": 3
+      },
+      {
+        "node": "battle",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 99,
+        "scope": "run",
+        "cooldown": 1
+      },
+      {
+        "node": "jellyBattle",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 99,
+        "scope": "run",
+        "cooldown": 1
+      },
+      {
+        "node": "crabBattle",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 99,
+        "scope": "run",
+        "cooldown": 1
+      },
+      {
+        "node": "ruin",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 99,
+        "scope": "run",
+        "cooldown": 1
+      },
+      {
+        "node": "provision",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "run",
+        "cooldown": 3
+      },
+      {
+        "node": "sharedMeal",
+        "weight": 1,
+        "min_voyage": 1,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "run",
+        "cooldown": 3
+      },
+      {
+        "node": "winch",
+        "weight": 1,
+        "min_voyage": 4,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "run",
+        "cooldown": 3
+      },
+      {
+        "node": "duel",
+        "weight": 1,
+        "min_voyage": 4,
+        "max_voyage": 99,
+        "max_visits": 1,
+        "scope": "run",
+        "cooldown": 3
+      }
+    ]
+  }
+}

@@ -10,7 +10,7 @@
 
 Godot4.7.2 / Compatibility / RTX4060 Laptop，1280×720。`tests/probe_minor_stalls.gd` 使用隔离会话、临时meta文件；每项先记进程内首次，再测5次预热后样本。challenge standard/strong/seed22，选牌和开始走实际按钮回调；首页/设置/继续走同一UI或命令入口。每轮新局前更换探针内存会话，校验错误及screen，避免“已有活动局”拒绝被算成成功进入。
 
-下表均为到下一次frame_post_draw，包含调度、帧率等待和渲染；不是纯GPU时间。原始[JSON](../evidence/minor-stall-inventory.json)、[日志](../evidence/minor-stall-inventory.log)有60项记录且无操作错误，6次正式开始均进入game/navigation。首次指当前进程资源缓存未预热，不代表干净安装；未验证Android或发行包。
+下表均为到下一次frame_post_draw，包含调度、帧率等待和渲染；不是纯GPU时间。原始[JSON](../evidence/minor-stall-inventory.json)、日志`minor-stall-inventory.log`（本检出不含该原始文件）有60项记录且无操作错误，6次正式开始均进入game/navigation。首次指当前进程资源缓存未预热，不代表干净安装；未验证Android或发行包。
 
 ## 逐项登记
 

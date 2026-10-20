@@ -1,0 +1,5 @@
+{
+  "challenge":{"layers":["shallows","open_sea","abyss"]},
+  "story":{"layers":["story"]},
+  "tutorial":{"layers":["tutorial"]}
+}

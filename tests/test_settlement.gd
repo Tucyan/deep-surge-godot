@@ -82,7 +82,11 @@ func _init() -> void:
 	battle_fixture.state.phase="story"; battle_fixture.state.story_step="choice"; battle_fixture.state.candidates=[]
 	battle_fixture.state.node=c.entry("nodes","battle"); battle_fixture.state.node.visit_id="battle-stats-fixture"
 	var battling=load("res://core/game_session.gd").new(c)
-	check(battling.restore(battle_fixture),"战斗统计夹具")
+	var source=load("res://core/game_session.gd").new(c)
+	check(source.restore(before),"独立导航夹具恢复")
+	source.state=battle_fixture.state.duplicate(true)
+	source.Survival.lock_costs(source); source.Encounter.arrived(source)
+	check(battling.restore(source.snapshot()),"战斗统计夹具")
 	check(battling.dispatch("fight") and battling.dispatch("battle_end") and battling.dispatch("battle_end"),"实际进入第三战斗回合")
 	check(battling.dispatch("abandon"),"战斗中放弃")
 	check(battling.state.settlement.stats.battles["battle-stats-fixture/battle"].turns==3,"未完成战斗也记录实际回合")

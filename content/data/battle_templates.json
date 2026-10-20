@@ -1,0 +1,68 @@
+{
+  "shallows_patrol": {
+    "id": "shallows_patrol",
+    "repeatable": true,
+    "node": {
+      "id": "template_shallows_patrol",
+      "name": "巡游敌群",
+      "kind": "battle",
+      "description": "水下传来咬合声。战胜敌人获得尸体、贝币与经验。",
+      "monster": "biter",
+      "event": "existing-battle",
+      "category": "battle",
+      "min_voyage": 1,
+      "max_visits": 99,
+      "cooldown": 1,
+      "rewards": {
+        "coin": 1,
+        "corpse": 1,
+        "resources": 1,
+        "xp": 5
+      }
+    }
+  },
+  "open_sea_patrol": {
+    "id": "open_sea_patrol",
+    "repeatable": true,
+    "node": {
+      "id": "template_open_sea_patrol",
+      "name": "巡游敌群",
+      "kind": "battle",
+      "description": "一只绝壳蟹盘踞在暗礁上。",
+      "monster": "crab",
+      "event": "existing-crabBattle",
+      "category": "battle",
+      "min_voyage": 1,
+      "max_visits": 99,
+      "cooldown": 1,
+      "rewards": {
+        "coin": 1,
+        "corpse": 1,
+        "resources": 1,
+        "xp": 5
+      }
+    }
+  },
+  "abyss_patrol": {
+    "id": "abyss_patrol",
+    "repeatable": true,
+    "node": {
+      "id": "template_abyss_patrol",
+      "name": "巡游敌群",
+      "kind": "battle",
+      "description": "一只绝壳蟹盘踞在暗礁上。",
+      "monster": "crab",
+      "event": "existing-crabBattle",
+      "category": "battle",
+      "min_voyage": 1,
+      "max_visits": 99,
+      "cooldown": 1,
+      "rewards": {
+        "coin": 1,
+        "corpse": 1,
+        "resources": 1,
+        "xp": 5
+      }
+    }
+  }
+}

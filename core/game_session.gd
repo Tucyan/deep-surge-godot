@@ -17,7 +17,9 @@ const Origins = preload("res://core/origin_rules.gd")
 const Collectibles = preload("res://core/collectible_rules.gd")
 const EffectQuery = preload("res://core/effect_query.gd")
 const EffectRules = preload("res://core/effect_rules.gd")
-const VERSION := "godot-flow-v02-26"
+const Campaign = preload("res://core/campaign_rules.gd")
+const Survival = preload("res://core/survival_rules.gd")
+const VERSION := "godot-flow-v03-01"
 const ORIGINS = Origins.DEFINITIONS
 var catalog: RefCounted
 var state: Dictionary = {}
@@ -84,9 +86,7 @@ func dispatch(command: String, args: Dictionary = {}) -> bool:
 		"sell": ok = Shop.sell(self,args)
 		"fight": ok = Battle.enter(self)
 		"leave_encounter":
-			if phase() == "story" and state.story_step == "choice" and state.node.has("monster"):
-				Stats.resolve_crisis(state,false)
-				result_story("选择离开遭遇，没有战斗奖励。" ); ok = true
+			ok = Encounter.leave(self)
 		"play": ok = Rules.play(self, args)
 		"battle_action": ok = Battle.action(self,args)
 		"claim_boost": ok = Rules.claim_boost(self,args)
@@ -179,10 +179,10 @@ func new_game(args: Dictionary) -> bool:
 	state.shop = {}; state.encounter = {}
 	EnvironmentRules.initialize(state)
 	state.flags.event_visits = {}; state.flags.event_last = {}
+	if mode=="challenge": state.flags.navigation_battle_streak=0
 	state.mode = mode
-	# Draw the shared gameplay stream in both modes; story only fixes its length.
-	var rolled_length := 10 + int(R.draw(state.rng, "nodes") * 6) if not tutorial else 0
-	state.length = Tutorial.LENGTH if tutorial else (11 if state.mode == "story" else rolled_length)
+	Campaign.initialize(catalog,state)
+	Survival.initialize(state)
 	state.flags.raft_layout = Rules.Layout.ID
 	state.expansion_count = 0
 	var initial_cells: Array = Rules.Layout.POSITIONS.slice(2,6)
@@ -290,10 +290,19 @@ func view() -> Dictionary:
 		result.capacity = I.capacity(state)
 		result.origin_status=Origins.status(state)
 		result.player.limit = I.hand_limit(state,catalog)
+		# Keep the executable definitions private while exposing a safe node summary
+		# to UI consumers. Encounter.project() builds event options separately.
+		if result.has("node") and result.node is Dictionary and not result.node.is_empty():
+			result.node = Encounter.public_node(result.node)
+		if result.has("candidates") and result.candidates is Array:
+			var public_candidates: Array = []
+			for candidate in result.candidates:
+				if candidate is Dictionary: public_candidates.append(Encounter.public_node(candidate))
+			result.candidates = public_candidates
 		result.can_base = base_action()
-		result.expansion_cost = Rules.expansion_cost(state)
-		var survival_base: int=int(state.flags.get("voyage_survival_cost",0))
-		result.survival_settlement = {"pending":state.flags.has("voyage_survival_cost"),"food_water_cost":survival_base,"costs":EffectQuery.survival_costs(state,catalog,{"hunger":survival_base,"hydration":survival_base})}
+		result.expansion_cost = Rules.expansion_cost(state,catalog)
+		result.journey=Campaign.project(catalog,state)
+		result.survival_settlement=Survival.quote(self)
 		if int(state.flags.get("rested_until",0)) >= state.voyage:
 			result.player.base_ap += 1
 		for card in result.hand:

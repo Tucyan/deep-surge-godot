@@ -39,5 +39,26 @@
     "hp": 12,
     "damage": 2,
     "intent": "重击：生命−2。"
+  },
+  "boss_shallows": {
+    "name": "浅海守门者",
+    "hp": 10,
+    "damage": 1,
+    "intent": "潮击：生命−1。",
+    "boss": true
+  },
+  "boss_open_sea": {
+    "name": "外海吞潮者",
+    "hp": 22,
+    "damage": 2,
+    "intent": "潮击：生命−2。",
+    "boss": true
+  },
+  "boss_abyss": {
+    "name": "深渊潮心",
+    "hp": 30,
+    "damage": 3,
+    "intent": "潮击：生命−3。",
+    "boss": true
   }
 }
