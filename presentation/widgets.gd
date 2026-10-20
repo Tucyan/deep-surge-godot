@@ -144,6 +144,23 @@ static func counter(parent: Node, value: String) -> Label:
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	return label
 
+## Borderless text action: real Button, no artwork or background.
+static func text_button(parent: Node, title: String, callback: Callable, color: Color = MUTED) -> Button:
+	var result := Button.new()
+	result.text = title
+	result.flat = true
+	result.pressed.connect(callback)
+	for state in ["normal", "hover", "pressed", "hover_pressed", "focus", "disabled"]:
+		result.add_theme_stylebox_override(state, StyleBoxEmpty.new())
+	result.add_theme_color_override("font_color", color)
+	result.add_theme_color_override("font_hover_color", INK)
+	result.add_theme_color_override("font_pressed_color", GOLD)
+	result.add_theme_color_override("font_focus_color", INK)
+	result.add_theme_font_size_override("font_size", 16)
+	result.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	parent.add_child(result)
+	return result
+
 static func primary(button: Button) -> void:
 	if button.has_node("SurgeTextButtonArt"):
 		button.set_meta("surge_primary", true)

@@ -1,0 +1,1 @@
+{"route": "standard-challenge", "status": "terminal_pending_replay", "steps": 235, "progress": {"voyage": 18.0, "phase": "finished", "completed": 18.0, "player": {"base_ap": 4.0, "battle_ap": 4.0, "damage": 0.0, "hp": 0, "hp_max": 19, "hunger": 25, "hunger_max": 100, "hydration": 0, "hydration_max": 100, "limit": 11, "sanity": 100, "sanity_max": 100}, "environments": []}}

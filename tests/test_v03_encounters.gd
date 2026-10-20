@@ -36,13 +36,18 @@ func test_weather(catalog) -> void:
 	s.state.journey.layer_index=1;s.state.journey.layer_voyage=1;s.state.journey.cleared=["shallows"];s.state.voyage=6;s.state.completed=5
 	s.state.buffs=[]
 	check(s.EnvironmentRules.add(s,"battleSquall",true),"full combat weather active")
+	var battle_families: Array=[]
+	for node in s.Encounter.definitions(s):
+		if s.Encounter.eligible(s,node) and s.Encounter.battle_opportunity(s,node) and node.id not in battle_families:
+			battle_families.append(node.id)
 	s.Encounter.candidates(s)
 	check(s.state.candidates.size()==3 and s.state.candidates.all(func(node):return s.Encounter.battle_opportunity(s,node)),"formal weather produces all battles from actual layer pool")
-	check(s.state.candidates.any(func(node):return node.has("template_id")),"formal pool requires template supplementation without exhaustion fixture")
+	if battle_families.size()<3:
+		check(s.state.candidates.filter(func(node):return node.has("template_id")).size()>=3-battle_families.size(),"weather supplements missing permanent battle families")
 	# Exhaust ordinary entries so all slots must come from authorized templates.
 	s.state.flags.node_visits={}
 	for node in s.Encounter.definitions(s):
-		s.state.flags.node_visits["open_sea:"+s.Encounter.key(node)]=999
+		s.state.flags.node_visits[preload("res://core/navigation_rules.gd").counter_key(s,node)]=999
 	s.Encounter.candidates(s)
 	check(s.state.candidates.size()==3,"full combat keeps three slots")
 	for node in s.state.candidates:
@@ -50,9 +55,12 @@ func test_weather(catalog) -> void:
 		check(s.Encounter.valid_node(s,node,"challenge"),"generated template validates")
 		var altered: Dictionary=node.duplicate(true);altered.monster="boss_abyss"
 		check(not s.Encounter.valid_node(s,altered,"challenge"),"template enemy tampering rejected")
+		check(node.get("rewards") is Dictionary,"generated template declares rewards")
+		if not node.get("rewards") is Dictionary:continue
 		altered=node.duplicate(true);altered.rewards.coin=999
 		check(not s.Encounter.valid_node(s,altered,"challenge"),"template reward tampering rejected")
-	check(s.dispatch("voyage",{"id":s.state.candidates[0].visit_id}),"authorized generated candidate is selectable")
+	if not s.state.candidates.is_empty():
+		check(s.dispatch("voyage",{"id":s.state.candidates[0].visit_id}),"authorized generated candidate is selectable")
 	var frozen: Dictionary=s.state.rng.duplicate(true)
 	s.view();s.view()
 	check(s.state.rng==frozen,"query never redraws candidates")

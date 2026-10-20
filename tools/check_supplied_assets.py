@@ -9,6 +9,10 @@ for id,d in manifest.items():
     p=ROOT/d['path'].removeprefix('res://')
     assert p.exists(), (id,p)
     assert hashlib.sha256(p.read_bytes()).hexdigest()==d['sha256'],f'Hash mismatch: {id}'
+    for source, expected_hash in d.get('source_hashes', {}).items():
+        source_path=ROOT/source.removeprefix('res://')
+        assert source_path.is_file(),f'Missing registered source: {id}/{source}'
+        assert hashlib.sha256(source_path.read_bytes()).hexdigest()==expected_hash,f'Source hash mismatch: {id}/{source}'
     if p.suffix.lower()=='.png':
         im=Image.open(p); assert list(im.size)==d['dimensions'],f'Dimensions: {id}'
         if d.get('region'):

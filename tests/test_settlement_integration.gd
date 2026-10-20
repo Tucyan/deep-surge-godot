@@ -20,6 +20,7 @@ func run() -> void:
 	await process_frame
 	while app.transition_busy: await process_frame
 	check(app.session.screen=="home","结算返回首页")
+	app.story_mode_visible=true # Retained story UI is exercised explicitly.
 	app.handle_ui("narrative_choose","")
 	await process_frame
 	check(app.local_panel=="narrative","首页剧情入口打开剧情档选择")

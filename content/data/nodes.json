@@ -1317,5 +1317,547 @@
         "name": "离开"
       }
     ]
+  },
+  "sealedLarder": {
+    "id": "sealedLarder",
+    "name": "密封储粮舱",
+    "kind": "environment",
+    "category": "trade",
+    "min_voyage": 3,
+    "max_visits": 1,
+    "cooldown": 3,
+    "description": "一截厨房浮舱卡在礁缝里。保温柜与蒸馏架仍然完好，但你只能拆走其中一件。",
+    "event": "RELIC:sealedLarder",
+    "art": "relic.sealedFishTin",
+    "options": [
+      {
+        "id": "tin",
+        "name": "撬开储粮柜",
+        "description": "支付基地AP1、废铁1；获得远航鱼罐1件。获得时饱食上限+10并恢复饱食50。每件仅结算一次；丢弃不撤销上限或恢复。",
+        "cost": 1,
+        "effects": [
+          {
+            "type": "GiveRelic",
+            "id": "sealedFishTin"
+          }
+        ],
+        "cardCosts": {
+          "iron": 1
+        }
+      },
+      {
+        "id": "still",
+        "name": "拆走蒸馏架",
+        "description": "支付基地AP1、塑料1；获得随身蒸馏壶1件。获得时水分上限+10；持有时轮末水分消耗减少5。获得时不恢复水分，丢弃保留上限。",
+        "cost": 1,
+        "effects": [
+          {
+            "type": "GiveRelic",
+            "id": "copperStill"
+          }
+        ],
+        "cardCosts": {
+          "plastic": 1
+        }
+      },
+      {
+        "id": "leave",
+        "name": "留下物件，继续航行",
+        "description": "不支付代价，不获得藏品。",
+        "cost": 0,
+        "effects": []
+      }
+    ]
+  },
+  "powderWreck": {
+    "id": "powderWreck",
+    "name": "未熄的火药舱",
+    "kind": "environment",
+    "category": "battle",
+    "min_voyage": 4,
+    "max_visits": 1,
+    "cooldown": 3,
+    "description": "沉船的引信还在燃烧。咬噬者盘踞在器械两侧，取走任何一件都会惊动它们。",
+    "event": "RELIC:powderWreck",
+    "art": "relic.emberFuse",
+    "options": [
+      {
+        "id": "fuse",
+        "name": "夺取熔火引信",
+        "description": "与咬噬者战斗，胜利获得熔火引信1件。另获经验3，无基础贝币、尸体或材料奖励；环境与出身额外奖励照常，撤退不获奖。持有时固定攻击与攻击牌伤害+2；轮末水分消耗+5。丢弃后两项持有修正都取消。",
+        "cost": 0,
+        "effects": [],
+        "battle": {
+          "enemy": "biter",
+          "rewards": {
+            "coin": 0,
+            "corpse": 0,
+            "resources": 0,
+            "xp": 3,
+            "relics": [
+              {
+                "id": "emberFuse"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "spear",
+        "name": "拔出猎潮石矛",
+        "description": "与咬噬者战斗，胜利获得猎潮石矛1件。另获经验3，无基础贝币、尸体或材料奖励；环境与出身额外奖励照常，撤退不获奖。持有时固定攻击与攻击牌伤害+1。它是护持战斗的遗物，不作为手牌消耗。",
+        "cost": 0,
+        "effects": [],
+        "battle": {
+          "enemy": "biter",
+          "rewards": {
+            "coin": 0,
+            "corpse": 0,
+            "resources": 0,
+            "xp": 3,
+            "relics": [
+              {
+                "id": "hunterSpear"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "leave",
+        "name": "留下物件，继续航行",
+        "description": "不支付代价，不获得藏品。",
+        "cost": 0,
+        "effects": []
+      }
+    ]
+  },
+  "kelpDryingRack": {
+    "id": "kelpDryingRack",
+    "name": "海藻晾晒架",
+    "kind": "environment",
+    "category": "trade",
+    "min_voyage": 3,
+    "max_visits": 1,
+    "cooldown": 3,
+    "description": "木架上挂着海藻卷和修补过的行囊。留下能修好架子的材料，便可取走一份馈赠。",
+    "event": "RELIC:kelpDryingRack",
+    "art": "relic.kelpRation",
+    "options": [
+      {
+        "id": "kelp",
+        "name": "用浮木换海藻",
+        "description": "支付基地AP1、木头1；获得潮晒海藻卷1件。获得时恢复饱食25；持有时轮末饱食消耗减少5。恢复每件仅一次，消耗最低为0。",
+        "cost": 1,
+        "effects": [
+          {
+            "type": "GiveRelic",
+            "id": "kelpRation"
+          }
+        ],
+        "cardCosts": {
+          "wood": 1
+        }
+      },
+      {
+        "id": "satchel",
+        "name": "用布条换行囊",
+        "description": "支付基地AP1、布条2；获得拾荒行囊1件。持有时手牌容量上限+3；丢弃立即移除扩容。超限仍按原有轮末弃牌流程处理。",
+        "cost": 1,
+        "effects": [
+          {
+            "type": "GiveRelic",
+            "id": "scavengerSatchel"
+          }
+        ],
+        "cardCosts": {
+          "cloth": 2
+        }
+      },
+      {
+        "id": "leave",
+        "name": "留下物件，继续航行",
+        "description": "不支付代价，不获得藏品。",
+        "cost": 0,
+        "effects": []
+      }
+    ]
+  },
+  "silentWayfinder": {
+    "id": "silentWayfinder",
+    "name": "无声的领航台",
+    "kind": "environment",
+    "category": "service",
+    "min_voyage": 4,
+    "max_visits": 1,
+    "cooldown": 3,
+    "description": "罗盘压着一片刻碑。雾中传来的歌声提醒你：带走一个答案，就要留下一点自己的方向。",
+    "event": "RELIC:silentWayfinder",
+    "art": "relic.homeCompass",
+    "options": [
+      {
+        "id": "tablet",
+        "name": "辨读潮纹刻碑",
+        "description": "支付基地AP1、精神10；获得静潮刻碑1件。获得时精神上限+10并恢复精神20。每件仅一次；丢弃保留已提升的上限与恢复。",
+        "cost": 1,
+        "effects": [
+          {
+            "type": "GiveRelic",
+            "id": "tideTablet"
+          }
+        ],
+        "statCosts": {
+          "sanity": 10
+        }
+      },
+      {
+        "id": "compass",
+        "name": "重系罗盘挂绳",
+        "description": "支付基地AP1、绳索1；获得归航罗盘1件。获得时恢复精神15；持有时手牌容量上限+1。罗盘不增加导航候选，也不阻止偏航。",
+        "cost": 1,
+        "effects": [
+          {
+            "type": "GiveRelic",
+            "id": "homeCompass"
+          }
+        ],
+        "cardCosts": {
+          "rope": 1
+        }
+      },
+      {
+        "id": "leave",
+        "name": "留下物件，继续航行",
+        "description": "不支付代价，不获得藏品。",
+        "cost": 0,
+        "effects": []
+      }
+    ]
+  },
+  "boneHunter": {
+    "id": "boneHunter",
+    "name": "猎人的沉筏",
+    "kind": "environment",
+    "category": "battle",
+    "min_voyage": 4,
+    "max_visits": 1,
+    "cooldown": 3,
+    "description": "骨刃与矛束沉在筏架两端。水下各有一团阴影，绕不开守着它们的捕食者。",
+    "event": "RELIC:boneHunter",
+    "art": "relic.tideBoneBlade",
+    "options": [
+      {
+        "id": "blade",
+        "name": "迎击骨刃旁的咬噬者",
+        "description": "与咬噬者战斗，胜利获得缚潮骨刃1件。另获经验3，无基础贝币、尸体或材料奖励；环境与出身额外奖励照常，撤退不获奖。持有时固定攻击与攻击牌伤害+2；轮末饱食消耗+5。丢弃取消两项修正。",
+        "cost": 0,
+        "effects": [],
+        "battle": {
+          "enemy": "biter",
+          "rewards": {
+            "coin": 0,
+            "corpse": 0,
+            "resources": 0,
+            "xp": 3,
+            "relics": [
+              {
+                "id": "tideBoneBlade"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "bundle",
+        "name": "挑战矛束下的硬壳蟹",
+        "description": "与硬壳蟹战斗，胜利获得三潮矛束1件。另获经验3，无基础贝币、尸体或材料奖励；环境与出身额外奖励照常，撤退不获奖。接下来三场战斗开始时各获得一张Ⅰ级临时矛，每场扣一次。未用的矛在战后清除。",
+        "cost": 0,
+        "effects": [],
+        "battle": {
+          "enemy": "crab",
+          "rewards": {
+            "coin": 0,
+            "corpse": 0,
+            "resources": 0,
+            "xp": 3,
+            "relics": [
+              {
+                "id": "barbedBundle"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "leave",
+        "name": "留下物件，继续航行",
+        "description": "不支付代价，不获得藏品。",
+        "cost": 0,
+        "effects": []
+      }
+    ]
+  },
+  "shellGraveyard": {
+    "id": "shellGraveyard",
+    "name": "回声甲冢",
+    "kind": "environment",
+    "category": "risk",
+    "min_voyage": 5,
+    "max_visits": 1,
+    "cooldown": 3,
+    "description": "碎甲堆里透出蓝光。硬壳蟹守着残甲，螺壳的歌声则会带走一段清醒。",
+    "event": "RELIC:shellGraveyard",
+    "art": "relic.glowConch",
+    "options": [
+      {
+        "id": "armor",
+        "name": "击败守甲硬壳蟹",
+        "description": "与硬壳蟹战斗，胜利获得叠片残甲1件。另获经验3，无基础贝币、尸体或材料奖励；环境与出身额外奖励照常，撤退不获奖。持有时固定格挡基础护盾+2。此效果不增加设备或材料提供的护盾。",
+        "cost": 0,
+        "effects": [],
+        "battle": {
+          "enemy": "crab",
+          "rewards": {
+            "coin": 0,
+            "corpse": 0,
+            "resources": 0,
+            "xp": 3,
+            "relics": [
+              {
+                "id": "crackedCarapace"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "conch",
+        "name": "循声取走幽光螺壳",
+        "description": "支付基地AP1、精神15；获得幽光螺壳1件。获得时立即恢复精神30，每件只结算一次。精神已满时不会储存恢复量。",
+        "cost": 1,
+        "effects": [
+          {
+            "type": "GiveRelic",
+            "id": "glowConch"
+          }
+        ],
+        "statCosts": {
+          "sanity": 15
+        }
+      },
+      {
+        "id": "leave",
+        "name": "留下物件，继续航行",
+        "description": "不支付代价，不获得藏品。",
+        "cost": 0,
+        "effects": []
+      }
+    ]
+  },
+  "drownedMint": {
+    "id": "drownedMint",
+    "name": "沉没的铸币台",
+    "kind": "environment",
+    "category": "trade",
+    "min_voyage": 5,
+    "max_visits": 1,
+    "cooldown": 3,
+    "description": "铜钱与折尺都被锈扣锁在台面上。撬松锁扣之后，海水会把另一件永远卷走。",
+    "event": "RELIC:drownedMint",
+    "art": "relic.sunkenCoin",
+    "options": [
+      {
+        "id": "coin",
+        "name": "撬取方孔古钱",
+        "description": "支付基地AP1、废铁1、精神5；获得沉海方孔钱1件。持有时固定攻击与攻击牌伤害+1，固定格挡基础护盾-1。丢弃取消两项修正。",
+        "cost": 1,
+        "effects": [
+          {
+            "type": "GiveRelic",
+            "id": "sunkenCoin"
+          }
+        ],
+        "cardCosts": {
+          "iron": 1
+        },
+        "statCosts": {
+          "sanity": 5
+        }
+      },
+      {
+        "id": "rule",
+        "name": "拆下筏匠折尺",
+        "description": "支付基地AP1、废铁2；获得筏匠折尺1件。下一次实际受益的Ⅰ级设备安装直接升为Ⅱ级，仅一次；持有时手牌容量上限+1。制造不触发，设备匠优先。",
+        "cost": 1,
+        "effects": [
+          {
+            "type": "GiveRelic",
+            "id": "foldingRule"
+          }
+        ],
+        "cardCosts": {
+          "iron": 2
+        }
+      },
+      {
+        "id": "leave",
+        "name": "留下物件，继续航行",
+        "description": "不支付代价，不获得藏品。",
+        "cost": 0,
+        "effects": []
+      }
+    ]
+  },
+  "rescuePontoon": {
+    "id": "rescuePontoon",
+    "name": "最后的救援浮台",
+    "kind": "environment",
+    "category": "supply",
+    "min_voyage": 3,
+    "max_visits": 1,
+    "cooldown": 3,
+    "description": "救援员留下的浮台已经空了。铭牌与急救包旁写着：只取一件，给后来的人留一条活路。",
+    "event": "RELIC:rescuePontoon",
+    "art": "relic.rescueBadge",
+    "options": [
+      {
+        "id": "badge",
+        "name": "修好铭牌的系带",
+        "description": "支付基地AP1、绳索1；获得余生浮标牌1件。获得时生命上限+1并恢复生命2；持有时手牌容量上限+1。丢弃保留永久生命成长和恢复。",
+        "cost": 1,
+        "effects": [
+          {
+            "type": "GiveRelic",
+            "id": "rescueBadge"
+          }
+        ],
+        "cardCosts": {
+          "rope": 1
+        }
+      },
+      {
+        "id": "medkit",
+        "name": "取走漂流急救包",
+        "description": "支付基地AP1；获得漂流急救包1件。获得时立即恢复生命5，每件仅一次。它不是药箱手牌，不触发药箱或出身的用牌加成。",
+        "cost": 1,
+        "effects": [
+          {
+            "type": "GiveRelic",
+            "id": "drifterMedkit"
+          }
+        ]
+      },
+      {
+        "id": "leave",
+        "name": "留下物件，继续航行",
+        "description": "不支付代价，不获得藏品。",
+        "cost": 0,
+        "effects": []
+      }
+    ]
+  },
+  "coralShrine": {
+    "id": "coralShrine",
+    "name": "赤潮许愿礁",
+    "kind": "environment",
+    "category": "risk",
+    "min_voyage": 6,
+    "max_visits": 1,
+    "cooldown": 3,
+    "description": "红珊瑚缠着一瓶血色药酿。旧航海者说，这里收取的从来不是贝币。",
+    "event": "RELIC:coralShrine",
+    "art": "relic.redCoral",
+    "options": [
+      {
+        "id": "coral",
+        "name": "以鲜血唤醒珊瑚",
+        "description": "支付生命1、精神10；获得赤枝珊瑚1件。获得时生命上限+1；持有时固定格挡基础护盾+1。不恢复生命；丢弃保留永久上限。",
+        "cost": 0,
+        "effects": [
+          {
+            "type": "GiveRelic",
+            "id": "redCoral"
+          }
+        ],
+        "statCosts": {
+          "hp": 1,
+          "sanity": 10
+        }
+      },
+      {
+        "id": "vial",
+        "name": "割开血酿的封蜡",
+        "description": "支付生命2、精神10；获得赤潮血酿1件。获得时生命上限+3并恢复生命3；持有时轮末水分消耗+5。丢弃取消额外水耗，保留永久成长与恢复。",
+        "cost": 0,
+        "effects": [
+          {
+            "type": "GiveRelic",
+            "id": "crimsonVial"
+          }
+        ],
+        "statCosts": {
+          "hp": 2,
+          "sanity": 10
+        }
+      },
+      {
+        "id": "leave",
+        "name": "留下物件，继续航行",
+        "description": "不支付代价，不获得藏品。",
+        "cost": 0,
+        "effects": []
+      }
+    ]
+  },
+  "riggersCache": {
+    "id": "riggersCache",
+    "name": "水手的绳结匣",
+    "kind": "environment",
+    "category": "trade",
+    "min_voyage": 3,
+    "max_visits": 1,
+    "cooldown": 3,
+    "description": "防水匣里分放着箭筒与水手结。留下新绳索重新绑好匣子，就能带走其中一件。",
+    "event": "RELIC:riggersCache",
+    "art": "relic.sailorsKnot",
+    "options": [
+      {
+        "id": "quiver",
+        "name": "换取备战箭筒",
+        "description": "支付基地AP1、绳索1；获得备战箭筒1件。接下来两场战斗开始时各获得两张临时射箭牌；每张瞬发、基础伤害2，不消耗战斗AP。未用的箭在战后清除。",
+        "cost": 1,
+        "effects": [
+          {
+            "type": "GiveRelic",
+            "id": "drifterQuiver"
+          }
+        ],
+        "cardCosts": {
+          "rope": 1
+        }
+      },
+      {
+        "id": "knot",
+        "name": "换取平安水手结",
+        "description": "支付基地AP1、绳索2；获得平安水手结1件。持有时材料附魔有15%概率保留投入材料，AP照付；手牌容量上限+1。同类保留概率相加，最高100%。",
+        "cost": 1,
+        "effects": [
+          {
+            "type": "GiveRelic",
+            "id": "sailorsKnot"
+          }
+        ],
+        "cardCosts": {
+          "rope": 2
+        }
+      },
+      {
+        "id": "leave",
+        "name": "留下物件，继续航行",
+        "description": "不支付代价，不获得藏品。",
+        "cost": 0,
+        "effects": []
+      }
+    ]
   }
 }

@@ -1,0 +1,25 @@
+{
+  "captured_at": "2026-10-20T20:17:17+08:00",
+  "sources": {
+    "a": {
+      "path": "C:\\Users\\ALmerb\\Desktop\\MyProgram\\yongxian\\deep-surge-godot",
+      "copy": "C:\\Users\\ALmerb\\Desktop\\MyProgram\\yongxian\\tmp\\godot-safe-merge-20261020\\input-a",
+      "base": "df0d58e0bc038ef9936894e6720d23751b4a9628",
+      "commit": "4bffabe3d2c7ecbc9941c15f175d097b612e2c9e",
+      "ref": "refs/heads/codex/snapshot-origins-20261020-safe-merge",
+      "files": 4706
+    },
+    "b": {
+      "path": "C:\\Users\\ALmerb\\.codex\\worktrees\\deep-surge-v03",
+      "copy": "C:\\Users\\ALmerb\\Desktop\\MyProgram\\yongxian\\tmp\\godot-safe-merge-20261020\\input-b",
+      "base": "df0d58e0bc038ef9936894e6720d23751b4a9628",
+      "commit": "950cd84945c9f8e639a313900a1ae6531c49cff5",
+      "ref": "refs/heads/codex/snapshot-v03-20261020-safe-merge",
+      "files": 4501
+    }
+  },
+  "integration": {
+    "path": "C:\\Users\\ALmerb\\.codex\\worktrees\\deep-surge-integrated-20261020",
+    "branch": "codex/integrate-v03-relics"
+  }
+}

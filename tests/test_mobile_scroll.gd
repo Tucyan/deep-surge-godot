@@ -121,7 +121,7 @@ func run() -> void:
 	await process_frame
 	var settings_scroll = app.find_child("MobileSettingsScroll",true,false)
 	check(settings_scroll != null and not settings_scroll.get_v_scroll_bar().visible,"real settings page applies the mobile policy")
-	var lazy_button = app.find_child("TabNarrative",true,false)
+	var lazy_button = app.find_child("TabDisplay",true,false)
 	lazy_button.pressed.emit()
 	await process_frame
 	await process_frame

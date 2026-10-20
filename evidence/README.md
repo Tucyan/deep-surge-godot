@@ -1,5 +1,7 @@
 # 验证记录索引
 
+本轮两工作树整合：见[安全整合验证](safe-integration-20261020.md)、[43项套件摘要](safe-integration-suite-summary.json)及[输入来源](integration-sources/README.md)。旧记录保留原版本含义，不代表整合版通过。
+
 类型：证据导航。每份记录只对其日期、代码/内容版本、执行命令和覆盖范围负责；本索引不重新判定旧记录为当前通过。
 
 | 范围 | 记录 |
@@ -18,8 +20,11 @@
 | 加载过渡及局部更新 | [加载与刷新验证](loading-and-minor-refresh-verification.md) |
 | 手动排序 | [排序松手验证](hand-reorder-verification.md) |
 | 海面运行性能 | [运行性能验证](runtime-performance-verification.md) |
-| 局内交互剩余卡顿 | [31类操作诊断与分层计时](ingame-stalls-20261019.md)（仅排查，未修复） |
+| 局内交互卡顿 | [2026-10-19 31类操作诊断与分层计时](ingame-stalls-20261019.md)、[2026-10-20 局部刷新实测](ingame-stalls-20261020.md)（出招与选料 -79%～-88%，商店、制造、安装、打捞仍完整重建） |
 | 各清晰度低帧率与手牌纸张绘制 | [原因排查](frame-bottleneck-20261019.md)、[优化验证](paper-grain-performance-20261019.md) |
+| 手机设置 16:9 与转化三栏 | [2026-10-20 布局与截图](mobile-settings-craft-layout-20261020.md) |
+| 手机 21:9 全流程 | [2026-10-20 顺序截图、滚动区实测与优化建议](mobile-21x9-audit-20261020.md) |
+| 局内界面整理 | [2026-10-20 商店顶栏/战斗记录浮层/合成与仓库滚动/转化点选/事件覆盖手牌](ingame-ui-pass-20261020.md) |
 | 发行/平台 | [Android 导出专题](../docs/android-export.md)（须核对其中记录的版本） |
 
 其他截图、JSON、轨迹及专题记录保留在本目录。当前路线门禁使用 `tests/fixtures/routes/manifest.json`，历史 v22 轨迹按 stale 处理。本文不将历史证据数量或某个脚本退出0等同于当前版本全覆盖。

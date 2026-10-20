@@ -20,49 +20,48 @@ func fixture(id: String, changes: Dictionary = {}):
 	var s=Session.new(local_catalog)
 	s.dispatch("new",{"mode":"challenge","origin":"strong","seed":22})
 	s._auto_advancing=true; s.state.phase="story"; s.state.story_step="choice"
-	s.state.voyage=7; s.state.journey={"profile_id":"challenge","layer_index":1,"layer_voyage":2,"cleared":["shallows"]}; s.state.environment.rolled_voyage=1
-	preload("res://tests/weather_history_fixture.gd").complete_before_start(s)
-	s.EnvironmentRules.start_round(s); s.Survival.lock_costs(s)
+	# Manual arrival keeps the legal current journey/weather and departure lock.
+	s.Survival.lock_costs(s)
 	s.state.node=local_catalog.entry("nodes",id); s.state.node.visit_id="reward-test"
 	s.state.candidates=[]; s.Encounter.arrived(s)
 	return s
 func test_event() -> void:
-	var s=fixture("camp",{"options":[{"id":"take","name":"取走遗物","cost":0,"effects":[{"type":"GiveRelic","id":"lifeboatTag"}]}]})
+	var s=fixture("camp",{"options":[{"id":"take","name":"取走遗物","cost":0,"effects":[{"type":"GiveRelic","id":"crimsonVial"}]}]})
 	var before=s.snapshot(); s.view(); Query.list_actions(s)
 	check(s.snapshot()==before,"事件查看和行动报价不改变状态或随机")
 	check(s.dispatch("option",{"id":"take"}),"事件允许获得指定遗物")
 	check(s.state.collectibles.items.size()==1,"事件创建独立遗物实例")
-	check(s.state.player.hp_max==before.state.player.hp_max+2,"获得时永久上限生效")
-	check("relic.lifeboatTag" in s.profile.discovered,"事件发放登记图鉴")
+	check(s.state.player.hp_max==before.state.player.hp_max+3,"获得时永久上限生效")
+	check("relic.crimsonVial" in s.profile.discovered,"事件发放登记图鉴")
 	check(s.state.rng.rewards==before.state.rng.rewards,"固定遗物不额外耗随机")
 	var copy=Session.new(s.catalog)
 	check(copy.restore(JSON.parse_string(JSON.stringify(s.snapshot()))),"事件发奖后保存恢复")
 	before=s.snapshot()
 	check(not s.dispatch("option",{"id":"take"}) and s.snapshot()==before,"同一事件奖励不能重复领取")
 func test_battle() -> void:
-	var s=fixture("battle",{"rewards":{"coin":0,"corpse":0,"resources":0,"xp":0,"relics":[{"id":"spearParcel"}]}})
+	var s=fixture("battle",{"rewards":{"coin":0,"corpse":0,"resources":0,"xp":0,"relics":[{"id":"barbedBundle"}]}})
 	check(s.dispatch("fight"),"普通战斗带奖励进入")
 	var copy=Session.new(s.catalog)
 	check(copy.restore(JSON.parse_string(JSON.stringify(s.snapshot()))),"普通战斗奖励保存恢复")
-	var bad=s.snapshot(); bad.state.battle.rewards.relics[0].id="luckyKnot"
+	var bad=s.snapshot(); bad.state.battle.rewards.relics[0].id="sailorsKnot"
 	check(not copy.restore(bad),"拒绝篡改战斗遗物奖励")
 	s.state.battle.hp=1
 	check(s.dispatch("battle_action",{"action":"attack"}),"实际胜利发奖")
 	check(s.state.collectibles.items.size()==1,"战斗创建遗物实例")
 	check(s.state.hand.all(func(card):return not card.temporary),"战后获得矛匣不补发本场临时矛")
-	check("relic.spearParcel" in s.profile.discovered,"战斗发放登记图鉴")
+	check("relic.barbedBundle" in s.profile.discovered,"战斗发放登记图鉴")
 	var before=s.snapshot()
 	check(not s.dispatch("battle_action",{"action":"attack"}) and s.snapshot()==before,"胜利奖励不能重复领取")
 	check(s.dispatch("advance"),"确认战斗结果")
 	check(s.dispatch("discard_collectible",{"uid":s.state.collectibles.items[0].uid}),"战斗遗物可正常丢弃")
-	var retreat=fixture("battle",{"rewards":{"relics":[{"id":"luckyKnot"}]}})
+	var retreat=fixture("battle",{"rewards":{"relics":[{"id":"sailorsKnot"}]}})
 	check(retreat.dispatch("fight") and retreat.dispatch("battle_end") and retreat.dispatch("retreat"),"实际撤退")
 	check(retreat.state.collectibles.items.is_empty(),"撤退不发遗物")
 func test_random_and_restore() -> void:
-	var offer={"id":"take","name":"漂来的礼物","cost":0,"effects":[{"type":"GiveRandomRelic","pool":["rationTin","luckyKnot"],"amount":3}]}
+	var offer={"id":"take","name":"漂来的礼物","cost":0,"effects":[{"type":"GiveRandomRelic","pool":["sealedFishTin","sailorsKnot"],"amount":3}]}
 	var s=fixture("camp",{"options":[offer]})
 	var before=s.snapshot(); var preview=s.Encounter.reward_preview(offer)
-	check(preview.relics==[{"pool":["rationTin","luckyKnot"],"amount":3}],"随机预览只包含范围和数量")
+	check(preview.relics==[{"pool":["sealedFishTin","sailorsKnot"],"amount":3}],"随机预览只包含范围和数量")
 	var probe=Query.fork(s)
 	check(probe.dispatch("option",{"id":"take"}) and probe.state.rng.rewards==s.state.rng.rewards and probe.state.collectibles.items.is_empty(),"报价副本不抽取或泄露随机遗物")
 	var copy=Session.new(s.catalog)
@@ -73,11 +72,11 @@ func test_random_and_restore() -> void:
 	check(same(s.state.collectibles,copy.state.collectibles) and same(s.state.rng,copy.state.rng),"同保存点随机奖励完全一致")
 	check(int(s.state.rng.rewards.cursor)==int(before.state.rng.rewards.cursor)+3,"每件随机奖励恰好抽取一次")
 	check(copy.restore(JSON.parse_string(JSON.stringify(s.snapshot()))),"随机发奖后保存恢复")
-	var single=fixture("camp",{"options":[{"id":"take","name":"补给","effects":[{"type":"GiveRandomRelic","pool":["lifeboatTag"],"amount":2}]}]})
+	var single=fixture("camp",{"options":[{"id":"take","name":"补给","effects":[{"type":"GiveRandomRelic","pool":["crimsonVial"],"amount":2}]}]})
 	var base_max: int=single.state.player.hp_max
-	check(single.dispatch("option",{"id":"take"}) and single.state.player.hp_max==base_max+4,"有放回随机可重复种类并叠加获得效果")
+	check(single.dispatch("option",{"id":"take"}) and single.state.player.hp_max==base_max+6,"有放回随机可重复种类并叠加获得效果")
 func test_event_battle_and_stages() -> void:
-	var rewards={"coin":0,"corpse":0,"resources":0,"xp":0,"relics":[{"pool":["borrowedPulse"],"amount":1}]}
+	var rewards={"coin":0,"corpse":0,"resources":0,"xp":0,"relics":[{"pool":["drifterQuiver"],"amount":1}]}
 	var offer={"id":"fight","name":"守护者","battle":{"enemy":"biter","rewards":rewards},"effects":[]}
 	var s=fixture("duel",{"options":[offer]})
 	check(s.dispatch("option",{"id":"fight"}),"事件选项进入遗物奖励战斗")
@@ -87,19 +86,19 @@ func test_event_battle_and_stages() -> void:
 	check(s.dispatch("battle_action",{"action":"attack"}) and s.state.collectibles.items.size()==1,"事件战斗胜利随机发放遗物")
 	if not s.state.collectibles.items.is_empty():
 		var runtime: Dictionary=s.state.collectibles.items[0].effects.values()[0]
-		check(runtime.remaining==1 and not runtime.active,"新获得临时血量遗物次数保留到下场")
+		check(runtime.remaining==2 and not runtime.active,"新获得临时血量遗物次数保留到下场")
 	var staged=fixture("camp",{"stages":[[offer]],"options":[]})
 	check(staged.dispatch("option",{"id":"fight"}),"分段事件战斗进入")
 	copy=Session.new(staged.catalog)
 	check(copy.restore(JSON.parse_string(JSON.stringify(staged.snapshot()))),"分段事件战斗也验证原奖励定义")
-	var outcome=fixture("camp",{"options":[{"id":"take","name":"宝箱","outcomes":[{"weight":1,"effects":[{"type":"GiveRelic","id":"luckyKnot"}]}]}]})
+	var outcome=fixture("camp",{"options":[{"id":"take","name":"宝箱","outcomes":[{"weight":1,"effects":[{"type":"GiveRelic","id":"sailorsKnot"}]}]}]})
 	check(outcome.dispatch("option",{"id":"take"}) and outcome.state.collectibles.items.size()==1,"事件随机结果分支允许发放遗物")
 func test_invalid() -> void:
 	var definitions: Dictionary=catalog.table("relics")
-	for entry in [{"id":"missing"},{"id":"guardian"},{"pool":[]},{"pool":["luckyKnot","missing"]},{"pool":["luckyKnot","luckyKnot"]},{"id":"luckyKnot","amount":0},{"id":"luckyKnot","amount":1.5},{"id":"luckyKnot","amount":true},{"id":"luckyKnot","pool":["luckyKnot"]}]:
+	for entry in [{"id":"missing"},{"id":"guardian"},{"pool":[]},{"pool":["sailorsKnot","missing"]},{"pool":["sailorsKnot","sailorsKnot"]},{"id":"sailorsKnot","amount":0},{"id":"sailorsKnot","amount":1.5},{"id":"sailorsKnot","amount":true},{"id":"sailorsKnot","pool":["sailorsKnot"]}]:
 		check(not Rewards.valid_rewards(definitions,{"relics":[entry]}),"拒绝无效奖励："+JSON.stringify(entry))
 	check(not Rewards.valid_content(definitions,{"variants":[{"stages":[[{"outcomes":[{"effects":[{"type":"GiveRandomRelic","pool":[]}]}]}]]}]}),"内容校验覆盖嵌套随机结果")
-	check(not Rewards.valid_rewards(definitions,{"relics":"luckyKnot"}),"奖励列表必须为数组")
+	check(not Rewards.valid_rewards(definitions,{"relics":"sailorsKnot"}),"奖励列表必须为数组")
 	var s=fixture("camp",{"options":[{"id":"take","name":"坏奖励","cost":1,"effects":[{"type":"GiveCard","id":"wood"},{"type":"GiveRelic","id":"missing"}]}]})
 	var before=s.snapshot()
 	check(not s.dispatch("option",{"id":"take"}) and s.snapshot()==before,"非法事件奖励无扣费、无发卡、无随机变化")
@@ -119,9 +118,13 @@ func test_agent_routes() -> void:
 		# Content fixture only; after reset every action goes through public Agent IDs.
 		for node in content._tables.nodes:
 			if node not in [id,"boss","fallback"]: content._tables.nodes[node].retired=true
-		if id=="camp": content._tables.nodes[id].options=[{"id":"take","name":"取走遗物","effects":[{"type":"GiveRandomRelic","pool":["luckyKnot","spearParcel"]}]}]
-		else: content._tables.nodes[id].rewards={"relics":[{"id":"borrowedPulse"}]}
-		content._tables.node_pools.shallows.entries=[{"node":id,"weight":1,"min_voyage":1,"max_voyage":99,"max_visits":99,"scope":"layer","cooldown":1}]
+		if id=="camp": content._tables.nodes[id].options=[{"id":"take","name":"取走遗物","effects":[{"type":"GiveRandomRelic","pool":["sailorsKnot","barbedBundle"]}]}]
+		else:
+			content._tables.nodes[id].rewards={"relics":[{"id":"drifterQuiver"}]}
+			# Synthetic route explicitly permits this reward battle on opening voyage.
+			# Production B pools retain their safe-voyage minimum.
+			for entry in content._tables.node_pools.shallows.entries:
+				if entry.node==id: entry.min_voyage=1
 		content._tables=JSON.parse_string(JSON.stringify(content._tables))
 		content._fingerprint=JSON.stringify(content._tables).sha256_text()
 		var agent=load("res://adapters/agent_session.gd").new(content)

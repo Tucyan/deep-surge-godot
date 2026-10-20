@@ -5,22 +5,11 @@
       "path": "res://tests/fixtures/routes/standard-challenge.trace.json",
       "expected": {
         "phase": "finished",
-        "outcome": "survived",
-        "completed": 25.0
+        "outcome": "dead",
+        "completed": 18.0
       },
-      "steps": 389,
-      "version": "godot-flow-v03-01"
-    },
-    {
-      "id": "hard-challenge",
-      "path": "res://tests/fixtures/routes/hard-challenge.trace.json",
-      "expected": {
-        "phase": "finished",
-        "outcome": "survived",
-        "completed": 25.0
-      },
-      "steps": 435,
-      "version": "godot-flow-v03-01"
+      "steps": 235,
+      "version": "godot-flow-v03-02"
     },
     {
       "id": "standard-story",
@@ -31,7 +20,18 @@
         "completed": 11.0
       },
       "steps": 160,
-      "version": "godot-flow-v03-01"
+      "version": "godot-flow-v03-02"
+    },
+    {
+      "id": "hard-challenge",
+      "path": "res://tests/fixtures/routes/hard-challenge.trace.json",
+      "expected": {
+        "phase": "finished",
+        "outcome": "dead",
+        "completed": 18.0
+      },
+      "steps": 236,
+      "version": "godot-flow-v03-02"
     },
     {
       "id": "hard-story",
@@ -42,7 +42,7 @@
         "completed": 11.0
       },
       "steps": 180,
-      "version": "godot-flow-v03-01"
+      "version": "godot-flow-v03-02"
     },
     {
       "id": "nightmare-challenge",
@@ -50,10 +50,10 @@
       "expected": {
         "phase": "finished",
         "outcome": "dead",
-        "completed": 24.0
+        "completed": 7
       },
-      "steps": 346,
-      "version": "godot-flow-v03-01"
+      "steps": 89,
+      "version": "godot-flow-v03-02"
     },
     {
       "id": "nightmare-story",
@@ -64,7 +64,7 @@
         "completed": 10.0
       },
       "steps": 190,
-      "version": "godot-flow-v03-01"
+      "version": "godot-flow-v03-02"
     },
     {
       "id": "standard-failure",
@@ -75,7 +75,7 @@
         "completed": 5
       },
       "steps": 51,
-      "version": "godot-flow-v03-01"
+      "version": "godot-flow-v03-02"
     }
   ],
   "historical_paths": [

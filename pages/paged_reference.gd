@@ -86,6 +86,7 @@ func encyclopedia() -> void:
 	W.text(self,"图鉴",30,W.GOLD)
 	selected_table = category_bar({"cards":"卡牌","enemies":"怪物","relics":"潮汐遗物","endings":"结局"},"cards")
 	var ids: Array = ending_names().keys() if selected_table == "endings" else catalog.table(selected_table).keys()
+	if selected_table == "relics": ids = ids.filter(func(id): return catalog.entry("relics",id).get("enabled",false))
 	body = HBoxContainer.new(); body.size_flags_vertical = Control.SIZE_EXPAND_FILL; add_child(body)
 	body.add_theme_constant_override("separation",18)
 	var left := VBoxContainer.new(); left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -106,12 +107,17 @@ func encyclopedia() -> void:
 	var footer := HBoxContainer.new(); footer.alignment = BoxContainer.ALIGNMENT_CENTER; left.add_child(footer)
 	pager(footer,index,pages)
 	detail = W.panel(body); detail.name = "EncyclopediaDetail"
+	var detail_panel := detail.get_parent() as PanelContainer
+	var detail_style := detail_panel.get_theme_stylebox("panel").duplicate() as StyleBoxFlat
+	detail_style.bg_color = Color("F6EBDA")
+	detail_panel.add_theme_stylebox_override("panel",detail_style)
 	detail.get_parent().size_flags_stretch_ratio = 1.0
 	if selected != "": encyclopedia_detail(selected)
-	else: W.text(detail,"当前没有可显示的内容。",18,W.MUTED)
+	else: W.text(detail,"当前没有可显示的内容。",18,Color("536269"))
 
 func encyclopedia_art(id: String) -> String:
-	if not discovered(id) or selected_table == "endings": return "ui.card.back"
+	if not discovered(id): return "ui.encyclopedia.unknown"
+	if selected_table == "endings": return "ui.card.back"
 	return {"cards":"card.","enemies":"enemy.","relics":"relic."}[selected_table]+id
 
 func encyclopedia_card(grid: GridContainer, id: String, number: int, selected: bool) -> void:
@@ -163,7 +169,7 @@ func encyclopedia_detail(id: String) -> void:
 	var known := discovered(id)
 	var data: Dictionary = catalog.entry(selected_table,id) if known and selected_table != "endings" else {}
 	var title: String = ending_names()[id] if known and selected_table == "endings" else data.get("name","尚未发现")
-	W.text(detail,title,24,W.GOLD if known else W.MUTED)
+	W.text(detail,title,24,Color("533F25") if known else Color("536269"))
 	var tab: String = context.ui_state.get("encyclopedia_tab","description")
 	var tabs := HBoxContainer.new(); detail.add_child(tabs)
 	var story := W.button(tabs,"故事",func(): request("encyclopedia_tab","story"),tab=="story")
@@ -175,7 +181,7 @@ func encyclopedia_detail(id: String) -> void:
 		if tab == "story": copy = data.get("story","故事内容暂未收录。")
 		elif selected_table == "endings": copy = "这段航程的结果已经记录。"
 		else: copy = str(data.get("description",data.get("intent","暂无说明。")))
-	var text := W.text(detail,copy,18,W.INK if known else W.MUTED)
+	var text := W.text(detail,copy,18,Color("24343D") if known else Color("536269"))
 	text.name = "DetailCopy"; text.custom_minimum_size.y = 96
 	if context.get("mobile",false):
 		var scroll:=ScrollContainer.new(); scroll.name="MobileEncyclopediaCopy"

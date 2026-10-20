@@ -1,16 +1,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {CARDS} from '../../玩法实验/src/content/cards.js';
-import {NODES, MONSTERS} from '../../玩法实验/src/content/nodes.js';
-import {EQUIPMENT, RECIPES} from '../../玩法实验/src/content/equipment.js';
-import {META_SHOP, TECH, RELICS} from '../../玩法实验/src/content/relics.js';
+import {CARDS} from './fixtures/legacy-content/cards.js';
+import {NODES, MONSTERS} from './fixtures/legacy-content/nodes.js';
+import {EQUIPMENT, RECIPES} from './fixtures/legacy-content/equipment.js';
+import {META_SHOP, TECH} from './fixtures/legacy-content/relics.js';
 
 const read = table => JSON.parse(readFileSync(new URL(`../content/data/${table}.json`, import.meta.url), 'utf8'));
 
 // The original lab remains a historical source. Godot now has explicitly approved
 // revisions; assert those revisions instead of pretending the two games match.
-for (const [table, source] of Object.entries({meta_shop:META_SHOP,relics:RELICS})) {
+for (const [table, source] of Object.entries({meta_shop:META_SHOP})) {
   test(`${table}: 历史内容与health-12-v1修订`, () => {
     const expected=structuredClone(source);
     if(table==='meta_shop') { expected.body.modifiers.hpMax=2; expected.body.description='永久生命上限+2，饱食、水分、精神上限各+5。'; }
@@ -20,10 +20,12 @@ for (const [table, source] of Object.entries({meta_shop:META_SHOP,relics:RELICS}
   });
 }
 
-test('v26正式潮汐遗物只开放已接入的组合效果', () => {
+test('v27二十件新藏品完整替换旧案且使用已实现效果', () => {
   const relics=read('relics');
   const enabled=Object.entries(relics).filter(([,d])=>d.enabled);
-  assert.equal(enabled.length,6);
+  assert.equal(enabled.length,20);
+  assert.equal(Object.keys(relics).length,20);
+  for(const id of ['rationTin','lifeboatTag','fittersBadge','spearParcel','borrowedPulse','luckyKnot']) assert.ok(!relics[id],id);
   const supported=new Set(['grant_max','restore','modifier','grant_card','install_level','temporary_max','probability']);
   for(const [id,d] of enabled) {
     assert.ok(Number.isInteger(d.price)&&d.price>0,id);
@@ -31,9 +33,9 @@ test('v26正式潮汐遗物只开放已接入的组合效果', () => {
     assert.equal(new Set(d.effects.map(e=>e.key)).size,d.effects.length,id);
     for(const effect of d.effects) assert.ok(supported.has(effect.type),effect.type);
   }
-  assert.ok(relics.lifeboatTag.effects.some(e=>e.type==='grant_max'));
-  assert.ok(relics.lifeboatTag.effects.some(e=>e.target==='survival.hydration_cost'));
-  assert.equal(relics.fittersBadge.effects[0].uses,2);
+  assert.ok(relics.crimsonVial.effects.some(e=>e.type==='grant_max'));
+  assert.ok(relics.crimsonVial.effects.some(e=>e.target==='survival.hydration_cost'));
+  assert.equal(relics.foldingRule.effects[0].uses,1);
 });
 
 test('v22科技为两层六节点，第一层任意两点开放第二层', () => {
@@ -70,7 +72,7 @@ test('v11正式商店商品集合、提高设备报价与卡牌类型明确', ()
 test('v10整合旧节点身份，普通战斗与遗迹数值契约保持不变', () => {
   const nodes = read('nodes');
   for(const id of Object.keys(NODES)) assert.equal(nodes[id]?.id,id,`保留旧入口${id}`);
-  const added=['provision','sharedMeal','workshop','winch','duel','fallback'];
+  const added=['provision','sharedMeal','workshop','winch','duel','fallback','sealedLarder','powderWreck','kelpDryingRack','silentWayfinder','boneHunter','shellGraveyard','drownedMint','rescuePontoon','coralShrine','riggersCache','boss_shallows','boss_open_sea','boss_abyss','sealedChest'];
   assert.deepEqual(Object.keys(nodes).sort(),[...Object.keys(NODES),...added].sort());
   assert.equal(nodes.ruin.difficulty, 'hard');
   for(const id of ['battle','jellyBattle','crabBattle','ruin','boss']) {
@@ -92,26 +94,33 @@ test('v10整合旧节点身份，普通战斗与遗迹数值契约保持不变',
 
 test('v10节点选项效果、敌人和卡牌引用完整，不再保留未开放机制', () => {
   const nodes=read('nodes'), cards=read('cards'), enemies=read('enemies'), equipment=read('equipment');
-  const types=new Set(['GiveCard','ChangeCurrent','SetFlag','AddBuff','GiveRandomResource','ChangeAP','RepairCell','DamageTargetCell','GuideNavigation']);
+  const types=new Set(['GiveCard','ChangeCurrent','SetFlag','AddBuff','GiveRandomResource','ChangeAP','RepairCell','DamageTargetCell','GuideNavigation','GiveRelic','GiveRandomRelic']);
+  const inspectBattle = battle => {
+    assert.ok(enemies[battle.enemy],battle.enemy);
+    const rewards=battle.rewards ?? {};
+    assert.ok(Object.keys(rewards).every(key=>['coin','corpse','resources','xp','relics'].includes(key)));
+    for(const field of ['coin','corpse','resources','xp']) assert.ok(Number.isInteger(rewards[field] ?? 0) && (rewards[field] ?? 0)>=0);
+    for(const item of rewards.relics ?? []) assert.equal(read('relics')[item.id]?.enabled,true);
+  };
   const inspect = option => {
-    assert.equal(typeof option.id,'string'); assert.equal(typeof option.name,'string'); assert.equal(typeof option.description,'string');
-    assert.ok(Number.isInteger(option.cost) && option.cost>=0);
+    assert.equal(typeof option.id,'string'); assert.equal(typeof option.name,'string'); assert.equal(typeof (option.description ?? ''),'string');
+    assert.ok(Number.isInteger(option.cost ?? 0) && (option.cost ?? 0)>=0);
     for(const field of ['special','randomCardCost','detachCell','relicChance','relicProbability']) assert.equal(Object.hasOwn(option,field),false,`${option.id}.${field}`);
     for(const id of Object.keys(option.cardCosts ?? {})) assert.ok(cards[id],id);
     if(option.conditions?.equipment) assert.ok(equipment[option.conditions.equipment]);
     if(option.operation) assert.equal(option.operation,'exchange');
-    if(option.battle) {
-      assert.ok(enemies[option.battle.enemy]);
-      assert.deepEqual(Object.keys(option.battle.rewards).sort(),['coin','corpse','resources','xp']);
-      for(const value of Object.values(option.battle.rewards)) assert.ok(Number.isInteger(value) && value>0);
-    }
-    const effects=[...option.effects,...(option.outcomes ?? []).flatMap(x=>x.effects)];
+    if(option.battle) inspectBattle(option.battle);
+    const effects=[...(option.effects ?? []),...(option.outcomes ?? []).flatMap(x=>x.effects ?? [])];
     for(const effect of effects) {
       assert.ok(types.has(effect.type),effect.type);
       if(effect.type==='GiveCard') assert.ok(cards[effect.id],effect.id);
+      if(effect.type==='GiveRelic') assert.equal(read('relics')[effect.id]?.enabled,true,effect.id);
       if(effect.type==='AddBuff') assert.ok(effect.id==='rested'||read('environments')[effect.id]);
     }
-    for(const outcome of option.outcomes ?? []) assert.ok(Number.isInteger(outcome.weight) && outcome.weight>0);
+    for(const outcome of option.outcomes ?? []) {
+      assert.ok(Number.isInteger(outcome.weight) && outcome.weight>0);
+      if(outcome.battle) inspectBattle(outcome.battle);
+    }
   };
   for(const node of Object.values(nodes).flatMap(x=>[x,...(x.variants ?? [])])) {
     for(const option of [...(node.options ?? []),...(node.stages ?? []).flat()]) inspect(option);

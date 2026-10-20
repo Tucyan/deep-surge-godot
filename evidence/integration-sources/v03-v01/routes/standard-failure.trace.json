@@ -1,0 +1,937 @@
+{
+  "initial": {
+    "content_version": "godot-flow-v03-01",
+    "fingerprint": "237570a1cdf070dfe4bdcb369039c8b7279661ffb13bc35294a565ab2414d98c",
+    "last_settlement": {},
+    "profile": {
+      "discovered": [
+        "card.iron",
+        "card.rope",
+        "card.plastic"
+      ],
+      "endings": [],
+      "pending": {},
+      "points": 0,
+      "purchases": {},
+      "tech": []
+    },
+    "random_version": "xorshift32-godot-v1",
+    "revision": 1,
+    "schema": 2,
+    "state": {
+      "ap": 3,
+      "awarded": false,
+      "battle": {},
+      "boss_defeated": false,
+      "buffs": [],
+      "candidates": [
+        {
+          "category": "supply",
+          "cooldown": 3.0,
+          "description": "浮箱里只有三份完好的东西，只能带走其中一份。",
+          "event": "E02",
+          "id": "provision",
+          "kind": "supply",
+          "max_visits": 1.0,
+          "min_voyage": 1.0,
+          "name": "尚温的饭盒",
+          "options": [
+            {
+              "cost": 0.0,
+              "description": "免费获得食物1。",
+              "effects": [
+                {
+                  "amount": 1.0,
+                  "id": "food",
+                  "type": "GiveCard"
+                }
+              ],
+              "id": "food",
+              "name": "带走封口饭盒"
+            },
+            {
+              "cost": 0.0,
+              "description": "免费获得淡水1。",
+              "effects": [
+                {
+                  "amount": 1.0,
+                  "id": "water",
+                  "type": "GiveCard"
+                }
+              ],
+              "id": "water",
+              "name": "带走淡水瓶"
+            },
+            {
+              "cost": 0.0,
+              "description": "免费获得灯火余温1，可留待以后使用。",
+              "effects": [
+                {
+                  "amount": 1.0,
+                  "id": "calm",
+                  "type": "GiveCard"
+                }
+              ],
+              "id": "calm",
+              "name": "留下听完录音"
+            },
+            {
+              "cost": 0.0,
+              "description": "不付出代价，也不获得奖励。",
+              "effects": [],
+              "id": "leave",
+              "name": "继续航行"
+            }
+          ],
+          "visit_id": "candidate-8"
+        },
+        {
+          "category": "supply",
+          "cooldown": 3.0,
+          "description": "一块木料漂到筏边；还可花时间或使用已安装的完好捕捞网拖回货箱。",
+          "event": "E03",
+          "id": "drift",
+          "kind": "supply",
+          "max_visits": 1.0,
+          "min_voyage": 1.0,
+          "name": "绳端的货箱",
+          "options": [
+            {
+              "cost": 0.0,
+              "description": "免费获得木头1。",
+              "effects": [
+                {
+                  "amount": 1.0,
+                  "id": "wood",
+                  "type": "GiveCard"
+                }
+              ],
+              "id": "wood",
+              "name": "收下筏边木料"
+            },
+            {
+              "cost": 1.0,
+              "description": "支付1 AP，获得木头1、废铁1、塑料1。",
+              "effects": [
+                {
+                  "amount": 1.0,
+                  "id": "wood",
+                  "type": "GiveCard"
+                },
+                {
+                  "amount": 1.0,
+                  "id": "iron",
+                  "type": "GiveCard"
+                },
+                {
+                  "amount": 1.0,
+                  "id": "plastic",
+                  "type": "GiveCard"
+                }
+              ],
+              "id": "salvage",
+              "name": "花时间逐个拖上来"
+            },
+            {
+              "conditions": {
+                "equipment": "fishingNet"
+              },
+              "cost": 0.0,
+              "description": "需要已安装且完好的捕捞网；不消耗设备、材料或AP，获得木头1、废铁1、塑料1。",
+              "effects": [
+                {
+                  "amount": 1.0,
+                  "id": "wood",
+                  "type": "GiveCard"
+                },
+                {
+                  "amount": 1.0,
+                  "id": "iron",
+                  "type": "GiveCard"
+                },
+                {
+                  "amount": 1.0,
+                  "id": "plastic",
+                  "type": "GiveCard"
+                }
+              ],
+              "id": "net",
+              "name": "用捕捞网兜住货箱"
+            },
+            {
+              "cost": 0.0,
+              "description": "不付出代价，也不获得奖励。",
+              "effects": [],
+              "id": "leave",
+              "name": "继续航行"
+            }
+          ],
+          "variant_id": "cargo",
+          "visit_id": "candidate-9"
+        },
+        {
+          "category": "battle",
+          "cooldown": 3.0,
+          "description": "可以选择普通蟹或强敌，也可避战；胜利只发下列总奖励，撤退不获奖励。",
+          "event": "E11",
+          "id": "duel",
+          "kind": "environment",
+          "max_visits": 1.0,
+          "min_voyage": 4.0,
+          "name": "哨声与甲壳",
+          "options": [
+            {
+              "battle": {
+                "enemy": "crab",
+                "rewards": {
+                  "coin": 1.0,
+                  "corpse": 1.0,
+                  "resources": 1.0,
+                  "xp": 5.0
+                }
+              },
+              "cost": 0.0,
+              "description": "战斗：普通蟹HP9、伤害2；胜利总奖励贝币1、尸体1、随机基础资源1、经验5。无遗迹生命保护。",
+              "effects": [],
+              "id": "normal",
+              "name": "引走边缘的蟹"
+            },
+            {
+              "battle": {
+                "enemy": "crab_elite",
+                "rewards": {
+                  "coin": 2.0,
+                  "corpse": 1.0,
+                  "resources": 2.0,
+                  "xp": 5.0
+                }
+              },
+              "cost": 0.0,
+              "description": "第7站起开放；强敌HP12、伤害2；胜利总奖励贝币2、尸体1、随机基础资源2、经验5。无遗迹生命保护。",
+              "effects": [],
+              "id": "elite",
+              "min_voyage": 7.0,
+              "name": "挑战中央的巨蟹"
+            },
+            {
+              "cost": 0.0,
+              "description": "不进入战斗，无代价、无奖励。",
+              "effects": [],
+              "id": "leave",
+              "name": "熄灯绕过浮台"
+            }
+          ],
+          "visit_id": "candidate-10"
+        }
+      ],
+      "cells": [
+        {
+          "damaged_at": 0,
+          "equipment": {},
+          "id": "cell-0",
+          "status": "intact",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "damaged_at": 0,
+          "equipment": {},
+          "id": "cell-1",
+          "status": "intact",
+          "x": 1,
+          "y": 2
+        },
+        {
+          "damaged_at": 0,
+          "equipment": {},
+          "id": "cell-2",
+          "status": "intact",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "damaged_at": 0,
+          "equipment": {},
+          "id": "cell-3",
+          "status": "intact",
+          "x": 0,
+          "y": 1
+        }
+      ],
+      "coins": 0,
+      "collectibles": {
+        "history": [],
+        "items": [],
+        "next_id": 1
+      },
+      "completed": 0,
+      "deprivation": {
+        "hunger": 0,
+        "hydration": 0
+      },
+      "difficulty": "standard",
+      "encounter": {},
+      "environment": {
+        "all_battle_blocked": false,
+        "guidance_voyage": 0,
+        "heading_locked": false,
+        "headwind_used_voyage": 0,
+        "last_movement": {},
+        "rain_voyage": 0,
+        "revealed": [],
+        "rolled_voyage": 1,
+        "settled_voyage": 0,
+        "visibility": {
+          "candidate-10": "full",
+          "candidate-8": "full",
+          "candidate-9": "full"
+        },
+        "weather_history": [
+          {
+            "all_battles": false,
+            "layer": "shallows",
+            "local_voyage": 1,
+            "voyage": 1
+          }
+        ]
+      },
+      "expansion_count": 0,
+      "flags": {
+        "event_last": {},
+        "event_visits": {},
+        "navigation_battle_streak": 0,
+        "raft_layout": "spiral-v1"
+      },
+      "hand": [
+        {
+          "id": "iron",
+          "source": "initial",
+          "temporary": false,
+          "uid": "card-1"
+        },
+        {
+          "id": "rope",
+          "source": "initial",
+          "temporary": false,
+          "uid": "card-2"
+        },
+        {
+          "id": "rope",
+          "source": "initial",
+          "temporary": false,
+          "uid": "card-3"
+        },
+        {
+          "id": "rope",
+          "source": "initial",
+          "temporary": false,
+          "uid": "card-4"
+        },
+        {
+          "id": "iron",
+          "source": "initial",
+          "temporary": false,
+          "uid": "card-5"
+        },
+        {
+          "id": "rope",
+          "source": "initial",
+          "temporary": false,
+          "uid": "card-6"
+        },
+        {
+          "id": "plastic",
+          "source": "initial",
+          "temporary": false,
+          "uid": "card-7"
+        }
+      ],
+      "journey": {
+        "cleared": [],
+        "layer_index": 0,
+        "layer_voyage": 1,
+        "profile_id": "challenge"
+      },
+      "length": 25,
+      "level": 1,
+      "logs": [
+        "第1航次 · 随心所欲：随机获得7张资源。首次不领取涌泉，选择本轮目的地。"
+      ],
+      "mode": "challenge",
+      "next_boost_id": 1,
+      "next_id": 11,
+      "next_shield_id": 1,
+      "node": {},
+      "origin": "strong",
+      "origin_state": {
+        "battle_misses": 0,
+        "heal_voyage": 0,
+        "navigation_voyage": 0,
+        "salvage_voyage": 0,
+        "scout_voyage": 0,
+        "shops": [],
+        "tuned": [],
+        "upgrade_voyage": 0
+      },
+      "phase": "navigation",
+      "player": {
+        "base_ap": 3,
+        "battle_ap": 3,
+        "damage": 0,
+        "hp": 16,
+        "hp_max": 16,
+        "hunger": 40,
+        "hunger_max": 100,
+        "hydration": 40,
+        "hydration_max": 100,
+        "limit": 10,
+        "sanity": 80,
+        "sanity_max": 100
+      },
+      "pool": [],
+      "result_text": "",
+      "rng": {
+        "battle": {
+          "cursor": 0,
+          "value": 668265273
+        },
+        "environment": {
+          "cursor": 0,
+          "value": 374761383
+        },
+        "initial": {
+          "cursor": 7,
+          "value": 1759597814
+        },
+        "movement": {
+          "cursor": 0,
+          "value": 3550635130
+        },
+        "nodes": {
+          "cursor": 6,
+          "value": 960617901
+        },
+        "rewards": {
+          "cursor": 0,
+          "value": 3266489891
+        }
+      },
+      "run_id": "7d4c5d4b8621017219e8a0b9290c1d8d",
+      "seed": 22,
+      "shop": {},
+      "stats": {
+        "attribute_sources": {},
+        "battles": {},
+        "cards": {
+          "iron": {
+            "cleared": 0,
+            "cost_consumed": 0,
+            "deployed": 0,
+            "discarded": 0,
+            "lost": 0,
+            "obtained": 2,
+            "reasons": {},
+            "sold": 0,
+            "sources": {
+              "initial": 2
+            },
+            "use_consumed": 0,
+            "used": 0
+          },
+          "plastic": {
+            "cleared": 0,
+            "cost_consumed": 0,
+            "deployed": 0,
+            "discarded": 0,
+            "lost": 0,
+            "obtained": 1,
+            "reasons": {},
+            "sold": 0,
+            "sources": {
+              "initial": 1
+            },
+            "use_consumed": 0,
+            "used": 0
+          },
+          "rope": {
+            "cleared": 0,
+            "cost_consumed": 0,
+            "deployed": 0,
+            "discarded": 0,
+            "lost": 0,
+            "obtained": 4,
+            "reasons": {},
+            "sold": 0,
+            "sources": {
+              "initial": 4
+            },
+            "use_consumed": 0,
+            "used": 0
+          }
+        },
+        "commands": {},
+        "complete": true,
+        "completed_ids": [],
+        "counters": {},
+        "coverage_start": 1,
+        "crafts": [],
+        "crises": {},
+        "detached": [],
+        "devices": {},
+        "events": [
+          {
+            "amount": 1,
+            "battle_instance": "",
+            "command": "new",
+            "command_sequence": 1,
+            "field": "obtained",
+            "id": "iron",
+            "kind": "card",
+            "node": "",
+            "reason": "initial",
+            "run_id": "7d4c5d4b8621017219e8a0b9290c1d8d",
+            "sequence": 0,
+            "source": "initial",
+            "subsequence": 0,
+            "uid": "card-1",
+            "voyage": 1
+          },
+          {
+            "amount": 1,
+            "battle_instance": "",
+            "command": "new",
+            "command_sequence": 1,
+            "field": "obtained",
+            "id": "rope",
+            "kind": "card",
+            "node": "",
+            "reason": "initial",
+            "run_id": "7d4c5d4b8621017219e8a0b9290c1d8d",
+            "sequence": 1,
+            "source": "initial",
+            "subsequence": 1,
+            "uid": "card-2",
+            "voyage": 1
+          },
+          {
+            "amount": 1,
+            "battle_instance": "",
+            "command": "new",
+            "command_sequence": 1,
+            "field": "obtained",
+            "id": "rope",
+            "kind": "card",
+            "node": "",
+            "reason": "initial",
+            "run_id": "7d4c5d4b8621017219e8a0b9290c1d8d",
+            "sequence": 2,
+            "source": "initial",
+            "subsequence": 2,
+            "uid": "card-3",
+            "voyage": 1
+          },
+          {
+            "amount": 1,
+            "battle_instance": "",
+            "command": "new",
+            "command_sequence": 1,
+            "field": "obtained",
+            "id": "rope",
+            "kind": "card",
+            "node": "",
+            "reason": "initial",
+            "run_id": "7d4c5d4b8621017219e8a0b9290c1d8d",
+            "sequence": 3,
+            "source": "initial",
+            "subsequence": 3,
+            "uid": "card-4",
+            "voyage": 1
+          },
+          {
+            "amount": 1,
+            "battle_instance": "",
+            "command": "new",
+            "command_sequence": 1,
+            "field": "obtained",
+            "id": "iron",
+            "kind": "card",
+            "node": "",
+            "reason": "initial",
+            "run_id": "7d4c5d4b8621017219e8a0b9290c1d8d",
+            "sequence": 4,
+            "source": "initial",
+            "subsequence": 4,
+            "uid": "card-5",
+            "voyage": 1
+          },
+          {
+            "amount": 1,
+            "battle_instance": "",
+            "command": "new",
+            "command_sequence": 1,
+            "field": "obtained",
+            "id": "rope",
+            "kind": "card",
+            "node": "",
+            "reason": "initial",
+            "run_id": "7d4c5d4b8621017219e8a0b9290c1d8d",
+            "sequence": 5,
+            "source": "initial",
+            "subsequence": 5,
+            "uid": "card-6",
+            "voyage": 1
+          },
+          {
+            "amount": 1,
+            "battle_instance": "",
+            "command": "new",
+            "command_sequence": 1,
+            "field": "obtained",
+            "id": "plastic",
+            "kind": "card",
+            "node": "",
+            "reason": "initial",
+            "run_id": "7d4c5d4b8621017219e8a0b9290c1d8d",
+            "sequence": 6,
+            "source": "initial",
+            "subsequence": 6,
+            "uid": "card-7",
+            "voyage": 1
+          }
+        ],
+        "initial_cells": [
+          "cell-0",
+          "cell-1",
+          "cell-2",
+          "cell-3"
+        ],
+        "lost": {},
+        "minimum": {
+          "hp": 16,
+          "hunger": 40,
+          "hydration": 40,
+          "sanity": 80
+        },
+        "restored": {},
+        "tags": [],
+        "version": "run-stats-v1",
+        "visits": []
+      },
+      "story_step": "",
+      "visits": {},
+      "voyage": 1,
+      "xp": 0
+    }
+  },
+  "protocol": "deep-surge-agent-v1",
+  "steps": [
+    {
+      "args": {
+        "id": "candidate-8"
+      },
+      "command": "voyage",
+      "hash": "e657e31a7399193a9e06e4d99f7ca7fd3c1585cf974d594f58757bfec3479040"
+    },
+    {
+      "args": {},
+      "command": "enter",
+      "hash": "cbf1d5ccd8b7b8f067645bbe6aeba193685e29bf49817960f78ddee24ac3f152"
+    },
+    {
+      "args": {},
+      "command": "advance",
+      "hash": "619f5bc15d16450cf2bed832aa70c622ea5a76526006c2d787b1f468777969af"
+    },
+    {
+      "args": {
+        "id": "food"
+      },
+      "command": "option",
+      "hash": "1c576eb6fe5352841bf4fa8d3724403641108e511d172cc07c4125a3ef58dd3b"
+    },
+    {
+      "args": {},
+      "command": "advance",
+      "hash": "f4dd4baef9e3670fba669fd29443a6d4db8cfec2bde49a230a801c27ea5cb0e4"
+    },
+    {
+      "args": {},
+      "command": "end_voyage",
+      "hash": "c5f3aa68267d5709e3aa91fc220eaa12166d68c3913fc25550e2588f2ffbf44b"
+    },
+    {
+      "args": {
+        "id": "candidate-14"
+      },
+      "command": "voyage",
+      "hash": "2c6e9c20e6540301933925a07fd94e3bf186f40af95bd4ea36d68e368d818dca"
+    },
+    {
+      "args": {},
+      "command": "enter",
+      "hash": "ddc6f41e027b1876b3800903e0faa29e0f793131f0d1dff7be1688b9835038ed"
+    },
+    {
+      "args": {},
+      "command": "advance",
+      "hash": "bed23e5533a7604f0078aa0cdf26c2c04f6391955385512b06a6f864a227795d"
+    },
+    {
+      "args": {
+        "id": "rest"
+      },
+      "command": "option",
+      "hash": "b27d98f854ff874a09406ab3214a259a786ef1655d40f69eae4e411f798dd889"
+    },
+    {
+      "args": {},
+      "command": "advance",
+      "hash": "0bafaf06bdc3c3ae3ac3460d454d8f602fb78aeabe2c46efa647ffbf8abb6963"
+    },
+    {
+      "args": {},
+      "command": "end_voyage",
+      "hash": "7952f01c606a31a14eae31c2cd4d5fda806236aed04b55c9c09951e26ca6074e"
+    },
+    {
+      "args": {
+        "id": "candidate-19"
+      },
+      "command": "voyage",
+      "hash": "a5445a2d6b17ffac176065b43dd4fc70a35abf6cf86e7f73efc71c9b16c00ccb"
+    },
+    {
+      "args": {},
+      "command": "enter",
+      "hash": "25d614640be7b2bc26ec2abe0188150db4a45e536deddfc2c7d584cd61f7791d"
+    },
+    {
+      "args": {},
+      "command": "advance",
+      "hash": "f297b1cff428915519f32c5539ec9ebd1aad2a35b8579dc08217961aad1343aa"
+    },
+    {
+      "args": {},
+      "command": "shop_enter",
+      "hash": "0862d4e656e5f410ac36e60d778c63e62463d067fb3715bf17fda6f44581cee3"
+    },
+    {
+      "args": {},
+      "command": "shop_leave",
+      "hash": "030053e88e696cbd4c17645d169d875d7cdd3a892824c1b66c16d1df19f168e3"
+    },
+    {
+      "args": {},
+      "command": "advance",
+      "hash": "4af63210beef18f94882f4334122765da90179ca135e8fbe6a0600a98a3b3e72"
+    },
+    {
+      "args": {},
+      "command": "end_voyage",
+      "hash": "420b3546bba9184a7e43ba332d1778bda4043450d581e54092b864a7241379a2"
+    },
+    {
+      "args": {
+        "uid": "card-1"
+      },
+      "command": "discard",
+      "hash": "e254acd951beec675c41fc5a8daa3e169fbe25e58cee32f7b1eca45f9405fd32"
+    },
+    {
+      "args": {
+        "uid": "card-2"
+      },
+      "command": "discard",
+      "hash": "114119b4a509421fcedcd512a60ff85d6a6fa3525fa75d135248d491e74301fa"
+    },
+    {
+      "args": {
+        "id": "candidate-24"
+      },
+      "command": "voyage",
+      "hash": "10431b69fe73bca859e3c6134a7401b3c1f382b52544d84d730fd14b2b1dee91"
+    },
+    {
+      "args": {},
+      "command": "enter",
+      "hash": "5502a91174359037d5823fefd9bbe0048df14c9cb442c0b43d1f3d42e7ef495a"
+    },
+    {
+      "args": {},
+      "command": "advance",
+      "hash": "809f792adaed29bad64fbb01d66bcb150903f4b722e0b361a8039a5031294dd5"
+    },
+    {
+      "args": {
+        "id": "normal"
+      },
+      "command": "option",
+      "hash": "dca5a5a394f16000e3e3b627113418c940199f43b36a24dbd087ca1cff16f1ff"
+    },
+    {
+      "args": {
+        "action": "attack"
+      },
+      "command": "battle_action",
+      "hash": "c6476245230530cc26e8ff251e6e66f7e6bd518a3a27afa4bbd0a53ff7558a9c"
+    },
+    {
+      "args": {
+        "action": "attack"
+      },
+      "command": "battle_action",
+      "hash": "d1bf51fac762a1fa23c54bf7f01ed3c7b0aacb715364a4939066cd40d62c6e80"
+    },
+    {
+      "args": {
+        "action": "attack"
+      },
+      "command": "battle_action",
+      "hash": "aa0374b63533c2a8e26165e032abcdb8e3abbd76912400d14a895b602502cba5"
+    },
+    {
+      "args": {},
+      "command": "battle_end",
+      "hash": "5996317606bf9e246ce4d02018ebc0161e2b99422abd6f904cf7f0b26e866d1d"
+    },
+    {
+      "args": {
+        "action": "attack"
+      },
+      "command": "battle_action",
+      "hash": "cb9ba1001562b9403fcfa8d215024be4ca3cde7d9cbab4dfbbe0a62eacdadc7a"
+    },
+    {
+      "args": {
+        "action": "attack"
+      },
+      "command": "battle_action",
+      "hash": "f0334c766688500418b6dbbd794a523a17c9ce5030526c009d740612b6f4b29e"
+    },
+    {
+      "args": {
+        "action": "attack"
+      },
+      "command": "battle_action",
+      "hash": "8cd1810ec287699d618417ab726bc7402aaee20099d287d061336e7ef07328e4"
+    },
+    {
+      "args": {},
+      "command": "battle_end",
+      "hash": "f1c94e440efe3fcaeef12792788305819fd61229040387423a8c147848a3f238"
+    },
+    {
+      "args": {
+        "action": "attack"
+      },
+      "command": "battle_action",
+      "hash": "b1262ee80cd74ac1172c0c007c1caa67ccc78efc64acfa63d80b00f3c541a181"
+    },
+    {
+      "args": {
+        "action": "attack"
+      },
+      "command": "battle_action",
+      "hash": "21bbabaf01741ba4404584e065e1fac4cd495422d4199ed708058fdffbde6d06"
+    },
+    {
+      "args": {
+        "action": "attack"
+      },
+      "command": "battle_action",
+      "hash": "479fd4691debf862a967163b0729e054ae3950756a8c3fede914663561d306fd"
+    },
+    {
+      "args": {},
+      "command": "advance",
+      "hash": "60255e59ea583eed54a12c9915b291254cd1304ae9d4ffdbdb89d41da5b74765"
+    },
+    {
+      "args": {},
+      "command": "end_voyage",
+      "hash": "a12b26d1ea99686d71fe26ddea24444663c8d7398bb7a704bf3ddf02ddf3a256"
+    },
+    {
+      "args": {
+        "uid": "card-3"
+      },
+      "command": "discard",
+      "hash": "f260d8d60553e3c6adab8c48f008f6874413f33dbc77d30481f7c5f34bced47b"
+    },
+    {
+      "args": {
+        "uid": "card-4"
+      },
+      "command": "discard",
+      "hash": "fd6689aaddd2f3b0c84875af7ee6d04f6d86ba03a9e62c7688455b844dac7ed8"
+    },
+    {
+      "args": {
+        "uid": "card-5"
+      },
+      "command": "discard",
+      "hash": "c9307716187f3a4a81ee566df8c93dc04cbc4d87c660e6089d8e605f2017c017"
+    },
+    {
+      "args": {
+        "uid": "card-6"
+      },
+      "command": "discard",
+      "hash": "b3a38fe1fbb5d9f04f0e93d5d5558af3ecd16fefa49b6023dffa84b4f0719ec2"
+    },
+    {
+      "args": {
+        "uid": "card-7"
+      },
+      "command": "discard",
+      "hash": "c14db8d528818f2a3370b116b75a6a7215ac6468942d8ee8a6c1f88f8c863233"
+    },
+    {
+      "args": {
+        "id": "candidate-31"
+      },
+      "command": "voyage",
+      "hash": "e6eb21befea331edcc74da56086314393a820a4084ccf9e5143f6136bda67e08"
+    },
+    {
+      "args": {},
+      "command": "enter",
+      "hash": "2d8c02e2b558ac7e2f151e2e5a933551bb1a6de26d4a19ff3f0736b6d060758b"
+    },
+    {
+      "args": {},
+      "command": "advance",
+      "hash": "82b16b492e6ef8ab0351150e44a9c77dfc90c5f48c009cdd9c431da129cc2cf0"
+    },
+    {
+      "args": {},
+      "command": "leave_encounter",
+      "hash": "b0aeeed2571ed95dd9758ab12cf4e571f3b487326a98fd90074859bf98e6f629"
+    },
+    {
+      "args": {},
+      "command": "advance",
+      "hash": "00a8c0f8ef84a16d132583e0fff7b66dbc3219888fcab4207bc659dae74b8acd"
+    },
+    {
+      "args": {},
+      "command": "end_voyage",
+      "hash": "88b914aeef08b2a282d237b7d910287de58801bbbe3757fc5d1dab12d5d72b04"
+    },
+    {
+      "args": {
+        "uid": "card-11"
+      },
+      "command": "discard",
+      "hash": "119c61beff86d97f25f5797a2ded4e509f1bb3b18cf632bacbcdfb3d1e94f3f6"
+    },
+    {
+      "args": {
+        "uid": "card-12"
+      },
+      "command": "discard",
+      "hash": "6d0e26946fa3add22c65a09d2592ee9eb3c9db6b031f650761874dffd2eca476"
+    }
+  ],
+  "version": "deep-surge-trace-v1"
+}

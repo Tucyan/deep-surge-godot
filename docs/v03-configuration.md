@@ -1,5 +1,5 @@
 # 三层航程、配置与生存契约
-<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v03-01; reviewed: 2026-10-20 -->
+<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v03-02; reviewed: 2026-10-20 -->
 
 本页依据当前加载的JSON和规则模块。代码已接入；发布路线、图形、触摸及导出分别按[验证记录](../evidence/v03-development-verification.md)核对，参数仍需试玩，不把范围定稿当作验收证据。
 
@@ -50,6 +50,6 @@
 
 ## 保存、内容版本与入口
 
-目录加载后由Campaign/Survival/Encounter/Environment/Shop各自校验所有新表及交叉引用，全部进入内容指纹。快照schema2、`godot-flow-v03-01`、`xorshift32-godot-v1`；旧版本/指纹不符明确拒绝、保留原文件，不做迁移。保存层进度、独立计数、费用来源、实例访问、事件随机分支、受控模板、环境剩余/刷新/雨触发标记和全部随机流；恢复不重抽或重复结算。新剧情档保留11航次配对校验，旧回廊只读例外不变。
+目录加载后由Campaign/Survival/Encounter/Environment/Shop各自校验所有新表及交叉引用，全部进入内容指纹。快照schema2、`godot-flow-v03-02`、`xorshift32-godot-v1`；旧版本/指纹不符明确拒绝、保留原文件，不做迁移。保存层进度、独立计数、费用来源、实例访问、事件随机分支、受控模板、环境剩余/刷新/雨触发标记和全部随机流；恢复不重抽或重复结算。新剧情档保留11航次配对校验，旧回廊只读例外不变。
 
 针对性入口：`tests/test_v03_campaign.gd`、`test_v03_survival.gd`、`test_v03_journey_flow.gd`、`test_v03_encounters.gd`、`test_v03_weather.gd`、`test_v03_weather_stage.gd`、`test_v03_projection.gd`。另有`test_environment.gd`、`test_difficulty.gd`、`test_recall_restore.gd`及当前Agent路线；它们的实际运行结果须查当次证据，列出入口不等于全部验收完成。

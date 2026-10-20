@@ -295,8 +295,10 @@ static func public_option(option: Dictionary) -> Dictionary:
 static func public_node(node: Dictionary) -> Dictionary:
 	var result: Dictionary = node.duplicate(true)
 	for key in result.keys():
-		if key not in ["id", "name", "kind", "description", "category", "visit_id", "visibility", "variant_id", "boss", "monster", "options"]:
+		if key not in ["id", "name", "kind", "description", "category", "visit_id", "visibility", "variant_id", "boss", "monster", "options", "art"]:
 			result.erase(key)
+	# Art is a display AssetId only; never expose an arbitrary nested payload.
+	if result.has("art") and not result.art is String: result.erase("art")
 	if result.has("options"):
 		var options: Array = []
 		for option in result.options:

@@ -1,5 +1,5 @@
 # 应用编排与刷新边界
-<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v03-01; reviewed: 2026-10-20 -->
+<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v03-02; reviewed: 2026-10-20 -->
 
 2026-10-20。当前工程为 Godot；根目录 Three.js 契约仅供历史追溯。
 
@@ -63,3 +63,7 @@ UI 的 `request_command` 在命令（包括自动收尾后续命令）真正进�
 队列期间锁定底层页面处理、相机及重复 UI 请求；提示关闭后恢复原处理模式和相机条件，再触发待播剧情。直接 `handle_command` 和规则/Agent 仍保持同步，不等待表现点击。恢复存档不重播历史，但继续游戏确实自动换轮时仍显示该次新增涌泉。
 
 测试入口：`test_acquisition_projection.gd`、`test_acquisition_ui.gd`、`test_acquisition_layout.gd`、`test_acquisition_arrival.gd`；后三者支持图形模式 `-- --capture`。仓库与根格入口见[遗物契约](collectible-effects.md)。
+
+## 本轮整合接缝
+
+`GameSession.view` 公开节点保留安全的 `art` 展示ID，仍过滤随机分支和内部战斗请求。`flow_app`、`voyage_hud` 的局部刷新保留0.3层内标题与真实生存预览；阶段、手牌、筏格或奖励结构变化继续完整重建。测试入口为 `tests/test_v03_relic_integration.gd`、`tests/test_v03_projection.gd`、`tests/test_v03_event_exit.gd` 及原局部刷新专项。

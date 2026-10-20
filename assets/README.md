@@ -1,5 +1,7 @@
 # 素材登记
 
+图鉴所有类别的未发现条目统一使用用户提供的透明问号宝箱图 `ui.encyclopedia.unknown` v1（1254×1254），网格缩略图与右侧详情共用，按原比例显示；原始 PNG 字节不变。运行文件为 `assets/ui/encyclopedia-unknown-v1.png`，来源、SHA-256、依赖与映射登记在 manifest。右侧详情底色为象牙白 `#F6EBDA`，标题与正文使用深色。
+
 2026-10-19 首页设置入口改为项目原创 SVG 齿轮图标 `icon.settings.gear`，版本1，无外部依赖；源尺寸64×64，运行映射为 `pages/flow_home.gd/HomeSettings/HomeSettingsGear`，来源与SHA-256登记在manifest。
 
 手牌纸张底板使用 `ui.hud.nautical-frame` v3：原有颗粒网格、圆点半径、颜色与透明度保留，由共享的 64 段圆形 ArrayMesh 和每个底板私有的 2D MultiMesh 批量绘制。实例缓冲仅在整数尺寸变化时重建，随底板释放；没有新增外部纹理、视口或规则随机。来源、hash 和生成方式见 `manifest.json`；图形回归与性能数据见[纸张绘制优化验证](../evidence/paper-grain-performance-20261019.md)。
@@ -126,7 +128,7 @@ HUD v2为教学超限手牌预留分页行；`ui.voyage-hud`资产仍对应同�
 | card.{原始卡牌ID} | 22 | 图鉴、合成、设备、战斗、商店 | cards/recipes/equipment JSON |
 | node.{原始节点ID} | 12 | 游戏目录、剧情、商店 | nodes JSON |
 | enemy.{原始怪物ID} | 5 | 图鉴与战斗 | enemies JSON |
-| relic.{原始藏品ID} | 13 | 图鉴与商店 | relics JSON |
+| relic.{藏品ID} | 20 | 获取提示、仓库、图鉴与新节点 | relics JSON / relics-v1 manifest |
 | scene.ocean | 1 | 首页与游戏页背景占位 | 无规则依赖 |
 
 所有 path 当前为空，source/version/color/label 已在 manifest 登记。纹理由 AssetCatalog 缓存所有；页面删除时释放控件引用，共享纹理随应用缓存释放。规则会话不持有纹理，重复导航不重新生成同 ID 纹理。当前没有视觉或规则随机。
@@ -278,10 +280,13 @@ HUD 控件统一位于 `presentation/hud/`，五张 HUD 图片位于 `assets/ui/
 
 ### 获取提示与遗物仓库
 
-新增 `ui.acquisition.overlay`、`ui.acquisition.presenter`、`ui.collectible.placeholder`、`ui.collectibles.warehouse` 与 `icon.treasure`。界面使用项目原生画布/控件。遗物共用 `texture.collectible.placeholder` 透明PNG（1254×1254 RGBA），由 imagegen 生成，参照 `card.wood` 的低多边形画风；单件古铜/青绿护符，简化块面与细节。原图归档于 `asset-sources/relic-placeholder-v1/`，运行副本位于 `assets/collectibles/`，像素原样复制，保留真实alpha；所有遗物格、右侧详情和获取动画通过共享缓存使用同一图片，无规则或表现随机。宝箱图标为项目 SVG（64×64）。来源、版本、依赖、运行映射与 SHA-256 在 `manifest.json` 登记。既有航行HUD、筏格拾取与根格标签相关资产沿用稳定ID并同步脚本hash。原模型与纹理未改；卡牌画面复用 `ui.item-card` 和现有卡牌图片。
+新增 `ui.acquisition.overlay`、`ui.acquisition.presenter`、`ui.collectible.placeholder`、`ui.collectibles.warehouse` 与 `icon.treasure`。界面使用项目原生画布/控件。以下为v27之前的占位方案记录：遗物共用 `texture.collectible.placeholder` 透明PNG（1254×1254 RGBA），由 imagegen 生成，参照 `card.wood` 的低多边形画风；单件古铜/青绿护符，简化块面与细节。原图归档于 `asset-sources/relic-placeholder-v1/`，运行副本位于 `assets/collectibles/`，像素原样复制，保留真实alpha；所有遗物格、右侧详情和获取动画通过共享缓存使用同一图片，无规则或表现随机。宝箱图标为项目 SVG（64×64）。来源、版本、依赖、运行映射与 SHA-256 在 `manifest.json` 登记。既有航行HUD、筏格拾取与根格标签相关资产沿用稳定ID并同步脚本hash。原模型与纹理未改；卡牌画面复用 `ui.item-card` 和现有卡牌图片。
 
-GPU验证：`test_acquisition_ui.gd` 的获取/说明/飞行动画、`test_acquisition_layout.gd` 的960×540、1280×720、1600×900布局；证据为 `evidence/acquisition-*.png`。共用护符仍为临时占位美术，各遗物专属插画尚未制作。
+GPU验证：`test_acquisition_ui.gd` 的获取/说明/飞行动画、`test_acquisition_layout.gd` 的960×540、1280×720、1600×900布局；证据为 `evidence/acquisition-*.png`。v27已用用户提供的20张图片整体替换专属美术；该护符仅保留为未知图片ID的回退。
 
 获取动画终点修正：确认前通过待收取投影隐藏新牌、叠牌数量和容量增量；确认后按最终手牌矩形与真实尺寸直接飞入，到达时显现，不经过旧动画临时坐标。共享图片与规则奖励不变。`ui.acquisition.overlay`、`ui.acquisition.presenter` 及入口关联hash已同步，验证为 `test_acquisition_arrival.gd`。
 
 发布前完整性核对同步了 18 个既有界面脚本的过期 SHA-256 登记值，仅更新 manifest 记录；270 个文件绑定校验通过，见[发布验证](../evidence/release-20261019-verification.md)。
+
+
+2026-10-20：`藏品.zip` 的20张1254×1254透明原图完整归档于 [relics-v1](../asset-sources/relics-v1/README.md)，运行图等比缩至512×512，稳定AssetId为 `relic.<id>`，登记双hash与尺寸。获取提示、仓库、图鉴、新寻物节点复用缓存，未知ID才使用旧占位图。旧藏品设计已整体归档，当前20件全部采用新定义；详见[当前设计](../docs/relic-expedition.md)。

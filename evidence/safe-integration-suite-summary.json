@@ -1,0 +1,343 @@
+{
+  "recorded_at": "2026-10-20T20:31:33+08:00",
+  "suites": [
+    {
+      "suite": "node_event_layout",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/node_event_layout.txt",
+      "report": [
+        "NODE EVENT UI: PASS"
+      ]
+    },
+    {
+      "suite": "test_acquisition_layout",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_acquisition_layout.txt",
+      "report": [
+        "ACQUISITION LAYOUT: PASS"
+      ]
+    },
+    {
+      "suite": "test_acquisition_ui",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_acquisition_ui.txt",
+      "report": [
+        "ACQUISITION UI: PASS"
+      ]
+    },
+    {
+      "suite": "test_application_boundaries",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_application_boundaries.txt",
+      "report": []
+    },
+    {
+      "suite": "test_challenge_resume",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_challenge_resume.txt",
+      "report": []
+    },
+    {
+      "suite": "test_collectible_battle",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_collectible_battle.txt",
+      "report": [
+        "COLLECTIBLE BATTLE: PASS"
+      ]
+    },
+    {
+      "suite": "test_collectible_integration",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_collectible_integration.txt",
+      "report": [
+        "COLLECTIBLE INTEGRATION: PASS (24 checks)"
+      ]
+    },
+    {
+      "suite": "test_collectible_ui",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_collectible_ui.txt",
+      "report": [
+        "COLLECTIBLE UI: PASS"
+      ]
+    },
+    {
+      "suite": "test_collectible_voyage_install",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_collectible_voyage_install.txt",
+      "report": [
+        "COLLECTIBLE VOYAGE INSTALL: PASS"
+      ]
+    },
+    {
+      "suite": "test_craft_partial_refresh",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_craft_partial_refresh.txt",
+      "report": [
+        "CRAFT PARTIAL REFRESH: PASS"
+      ]
+    },
+    {
+      "suite": "test_difficulty",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_difficulty.txt",
+      "report": [
+        "DIFFICULTY: PASS"
+      ]
+    },
+    {
+      "suite": "test_environment",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_environment.txt",
+      "report": [
+        "ENVIRONMENT: PASS"
+      ]
+    },
+    {
+      "suite": "test_game_help",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_game_help.txt",
+      "report": [
+        "GAME HELP: PASS"
+      ]
+    },
+    {
+      "suite": "test_interaction_refresh",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_interaction_refresh.txt",
+      "report": [
+        "INTERACTION REFRESH: PASS"
+      ]
+    },
+    {
+      "suite": "test_mobile_hover",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_mobile_hover.txt",
+      "report": [
+        "MOBILE HOVER: PASS"
+      ]
+    },
+    {
+      "suite": "test_mobile_readability",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_mobile_readability.txt",
+      "report": [
+        "MOBILE READABILITY: PASS"
+      ]
+    },
+    {
+      "suite": "test_mobile_scroll",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_mobile_scroll.txt",
+      "report": [
+        "MOBILE SCROLL: PASS"
+      ]
+    },
+    {
+      "suite": "test_mobile_transmute_layout",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_mobile_transmute_layout.txt",
+      "report": [
+        "MOBILE TRANSMUTE LAYOUT: PASS"
+      ]
+    },
+    {
+      "suite": "test_narrative_flow",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_narrative_flow.txt",
+      "report": []
+    },
+    {
+      "suite": "test_operation_partial_refresh",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_operation_partial_refresh.txt",
+      "report": [
+        "OPERATION PARTIAL REFRESH: PASS"
+      ]
+    },
+    {
+      "suite": "test_origins_v2",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_origins_v2.txt",
+      "report": [
+        "ORIGINS V2: PASS (0 failures)"
+      ]
+    },
+    {
+      "suite": "test_recall_restore",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_recall_restore.txt",
+      "report": []
+    },
+    {
+      "suite": "test_relic_art",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_relic_art.txt",
+      "report": [
+        "RELIC ART: PASS"
+      ]
+    },
+    {
+      "suite": "test_relic_expedition",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_relic_expedition.txt",
+      "report": [
+        "RELIC EXPEDITION: PASS (422 checks)"
+      ]
+    },
+    {
+      "suite": "test_relic_rewards",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_relic_rewards.txt",
+      "report": [
+        "RELIC REWARDS: PASS (70 checks)"
+      ]
+    },
+    {
+      "suite": "test_routes",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_routes.txt",
+      "report": [
+        "ROUTES: PASS (executed=7, stale=13, failed=0)"
+      ]
+    },
+    {
+      "suite": "test_save",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_save.txt",
+      "report": [
+        "SAVE / RECOVERY: PASS"
+      ]
+    },
+    {
+      "suite": "test_session",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_session.txt",
+      "report": [
+        "FLOW SESSION: PASS"
+      ]
+    },
+    {
+      "suite": "test_tutorial",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_tutorial.txt",
+      "report": [
+        "TUTORIAL: PASS"
+      ]
+    },
+    {
+      "suite": "test_v03_balance",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_v03_balance.txt",
+      "report": [
+        "V03 BALANCE: PASS"
+      ]
+    },
+    {
+      "suite": "test_v03_campaign",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_v03_campaign.txt",
+      "report": [
+        "V03 CAMPAIGN: PASS"
+      ]
+    },
+    {
+      "suite": "test_v03_difficulty_stage_design",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_v03_difficulty_stage_design.txt",
+      "report": [
+        "V03 DIFFICULTY STAGE DESIGN: PASS"
+      ]
+    },
+    {
+      "suite": "test_v03_encounters",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_v03_encounters.txt",
+      "report": [
+        "V03 ENCOUNTERS PASS"
+      ]
+    },
+    {
+      "suite": "test_v03_event_exit",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_v03_event_exit.txt",
+      "report": [
+        "V03 EVENT EXIT: PASS"
+      ]
+    },
+    {
+      "suite": "test_v03_journey_flow",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_v03_journey_flow.txt",
+      "report": [
+        "V03 JOURNEY FLOW: PASS"
+      ]
+    },
+    {
+      "suite": "test_v03_projection",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_v03_projection.txt",
+      "report": [
+        "V03 PROJECTION: PASS"
+      ]
+    },
+    {
+      "suite": "test_v03_public",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_v03_public.txt",
+      "report": [
+        "V03 PUBLIC: PASS"
+      ]
+    },
+    {
+      "suite": "test_v03_relic_integration",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_v03_relic_integration.txt",
+      "report": [
+        "V03 RELIC INTEGRATION: PASS"
+      ]
+    },
+    {
+      "suite": "test_v03_shop",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_v03_shop.txt",
+      "report": [
+        "V03 SHOP: PASS"
+      ]
+    },
+    {
+      "suite": "test_v03_stage_balance",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_v03_stage_balance.txt",
+      "report": [
+        "V03 STAGE BALANCE: PASS"
+      ]
+    },
+    {
+      "suite": "test_v03_survival",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_v03_survival.txt",
+      "report": [
+        "V03 SURVIVAL: PASS"
+      ]
+    },
+    {
+      "suite": "test_v03_weather",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_v03_weather.txt",
+      "report": [
+        "V03 WEATHER: PASS"
+      ]
+    },
+    {
+      "suite": "test_v03_weather_stage",
+      "passed": true,
+      "log": "evidence/integration-20261020/logs/test_v03_weather_stage.txt",
+      "report": [
+        "V03 WEATHER STAGE: PASS"
+      ]
+    }
+  ],
+  "passed": 43,
+  "total": 43
+}

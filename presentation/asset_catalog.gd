@@ -37,6 +37,9 @@ func warm_textures(ids: Array, owner: Node) -> void:
 			pending.erase(path)
 			break
 
+func has_asset(asset_id: String) -> bool:
+	return _definitions.has(asset_id)
+
 func texture(asset_id: String) -> Texture2D:
 	if asset_id in ["card.action_attack","card.attack"]:
 		return texture("card.punch")

@@ -35,7 +35,7 @@ Environment.navigation_modifiers返回软category_weights、minimum_battles、al
 - fix_heading：有偏航风险时木头1、0AP，只保护本次移动。
 - 灯塔请求导引需完好燃灯，0AP且不耗燃料；下一航次公开所有候选，混乱风险降为10%。
 
-state.buffs保存id/active_from/remaining/pending_refresh；state.environment保存rolled/settled/rain_voyage标记、可见性/侦察、定向/导引、逆流首次标记和最近移动。环境抽取与暴雨只耗environment流，偏航只耗movement流。save/restore校验ID、期限、互斥、数量及标记，雨读档不重复生效。快照schema2、godot-flow-v03-01，旧版本拒绝并保留。
+state.buffs保存id/active_from/remaining/pending_refresh；state.environment保存rolled/settled/rain_voyage标记、可见性/侦察、定向/导引、逆流首次标记和最近移动。环境抽取与暴雨只耗environment流，偏航只耗movement流。save/restore校验ID、期限、互斥、数量及标记，雨读档不重复生效。快照schema2、godot-flow-v03-02，旧版本拒绝并保留。
 
 HUD显示环境名称、待生效、剩余与刷新说明；挑战航次显示`Ⅱ · 航行3/10`。Agent同用environments/navigation及enemy_direct_damage，不公开环境池、原始效果配置或随机流。真实规则雾与3D表现雾独立。
 

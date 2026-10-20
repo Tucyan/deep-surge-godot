@@ -1,5 +1,7 @@
 # 回溯潮涌：只读剧情回廊
-<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v03-01; reviewed: 2026-10-20 -->
+<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v03-02; reviewed: 2026-10-20 -->
+
+剧情模式开发暂停；`flow_app.gd` 的 `story_mode_visible` 默认关闭，相关选档、设置和帮助入口隐藏。本文保留的剧情能力供后续恢复；独立序章、回溯潮涌和普通节点事件仍可用。
 
 当前恢复范围是五幕特殊序章和原本地旧剧情归档，属于旧档兼容规范的明确例外。它与新独立剧情会话分开，不恢复旧campaign/night玩法。
 

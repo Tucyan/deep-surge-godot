@@ -1,0 +1,506 @@
+{
+  "source_archive": "藏品.zip",
+  "version": 1,
+  "entries": [
+    {
+      "id": "sealedFishTin",
+      "path": "res://assets/collectibles/sealedFishTin-v1.png",
+      "source": "asset-sources/relics-v1/original/01.png",
+      "source_entry": "藏品/ChatGPT 图像 2026年10月19日 21_33_38-1.png",
+      "version": 1,
+      "dependencies": [],
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "837fb8e227ce421d475accdaae2962c623a6faf1b936b1939e652bc822f2b699",
+      "source_sha256": "01858f58191db29921446864938effa3db9101ca8b967bc80f6ea128eabb1be2",
+      "license": "User-supplied project artwork; external redistribution rights unspecified",
+      "source_hash_verified_on": "2026-10-20",
+      "alpha": "RGBA; transparent background preserved",
+      "label": "远航鱼罐",
+      "show_label": false,
+      "runtime_mapping": "relic.sealedFishTin: acquisition receipt, warehouse, encyclopedia, node art",
+      "derivation": "Pillow LANCZOS 1254x1254 to 512x512; no cropping or recoloring"
+    },
+    {
+      "id": "emberFuse",
+      "path": "res://assets/collectibles/emberFuse-v1.png",
+      "source": "asset-sources/relics-v1/original/02.png",
+      "source_entry": "藏品/ChatGPT 图像 2026年10月19日 21_33_40-2.png",
+      "version": 1,
+      "dependencies": [],
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "92b86da2dd0fb07ee78039060a0d0089692084299ff897bb8dc999616f0e5e17",
+      "source_sha256": "53e067020972a1eea068ee3eddf2519901c2b344bf845b7005a23c0d2d18e75c",
+      "license": "User-supplied project artwork; external redistribution rights unspecified",
+      "source_hash_verified_on": "2026-10-20",
+      "alpha": "RGBA; transparent background preserved",
+      "label": "熔火引信",
+      "show_label": false,
+      "runtime_mapping": "relic.emberFuse: acquisition receipt, warehouse, encyclopedia, node art",
+      "derivation": "Pillow LANCZOS 1254x1254 to 512x512; no cropping or recoloring"
+    },
+    {
+      "id": "kelpRation",
+      "path": "res://assets/collectibles/kelpRation-v1.png",
+      "source": "asset-sources/relics-v1/original/03.png",
+      "source_entry": "藏品/ChatGPT 图像 2026年10月19日 21_33_42-3.png",
+      "version": 1,
+      "dependencies": [],
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "99bdfa0d1c3a936425bd64d3a34001ae9845a822ff4a0633713d707412f43bf8",
+      "source_sha256": "7c13f19f63bed85ced80a5235208865f784b381b0da3d9d71040537260f211ad",
+      "license": "User-supplied project artwork; external redistribution rights unspecified",
+      "source_hash_verified_on": "2026-10-20",
+      "alpha": "RGBA; transparent background preserved",
+      "label": "潮晒海藻卷",
+      "show_label": false,
+      "runtime_mapping": "relic.kelpRation: acquisition receipt, warehouse, encyclopedia, node art",
+      "derivation": "Pillow LANCZOS 1254x1254 to 512x512; no cropping or recoloring"
+    },
+    {
+      "id": "copperStill",
+      "path": "res://assets/collectibles/copperStill-v1.png",
+      "source": "asset-sources/relics-v1/original/04.png",
+      "source_entry": "藏品/ChatGPT 图像 2026年10月19日 21_33_43-4.png",
+      "version": 1,
+      "dependencies": [],
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "92b8f5d39d1f413bdc94bc63d4e7dad5eb5b71dbefbe1a015f6a9a09da91b7e5",
+      "source_sha256": "fb57db1792fce24d3bdc0ded323f92c8a66c30b6d5f42ffa80eb449be989a9a2",
+      "license": "User-supplied project artwork; external redistribution rights unspecified",
+      "source_hash_verified_on": "2026-10-20",
+      "alpha": "RGBA; transparent background preserved",
+      "label": "随身蒸馏壶",
+      "show_label": false,
+      "runtime_mapping": "relic.copperStill: acquisition receipt, warehouse, encyclopedia, node art",
+      "derivation": "Pillow LANCZOS 1254x1254 to 512x512; no cropping or recoloring"
+    },
+    {
+      "id": "tideTablet",
+      "path": "res://assets/collectibles/tideTablet-v1.png",
+      "source": "asset-sources/relics-v1/original/05.png",
+      "source_entry": "藏品/ChatGPT 图像 2026年10月19日 21_33_45-1.png",
+      "version": 1,
+      "dependencies": [],
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "d2aa469df7992daac2d09cf34a543ba4b67e0bd8af362e4147f84b39c2f3a534",
+      "source_sha256": "aa31e7ba0a14110478903057dd52c90c737ab7a70551692a3cb6afa7c240c21b",
+      "license": "User-supplied project artwork; external redistribution rights unspecified",
+      "source_hash_verified_on": "2026-10-20",
+      "alpha": "RGBA; transparent background preserved",
+      "label": "静潮刻碑",
+      "show_label": false,
+      "runtime_mapping": "relic.tideTablet: acquisition receipt, warehouse, encyclopedia, node art",
+      "derivation": "Pillow LANCZOS 1254x1254 to 512x512; no cropping or recoloring"
+    },
+    {
+      "id": "homeCompass",
+      "path": "res://assets/collectibles/homeCompass-v1.png",
+      "source": "asset-sources/relics-v1/original/06.png",
+      "source_entry": "藏品/ChatGPT 图像 2026年10月19日 21_33_45-5.png",
+      "version": 1,
+      "dependencies": [],
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "0e0b83cbfa5a2173a1d2e3a08b54e7c7907430e8ccce2377ac84273d75cd4217",
+      "source_sha256": "e6b309914a8128130da2ed8ee1b4030774739aa63813d986fe34d2b6514ad823",
+      "license": "User-supplied project artwork; external redistribution rights unspecified",
+      "source_hash_verified_on": "2026-10-20",
+      "alpha": "RGBA; transparent background preserved",
+      "label": "归航罗盘",
+      "show_label": false,
+      "runtime_mapping": "relic.homeCompass: acquisition receipt, warehouse, encyclopedia, node art",
+      "derivation": "Pillow LANCZOS 1254x1254 to 512x512; no cropping or recoloring"
+    },
+    {
+      "id": "hunterSpear",
+      "path": "res://assets/collectibles/hunterSpear-v1.png",
+      "source": "asset-sources/relics-v1/original/07.png",
+      "source_entry": "藏品/ChatGPT 图像 2026年10月19日 21_33_47-2.png",
+      "version": 1,
+      "dependencies": [],
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "9d5bafd2b92d878b52990202085887ff67b0f706e09040f46b96d1998274f8a3",
+      "source_sha256": "449e92d69085172667776c94dc014bdbbc06f01bb57203380f3d4dbed784125c",
+      "license": "User-supplied project artwork; external redistribution rights unspecified",
+      "source_hash_verified_on": "2026-10-20",
+      "alpha": "RGBA; transparent background preserved",
+      "label": "猎潮石矛",
+      "show_label": false,
+      "runtime_mapping": "relic.hunterSpear: acquisition receipt, warehouse, encyclopedia, node art",
+      "derivation": "Pillow LANCZOS 1254x1254 to 512x512; no cropping or recoloring"
+    },
+    {
+      "id": "rescueBadge",
+      "path": "res://assets/collectibles/rescueBadge-v1.png",
+      "source": "asset-sources/relics-v1/original/08.png",
+      "source_entry": "藏品/ChatGPT 图像 2026年10月19日 21_33_47-6.png",
+      "version": 1,
+      "dependencies": [],
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "8678ceb56afca80b1ae98b0cf84098d28c073072e5692b3662d4d2f4ebf57968",
+      "source_sha256": "fbb2fabf3e947d93215da87e0aba45cf815d0f1e40a6b614c582767b6067dbdc",
+      "license": "User-supplied project artwork; external redistribution rights unspecified",
+      "source_hash_verified_on": "2026-10-20",
+      "alpha": "RGBA; transparent background preserved",
+      "label": "余生浮标牌",
+      "show_label": false,
+      "runtime_mapping": "relic.rescueBadge: acquisition receipt, warehouse, encyclopedia, node art",
+      "derivation": "Pillow LANCZOS 1254x1254 to 512x512; no cropping or recoloring"
+    },
+    {
+      "id": "tideBoneBlade",
+      "path": "res://assets/collectibles/tideBoneBlade-v1.png",
+      "source": "asset-sources/relics-v1/original/09.png",
+      "source_entry": "藏品/ChatGPT 图像 2026年10月19日 21_33_48-3.png",
+      "version": 1,
+      "dependencies": [],
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "5d8e0f611bf17c83fd68a5986fd30db21ae8d4ff89bfb7b156003f9ee26195f3",
+      "source_sha256": "c8da7d3e4ec4de06d7c5dd25df2ddad4e1ebff58cb79e605fd4ecaeee5d9d048",
+      "license": "User-supplied project artwork; external redistribution rights unspecified",
+      "source_hash_verified_on": "2026-10-20",
+      "alpha": "RGBA; transparent background preserved",
+      "label": "缚潮骨刃",
+      "show_label": false,
+      "runtime_mapping": "relic.tideBoneBlade: acquisition receipt, warehouse, encyclopedia, node art",
+      "derivation": "Pillow LANCZOS 1254x1254 to 512x512; no cropping or recoloring"
+    },
+    {
+      "id": "glowConch",
+      "path": "res://assets/collectibles/glowConch-v1.png",
+      "source": "asset-sources/relics-v1/original/10.png",
+      "source_entry": "藏品/ChatGPT 图像 2026年10月19日 21_33_48-7.png",
+      "version": 1,
+      "dependencies": [],
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "0b92920064cd5fcc39ab656a139d788e4808f06987e4dce870fad2e1ceb21463",
+      "source_sha256": "28e2c54c9de5450a4bc5cc10e3c5a72aee08357b8760e0bc0acd7beb07921582",
+      "license": "User-supplied project artwork; external redistribution rights unspecified",
+      "source_hash_verified_on": "2026-10-20",
+      "alpha": "RGBA; transparent background preserved",
+      "label": "幽光螺壳",
+      "show_label": false,
+      "runtime_mapping": "relic.glowConch: acquisition receipt, warehouse, encyclopedia, node art",
+      "derivation": "Pillow LANCZOS 1254x1254 to 512x512; no cropping or recoloring"
+    },
+    {
+      "id": "crackedCarapace",
+      "path": "res://assets/collectibles/crackedCarapace-v1.png",
+      "source": "asset-sources/relics-v1/original/11.png",
+      "source_entry": "藏品/ChatGPT 图像 2026年10月19日 21_33_50-4.png",
+      "version": 1,
+      "dependencies": [],
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "f6f755362c1f7e6588e62cc8fef2c28aec4add499324212b95a0fc38a081f440",
+      "source_sha256": "cee6376e443f590bf27b203270dccbe9cf106697f7ad040d01205981c014030d",
+      "license": "User-supplied project artwork; external redistribution rights unspecified",
+      "source_hash_verified_on": "2026-10-20",
+      "alpha": "RGBA; transparent background preserved",
+      "label": "叠片残甲",
+      "show_label": false,
+      "runtime_mapping": "relic.crackedCarapace: acquisition receipt, warehouse, encyclopedia, node art",
+      "derivation": "Pillow LANCZOS 1254x1254 to 512x512; no cropping or recoloring"
+    },
+    {
+      "id": "sunkenCoin",
+      "path": "res://assets/collectibles/sunkenCoin-v1.png",
+      "source": "asset-sources/relics-v1/original/12.png",
+      "source_entry": "藏品/ChatGPT 图像 2026年10月19日 21_33_50-8.png",
+      "version": 1,
+      "dependencies": [],
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "fbcfd416da63c6a712fe771bb8669289ee8a38d53f288e49d382e167fce75378",
+      "source_sha256": "98260098ad4b5851d876ffbadaaaa7a5501548cd05ac76ae3defd7c9fff6842d",
+      "license": "User-supplied project artwork; external redistribution rights unspecified",
+      "source_hash_verified_on": "2026-10-20",
+      "alpha": "RGBA; transparent background preserved",
+      "label": "沉海方孔钱",
+      "show_label": false,
+      "runtime_mapping": "relic.sunkenCoin: acquisition receipt, warehouse, encyclopedia, node art",
+      "derivation": "Pillow LANCZOS 1254x1254 to 512x512; no cropping or recoloring"
+    },
+    {
+      "id": "drifterMedkit",
+      "path": "res://assets/collectibles/drifterMedkit-v1.png",
+      "source": "asset-sources/relics-v1/original/13.png",
+      "source_entry": "藏品/ChatGPT 图像 2026年10月19日 21_33_52-5.png",
+      "version": 1,
+      "dependencies": [],
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "1f122c9394d35bafd6853798666241c1acdaed259cbc2d5518e1e492827b5ad9",
+      "source_sha256": "21d792b19dcb71b9960b62d38b9bd5c3066d0651d1ceccc6591955b1129e757b",
+      "license": "User-supplied project artwork; external redistribution rights unspecified",
+      "source_hash_verified_on": "2026-10-20",
+      "alpha": "RGBA; transparent background preserved",
+      "label": "漂流急救包",
+      "show_label": false,
+      "runtime_mapping": "relic.drifterMedkit: acquisition receipt, warehouse, encyclopedia, node art",
+      "derivation": "Pillow LANCZOS 1254x1254 to 512x512; no cropping or recoloring"
+    },
+    {
+      "id": "barbedBundle",
+      "path": "res://assets/collectibles/barbedBundle-v1.png",
+      "source": "asset-sources/relics-v1/original/14.png",
+      "source_entry": "藏品/ChatGPT 图像 2026年10月19日 21_33_52-9.png",
+      "version": 1,
+      "dependencies": [],
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "ccf40b3521f98d2307c7e3e23ec0570e1ea9a54a1421f20cb74e3134a08b8a48",
+      "source_sha256": "d8b6357ef3ec842e7df7db5436c0cf5f75c9b0b019fc4dcf847489cca9060aea",
+      "license": "User-supplied project artwork; external redistribution rights unspecified",
+      "source_hash_verified_on": "2026-10-20",
+      "alpha": "RGBA; transparent background preserved",
+      "label": "三潮矛束",
+      "show_label": false,
+      "runtime_mapping": "relic.barbedBundle: acquisition receipt, warehouse, encyclopedia, node art",
+      "derivation": "Pillow LANCZOS 1254x1254 to 512x512; no cropping or recoloring"
+    },
+    {
+      "id": "redCoral",
+      "path": "res://assets/collectibles/redCoral-v1.png",
+      "source": "asset-sources/relics-v1/original/15.png",
+      "source_entry": "藏品/ChatGPT 图像 2026年10月19日 21_33_53-6.png",
+      "version": 1,
+      "dependencies": [],
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "19f985a9415dad094a8465704ab8a1f5af533a1857acb5bcd5b693bfea8903b5",
+      "source_sha256": "35cfb1a7a04c5115ab3297be82a5724511e2e27cf2c98cb37762aa07e04ac3ab",
+      "license": "User-supplied project artwork; external redistribution rights unspecified",
+      "source_hash_verified_on": "2026-10-20",
+      "alpha": "RGBA; transparent background preserved",
+      "label": "赤枝珊瑚",
+      "show_label": false,
+      "runtime_mapping": "relic.redCoral: acquisition receipt, warehouse, encyclopedia, node art",
+      "derivation": "Pillow LANCZOS 1254x1254 to 512x512; no cropping or recoloring"
+    },
+    {
+      "id": "drifterQuiver",
+      "path": "res://assets/collectibles/drifterQuiver-v1.png",
+      "source": "asset-sources/relics-v1/original/16.png",
+      "source_entry": "藏品/ChatGPT 图像 2026年10月19日 21_33_54-10.png",
+      "version": 1,
+      "dependencies": [],
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "200fe0ede6000959a1b5ec527fa6d9c0600d7dfac1092c0103d89e892d21d95c",
+      "source_sha256": "18b3a521cbe5853ad78831b75f22f395354edd9b3e3620e719fe1482645a8645",
+      "license": "User-supplied project artwork; external redistribution rights unspecified",
+      "source_hash_verified_on": "2026-10-20",
+      "alpha": "RGBA; transparent background preserved",
+      "label": "备战箭筒",
+      "show_label": false,
+      "runtime_mapping": "relic.drifterQuiver: acquisition receipt, warehouse, encyclopedia, node art",
+      "derivation": "Pillow LANCZOS 1254x1254 to 512x512; no cropping or recoloring"
+    },
+    {
+      "id": "crimsonVial",
+      "path": "res://assets/collectibles/crimsonVial-v1.png",
+      "source": "asset-sources/relics-v1/original/17.png",
+      "source_entry": "藏品/ChatGPT 图像 2026年10月19日 21_33_55-7.png",
+      "version": 1,
+      "dependencies": [],
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "3e2d567a3ab0fa24bc60a52a50b633710ebd1c9a5349560e758709b61c235a48",
+      "source_sha256": "4be604a080c4b259777a95006ffa516c36bea664fb38c3379e26a75b1544a68b",
+      "license": "User-supplied project artwork; external redistribution rights unspecified",
+      "source_hash_verified_on": "2026-10-20",
+      "alpha": "RGBA; transparent background preserved",
+      "label": "赤潮血酿",
+      "show_label": false,
+      "runtime_mapping": "relic.crimsonVial: acquisition receipt, warehouse, encyclopedia, node art",
+      "derivation": "Pillow LANCZOS 1254x1254 to 512x512; no cropping or recoloring"
+    },
+    {
+      "id": "scavengerSatchel",
+      "path": "res://assets/collectibles/scavengerSatchel-v1.png",
+      "source": "asset-sources/relics-v1/original/18.png",
+      "source_entry": "藏品/ChatGPT 图像 2026年10月19日 21_33_57-8.png",
+      "version": 1,
+      "dependencies": [],
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "4ad1efc117d8d20c81ab2c812c1cf6730c6d008a83a4b513b6f21d8df443dbfb",
+      "source_sha256": "59c42a0bb072f0c28ec992b7620587e108ab6bfb5d12e258b30f57a8901035d4",
+      "license": "User-supplied project artwork; external redistribution rights unspecified",
+      "source_hash_verified_on": "2026-10-20",
+      "alpha": "RGBA; transparent background preserved",
+      "label": "拾荒行囊",
+      "show_label": false,
+      "runtime_mapping": "relic.scavengerSatchel: acquisition receipt, warehouse, encyclopedia, node art",
+      "derivation": "Pillow LANCZOS 1254x1254 to 512x512; no cropping or recoloring"
+    },
+    {
+      "id": "foldingRule",
+      "path": "res://assets/collectibles/foldingRule-v1.png",
+      "source": "asset-sources/relics-v1/original/19.png",
+      "source_entry": "藏品/ChatGPT 图像 2026年10月19日 21_33_59-9.png",
+      "version": 1,
+      "dependencies": [],
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "681df25c83c2cd3ba25b7f9d4d9e2b03d673677f510379b8dce6c9a3890d2824",
+      "source_sha256": "d080adfa3aeffe8a4d5614d120110617015c27cfb725149c4ba6b10f775dba7f",
+      "license": "User-supplied project artwork; external redistribution rights unspecified",
+      "source_hash_verified_on": "2026-10-20",
+      "alpha": "RGBA; transparent background preserved",
+      "label": "筏匠折尺",
+      "show_label": false,
+      "runtime_mapping": "relic.foldingRule: acquisition receipt, warehouse, encyclopedia, node art",
+      "derivation": "Pillow LANCZOS 1254x1254 to 512x512; no cropping or recoloring"
+    },
+    {
+      "id": "sailorsKnot",
+      "path": "res://assets/collectibles/sailorsKnot-v1.png",
+      "source": "asset-sources/relics-v1/original/20.png",
+      "source_entry": "藏品/ChatGPT 图像 2026年10月19日 21_34_00-10.png",
+      "version": 1,
+      "dependencies": [],
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "7761b6d1b0b1018925b02c585cd9f652ffa3899d1b68519517817b8159f130b4",
+      "source_sha256": "a9c141c8bb16ae0b022885177891f0b06374defb96512ff8dace63b8e02e8ec0",
+      "license": "User-supplied project artwork; external redistribution rights unspecified",
+      "source_hash_verified_on": "2026-10-20",
+      "alpha": "RGBA; transparent background preserved",
+      "label": "平安水手结",
+      "show_label": false,
+      "runtime_mapping": "relic.sailorsKnot: acquisition receipt, warehouse, encyclopedia, node art",
+      "derivation": "Pillow LANCZOS 1254x1254 to 512x512; no cropping or recoloring"
+    }
+  ]
+}

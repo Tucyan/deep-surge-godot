@@ -1,139 +1,438 @@
 {
-  "emberWick": {
-    "name": "余烬灯芯",
+  "sealedFishTin": {
+    "name": "远航鱼罐",
+    "enabled": true,
+    "price": 3,
     "rarity": "normal",
-    "mechanic": "ember",
-    "description": "每航行燃灯结算额外恢复SAN 5；至少一盏完好灯实际燃烧时触发，多灯只触发一次。"
-  },
-  "tideLens": {
-    "name": "潮纹镜片",
-    "rarity": "normal",
-    "mechanic": "scout",
-    "description": "获得时免费侦察一次；使用后两次完整航行恢复，最多存一次，揭示一个迷雾候选。"
-  },
-  "headingNeedle": {
-    "name": "定向骨针",
-    "rarity": "normal",
-    "mechanic": "heading",
-    "description": "每层两次，导航时主动使用，使本次航行免于混乱偏航。"
-  },
-  "mendingNeedle": {
-    "name": "缝潮针",
-    "rarity": "normal",
-    "mechanic": "repair",
-    "description": "每航行第一次直接修理筏格少耗1木头，仍需AP；不减扩建或修补包制造费用。"
-  },
-  "namedKnot": {
-    "name": "记名绳结",
-    "rarity": "normal",
-    "mechanic": "protect",
-    "description": "每层两次，在事件随机失牌前保护一个合格卡单位；仍须足额支付其他单位。"
-  },
-  "scavengerRing": {
-    "name": "拾荒者指环",
-    "rarity": "normal",
-    "mechanic": "salvage",
-    "description": "每轮事件累计实际消耗3份非货币手牌后获得1份随机基础资源，每轮一次；不计制造、燃灯、交易和弃牌。"
-  },
-  "emptyCompass": {
-    "name": "空腹罗盘",
-    "rarity": "normal",
-    "mechanic": "lightHand",
-    "description": "轮末航耗前手牌容量不超过5时，食水航耗各减少5；后续生产与弃牌不改变判定。"
-  },
-  "deepContract": {
-    "name": "深潮契印",
-    "rarity": "normal",
-    "mechanic": "contract",
-    "drawback": true,
-    "description": "自愿支付SAN并完成事件后获得1贝币，每轮一次；基础SAN航耗额外增加5。导航侦察不触发。"
-  },
-  "luckyShell": {
-    "name": "回声贝壳",
-    "rarity": "normal",
-    "description": "普通出牌有25%概率回手；不影响污染牌与设备安装。",
-    "returnChance": 0.25
-  },
-  "guardian": {
-    "name": "守潮骨片",
-    "rarity": "normal",
-    "description": "生命上限+2。",
-    "modifiers": {
-      "hpMax": 2
-    }
-  },
-  "curse": {
-    "name": "锈蚀金币",
-    "rarity": "normal",
-    "description": "攻击伤害+2，但基地AP上限−1。",
-    "modifiers": {
-      "damage": 2,
-      "baseAp": -1
-    }
-  },
-  "pearl": {
-    "name": "塞壬的珍珠",
-    "rarity": "rare",
-    "description": "达成一次结局后获得；精神归零仍可航行，可进入真结局。",
-    "protectSanity": true,
-    "trueEndingEligible": true,
-    "unlock": {
-      "endings": 1
-    }
-  },
-  "lifeboatTag": {
-    "name": "救生艇铭牌", "enabled": true, "price": 5, "rarity": "normal",
-    "description": "获得时生命上限+2，饱食与水分上限各+10，并恢复生命2、食水各20；持有时轮末食水消耗各减少5。丢弃保留已提升的上限和恢复。",
+    "archetype": "补给",
+    "description": "获得时饱食上限+10并恢复饱食50。每件仅结算一次；丢弃不撤销上限或恢复。",
+    "story": "罐盖上印着早已停航的鱼群商标。它原本是三个人的晚饭，如今成了一段航程的余裕。",
     "effects": [
-      {"key":"hp_cap","type":"grant_max","stat":"hp","amount":2},
-      {"key":"food_cap","type":"grant_max","stat":"hunger","amount":10},
-      {"key":"water_cap","type":"grant_max","stat":"hydration","amount":10},
-      {"key":"hp_restore","type":"restore","stat":"hp","amount":2},
-      {"key":"food_restore","type":"restore","stat":"hunger","amount":20},
-      {"key":"water_restore","type":"restore","stat":"hydration","amount":20},
-      {"key":"food_saving","type":"modifier","target":"survival.hunger_cost","amount":-5},
-      {"key":"water_saving","type":"modifier","target":"survival.hydration_cost","amount":-5}
+      {
+        "key": "food_cap",
+        "type": "grant_max",
+        "stat": "hunger",
+        "amount": 10
+      },
+      {
+        "key": "food",
+        "type": "restore",
+        "stat": "hunger",
+        "amount": 50
+      }
     ]
   },
-  "rationTin": {
-    "name": "密封补给罐", "enabled": true, "price": 3, "rarity": "normal",
-    "description": "获得时立即恢复生命3、饱食40、水分40。同一件潮汐遗物只结算一次，丢弃不撤销恢复。",
+  "emberFuse": {
+    "name": "熔火引信",
+    "enabled": true,
+    "price": 4,
+    "rarity": "normal",
+    "archetype": "强攻代价",
+    "description": "持有时固定攻击与攻击牌伤害+2；轮末水分消耗+5。丢弃后两项持有修正都取消。",
+    "story": "引信末端一直红着，却从未燃尽。握住它的人总在渴望下一次交锋。",
     "effects": [
-      {"key":"hp","type":"restore","stat":"hp","amount":3},
-      {"key":"food","type":"restore","stat":"hunger","amount":40},
-      {"key":"water","type":"restore","stat":"hydration","amount":40}
+      {
+        "key": "damage",
+        "type": "modifier",
+        "target": "battle.damage",
+        "amount": 2
+      },
+      {
+        "key": "thirst",
+        "type": "modifier",
+        "target": "survival.hydration_cost",
+        "amount": 5
+      }
     ]
   },
-  "fittersBadge": {
-    "name": "装配师徽记", "enabled": true, "price": 5, "rarity": "normal",
-    "description": "接下来两次实际受益的Ⅰ级设备安装直接成为Ⅱ级。制造时不生效；设备匠优先，不叠加为Ⅲ级。",
-    "effects": [{"key":"promotion","type":"install_level","level":2,"uses":2}]
+  "kelpRation": {
+    "name": "潮晒海藻卷",
+    "enabled": true,
+    "price": 4,
+    "rarity": "normal",
+    "archetype": "节粮",
+    "description": "获得时恢复饱食25；持有时轮末饱食消耗减少5。恢复每件仅一次，消耗最低为0。",
+    "story": "晒干的海藻被麻绳紧紧扎住。盐味很重，好在不必用一整餐来抵御饥饿。",
+    "effects": [
+      {
+        "key": "food",
+        "type": "restore",
+        "stat": "hunger",
+        "amount": 25
+      },
+      {
+        "key": "saving",
+        "type": "modifier",
+        "target": "survival.hunger_cost",
+        "amount": -5
+      }
+    ]
   },
-  "spearParcel": {
-    "name": "缚绳矛匣", "enabled": true, "price": 4, "rarity": "normal",
-    "description": "持有时，下一场战斗开始获得两张Ⅰ级临时矛，仅触发一次；未使用的矛在战斗结束时清除。",
-    "effects": [{"key":"spears","type":"grant_card","trigger":"battle_start","id":"spear","amount":2,"temporary":true,"uses":1}]
+  "copperStill": {
+    "name": "随身蒸馏壶",
+    "enabled": true,
+    "price": 5,
+    "rarity": "normal",
+    "archetype": "节水",
+    "description": "获得时水分上限+10；持有时轮末水分消耗减少5。获得时不恢复水分，丢弃保留上限。",
+    "story": "铜管里只挂着一滴清水。蒸馏需要耐心，壶的主人却再也没有回来。",
+    "effects": [
+      {
+        "key": "water_cap",
+        "type": "grant_max",
+        "stat": "hydration",
+        "amount": 10
+      },
+      {
+        "key": "saving",
+        "type": "modifier",
+        "target": "survival.hydration_cost",
+        "amount": -5
+      }
+    ]
   },
-  "borrowedPulse": {
-    "name": "借来的心跳", "enabled": true, "price": 4, "rarity": "normal",
-    "description": "持有时，下一场战斗开始临时生命上限+2并恢复生命2，限一次。战斗结束移除临时上限，当前生命至多保留到新上限。",
-    "effects": [{"key":"pulse","type":"temporary_max","trigger":"battle_start","stat":"hp","amount":2,"heal":2,"uses":1}]
+  "tideTablet": {
+    "name": "静潮刻碑",
+    "enabled": true,
+    "price": 5,
+    "rarity": "normal",
+    "archetype": "精神",
+    "description": "获得时精神上限+10并恢复精神20。每件仅一次；丢弃保留已提升的上限与恢复。",
+    "story": "碑上的潮纹从内向外延展。把指尖停在中心时，风声似乎也会慢半拍。",
+    "effects": [
+      {
+        "key": "sanity_cap",
+        "type": "grant_max",
+        "stat": "sanity",
+        "amount": 10
+      },
+      {
+        "key": "calm",
+        "type": "restore",
+        "stat": "sanity",
+        "amount": 20
+      }
+    ]
   },
-  "luckyKnot": {
-    "name": "幸运绳结", "enabled": true, "price": 5, "rarity": "normal",
-    "description": "持有时，材料附魔有25%概率保留投入的材料，AP照常消耗。多个同类概率加算，最高100%。",
-    "effects": [{"key":"preserve","type":"probability","target":"enchant_preserve","chance":0.25}]
+  "homeCompass": {
+    "name": "归航罗盘",
+    "enabled": true,
+    "price": 4,
+    "rarity": "normal",
+    "archetype": "轻装",
+    "description": "获得时恢复精神15；持有时手牌容量上限+1。罗盘不增加导航候选，也不阻止偏航。",
+    "story": "指针指向的从来不是北方。有人说，只有仍记得家的人才能读懂它。",
+    "effects": [
+      {
+        "key": "calm",
+        "type": "restore",
+        "stat": "sanity",
+        "amount": 15
+      },
+      {
+        "key": "space",
+        "type": "modifier",
+        "target": "inventory.limit",
+        "amount": 1
+      }
+    ]
   },
-  "memory": {
-    "name": "记忆的回响",
-    "rarity": "rare",
-    "description": "累计完成50节点获得；基地和战斗AP上限各+1。",
-    "modifiers": {
-      "baseAp": 1,
-      "battleAp": 1
-    },
-    "unlock": {
-      "nodes": 50
-    }
+  "hunterSpear": {
+    "name": "猎潮石矛",
+    "enabled": true,
+    "price": 5,
+    "rarity": "normal",
+    "archetype": "强攻",
+    "description": "持有时固定攻击与攻击牌伤害+1。它是护持战斗的遗物，不作为手牌消耗。",
+    "story": "石尖被海沙磨得发白。矛杆上的每一道刻痕都代表一次活着归来。",
+    "effects": [
+      {
+        "key": "damage",
+        "type": "modifier",
+        "target": "battle.damage",
+        "amount": 1
+      }
+    ]
+  },
+  "rescueBadge": {
+    "name": "余生浮标牌",
+    "enabled": true,
+    "price": 5,
+    "rarity": "normal",
+    "archetype": "救援",
+    "description": "获得时生命上限+1并恢复生命2；持有时手牌容量上限+1。丢弃保留永久生命成长和恢复。",
+    "story": "姓名被盐蚀抹去了，橙色的救生圈图案还在。背面只刻着两个字：留给。",
+    "effects": [
+      {
+        "key": "hp_cap",
+        "type": "grant_max",
+        "stat": "hp",
+        "amount": 1
+      },
+      {
+        "key": "heal",
+        "type": "restore",
+        "stat": "hp",
+        "amount": 2
+      },
+      {
+        "key": "space",
+        "type": "modifier",
+        "target": "inventory.limit",
+        "amount": 1
+      }
+    ]
+  },
+  "tideBoneBlade": {
+    "name": "缚潮骨刃",
+    "enabled": true,
+    "price": 4,
+    "rarity": "normal",
+    "archetype": "饥饿强攻",
+    "description": "持有时固定攻击与攻击牌伤害+2；轮末饱食消耗+5。丢弃取消两项修正。",
+    "story": "缠在骨刃上的水草始终潮湿。每次挥动之后，腹中都会传来比潮声更近的回响。",
+    "effects": [
+      {
+        "key": "damage",
+        "type": "modifier",
+        "target": "battle.damage",
+        "amount": 2
+      },
+      {
+        "key": "hunger",
+        "type": "modifier",
+        "target": "survival.hunger_cost",
+        "amount": 5
+      }
+    ]
+  },
+  "glowConch": {
+    "name": "幽光螺壳",
+    "enabled": true,
+    "price": 3,
+    "rarity": "normal",
+    "archetype": "精神急救",
+    "description": "获得时立即恢复精神30，每件只结算一次。精神已满时不会储存恢复量。",
+    "story": "螺壳里没有海声，只有很轻的哼唱。那首歌的最后一句，总像是自己的名字。",
+    "effects": [
+      {
+        "key": "calm",
+        "type": "restore",
+        "stat": "sanity",
+        "amount": 30
+      }
+    ]
+  },
+  "crackedCarapace": {
+    "name": "叠片残甲",
+    "enabled": true,
+    "price": 5,
+    "rarity": "normal",
+    "archetype": "格挡",
+    "description": "持有时固定格挡基础护盾+2。此效果不增加设备或材料提供的护盾。",
+    "story": "甲片已经裂开，层层叠起后却仍能挡住锋刃。缺口恰好容得下一只手。",
+    "effects": [
+      {
+        "key": "guard",
+        "type": "modifier",
+        "target": "battle.shield",
+        "amount": 2
+      }
+    ]
+  },
+  "sunkenCoin": {
+    "name": "沉海方孔钱",
+    "enabled": true,
+    "price": 3,
+    "rarity": "normal",
+    "archetype": "冒险",
+    "description": "持有时固定攻击与攻击牌伤害+1，固定格挡基础护盾-1。丢弃取消两项修正。",
+    "story": "方孔中透过的光像一只半闭的眼。它让持有者更容易看见破绽，也更难顾全自己。",
+    "effects": [
+      {
+        "key": "damage",
+        "type": "modifier",
+        "target": "battle.damage",
+        "amount": 1
+      },
+      {
+        "key": "guard",
+        "type": "modifier",
+        "target": "battle.shield",
+        "amount": -1
+      }
+    ]
+  },
+  "drifterMedkit": {
+    "name": "漂流急救包",
+    "enabled": true,
+    "price": 3,
+    "rarity": "normal",
+    "archetype": "生命急救",
+    "description": "获得时立即恢复生命5，每件仅一次。它不是药箱手牌，不触发药箱或出身的用牌加成。",
+    "story": "布带上缝着一道歪斜的红十字。里面最后一卷绷带被仔细留在最容易拿到的位置。",
+    "effects": [
+      {
+        "key": "heal",
+        "type": "restore",
+        "stat": "hp",
+        "amount": 5
+      }
+    ]
+  },
+  "barbedBundle": {
+    "name": "三潮矛束",
+    "enabled": true,
+    "price": 5,
+    "rarity": "normal",
+    "archetype": "多场供给",
+    "description": "接下来三场战斗开始时各获得一张Ⅰ级临时矛，每场扣一次。未用的矛在战后清除。",
+    "story": "三支短矛被分开捆好，一支给眼前的海，一支给下一片海，最后一支留给归途。",
+    "effects": [
+      {
+        "key": "spears",
+        "type": "grant_card",
+        "trigger": "battle_start",
+        "id": "spear",
+        "amount": 1,
+        "uses": 3,
+        "temporary": true
+      }
+    ]
+  },
+  "redCoral": {
+    "name": "赤枝珊瑚",
+    "enabled": true,
+    "price": 5,
+    "rarity": "normal",
+    "archetype": "守护",
+    "description": "获得时生命上限+1；持有时固定格挡基础护盾+1。不恢复生命；丢弃保留永久上限。",
+    "story": "苍白的甲片间伸出一枝红珊瑚。即使离开礁石，它也没有失去那一点鲜亮。",
+    "effects": [
+      {
+        "key": "hp_cap",
+        "type": "grant_max",
+        "stat": "hp",
+        "amount": 1
+      },
+      {
+        "key": "guard",
+        "type": "modifier",
+        "target": "battle.shield",
+        "amount": 1
+      }
+    ]
+  },
+  "drifterQuiver": {
+    "name": "备战箭筒",
+    "enabled": true,
+    "price": 4,
+    "rarity": "normal",
+    "archetype": "短期爆发",
+    "description": "接下来两场战斗开始时各获得两张临时射箭牌；每张瞬发、基础伤害2，不消耗战斗AP。未用的箭在战后清除。",
+    "story": "箭羽在防水筒里保存完好。漂流者逐支擦亮箭镞，把四次先手留给下一位需要它的人。",
+    "effects": [
+      {
+        "key": "arrows",
+        "type": "grant_card",
+        "trigger": "battle_start",
+        "id": "arrow",
+        "amount": 2,
+        "uses": 2,
+        "temporary": true
+      }
+    ]
+  },
+  "crimsonVial": {
+    "name": "赤潮血酿",
+    "enabled": true,
+    "price": 6,
+    "rarity": "normal",
+    "archetype": "永久成长",
+    "description": "获得时生命上限+3并恢复生命3；持有时轮末水分消耗+5。丢弃取消额外水耗，保留永久成长与恢复。",
+    "story": "瓶中红液不随浪摇晃。瓶颈的铜签写着：醒来后请多喝水。",
+    "effects": [
+      {
+        "key": "hp_cap",
+        "type": "grant_max",
+        "stat": "hp",
+        "amount": 3
+      },
+      {
+        "key": "heal",
+        "type": "restore",
+        "stat": "hp",
+        "amount": 3
+      },
+      {
+        "key": "thirst",
+        "type": "modifier",
+        "target": "survival.hydration_cost",
+        "amount": 5
+      }
+    ]
+  },
+  "scavengerSatchel": {
+    "name": "拾荒行囊",
+    "enabled": true,
+    "price": 6,
+    "rarity": "normal",
+    "archetype": "扩容",
+    "description": "持有时手牌容量上限+3；丢弃立即移除扩容。超限仍按原有轮末弃牌流程处理。",
+    "story": "袋底补了很多次，却没有一个破洞。每一片补丁都来自一件舍不得丢弃的旧物。",
+    "effects": [
+      {
+        "key": "space",
+        "type": "modifier",
+        "target": "inventory.limit",
+        "amount": 3
+      }
+    ]
+  },
+  "foldingRule": {
+    "name": "筏匠折尺",
+    "enabled": true,
+    "price": 5,
+    "rarity": "normal",
+    "archetype": "装配",
+    "description": "下一次实际受益的Ⅰ级设备安装直接升为Ⅱ级，仅一次；持有时手牌容量上限+1。制造不触发，设备匠优先。",
+    "story": "尺上最深的刻度停在木筏的宽度。展开它，就像重新听见师傅说：再量一次。",
+    "effects": [
+      {
+        "key": "promotion",
+        "type": "install_level",
+        "level": 2,
+        "uses": 1
+      },
+      {
+        "key": "space",
+        "type": "modifier",
+        "target": "inventory.limit",
+        "amount": 1
+      }
+    ]
+  },
+  "sailorsKnot": {
+    "name": "平安水手结",
+    "enabled": true,
+    "price": 5,
+    "rarity": "normal",
+    "archetype": "附魔续航",
+    "description": "持有时材料附魔有15%概率保留投入材料，AP照付；手牌容量上限+1。同类保留概率相加，最高100%。",
+    "story": "绳结没有起点，也看不出终点。打结的人相信，归途也应该像这样连在一起。",
+    "effects": [
+      {
+        "key": "preserve",
+        "type": "probability",
+        "target": "enchant_preserve",
+        "chance": 0.15
+      },
+      {
+        "key": "space",
+        "type": "modifier",
+        "target": "inventory.limit",
+        "amount": 1
+      }
+    ]
   }
 }

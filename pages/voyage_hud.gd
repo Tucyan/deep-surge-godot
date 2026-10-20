@@ -33,6 +33,54 @@ func refresh_camera_mode(mode: String) -> void:
 func refresh_battle_selection(value: String) -> void:
 	context.ui_state.battle_selection=value
 
+## Update the stable battle presentation after a dispatched action. Structural
+## changes deliberately fall back to a full render at the application boundary.
+func refresh_after_battle(view: Dictionary) -> bool:
+	if context.get("phase","")!="battle" or view.get("phase","")!="battle": return false
+	if str(context.get("battle",{}).get("id",""))!=str(view.get("battle",{}).get("id","")): return false
+	if int(view.get("battle",{}).get("hp",0))<=0: return false
+	if JSON.stringify(context.get("cells",[]))!=JSON.stringify(view.get("cells",[])): return false
+	if JSON.stringify(context.get("hand",[]))!=JSON.stringify(view.get("hand",[])): return false
+	if JSON.stringify(context.get("boost_cards",[]))!=JSON.stringify(view.get("boost_cards",[])): return false
+	var battle_view:=find_child("BattleHUDView",true,false)
+	if not is_instance_valid(battle_view) or not battle_view.has_method("refresh_after_action"): return false
+	_merge_view(view)
+	refresh_heading()
+	refresh_status()
+	refresh_capacity()
+	refresh_battle_shields()
+	var salvage:=find_child("SalvageEntry",true,false) as Button
+	if is_instance_valid(salvage): salvage.disabled=int(context.battle.get("ap",0))<1
+	return battle_view.refresh_after_action(view)
+
+func refresh_battle_shields() -> void:
+	var badge:=find_child("BattleShieldSummary",true,false) as PanelContainer
+	if not is_instance_valid(badge): return
+	var row:=badge.get_child(0) as HBoxContainer if badge.get_child_count()>0 else null
+	if not is_instance_valid(row): return
+	var shields: Array=context.get("battle",{}).get("shields",[])
+	var total:=0
+	for shield in shields: total+=int(shield.get("amount",0))
+	for child in row.get_children(): row.remove_child(child); child.queue_free()
+	var style:=compact_style(); style.set_corner_radius_all(10)
+	style.content_margin_left=8; style.content_margin_right=8
+	style.content_margin_top=2; style.content_margin_bottom=2
+	if total>0:
+		style.bg_color=Color(0.06,0.18,0.32,0.85); style.border_color=Color(0.35,0.75,1.0,0.8)
+	badge.add_theme_stylebox_override("panel",style)
+	var turn:=int(context.battle.get("turn",1))
+	var ShieldIcon=preload("res://presentation/shield_icon.gd")
+	if total>0:
+		for shield in shields:
+			for _i in range(int(shield.get("amount",0))):
+				row.add_child(ShieldIcon.new(int(shield.get("expires_turn",0))<=turn,false))
+	else: row.add_child(ShieldIcon.new(true,true))
+	var value:=Label.new(); value.name="ShieldValue"; value.text=str(total); value.visible=false; row.add_child(value)
+	badge.visible=context.phase=="battle" or total>0
+	var width:=maxi(40,16+total*22)
+	badge.anchor_left=1; badge.anchor_right=1
+	badge.offset_left=-width-14; badge.offset_right=-14
+
 func rect(control: Control, anchors: Vector4, offsets: Vector4) -> void:
 	control.anchor_left = anchors.x; control.anchor_top = anchors.y
 	control.anchor_right = anchors.z; control.anchor_bottom = anchors.w
@@ -253,7 +301,12 @@ func build() -> void:
 	var tray := Control.new(); tray.name="VoyageHandTray"; tray.mouse_filter=Control.MOUSE_FILTER_IGNORE; stage.add_child(tray); tray.z_index=ABOVE_EVENT
 	rect(tray,Vector4(0,1,1,1),Vector4(64,HAND_HEADER_BOTTOM,-292,-18))
 	hand(tray)
-	# Keep salvage in the tree during events: it is dimmed by the plate, not deleted.
+	# Phones stretch the event page over the hand area, so the frozen hand strip
+	# and its header bar step aside there. Desktop keeps them visible above the
+	# 328-offset event page.
+	if event_covered and context.get("mobile",false):
+		tray.hide()
+		topbar.hide()	# Keep salvage in the tree during events: it is dimmed by the plate, not deleted.
 	var salvage_disabled: bool
 	if context.phase == "battle":
 		salvage_disabled = int(context.battle.get("ap",0)) < 1
@@ -283,6 +336,9 @@ func build() -> void:
 	craft.z_index = ABOVE_EVENT
 	rect(craft,Vector4(1,1,1,1),Vector4(-228,-184,-52,-8))
 	preload("res://presentation/nautical_button_art.gd").apply(craft,true)
+	# The workbench entry sits in the bottom-right corner, which phones cover with
+	# the taller event page; desktop keeps it.
+	if event_covered and context.get("mobile",false): craft.hide()
 	if is_instance_valid(battle_view):
 		battle_view.confirm_button = craft
 		battle_view.sync_selection_to_hud()
@@ -514,6 +570,25 @@ func survival_text() -> String:
 	var damage: Dictionary=quote.get("deprivation",{})
 	var counts: Dictionary=quote.get("counts",{})
 	return "轮末弃牌后：饱食扣%d，水分扣%d。\n累计饥饿%d次、缺水%d次。\n按当前食水预计损失%d生命（饥饿%d、缺水%d）。" % [int(costs.get("hunger",0)),int(costs.get("hydration",0)),int(counts.get("hunger",0)),int(counts.get("hydration",0)),int(damage.get("total",0)),int(damage.get("hunger",0)),int(damage.get("hydration",0))]
+
+## Same-phase operation refresh. The caller verifies that no board topology or
+## panel transition occurred; only value labels, policy and the hand projection
+## are reconciled here.
+func refresh_after_operation(view: Dictionary) -> bool:
+	if not _live_operation() or context.get("phase","") != view.get("phase",""): return false
+	if context.get("panel","") != view.get("panel","") or view.get("phase","") in ["battle", "story", "aftermath", "finished", "chapterComplete"]: return false
+	if JSON.stringify(context.get("cells",[])) != JSON.stringify(view.get("cells",[])): return false
+	var fan:=find_child("hand_fan",true,false)
+	var hand_changed:=JSON.stringify(context.get("hand",[])) != JSON.stringify(view.get("hand",[]))
+	if hand_changed and (not is_instance_valid(fan) or not fan.has_method("refresh_entries")): return false
+	_merge_view(view)
+	refresh_heading(); refresh_status(); refresh_capacity(); refresh_environments()
+	if hand_changed and not fan.refresh_entries(context.hand,context): return false
+	var salvage:=find_child("SalvageEntry",true,false) as Button
+	if is_instance_valid(salvage): salvage.disabled=not bool(context.get("can_base",false)) or int(context.get("ap",0))<1
+	var craft:=find_child("CraftEntry",true,false) as Button
+	if is_instance_valid(craft): craft.disabled=not bool(context.get("can_base",false))
+	return true
 
 func refresh_heading() -> void:
 	if is_instance_valid(_heading_label):

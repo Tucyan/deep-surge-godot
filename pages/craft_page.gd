@@ -111,10 +111,10 @@ class FusionDiagram extends Container:
 		var p1 := slot1.position + slot1.size * 0.5
 		var p2 := slot2.position + slot2.size * 0.5
 		var p3 := slot3.position + slot3.size * 0.5
-		
+
 		var col_line := Color("47796f") if is_active else Color("253e48")
 		var col_inner := Color("8dd6b6") if is_active else Color("3a6369")
-		
+
 		var points: Array[Vector2] = [p1, p2, p3]
 		var slots: Array[PanelContainer] = [slot1, slot2, slot3]
 		for i in range(points.size()):
@@ -143,10 +143,11 @@ func box_style(background: Color, border: Color, margin: int = 12) -> StyleBoxFl
 	style.content_margin_top = margin; style.content_margin_bottom = margin
 	return style
 
-func badge(parent: Node, text: String, color: Color) -> void:
+func badge(parent: Node, text: String, color: Color) -> Label:
 	var panel := PanelContainer.new(); parent.add_child(panel)
 	panel.add_theme_stylebox_override("panel", box_style(Color("172d35"), Color("33565b"), 5))
 	var label := W.text(panel, text, 15, color); label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	return label
 
 func build() -> void:
 	add_theme_constant_override("separation", 10)
@@ -155,19 +156,19 @@ func build() -> void:
 	var tab: String = ui_state.get("craft_tab", "craft")
 	if is_build_mode: tab = "craft"
 	elif tab not in ["craft", "transmute"]: tab = "craft"
-	
+
 	# Top bar with title and tabs
 	var header := HBoxContainer.new(); header.name = "CraftHeader"; add_child(header)
 	header.add_theme_constant_override("separation", 16)
 	header.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	header.custom_minimum_size.y = 48
-	
+
 	var title_text: String = "建造设备" if is_build_mode else "工具台"
 	var title_lbl := W.text(header, title_text, 30, W.INK)
 	title_lbl.autowrap_mode = TextServer.AUTOWRAP_OFF
 	title_lbl.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	title_lbl.custom_minimum_size.x = 120 if is_build_mode else 90
-	
+
 	if not is_build_mode:
 		var tab_row := HBoxContainer.new(); header.add_child(tab_row)
 		tab_row.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
@@ -183,19 +184,19 @@ func build() -> void:
 			btn.custom_minimum_size = Vector2(124, 44)
 		var active_tab_btn: Button = craft_tab_btn if tab == "craft" else transmute_tab_btn
 		active_tab_btn.add_theme_color_override("font_color", W.GOLD)
-	
+
 	# Spacer pushes tabs to the left and prevents header content from reaching the top-right corner
 	var spacer := Control.new()
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	header.add_child(spacer)
-	
+
 	# Dedicated reservation for CloseX button
 	var close_spacer := Control.new()
 	close_spacer.custom_minimum_size = Vector2(128, 48)
 	close_spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	header.add_child(close_spacer)
-	
+
 	if tab == "craft":
 		# Material inventory bar for recipe craft
 		var inventory := PanelContainer.new(); inventory.name = "CraftInventory"; add_child(inventory)
@@ -207,7 +208,7 @@ func build() -> void:
 			badge(stock, "%s %d" % [catalog.entry("cards", id).name, amount(id)], W.INK if amount(id) > 0 else W.MUTED)
 		if amount("corpse") > 0:
 			badge(stock, "%s %d" % [catalog.entry("cards", "corpse").name, amount("corpse")], W.INK)
-		
+
 		build_recipe_grid()
 	else:
 		build_transmute_panel()
@@ -215,7 +216,6 @@ func build() -> void:
 func build_recipe_grid() -> void:
 	var ui_state: Dictionary = context.get("ui_state", {})
 	var is_build_mode: bool = context.get("panel", "") == "build" or ui_state.get("craft_mode", "") == "build"
-	var page_size: int = 6 if context.get("mobile",false) else PAGE_SIZE
 	var all_ids: Array = catalog.table("recipes").keys()
 	var ids: Array = []
 	if is_build_mode:
@@ -226,31 +226,18 @@ func build_recipe_grid() -> void:
 				ids.append(id)
 	else:
 		ids = all_ids
-	var pages := maxi(1, ceili(float(ids.size()) / page_size))
-	var index := clampi(int(ui_state.get("list_page", 0)), 0, pages - 1)
+	W.text(self, "制作设备消耗 AP；制作后可在木筏空格安装。" if is_build_mode else "合成消耗 AP；设备安装不消耗 AP。", 15, W.MUTED)
 	var grid := GridContainer.new(); grid.name = "RecipeGrid"; grid.columns = 3 if context.get("mobile",false) else 4
-	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL; grid.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	grid.add_theme_constant_override("h_separation", 10); grid.add_theme_constant_override("v_separation", 10)
-	if context.get("mobile",false):
-		var scroll:=ScrollContainer.new(); scroll.name="MobileRecipeScroll"
-		scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
-		scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL
-		add_child(scroll); scroll.add_child(grid)
-	else: add_child(grid)
-	var page_slice: Array = ids.slice(index * page_size, mini(ids.size(), (index + 1) * page_size))
-	for id in page_slice: recipe_tile(grid, id)
-	# Pad with dummy controls to 8 (4 columns x 2 rows) so card dimensions remain identical across all pages
-	for i in range(page_slice.size(), page_size):
-		var dummy := Control.new()
-		dummy.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		dummy.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		dummy.size_flags_vertical = Control.SIZE_EXPAND_FILL
-		grid.add_child(dummy)
-	var footer := HBoxContainer.new(); add_child(footer)
-	W.text(footer, "制作设备消耗 AP；制作后可在木筏空格安装。" if is_build_mode else "合成消耗 AP；设备安装不消耗 AP。", 15, W.MUTED)
-	var previous := W.button(footer, "上一页", func(): request("list_page", str(index - 1)), index == 0); previous.name = "CraftRecipePreviousPage"
-	W.counter(footer, "%d / %d" % [index + 1, pages])
-	var next := W.button(footer, "下一页", func(): request("list_page", str(index + 1)), index == pages - 1); next.name = "CraftRecipeNextPage"
+	# Every recipe is rendered once and scrolled; paging split the list into
+	# fixed pages that clipped the second row on short phone screens.
+	var scroll:=ScrollContainer.new()
+	scroll.name="MobileRecipeScroll" if context.get("mobile",false) else "RecipeScroll"
+	scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL
+	add_child(scroll); scroll.add_child(grid)
+	for id in ids: recipe_tile(grid, id)
 
 func recipe_tile(grid: Node, id: String) -> void:
 	var recipe: Dictionary = catalog.entry("recipes", id)
@@ -314,7 +301,7 @@ func _create_material_icon(id: String, icon_size: Vector2 = Vector2(32, 32)) -> 
 	style.content_margin_left = 2; style.content_margin_right = 2
 	style.content_margin_top = 2; style.content_margin_bottom = 2
 	frame.add_theme_stylebox_override("panel", style)
-	
+
 	if id != "" and id != "none":
 		var tex_rect := TextureRect.new()
 		tex_rect.texture = assets.texture("card." + id)
@@ -344,17 +331,16 @@ func build_transmute_panel() -> void:
 	container.size_flags_horizontal = Control.SIZE_EXPAND_FILL; container.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	container.add_theme_constant_override("separation", 10)
 	add_child(container)
-	
+
 	# Current target
 	var ui_state: Dictionary = context.get("ui_state", {})
 	var current_target: String = ui_state.get("transmute_target", "wood")
 	if current_target not in ["wood", "iron", "plastic", "rope", "cloth"]: current_target = "wood"
-	var target_def: Dictionary = catalog.entry("cards", current_target)
-	
+
 	# All available resource cards in hand
 	var resource_cards: Array = context.hand.filter(func(c): return not c.temporary and catalog.entry("cards", c.id).kind == "resource")
 	var total_resources: int = resource_cards.size()
-	
+
 	# This interface converts one batch at a time; core/Agent batch support is unchanged.
 	var count := 1
 	var needed := 3
@@ -368,18 +354,16 @@ func build_transmute_panel() -> void:
 		for uid in raw_uids.split(","):
 			if uid != "" and resource_cards.any(func(c): return c.uid == uid) and uid not in selected_uids:
 				selected_uids.append(uid)
-	
-	# Top tip banner
-	var tip_bar := HBoxContainer.new(); container.add_child(tip_bar)
-	tip_bar.add_theme_constant_override("separation", 12)
-	W.text(tip_bar, "消耗基地 AP 与手牌中任意 3 张资源牌，转化为指定的 2 张同类资源。", 18, W.MUTED)
-	
-	# Three-Column Layout Container
-	var columns: BoxContainer = VBoxContainer.new() if context.get("mobile",false) else HBoxContainer.new()
+
+	# Three-Column Layout Container. Phone keeps the same side-by-side columns as
+	# desktop; the middle confirmation column is only narrowed so touch-sized
+	# material cards and target rows still fit. A page scroll stays available for
+	# short screens without changing the column order.
+	var columns := HBoxContainer.new()
 	columns.name = "TransmuteColumns"
 	columns.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	columns.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	columns.add_theme_constant_override("separation", 14)
+	columns.add_theme_constant_override("separation", 10 if context.get("mobile",false) else 14)
 	if context.get("mobile",false):
 		var scroll:=ScrollContainer.new(); scroll.name="MobileTransmutePageScroll"
 		scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
@@ -389,7 +373,7 @@ func build_transmute_panel() -> void:
 		scroll.get_v_scroll_bar().value_changed.connect(func(value):
 			if not scroll.get_meta("restoring_scroll",false): request("transmute_scroll",str(int(value))))
 	else: container.add_child(columns)
-	
+
 	# ==========================================
 	# LEFT COLUMN: 现有材料 (Existing Materials)
 	# ==========================================
@@ -400,25 +384,27 @@ func build_transmute_panel() -> void:
 	left_panel.custom_minimum_size = Vector2(320, 0)
 	left_panel.add_theme_stylebox_override("panel", box_style(Color("0c1d26"), Color("2c4652"), 12))
 	columns.add_child(left_panel)
-	
+
 	var left_vbox := VBoxContainer.new(); left_panel.add_child(left_vbox)
 	left_vbox.add_theme_constant_override("separation", 10)
-	
+
 	var left_hdr := HBoxContainer.new(); left_vbox.add_child(left_hdr)
 	var left_title := W.text(left_hdr, "现有材料", 20, W.GOLD)
 	left_title.autowrap_mode = TextServer.AUTOWRAP_OFF
 	left_title.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	badge(left_hdr, "AP: %d" % context.ap, READY if context.ap >= count else MISSING)
 	badge(left_hdr, "手牌资源: %d" % total_resources, W.INK if total_resources >= needed else MISSING)
-	
+
 	# Selection status header
 	var sel_hdr := HBoxContainer.new(); left_vbox.add_child(sel_hdr)
 	sel_hdr.add_theme_constant_override("separation", 8)
 	var sel_title := W.text(sel_hdr, "投入材料配比", 16, W.GOLD)
 	sel_title.autowrap_mode = TextServer.AUTOWRAP_OFF
 	sel_title.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	badge(sel_hdr, "已选 %d / %d 张" % [selected_uids.size(), needed], READY if selected_uids.size() == needed else MISSING)
-	
+	# The partial refresh path updates this label by name, so it must be named.
+	var selected_badge := badge(sel_hdr, "已选 %d / %d 张" % [selected_uids.size(), needed], READY if selected_uids.size() == needed else MISSING)
+	selected_badge.name = "TransmuteSelectedCount"
+
 	# Material allocation grid (rectangular cards)
 	var mat_list := GridContainer.new(); mat_list.name = "TransmuteMaterialList"
 	mat_list.columns = 2
@@ -426,28 +412,28 @@ func build_transmute_panel() -> void:
 	mat_list.add_theme_constant_override("v_separation", 8)
 	mat_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	left_vbox.add_child(mat_list)
-	
+
 	var all_res_types: Array = ["wood", "iron", "plastic", "rope", "cloth"]
 	if amount("corpse") > 0: all_res_types.append("corpse")
-	
+
 	for id in all_res_types:
 		var def: Dictionary = catalog.entry("cards", id)
 		var my_cards: Array = resource_cards.filter(func(c): return c.id == id)
 		var my_uids: Array = my_cards.map(func(c): return c.uid)
 		var owned: int = my_cards.size()
 		var allocated: int = selected_uids.filter(func(uid): return uid in my_uids).size()
-		
+
 		var m_panel := PanelContainer.new(); m_panel.name = "MatItem_" + id
 		var is_allocated: bool = allocated > 0
 		m_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		m_panel.custom_minimum_size = Vector2(150, 142)
 		m_panel.mouse_filter = Control.MOUSE_FILTER_STOP
-		
+
 		var can_plus: bool = (allocated < owned) and (selected_uids.size() < needed)
 		var plus_reason := ""
 		if allocated >= owned: plus_reason = "拥有数量不足"
 		elif selected_uids.size() >= needed: plus_reason = "已选满所需原料总数"
-		
+
 		var normal_style := box_style(
 			Color("16313d") if is_allocated else (Color("102028") if owned > 0 else Color("0c171e")),
 			Color("5da898") if is_allocated else (Color("2e4956") if owned > 0 else Color("1c2b33")),
@@ -459,29 +445,21 @@ func build_transmute_panel() -> void:
 			6
 		)
 		m_panel.add_theme_stylebox_override("panel", normal_style)
-		
+
 		if owned > 0:
 			m_panel.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND if can_plus else Control.CURSOR_ARROW
-			m_panel.mouse_entered.connect(func(): m_panel.add_theme_stylebox_override("panel", hover_style) if not context.get("mobile",false) else null)
-			m_panel.mouse_exited.connect(func(): m_panel.add_theme_stylebox_override("panel", normal_style))
+			m_panel.mouse_entered.connect(func(): _refresh_material_item_style(m_panel,id,true) if not context.get("mobile",false) else null)
+			m_panel.mouse_exited.connect(func(): _refresh_material_item_style(m_panel,id,false))
 			m_panel.tooltip_text = "点击投入 1 张%s" % def.name if can_plus else plus_reason
 		else:
 			m_panel.tooltip_text = "暂无此材料"
-		
-		# Card children pass pointer events to the full card surface.
-		var add_material=func():
-			var next_uids: Array = selected_uids.duplicate()
-			for uid in my_uids:
-				if uid not in next_uids:
-					next_uids.append(uid); break
-			request("transmute_uids", ",".join(next_uids))
-		m_panel.gui_input.connect(func(event: InputEvent):
-			if not context.get("mobile",false) and event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT and can_plus:
-				add_material.call()
-		)
+
+		# Card children pass pointer events to the full card surface: tapping the
+		# icon adds one card, the selected slots in 开始转化 take one back.
+		_request_tap(m_panel, func(): _request_add_material(id))
 
 		mat_list.add_child(m_panel)
-		
+
 		var card_column := VBoxContainer.new()
 		card_column.mouse_filter = Control.MOUSE_FILTER_PASS
 		card_column.add_theme_constant_override("separation", 4)
@@ -495,9 +473,16 @@ func build_transmute_panel() -> void:
 		quantity.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		quantity.autowrap_mode = TextServer.AUTOWRAP_OFF
 		quantity.mouse_filter = Control.MOUSE_FILTER_PASS
-		if context.get("mobile",false):
-			var add_button:=W.button(card_column,"投入 1 张" if can_plus else (plus_reason if owned>0 else "暂无材料"),add_material,not can_plus)
-			add_button.name="AddMaterial_"+id
+		# Touch has no hover tooltip, so the add affordance is drawn on the card.
+		var plus := Label.new()
+		plus.name = "MatTapHint_" + id
+		plus.text = "＋"
+		plus.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		plus.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		plus.vertical_alignment = VERTICAL_ALIGNMENT_TOP
+		plus.add_theme_font_size_override("font_size", 22)
+		plus.add_theme_color_override("font_color", W.GOLD if can_plus else W.MUTED)
+		m_panel.add_child(plus)
 
 	# ==========================================
 	# CENTER COLUMN: 三元融合图示 + 开始转化
@@ -505,29 +490,31 @@ func build_transmute_panel() -> void:
 	var center_panel := PanelContainer.new(); center_panel.name = "TransmuteCore"
 	center_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	center_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	center_panel.size_flags_stretch_ratio = 1.4
-	center_panel.custom_minimum_size = Vector2(440, 0)
+	# Phone shares the row with the material and target columns, so its middle
+	# column keeps only a slight width advantage over the side columns.
+	center_panel.size_flags_stretch_ratio = 1.15 if context.get("mobile",false) else 1.4
+	center_panel.custom_minimum_size = Vector2(320 if context.get("mobile",false) else 440, 0)
 	center_panel.add_theme_stylebox_override("panel", box_style(Color("0c1d26"), Color("2c4652"), 14))
 	columns.add_child(center_panel)
-	
+
 	var center_vbox := VBoxContainer.new()
 	center_panel.add_child(center_vbox)
 	center_vbox.add_theme_constant_override("separation", 8)
-	
+
 	var core_hdr := HBoxContainer.new(); center_vbox.add_child(core_hdr)
 	var core_title := W.text(core_hdr, "开始转化", 26, W.GOLD)
 	core_title.autowrap_mode = TextServer.AUTOWRAP_OFF
 	core_title.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	var core_sub := W.text(core_hdr, "3 份原料  ➔  2 份目标产物", 14, W.MUTED)
 	core_sub.autowrap_mode = TextServer.AUTOWRAP_OFF
-	
+
 	# Reason calculation
 	var reason := ""
 	if not context.can_base: reason = "当前阶段不可转化"
 	elif context.ap < count: reason = "基地 AP 不足 (需 %d AP)" % count
 	elif total_resources < needed: reason = "手牌可用资源不足 %d 张" % needed
 	elif selected_uids.size() != needed: reason = "请选择正好 %d 张资源牌 (当前 %d 张)" % [needed, selected_uids.size()]
-	
+
 	# Fusion Diagram Node
 	var diagram := FusionDiagram.new(); diagram.name = "FusionDiagram"
 	diagram.custom_minimum_size = Vector2(0, 340)
@@ -536,22 +523,25 @@ func build_transmute_panel() -> void:
 	diagram.clip_contents = true
 	diagram.is_active = (reason == "")
 	center_vbox.add_child(diagram)
-	
+
 	# Diagram slots
 	var slot1 := PanelContainer.new(); slot1.name = "DiagramSlot1"; diagram.add_child(slot1)
 	var slot2 := PanelContainer.new(); slot2.name = "DiagramSlot2"; diagram.add_child(slot2)
 	var slot3 := PanelContainer.new(); slot3.name = "DiagramSlot3"; diagram.add_child(slot3)
 	var center_box := PanelContainer.new(); center_box.name = "DiagramOutputSlot"; diagram.add_child(center_box)
-	
+
 	diagram.slot1 = slot1; diagram.slot2 = slot2; diagram.slot3 = slot3; diagram.center_box = center_box
-	
+
 	# Slot contents
 	for s in [slot1, slot2, slot3]:
 		s.add_theme_stylebox_override("panel", box_style(Color("13242c"), Color("2c4652"), 6))
 	center_box.add_theme_stylebox_override("panel", box_style(Color("162e37"), W.GOLD, 8))
-	
+
 	for i in range(3):
 		var slot: PanelContainer = [slot1, slot2, slot3][i]
+		slot.set_meta("transmute_slot_index", i)
+		if not slot.gui_input.is_connected(_on_transmute_slot_gui_input):
+			slot.gui_input.connect(_on_transmute_slot_gui_input.bind(slot))
 		# Empty slots have no instructions or placeholder text.
 		if i >= selected_uids.size(): continue
 		var uid: String = selected_uids[i]
@@ -560,20 +550,8 @@ func build_transmute_panel() -> void:
 		slot.add_child(icon)
 		slot.mouse_filter = Control.MOUSE_FILTER_STOP
 		slot.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		var remove_material=func():
-			var next_uids: Array = selected_uids.duplicate()
-			next_uids.erase(uid)
-			request("transmute_uids", ",".join(next_uids) if not next_uids.is_empty() else "none")
-		if context.get("mobile",false):
-			var remove:=W.button(slot,"",remove_material)
-			remove.name="RemoveTransmuteSlot_"+str(i)
-			remove.accessibility_name="撤回已投入的"+catalog.entry("cards",card.id).name
-			remove.get_node("SurgeTextButtonArt").hide()
-			for state in ["normal","hover","pressed","disabled","focus"]:
-				remove.add_theme_stylebox_override(state,StyleBoxEmpty.new())
-		else:
-			slot.gui_input.connect(func(event: InputEvent):
-				if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT: remove_material.call())
+		slot.accessibility_name = "撤回已投入的" + catalog.entry("cards", card.id).name
+		slot.tooltip_text = "点击撤回这张材料"
 
 	# Output contains only an icon with the yield below it.
 	var out_col := VBoxContainer.new()
@@ -589,38 +567,7 @@ func build_transmute_panel() -> void:
 	out_val.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 
 	diagram._update_layout()
-	
-	# Cost & yield summary banner
-	var summary_box := PanelContainer.new(); center_vbox.add_child(summary_box)
-	summary_box.add_theme_stylebox_override("panel", box_style(Color("102129"), Color("2c4652"), 8))
-	var sum_col := VBoxContainer.new(); summary_box.add_child(sum_col)
-	sum_col.add_theme_constant_override("separation", 3)
-	W.text(sum_col, "转化汇率：每 3 张任意基础资源 + 1 AP  ➔  2 张 %s" % target_def.name, 14, W.GOLD)
-	var sum_status := "当前转化：消耗 %d 张手牌原料 & %d 点 AP  ➔  获得 %d 张 %s" % [needed, count, count * 2, target_def.name]
-	W.text(sum_col, sum_status, 14, W.INK if reason == "" else MISSING)
-	
-	# Core Primary Button: "开始转化"
-	var exec_text := "开始转化"
-	var exec_btn := W.button(center_vbox, exec_text, func():
-		send("transmute", {"target": current_target, "uids": selected_uids, "count": count})
-	, reason != "", reason)
-	exec_btn.name = "TransmuteExecuteButton"
-	exec_btn.custom_minimum_size.y = 56
-	W.primary(exec_btn)
-	if reason == "":
-		exec_btn.add_theme_color_override("font_color", W.GOLD)
-	
-	# Secondary Auto Button
-	var quick_reason := ""
-	if not context.can_base: quick_reason = "当前阶段不可转化"
-	elif context.ap < count: quick_reason = "AP 不足"
-	elif total_resources < needed: quick_reason = "资源不足"
-	var quick_btn := W.button(center_vbox, "快捷转化 (系统自动选料并执行)", func():
-		send("transmute", {"target": current_target, "count": count})
-	, quick_reason != "", quick_reason)
-	quick_btn.name = "QuickTransmuteButton"
-	quick_btn.custom_minimum_size.y = 36
-	
+
 	# ==========================================
 	# RIGHT COLUMN: 目标材料
 	# ==========================================
@@ -632,10 +579,10 @@ func build_transmute_panel() -> void:
 	right_vbox.add_theme_constant_override("separation", 10)
 	columns.add_child(right_vbox)
 	if context.get("mobile",false):
-		columns.move_child(right_vbox,1)
-		left_panel.custom_minimum_size.x=0; center_panel.custom_minimum_size.x=0; right_vbox.custom_minimum_size.x=0
-		left_title.text="1. 投入原料"; core_title.text="3. 确认转化"
-	
+		# Phone keeps the desktop order (materials, confirm, targets) so the
+		# narrowed middle column stays the confirmation panel.
+		left_panel.custom_minimum_size.x=0; right_vbox.custom_minimum_size.x=0
+
 	# Bottom Section: 选择转化的目标材料
 	var target_panel := PanelContainer.new(); target_panel.name = "TransmuteTargetSection"
 	target_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -643,18 +590,26 @@ func build_transmute_panel() -> void:
 	right_vbox.add_child(target_panel)
 	var target_vbox := VBoxContainer.new(); target_panel.add_child(target_vbox)
 	target_vbox.add_theme_constant_override("separation", 6)
-	
+
 	var target_title := W.text(target_vbox, "选择转化的目标材料", 18, W.GOLD)
-	if context.get("mobile",false): target_title.text="2. 选择目标材料"
 	target_title.autowrap_mode = TextServer.AUTOWRAP_OFF
-	
+
+	# The list scrolls inside the box so 开始转化 can stay pinned to its bottom.
+	var targets_scroll := ScrollContainer.new()
+	targets_scroll.name = "TransmuteTargetScroll"
+	targets_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	targets_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	targets_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	target_vbox.add_child(targets_scroll)
+
 	var targets_list := VBoxContainer.new(); targets_list.name = "TransmuteTargets"
-	targets_list.add_theme_constant_override("separation", 5); target_vbox.add_child(targets_list)
-	
+	targets_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	targets_list.add_theme_constant_override("separation", 5); targets_scroll.add_child(targets_list)
+
 	for id in ["wood", "iron", "plastic", "rope", "cloth"]:
 		var def: Dictionary = catalog.entry("cards", id)
 		var is_selected: bool = (id == current_target)
-		
+
 		var item_panel := PanelContainer.new(); item_panel.name = "TargetItem_" + id
 		var t_normal_style := box_style(
 			Color("1f404d") if is_selected else Color("13242c"),
@@ -678,28 +633,28 @@ func build_transmute_panel() -> void:
 					request("transmute_uids", "")
 			)
 		targets_list.add_child(item_panel)
-		
+
 		var item_row := HBoxContainer.new(); item_row.add_theme_constant_override("separation", 8)
 		item_row.mouse_filter = Control.MOUSE_FILTER_PASS
 		item_panel.add_child(item_row)
-		
+
 		var t_icon := _create_material_icon(id, Vector2(40, 40))
 		item_row.add_child(t_icon)
-		
+
 		var name_lbl := W.text(item_row, def.name, 17, W.GOLD if is_selected else W.INK)
 		name_lbl.autowrap_mode = TextServer.AUTOWRAP_OFF
 		name_lbl.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 		name_lbl.custom_minimum_size.x = 44
 		name_lbl.mouse_filter = Control.MOUSE_FILTER_PASS
-		
+
 		badge(item_row, "+%d" % (count * 2), READY if is_selected else Color("5a8a7a"))
-		
+
 		var stock_lbl := W.text(item_row, "库存: %d" % amount(id), 13, W.MUTED)
 		stock_lbl.autowrap_mode = TextServer.AUTOWRAP_OFF
 		stock_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		stock_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		stock_lbl.mouse_filter = Control.MOUSE_FILTER_PASS
-		
+
 		var sel_btn := W.button(item_row, "✓ 选中" if is_selected else "选择", func():
 			request("transmute_target", id)
 			request("transmute_uids", "")
@@ -709,6 +664,181 @@ func build_transmute_panel() -> void:
 		sel_btn.size_flags_horizontal = Control.SIZE_SHRINK_END
 		if is_selected:
 			sel_btn.add_theme_color_override("font_color", W.GOLD)
+
+	# Primary action pinned to the bottom edge of the target box.
+	var exec_btn := W.button(target_vbox, "开始转化", func(): _send_current_transmute(), reason != "", reason)
+	exec_btn.name = "TransmuteExecuteButton"
+	exec_btn.custom_minimum_size.y = 56
+	exec_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	exec_btn.size_flags_vertical = Control.SIZE_SHRINK_END
+	W.primary(exec_btn)
+	if reason == "":
+		exec_btn.add_theme_color_override("font_color", W.GOLD)
+
+func _transmute_resources() -> Array:
+	return context.get("hand", []).filter(func(card): return not card.temporary and catalog.entry("cards", card.id).kind == "resource")
+
+func _refresh_material_item_style(item: PanelContainer, id: String, hovered: bool = false) -> void:
+	var resources := _transmute_resources()
+	var selected := _transmute_selected_uids(resources)
+	var owned: Array=resources.filter(func(card): return card.id == id)
+	var allocated: bool=owned.any(func(card): return card.uid in selected)
+	var background: Color
+	var border_color: Color
+	if allocated:
+		background=Color("1e3e4d") if hovered else Color("16313d")
+		border_color=Color("8dd6b6") if hovered else Color("5da898")
+	elif not owned.is_empty():
+		background=Color("142c38") if hovered else Color("102028")
+		border_color=Color("4a7487") if hovered else Color("2e4956")
+	else:
+		background=Color("0c171e")
+		border_color=Color("1c2b33")
+	item.add_theme_stylebox_override("panel",box_style(background,border_color,6))
+
+func _transmute_selected_uids(resources: Array) -> Array:
+	var raw: String = str(context.get("ui_state", {}).get("transmute_uids", ""))
+	var selected: Array = []
+	if raw not in ["", "none"]:
+		for uid in raw.split(","):
+			if uid != "" and uid not in selected and resources.any(func(card): return card.uid == uid): selected.append(uid)
+	return selected
+
+func _request_add_material(id: String) -> void:
+	var resources := _transmute_resources()
+	var selected := _transmute_selected_uids(resources)
+	if selected.size() >= 3: return
+	for card in resources:
+		if card.id == id and card.uid not in selected:
+			selected.append(card.uid)
+			request("transmute_uids", ",".join(selected))
+			return
+
+func _request_remove_transmute(uid: String) -> void:
+	var selected := _transmute_selected_uids(_transmute_resources())
+	selected.erase(uid)
+	request("transmute_uids", ",".join(selected) if not selected.is_empty() else "none")
+
+func _request_remove_transmute_slot(index: int) -> void:
+	var selected := _transmute_selected_uids(_transmute_resources())
+	if index >= 0 and index < selected.size(): _request_remove_transmute(str(selected[index]))
+
+func _on_transmute_slot_gui_input(event: InputEvent, slot: Control) -> void:
+	_tap_event(slot, event, func(): _request_remove_transmute_slot(int(slot.get_meta("transmute_slot_index", -1))))
+
+## Tap = press and release in nearly the same spot. Dragging the page from a card
+## or a slot must never commit, so the action only fires on a short-distance release.
+func _request_tap(control: Control, action: Callable) -> void:
+	control.gui_input.connect(func(event: InputEvent): _tap_event(control, event, action))
+
+func _tap_event(control: Control, event: InputEvent, action: Callable) -> void:
+	var pressed := false
+	var released := false
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		pressed = event.pressed
+		released = not event.pressed
+	elif event is InputEventScreenTouch:
+		pressed = event.pressed
+		released = not event.pressed
+	if pressed:
+		control.set_meta("tap_origin", event.position)
+	elif released and control.has_meta("tap_origin"):
+		if event.position.distance_to(control.get_meta("tap_origin")) <= 14.0: action.call()
+
+## Quick transmute is gone: the single action always submits the picked cards.
+func _send_current_transmute() -> void:
+	var target := str(context.get("ui_state", {}).get("transmute_target", "wood"))
+	send("transmute", {"target": target, "uids": _transmute_selected_uids(_transmute_resources()), "count": 1})
+
+func refresh_craft_tab(view: Dictionary) -> bool:
+	var next_tab := str(view.get("ui_state", {}).get("craft_tab", "craft"))
+	if next_tab not in ["craft", "transmute"]: next_tab = "craft"
+	var old_tab := str(context.get("ui_state", {}).get("craft_tab", "craft"))
+	context = view.duplicate(true)
+	if old_tab == next_tab:
+		if next_tab == "transmute": return refresh_transmute_ui(view, "craft_tab")
+		return false
+	for child in get_children():
+		remove_child(child)
+		child.queue_free()
+	build()
+	return true
+
+func refresh_transmute_ui(view: Dictionary, action: String) -> bool:
+	if not is_instance_valid(find_child("TransmutePanel", true, false)): return false
+	context = view.duplicate(true)
+	var resources := _transmute_resources()
+	var selected := _transmute_selected_uids(resources)
+	var target := str(context.get("ui_state", {}).get("transmute_target", "wood"))
+	if target not in ["wood", "iron", "plastic", "rope", "cloth"]: target = "wood"
+	var total := resources.size()
+	var reason := ""
+	if not context.get("can_base", false): reason = "当前阶段不可转化"
+	elif context.get("ap", 0) < 1: reason = "基地 AP 不足 (需 1 AP)"
+	elif total < 3: reason = "手牌可用资源不足 3 张"
+	elif selected.size() != 3: reason = "请选择正好 3 张资源牌 (当前 %d 张)" % selected.size()
+	var selected_label := find_child("TransmuteSelectedCount", true, false) as Label
+	if is_instance_valid(selected_label):
+		selected_label.text = "已选 %d / 3 张" % selected.size()
+		selected_label.add_theme_color_override("font_color", READY if selected.size() == 3 else MISSING)
+	for id in ["wood", "iron", "plastic", "rope", "cloth", "corpse"]:
+		var item := find_child("MatItem_" + id, true, false) as PanelContainer
+		if not is_instance_valid(item): continue
+		var matching: Array = resources.filter(func(card): return card.id == id)
+		var matching_uids: Array = matching.map(func(card): return card.uid)
+		var allocated: int = selected.filter(func(uid): return uid in matching_uids).size()
+		_refresh_material_item_style(item,id) if is_instance_valid(item) else null
+		var quantity := find_child("MatQuantity_" + id, true, false) as Label
+		if is_instance_valid(quantity):
+			quantity.text = "%d/%d" % [allocated, matching.size()]
+			quantity.add_theme_color_override("font_color", READY if allocated > 0 else W.MUTED)
+		var can_add: bool = allocated < matching.size() and selected.size() < 3
+		item.tooltip_text = "点击投入 1 张%s" % catalog.entry("cards", id).name if can_add else ("已选满所需原料总数" if selected.size() >= 3 else "拥有数量不足")
+		var plus_label := find_child("MatTapHint_" + id, true, false) as Label
+		if is_instance_valid(plus_label):
+			plus_label.add_theme_color_override("font_color", W.GOLD if can_add else W.MUTED)
+	for i in range(3):
+		var slot := find_child("DiagramSlot%d" % (i + 1), true, false) as PanelContainer
+		if not is_instance_valid(slot): return false
+		for child in slot.get_children(): slot.remove_child(child); child.queue_free()
+		if i < selected.size():
+			var card: Dictionary = resources.filter(func(c): return c.uid == selected[i])[0]
+			slot.add_child(_create_material_icon(card.id, Vector2(88, 88)))
+			slot.mouse_filter = Control.MOUSE_FILTER_STOP
+			slot.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+			slot.accessibility_name = "撤回已投入的" + catalog.entry("cards", card.id).name
+			slot.tooltip_text = "点击撤回这张材料"
+		else:
+			slot.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var output := find_child("TransmuteOutputIcon", true, false) as PanelContainer
+	if not is_instance_valid(output): return false
+	var textures := output.find_children("*", "TextureRect", true, false)
+	var texture := textures[0] as TextureRect if not textures.is_empty() else null
+	if is_instance_valid(texture): texture.texture = assets.texture("card." + target)
+	var diagram := find_child("FusionDiagram", true, false) as FusionDiagram
+	if is_instance_valid(diagram): diagram.is_active = reason.is_empty(); diagram.queue_redraw()
+	var execute := find_child("TransmuteExecuteButton", true, false) as Button
+	if is_instance_valid(execute):
+		execute.disabled = not reason.is_empty()
+		execute.tooltip_text = reason
+	for id in ["wood", "iron", "plastic", "rope", "cloth"]:
+		var owned: int = resources.filter(func(card): return card.id == id).size()
+		var allocated: int = selected.filter(func(uid): return resources.any(func(card): return card.uid == uid and card.id == id)).size()
+		var quantity := find_child("MatQuantity_" + id, true, false) as Label
+		if is_instance_valid(quantity):
+			quantity.text = "%d/%d" % [allocated, owned]
+			quantity.add_theme_color_override("font_color", READY if allocated > 0 else W.MUTED)
+		var item := find_child("TargetItem_" + id, true, false) as PanelContainer
+		if not is_instance_valid(item): continue
+		var is_selected: bool = id == target
+		item.add_theme_stylebox_override("panel", box_style(Color("1f404d") if is_selected else Color("13242c"), W.GOLD if is_selected else Color("2c4652"), 6))
+		var row := item.get_child(0)
+		var button := row.find_child("SelectTarget_" + id, true, false) as Button
+		if is_instance_valid(button):
+			button.text = "✓ 选中" if is_selected else "选择"
+			button.disabled = is_selected
+			button.add_theme_color_override("font_color", W.GOLD if is_selected else W.INK)
+	return true
 
 func show_workbench_help() -> void:
 	var dialog := AcceptDialog.new()

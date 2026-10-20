@@ -57,6 +57,11 @@ func run() -> void:
 		if example.mode=="tutorial": check(button.disabled and "教程" in button.tooltip_text,"tutorial retreat remains unavailable with accurate explanation")
 		elif example.kind=="ruin": check("保护" in button.tooltip_text and "4生命" not in button.text,"protected exit does not advertise ordinary cost")
 		else: check("4生命" in button.text and "可致死" in button.tooltip_text and button.disabled==(example.turn<2),"ordinary retreat advertises actual cost and turn restriction")
+		var refreshed: Dictionary=battle_view.context.duplicate(true)
+		refreshed.phase="battle"; refreshed.battle.id="biter"; refreshed.battle.hp=10
+		battle_view.context=refreshed.duplicate(true)
+		check(battle_view.refresh_after_action(refreshed),"same battle can refresh retained controls")
+		check(button.disabled==(example.mode=="tutorial" or example.turn<2),"retained battle refresh preserves tutorial and turn retreat restrictions")
 		battle_view.free()
 	hud.free()
 	var guide:=VBoxContainer.new()
@@ -65,5 +70,6 @@ func run() -> void:
 	var guide_text:=""
 	for label in guide.find_children("*","Label",true,false): guide_text+=label.text
 	check("分别航行5、10、10次" in guide_text and "均扣4生命" in guide_text and "累计次数保留" in guide_text,"help describes layered voyage, shared retreat cost and retained survival counts")
+	check("剧情模式" not in guide_text,"hidden story mode remains absent from default help")
 	guide.free()
 	print("V03 PROJECTION: "+("PASS" if failures==0 else "FAIL")); quit(failures)

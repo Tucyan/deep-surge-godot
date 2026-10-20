@@ -9,12 +9,32 @@ var payment: OptionButton
 var details: Label
 var pending: Dictionary = {}
 var selected_quote: Dictionary = {}
+var buy_tab: Button
+var sell_tab: Button
 
 func build() -> void:
-	heading(context.get("node",{}).get("name","漂流商店"),"贝币 %d  ·  尸体 %d  ·  资源共用翻倍价，各限2张；设备各限1张" % [context.get("coins",0),amount("corpse")])
-	var tabs := HBoxContainer.new(); add_child(tabs)
-	var buy_tab := W.button(tabs,"购买货物",func(): switch_mode(false)); buy_tab.name="ShopBuyTab"
-	var sell_tab := W.button(tabs,"出售手牌 · 尸体3贝币",func(): switch_mode(true)); sell_tab.name="ShopSellTab"
+	# Mode switch and title share one header row; the corner X is the only exit.
+	var header := HBoxContainer.new(); header.name = "ShopHeader"; add_child(header)
+	header.add_theme_constant_override("separation", 16)
+	var title := W.text(header, str(context.get("node",{}).get("name","漂流商店")), 34, W.GOLD)
+	title.autowrap_mode = TextServer.AUTOWRAP_OFF
+	title.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	var tab_row := HBoxContainer.new(); header.add_child(tab_row)
+	tab_row.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	tab_row.add_theme_constant_override("separation", 8)
+	buy_tab = W.button(tab_row, "购买货物", func(): switch_mode(false)); buy_tab.name = "ShopBuyTab"
+	sell_tab = W.button(tab_row, "出售手牌 · 尸体3贝币", func(): switch_mode(true)); sell_tab.name = "ShopSellTab"
+	for button in [buy_tab, sell_tab]:
+		button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+		button.custom_minimum_size = Vector2(150, 44) if not context.get("mobile",false) else Vector2(170, 56)
+	var push := Control.new(); push.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	push.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	header.add_child(push)
+	# Reserve the corner X so the tabs never slide under it.
+	var close_space := Control.new(); close_space.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	close_space.custom_minimum_size.x = 76 if context.get("mobile",false) else 56
+	header.add_child(close_space)
+	W.text(self, "贝币 %d  ·  尸体 %d  ·  资源共用翻倍价，各限2张；设备各限1张" % [context.get("coins",0),amount("corpse")], 17, W.MUTED)
 	body=VBoxContainer.new()
 	body.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	body.size_flags_vertical=Control.SIZE_EXPAND_FILL
@@ -46,12 +66,32 @@ func build() -> void:
 	confirmation.confirmed.connect(confirm_selection)
 	confirmation.canceled.connect(cancel_selection)
 	_render()
-	action(self,"离开商店","shop_leave",{},context.get("mode","")=="tutorial" and context.get("tutorial_operation","")!="leave",context.get("tutorial_reason",""))
+	paint_tabs()
+
+## Only the corner X leaves the shop; tutorials can block it for one step.
+func can_leave() -> bool:
+	return not (context.get("mode","")=="tutorial" and context.get("tutorial_operation","")!="leave")
+
+func leave_reason() -> String:
+	if can_leave(): return "离开商店"
+	return str(context.get("tutorial_reason","先完成商店教学操作"))
+
+func paint_tabs() -> void:
+	for pair in [[buy_tab, not selling], [sell_tab, selling]]:
+		var button: Button = pair[0]
+		if not is_instance_valid(button): continue
+		var active: bool = pair[1]
+		button.add_theme_color_override("font_color", W.GOLD if active else W.MUTED)
+		button.add_theme_color_override("font_hover_color", W.GOLD if active else W.INK)
+		button.set_meta("surge_primary", active)
+		button.set_meta("shop_active", active)
+		if button.has_node("SurgeTextButtonArt"): button.get_node("SurgeTextButtonArt").queue_redraw()
 
 func switch_mode(value: bool) -> void:
 	cancel_selection()
 	selling=value
 	_render()
+	paint_tabs()
 
 func _render() -> void:
 	for child in body.get_children(): body.remove_child(child); child.queue_free()
@@ -91,10 +131,16 @@ func _render() -> void:
 		sell_button.name="ShopSell_"+str(row.id)
 		if context.get("mode","")=="tutorial" and (context.get("tutorial_operation","")!="sell" or row.id!="corpse"): sell_button.disabled=true
 	if rows.is_empty(): W.text(body,"当前没有可出售的手牌。",20,W.MUTED)
-	var pager := HBoxContainer.new(); body.add_child(pager)
-	W.button(pager,"上一页",func():sell_page-=1;_render(),sell_page==0)
-	W.counter(pager,"%d / %d" % [sell_page+1,pages])
-	W.button(pager,"下一页",func():sell_page+=1;_render(),sell_page==pages-1)
+	if pages > 1:
+		var pager := HBoxContainer.new(); body.add_child(pager)
+		pager.alignment = BoxContainer.ALIGNMENT_CENTER
+		var previous := W.button(pager,"上一页",func():sell_page-=1;_render(),sell_page==0)
+		previous.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		previous.custom_minimum_size.x = 110
+		W.counter(pager,"%d / %d" % [sell_page+1,pages])
+		var next := W.button(pager,"下一页",func():sell_page+=1;_render(),sell_page==pages-1)
+		next.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		next.custom_minimum_size.x = 110
 
 func _slot(parent: Node) -> VBoxContainer:
 	var outer := PanelContainer.new(); parent.add_child(outer)

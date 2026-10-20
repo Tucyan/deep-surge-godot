@@ -1,0 +1,11 @@
+{
+  "source": "yongxian/玩法实验/src/content",
+  "captured": "2026-10-20",
+  "purpose": "Immutable historical source for portable content regression; never runtime data",
+  "sha256": {
+    "cards.js": "5ebf7e3baf8588371a470bd75e73b83cd3191e6da0a8d24f97d3d1b135a9b98b",
+    "nodes.js": "10d3e43c850500d3f93adc8299ed77e2e10f69441af8e2ff1bb097ba6574a9f1",
+    "equipment.js": "adb6aad19def599d5586c97f91a91e5b179b02bea10a2ee37df3e7f642a4f082",
+    "relics.js": "4befe20fa3a2794084abe37cfa4407f5227d54874c7d13c81994efd14011ab4e"
+  }
+}

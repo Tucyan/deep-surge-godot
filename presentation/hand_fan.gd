@@ -32,6 +32,7 @@ var buttons: Array = []
 var context: Dictionary
 var visual_assets: RefCounted
 var hovered := -1
+var described_uid := ""
 var focus_x := 0.0
 var dwell := 0.0
 var border: Control
@@ -51,6 +52,27 @@ var selected_uids: Array = []
 func set_selected_uids(uids: Array) -> void:
 	selected_uids = uids.duplicate()
 	arrange()
+
+func refresh_battle_affordability() -> void:
+	if not is_instance_valid(context) or context.get("phase","")!="battle": return
+	for i in range(mini(cards.size(),buttons.size())):
+		var card: Dictionary=cards[i]
+		var quote: Dictionary=combat_quote(card)
+		buttons[i].disabled=not bool(quote.get("allowed",quote.get("enabled",card.get("definition",{}).get("cost",0)<=context.get("battle",{}).get("ap",0))))
+
+## Reconcile the visible hand after a same-phase operation while retaining this
+## fan node and its external signal connections. Tile children may be replaced;
+## the expensive HUD/world parents remain intact.
+func refresh_entries(entries: Array, view: Dictionary) -> bool:
+	if view.get("phase","") in ["battle", ""]: return false
+	if not is_inside_tree() or visual_assets == null: return false
+	for child in get_children():
+		remove_child(child)
+		child.queue_free()
+	cards=[]; tiles=[]; stack_bases=[]; stack_targets=[]; buttons=[]; departures=[]
+	context=view
+	create(visual_assets,entries,view)
+	return true
 
 func create(assets: RefCounted, entries: Array, view: Dictionary) -> void:
 	add_to_group("hand_fans")
@@ -134,9 +156,12 @@ func create(assets: RefCounted, entries: Array, view: Dictionary) -> void:
 	style.content_margin_left = 18; style.content_margin_right = 18; style.content_margin_top = 14; style.content_margin_bottom = 14
 	tip.add_theme_stylebox_override("panel",style); add_child(tip)
 	tip_text = Label.new(); tip_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART; tip_text.add_theme_font_size_override("font_size",17); tip_text.mouse_filter = MOUSE_FILTER_IGNORE; tip.add_child(tip_text); tip.hide()
-	resized.connect(arrange)
-	mouse_exited.connect(func(): focus_card(-1))
+	if not resized.is_connected(arrange): resized.connect(arrange)
+	if not mouse_exited.is_connected(_on_mouse_exited): mouse_exited.connect(_on_mouse_exited)
 	arrange.call_deferred()
+
+func _on_mouse_exited() -> void:
+	focus_card(-1)
 func capture_visual() -> Dictionary:
 	var positions := {}; var entries := {}; var scales := {}; var actions := {}; var stack_positions := {}
 	for i in range(cards.size()):
@@ -286,9 +311,15 @@ func arrange() -> void:
 		tile.modulate = Color(1.15, 1.1, 0.95) if is_selected else Color.WHITE
 	laid_out = true
 	if is_instance_valid(tip) and tip.visible: place_tip()
-func show_description() -> void:
-	if mobile or hovered < 0: return
-	var card: Dictionary = cards[hovered]
+func show_description(index: int = -1) -> void:
+	if mobile:
+		if index < 0 or index >= cards.size(): return
+		described_uid = str(cards[index].uid)
+		focus_x = tiles[index].position.x
+	else:
+		if hovered < 0: return
+		index = hovered
+	var card: Dictionary = cards[index]
 	var reorder_hint := "" if mobile and context.get("phase","")=="discard" else "\n长按拖动调整顺序"
 	tip_text.text = card.definition.name+(" ×%d" % card.stack_count if card.stack_count>1 else "")+"\n"+card.definition.description+"\n\n"+usage(card)+reorder_hint
 	tip_text.custom_minimum_size.x = minf(360,size.x-24)-36
@@ -396,7 +427,13 @@ func hit_card(point: Vector2) -> int:
 	return result
 
 func _input(event: InputEvent) -> void:
-	if pressed_index<0 or not is_visible_in_tree(): return
+	if not is_visible_in_tree(): return
+	if mobile and pressed_index < 0 and ((event is InputEventScreenTouch and event.pressed) or (event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT)):
+		var outside_point: Vector2=get_global_transform().affine_inverse()*(event.position if event is InputEventScreenTouch else event.global_position)
+		if tip.visible and hit_card(outside_point)<0:
+			described_uid=""; tip.hide()
+		return
+	if pressed_index<0: return
 	if event is InputEventScreenTouch and event.index==touch_index and event.canceled:
 		cancel_gesture(); get_viewport().set_input_as_handled(); return
 	if event is InputEventKey and event.pressed and event.keycode==KEY_ESCAPE:
@@ -448,7 +485,9 @@ func _input(event: InputEvent) -> void:
 			if destination!=index and destination>=0 and destination <= max_dest:
 				move_card_group(index,destination)
 		elif (hit_card(release_point)==index or (release_point.distance_to(press_origin)<=10 and get_viewport_rect().has_point(get_global_transform()*release_point))) and not buttons[index].disabled:
-			if mobile: inspected.emit(held_card)
+			if mobile:
+				show_description(index)
+				inspected.emit(held_card)
 			else: activated.emit(held_card)
 
 ## Reuse the controls and their current animation positions when sorting. Rebuilding

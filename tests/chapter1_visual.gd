@@ -27,6 +27,7 @@ func find_button(text: String) -> Button:
 func run() -> void:
 	root.size = Vector2i(1600,900)
 	app = load("res://scenes/main.tscn").instantiate(); app.persistence = false
+	app.story_mode_visible = true # This harness previews the retained story mode.
 	app.narrative_store = load("res://adapters/narrative_store.gd").new("user://chapter1-visual")
 	app.meta.data.tutorial_prompt_handled = true
 	root.add_child(app); await settle()

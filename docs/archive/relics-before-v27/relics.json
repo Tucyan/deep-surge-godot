@@ -1,0 +1,139 @@
+{
+  "emberWick": {
+    "name": "余烬灯芯",
+    "rarity": "normal",
+    "mechanic": "ember",
+    "description": "每航行燃灯结算额外恢复SAN 5；至少一盏完好灯实际燃烧时触发，多灯只触发一次。"
+  },
+  "tideLens": {
+    "name": "潮纹镜片",
+    "rarity": "normal",
+    "mechanic": "scout",
+    "description": "获得时免费侦察一次；使用后两次完整航行恢复，最多存一次，揭示一个迷雾候选。"
+  },
+  "headingNeedle": {
+    "name": "定向骨针",
+    "rarity": "normal",
+    "mechanic": "heading",
+    "description": "每层两次，导航时主动使用，使本次航行免于混乱偏航。"
+  },
+  "mendingNeedle": {
+    "name": "缝潮针",
+    "rarity": "normal",
+    "mechanic": "repair",
+    "description": "每航行第一次直接修理筏格少耗1木头，仍需AP；不减扩建或修补包制造费用。"
+  },
+  "namedKnot": {
+    "name": "记名绳结",
+    "rarity": "normal",
+    "mechanic": "protect",
+    "description": "每层两次，在事件随机失牌前保护一个合格卡单位；仍须足额支付其他单位。"
+  },
+  "scavengerRing": {
+    "name": "拾荒者指环",
+    "rarity": "normal",
+    "mechanic": "salvage",
+    "description": "每轮事件累计实际消耗3份非货币手牌后获得1份随机基础资源，每轮一次；不计制造、燃灯、交易和弃牌。"
+  },
+  "emptyCompass": {
+    "name": "空腹罗盘",
+    "rarity": "normal",
+    "mechanic": "lightHand",
+    "description": "轮末航耗前手牌容量不超过5时，食水航耗各减少5；后续生产与弃牌不改变判定。"
+  },
+  "deepContract": {
+    "name": "深潮契印",
+    "rarity": "normal",
+    "mechanic": "contract",
+    "drawback": true,
+    "description": "自愿支付SAN并完成事件后获得1贝币，每轮一次；基础SAN航耗额外增加5。导航侦察不触发。"
+  },
+  "luckyShell": {
+    "name": "回声贝壳",
+    "rarity": "normal",
+    "description": "普通出牌有25%概率回手；不影响污染牌与设备安装。",
+    "returnChance": 0.25
+  },
+  "guardian": {
+    "name": "守潮骨片",
+    "rarity": "normal",
+    "description": "生命上限+2。",
+    "modifiers": {
+      "hpMax": 2
+    }
+  },
+  "curse": {
+    "name": "锈蚀金币",
+    "rarity": "normal",
+    "description": "攻击伤害+2，但基地AP上限−1。",
+    "modifiers": {
+      "damage": 2,
+      "baseAp": -1
+    }
+  },
+  "pearl": {
+    "name": "塞壬的珍珠",
+    "rarity": "rare",
+    "description": "达成一次结局后获得；精神归零仍可航行，可进入真结局。",
+    "protectSanity": true,
+    "trueEndingEligible": true,
+    "unlock": {
+      "endings": 1
+    }
+  },
+  "lifeboatTag": {
+    "name": "救生艇铭牌", "enabled": true, "price": 5, "rarity": "normal",
+    "description": "获得时生命上限+2，饱食与水分上限各+10，并恢复生命2、食水各20；持有时轮末食水消耗各减少5。丢弃保留已提升的上限和恢复。",
+    "effects": [
+      {"key":"hp_cap","type":"grant_max","stat":"hp","amount":2},
+      {"key":"food_cap","type":"grant_max","stat":"hunger","amount":10},
+      {"key":"water_cap","type":"grant_max","stat":"hydration","amount":10},
+      {"key":"hp_restore","type":"restore","stat":"hp","amount":2},
+      {"key":"food_restore","type":"restore","stat":"hunger","amount":20},
+      {"key":"water_restore","type":"restore","stat":"hydration","amount":20},
+      {"key":"food_saving","type":"modifier","target":"survival.hunger_cost","amount":-5},
+      {"key":"water_saving","type":"modifier","target":"survival.hydration_cost","amount":-5}
+    ]
+  },
+  "rationTin": {
+    "name": "密封补给罐", "enabled": true, "price": 3, "rarity": "normal",
+    "description": "获得时立即恢复生命3、饱食40、水分40。同一件潮汐遗物只结算一次，丢弃不撤销恢复。",
+    "effects": [
+      {"key":"hp","type":"restore","stat":"hp","amount":3},
+      {"key":"food","type":"restore","stat":"hunger","amount":40},
+      {"key":"water","type":"restore","stat":"hydration","amount":40}
+    ]
+  },
+  "fittersBadge": {
+    "name": "装配师徽记", "enabled": true, "price": 5, "rarity": "normal",
+    "description": "接下来两次实际受益的Ⅰ级设备安装直接成为Ⅱ级。制造时不生效；设备匠优先，不叠加为Ⅲ级。",
+    "effects": [{"key":"promotion","type":"install_level","level":2,"uses":2}]
+  },
+  "spearParcel": {
+    "name": "缚绳矛匣", "enabled": true, "price": 4, "rarity": "normal",
+    "description": "持有时，下一场战斗开始获得两张Ⅰ级临时矛，仅触发一次；未使用的矛在战斗结束时清除。",
+    "effects": [{"key":"spears","type":"grant_card","trigger":"battle_start","id":"spear","amount":2,"temporary":true,"uses":1}]
+  },
+  "borrowedPulse": {
+    "name": "借来的心跳", "enabled": true, "price": 4, "rarity": "normal",
+    "description": "持有时，下一场战斗开始临时生命上限+2并恢复生命2，限一次。战斗结束移除临时上限，当前生命至多保留到新上限。",
+    "effects": [{"key":"pulse","type":"temporary_max","trigger":"battle_start","stat":"hp","amount":2,"heal":2,"uses":1}]
+  },
+  "luckyKnot": {
+    "name": "幸运绳结", "enabled": true, "price": 5, "rarity": "normal",
+    "description": "持有时，材料附魔有25%概率保留投入的材料，AP照常消耗。多个同类概率加算，最高100%。",
+    "effects": [{"key":"preserve","type":"probability","target":"enchant_preserve","chance":0.25}]
+  },
+  "memory": {
+    "name": "记忆的回响",
+    "rarity": "rare",
+    "description": "累计完成50节点获得；基地和战斗AP上限各+1。",
+    "modifiers": {
+      "baseAp": 1,
+      "battleAp": 1
+    },
+    "unlock": {
+      "nodes": 50
+    }
+  }
+}

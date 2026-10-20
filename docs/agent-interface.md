@@ -1,5 +1,5 @@
 # Agent 游玩接口
-<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v03-01; reviewed: 2026-10-20 -->
+<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v03-02; reviewed: 2026-10-20 -->
 
 本文描述当前本地 JSONL 接口。协议 `deep-surge-agent-v1`、轨迹 `deep-surge-trace-v1`；实现依据 [AgentSession](../adapters/agent_session.gd)、[输入分帧](../tools/agent_stdio.gd)、[客户端](../tools/agent_client.py)、[操作查询](../core/action_query.gd)。
 
@@ -108,7 +108,7 @@ trace/replay/result是本地诊断能力，可能含内部信息。玩家信息�
 
 起始快照包含内容指纹、随机算法版本、run_id和初始profile；重放保留局身份，每步hash覆盖完整snapshot并归一JSON整数/浮点表示。最多接受10000步。自动后续动作由原dispatch再现，不需要Agent重复提交；重放失败不替换活动测试会话。
 
-当前玩法快照为schema 2、`godot-flow-v03-01`、`xorshift32-godot-v1`，需要匹配内容指纹。旧版本保存/轨迹不迁移；规则或内容变化后应重新生成并审阅当前路线。
+当前玩法快照为schema 2、`godot-flow-v03-02`、`xorshift32-godot-v1`，需要匹配内容指纹。旧版本保存/轨迹不迁移；规则或内容变化后应重新生成并审阅当前路线。
 
 ## 架构与扩展
 
@@ -131,8 +131,8 @@ Godot_v4.7.2-stable_win64_console.exe --headless --path . --script res://tests/t
 python -m unittest discover -s tests -p test_agent_stdio.py -v
 ```
 
-`tests/fixtures/routes/manifest.json` 定义当前必需路线，覆盖两种模式、三个难度与明确失败场景；当前登记的7条路线均为`godot-flow-v03-01`，已完成独立重放和同版本恢复校验，状态见[验证草稿](../evidence/v03-development-verification.md)。历史轨迹单列stale，不能代替当前覆盖。
+`tests/fixtures/routes/manifest.json` 定义当前必需路线，覆盖两种模式、三个难度与明确失败场景；整合后的7条路线必须按`godot-flow-v03-02`重新生成、独立重放并核对同版本恢复，当次结果见[整合记录](../evidence/safe-integration-20261020.md)。历史轨迹单列stale，不能代替当前覆盖。
 
-`python tools/generate_regression_routes.py` 使用现有策略及真实公开动作重新生成并先重放，人工查看结果差异后更新基线；每条限45秒，超时不自动重试。生成操作会更新当前fixtures，不属于普通只读测试。策略样例不代表最优玩法或平衡结论。
+`python tools/generate_regression_routes.py` 使用现有策略及真实公开动作重新生成并先重放，人工查看结果差异后更新基线；按有界时间段推进并保存checkpoint，恢复通过公开replay重放前缀；终局另行独立重放后才发布。实际超时停止，不自动重试原命令。生成操作会更新当前fixtures，不属于普通只读测试。策略样例不代表最优玩法或平衡结论。
 
-潮汐遗物本次验收查[潮汐遗物 v26 验证](../evidence/collectible-effects-v26-verification.md)。其他已执行的范围见 [架构验证](../evidence/architecture-health-verification.md)；GPU、触摸与发行导出须单独验收。先前分版本接口说明见 [历史快照](archive/context-20261019/docs--agent-interface.md)，不用于恢复旧夜间、旧规则或旧档迁移。
+整合版潮汐遗物验收查[本轮整合记录](../evidence/safe-integration-20261020.md)；[潮汐遗物 v26 验证](../evidence/collectible-effects-v26-verification.md)保留为旧引擎历史证据。其他已执行的范围见 [架构验证](../evidence/architecture-health-verification.md)；GPU、触摸与发行导出须单独验收。先前分版本接口说明见 [历史快照](archive/context-20261019/docs--agent-interface.md)，不用于恢复旧夜间、旧规则或旧档迁移。

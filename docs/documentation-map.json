@@ -120,6 +120,16 @@
         "content/data/shop_profiles.json",
         "tests/test_v03_shop.gd"
       ]
+    },
+    {
+      "path": "docs/relic-expedition.md",
+      "sources": [
+        "content/data/relics.json",
+        "content/data/nodes.json",
+        "tests/test_relic_expedition.gd",
+        "tests/test_relic_art.gd",
+        "tools/import_relic_art.py"
+      ]
     }
   ]
 }

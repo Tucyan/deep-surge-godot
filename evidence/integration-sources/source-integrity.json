@@ -1,0 +1,19 @@
+{
+  "checked_at": "2026-10-20T20:32:29+08:00",
+  "checks": [
+    {
+      "source": "a",
+      "files_checked": 4706,
+      "byte_changes": [],
+      "head_unchanged": true,
+      "staged_files": []
+    },
+    {
+      "source": "b",
+      "files_checked": 4501,
+      "byte_changes": [],
+      "head_unchanged": true,
+      "staged_files": []
+    }
+  ]
+}
