@@ -3,6 +3,8 @@
 
 当前整合分支为 `codex/integrate-v03-relics`，保留原工作树。内容为三层挑战、20件新藏品、10个寻物节点和局部刷新/手机界面；当次验收见[整合记录](evidence/safe-integration-20261020.md)。
 
+协作约定见 [AGENTS.md](AGENTS.md)，逐次更新见[更新日志](CHANGELOG.md)。
+
 当前开发工程使用 Godot 4.7.2 / GDScript / Compatibility。文档入口：[分类索引](docs/README.md) · [当前机制](docs/current-game-mechanics.md) · [应用架构](docs/application-architecture.md)。
 
 ## 启动
