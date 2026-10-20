@@ -101,6 +101,8 @@ var transition_busy:=false
 var _defer_transition_render:=false
 var _transition_command_running:=false
 var loading_transition: Control
+var _departure_result_pending:=false
+var _pending_failure_result:=""
 var acquisition_overlay: Control
 var _ui_command_pending:=false
 var _receipt_cursor: Dictionary={}
@@ -235,7 +237,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			world_view.reset_camera_view(); get_viewport().set_input_as_handled()
 
 func handle_ui(action: String, value: String = "") -> void:
-	if transition_busy or is_instance_valid(acquisition_overlay): return
+	if _departure_result_pending or transition_busy or is_instance_valid(acquisition_overlay): return
 	if not story_mode_visible and (action == "narrative_choose" or (action in ["setup", "local_panel"] and value in ["story", "narrative"])): return
 	if action=="close_settings":
 		if local_panel=="settings": local_panel=""; render()
@@ -420,7 +422,7 @@ func hud_view() -> Dictionary:
 ## UI-originated page transitions keep the original work, under an animated layer.
 ## Direct command callers remain synchronous for rules/tests/agent integrations.
 func request_command(command: String, args: Dictionary = {}) -> void:
-	if transition_busy or _ui_command_pending: return
+	if _departure_result_pending or transition_busy or _ui_command_pending: return
 	if persistence_coordinator.blocks(self,command): render(); return
 	_ui_command_pending=true
 	var cursor: Dictionary=preload("res://application/acquisition_projection.gd").capture(session)
@@ -483,6 +485,7 @@ func _request_command_with_transition(command: String, args: Dictionary = {}) ->
 	_maybe_story()
 
 func handle_command(command: String, args: Dictionary = {}) -> void:
+	if _departure_result_pending: return
 	if transition_busy and not _transition_command_running: return
 	if persistence_coordinator.blocks(self,command): render(); return
 	if narrative_playing:
@@ -500,6 +503,7 @@ func handle_command(command: String, args: Dictionary = {}) -> void:
 	reset_hand_visual = command == "new"
 	var old_panel: String = session.panel
 	var old_phase: String = session.phase()
+	var departure_before: Dictionary = session.state.get("player",{}).duplicate(true) if command=="voyage" and old_phase=="navigation" else {}
 	# Compared after dispatch: the partial path may only be taken when these regions
 	# really stayed the same.
 	var old_hand: String = JSON.stringify(session.state.get("hand",[]))
@@ -522,6 +526,16 @@ func handle_command(command: String, args: Dictionary = {}) -> void:
 	if not succeeded:
 		message = session.error
 	else:
+		var failure: String=""
+		if session.phase()=="finished" and str(session.state.get("result","")) in ["dead","mad"]:
+			failure=str(session.state.result)
+		if not departure_before.is_empty() or not failure.is_empty():
+			_departure_result_pending=not failure.is_empty()
+			_pending_failure_result=failure
+			if _departure_result_pending:
+				if is_instance_valid(layout): layout.process_mode=Node.PROCESS_MODE_DISABLED
+				world_view.set_camera_input_enabled(false)
+			_show_departure_notice.call_deferred(departure_before,session.state.player.duplicate(true),failure)
 		if not persistence_coordinator.save_pending: message = ""
 		local_panel = ""
 		ui_state.card = ""
@@ -576,6 +590,19 @@ func _sync_meta_progress() -> void:
 
 func _persist_profile() -> bool:
 	return persistence_coordinator._persist_profile(self)
+
+func _show_departure_notice(before: Dictionary, after: Dictionary, failure: String = "") -> void:
+	var old:=get_node_or_null("DepartureNotice")
+	if is_instance_valid(old):
+		remove_child(old); old.queue_free()
+	var notice:=preload("res://presentation/departure_notice.gd").new()
+	add_child(notice); notice.configure(before,after,failure)
+	if _departure_result_pending:
+		await notice.tree_exited
+		if not is_inside_tree(): return
+		_departure_result_pending=false
+		_pending_failure_result=""
+		render.call_deferred()
 
 func update_after_departure() -> bool:
 	if local_panel!="" or session.panel!="": return false
@@ -704,9 +731,17 @@ func _apply_mobile_control_policy(reference: WeakRef) -> void:
 	preload("res://presentation/touch_scroll.gd").configure(node)
 
 func render(staged: bool = false) -> void:
+	if _departure_result_pending: return
 	set_meta("mobile_ui",display_settings.mobile)
 	persistence_coordinator.refresh_notice(self)
 	await page_host.render(self, staged)
+	if not _pending_failure_result.is_empty() and session.phase()=="finished":
+		var failure:=_pending_failure_result
+		_departure_result_pending=true
+		if is_instance_valid(layout): layout.process_mode=Node.PROCESS_MODE_DISABLED
+		world_view.set_camera_input_enabled(false)
+		_show_departure_notice.call_deferred(session.state.player.duplicate(true),session.state.player.duplicate(true),failure)
+		return
 	music.sync(self)
 	ambience.sync(self)
 	if display_settings.mobile:

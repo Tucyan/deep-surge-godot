@@ -575,25 +575,61 @@
       "source": "water-era/dist/assets/images/monsters/M02_gel_jellyfish.png"
     },
     "enemy.crab": {
-      "path": "res://assets/images/monsters/M03_armored_crab.png",
+      "path": "res://assets/images/monsters-20261021/crab.png",
       "color": "#694550",
       "label": "绝壳蟹",
-      "version": 1,
-      "source": "water-era/dist/assets/images/monsters/M03_armored_crab.png"
+      "version": 2,
+      "source": "user-supplied/怪物素材.zip/怪物素材/普通怪物补充/沉船巨钳海怪概念设计.png",
+      "sha256": "5182b3b45ad550e53503ee02000e8811cab2eb76b48c7908deec79b74536dc1e",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "crop": null,
+      "show_label": false,
+      "dependencies": [],
+      "license": "user-supplied; no additional license assertion",
+      "runtime_mapping": "battle_hud_view monster portrait; flow_story encounter art; paged_reference enemies",
+      "source_archive": "asset-sources/monster-art-20261021/monsters-original.zip",
+      "source_archive_sha256": "e02b8189fc86605645377cbe478542cbe3039563b633a6959470ed50e7019b3d"
     },
     "enemy.sentinel": {
-      "path": "",
+      "path": "res://assets/images/monsters-20261021/sentinel.png",
       "color": "#694550",
       "label": "遗迹守卫",
-      "version": 1,
-      "source": "procedural-solid-label-v1"
+      "version": 2,
+      "source": "user-supplied/怪物素材.zip/怪物素材/普通怪物补充/深海遗迹石像守卫者.png",
+      "sha256": "6bb0aee33023b85cf500645cd6694eb4b36b2a7a42be821920cbee00b731090f",
+      "dimensions": [
+        1448,
+        1086
+      ],
+      "crop": null,
+      "show_label": false,
+      "dependencies": [],
+      "license": "user-supplied; no additional license assertion",
+      "runtime_mapping": "battle_hud_view monster portrait; flow_story encounter art; paged_reference enemies",
+      "source_archive": "asset-sources/monster-art-20261021/monsters-original.zip",
+      "source_archive_sha256": "e02b8189fc86605645377cbe478542cbe3039563b633a6959470ed50e7019b3d"
     },
     "enemy.boss": {
-      "path": "",
+      "path": "res://assets/images/monsters-20261021/boss_abyss.png",
       "color": "#694550",
       "label": "涌潮之眼",
-      "version": 1,
-      "source": "procedural-solid-label-v1"
+      "version": 2,
+      "source": "user-supplied/怪物素材.zip/怪物素材/boss/ChatGPT 图像 2026年10月21日 00_39_11-3.png",
+      "sha256": "4e46ec6b30f6f1eb516bedc2d546ab0f89d9812af5f9d10cc8173453d4fd4c98",
+      "dimensions": [
+        1086,
+        1448
+      ],
+      "crop": null,
+      "show_label": false,
+      "dependencies": [],
+      "license": "user-supplied; no additional license assertion",
+      "runtime_mapping": "battle_hud_view monster portrait; flow_story encounter art; paged_reference enemies",
+      "source_archive": "asset-sources/monster-art-20261021/monsters-original.zip",
+      "source_archive_sha256": "e02b8189fc86605645377cbe478542cbe3039563b633a6959470ed50e7019b3d"
     },
     "scene.ocean": {
       "path": "",
@@ -2190,8 +2226,8 @@
     "ui.modal-layout": {
       "path": "res://flow_app.gd",
       "source": "flow_app.gd",
-      "version": 28,
-      "sha256": "33658d7112aab2d56db8eeb75f63ac8f88cab97a5f3a56e44df0d8ed95d5bce5",
+      "version": 30,
+      "sha256": "aeff8689cc19c704d38cc0da14b38bfb2f8d5c4ca285b899a3243f24809d2e9d",
       "dependencies": [
         "ui.controls.close",
         "ui.settings-panel",
@@ -5138,6 +5174,105 @@
         "preferences": "user://display-settings.cfg [audio] (shared with the music toggle)",
         "suspension": "an open gallery replay silences the sea as well"
       }
+    },
+    "enemy.boss_shallows": {
+      "path": "res://assets/images/monsters-20261021/boss_shallows.png",
+      "label": "浅海守门者",
+      "version": 1,
+      "source": "user-supplied/怪物素材.zip/怪物素材/boss/ChatGPT 图像 2026年10月21日 00_39_08-1.png",
+      "sha256": "e17e7334a8bdaebe655fed140b75ccccd52fd6bce73ace11f836ed921eb3e4f6",
+      "dimensions": [
+        1086,
+        1448
+      ],
+      "crop": null,
+      "show_label": false,
+      "dependencies": [],
+      "license": "user-supplied; no additional license assertion",
+      "runtime_mapping": "battle_hud_view monster portrait; flow_story encounter art; paged_reference enemies",
+      "source_archive": "asset-sources/monster-art-20261021/monsters-original.zip",
+      "source_archive_sha256": "e02b8189fc86605645377cbe478542cbe3039563b633a6959470ed50e7019b3d"
+    },
+    "enemy.boss_open_sea": {
+      "path": "res://assets/images/monsters-20261021/boss_open_sea.png",
+      "label": "外海吞潮者",
+      "version": 1,
+      "source": "user-supplied/怪物素材.zip/怪物素材/boss/ChatGPT 图像 2026年10月21日 00_39_09-2.png",
+      "sha256": "d347ab2e5d951d9a8cd8df2ad1d3efac39ef7f04aaab6db2eac57274c67d393a",
+      "dimensions": [
+        1086,
+        1448
+      ],
+      "crop": null,
+      "show_label": false,
+      "dependencies": [],
+      "license": "user-supplied; no additional license assertion",
+      "runtime_mapping": "battle_hud_view monster portrait; flow_story encounter art; paged_reference enemies",
+      "source_archive": "asset-sources/monster-art-20261021/monsters-original.zip",
+      "source_archive_sha256": "e02b8189fc86605645377cbe478542cbe3039563b633a6959470ed50e7019b3d"
+    },
+    "enemy.boss_abyss": {
+      "path": "res://assets/images/monsters-20261021/boss_abyss.png",
+      "label": "深渊潮心",
+      "version": 1,
+      "source": "user-supplied/怪物素材.zip/怪物素材/boss/ChatGPT 图像 2026年10月21日 00_39_11-3.png",
+      "sha256": "4e46ec6b30f6f1eb516bedc2d546ab0f89d9812af5f9d10cc8173453d4fd4c98",
+      "dimensions": [
+        1086,
+        1448
+      ],
+      "crop": null,
+      "show_label": false,
+      "dependencies": [],
+      "license": "user-supplied; no additional license assertion",
+      "runtime_mapping": "battle_hud_view monster portrait; flow_story encounter art; paged_reference enemies",
+      "source_archive": "asset-sources/monster-art-20261021/monsters-original.zip",
+      "source_archive_sha256": "e02b8189fc86605645377cbe478542cbe3039563b633a6959470ed50e7019b3d"
+    },
+    "enemy.crab_elite": {
+      "path": "res://assets/images/monsters-20261021/crab.png",
+      "label": "吊架巨蟹",
+      "version": 1,
+      "source": "user-supplied/怪物素材.zip/怪物素材/普通怪物补充/沉船巨钳海怪概念设计.png",
+      "sha256": "5182b3b45ad550e53503ee02000e8811cab2eb76b48c7908deec79b74536dc1e",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "crop": null,
+      "show_label": false,
+      "dependencies": [],
+      "license": "user-supplied; no additional license assertion",
+      "runtime_mapping": "battle_hud_view monster portrait; flow_story encounter art; paged_reference enemies",
+      "source_archive": "asset-sources/monster-art-20261021/monsters-original.zip",
+      "source_archive_sha256": "e02b8189fc86605645377cbe478542cbe3039563b633a6959470ed50e7019b3d"
+    },
+    "ui.departure-notice": {
+      "path": "res://presentation/departure_notice.gd",
+      "source": "project-original procedural solid panel + Label",
+      "version": 1,
+      "sha256": "9d3eb1315c0e3e2d9a430116c3916896e98161aab8316b9224d57b7ecffdad6f",
+      "dependencies": [],
+      "runtime_mapping": "flow_app.gd successful voyage and any run-ending dead/mad result from node or battle; CanvasLayer 110; settlement page deferred until notice exits",
+      "parameters": {
+        "font_size": 32,
+        "background_rgba": [
+          0.025,
+          0.04,
+          0.06,
+          0.82
+        ],
+        "hold_seconds": 2.4,
+        "fade_seconds": 0.25,
+        "border_width": 0,
+        "dismiss_on_pointer_press": true,
+        "failure_sources": [
+          "voyage",
+          "node",
+          "battle"
+        ]
+      },
+      "license": "project-original"
     }
   }
 }

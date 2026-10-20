@@ -197,7 +197,7 @@ func run() -> void:
 	check(JSON.stringify(app.session.state.cells) != fuel_before, "fixture: lamp fuel really changed")
 	check(node_id(app.layout) != fuel_page, "a changed cell projection uses the full page path")
 
-	# A departure that ends the run keeps the full path and the settlement page.
+	# A fatal departure retains the world until its failure notice is dismissed.
 	await open_app()
 	app.session.state.player.sanity = 5
 	app.render()
@@ -209,8 +209,13 @@ func run() -> void:
 	app.find_child("NavigationDepart", true, false).pressed.emit()
 	await settle()
 	check(app.session.phase() == "finished", "fatal departure finishes the run")
-	check(node_id(app.layout) != death_page, "fatal departure uses the full page path")
-	check(not app.world_view.visible, "fatal departure shows the report page instead of the world")
+	check(node_id(app.layout) == death_page and app.world_view.visible, "fatal departure retains voyage behind failure notice")
+	var death_notice=app.get_node_or_null("DepartureNotice")
+	check(is_instance_valid(death_notice), "fatal departure presents failure notice first")
+	var dismiss:=InputEventMouseButton.new(); dismiss.button_index=MOUSE_BUTTON_LEFT; dismiss.pressed=true; dismiss.position=Vector2(5,5)
+	root.push_input(dismiss,true); await settle()
+	check(node_id(app.layout) != death_page, "dismissed failure notice opens full settlement page")
+	check(not app.world_view.visible, "settlement replaces voyage only after failure notice ends")
 
 	# Tutorial runs are excluded from the partial departure path on purpose (the lesson
 	# strip and the scripted steps keep the full rebuild); only correctness is asserted.
@@ -245,7 +250,7 @@ func run() -> void:
 	app.persistence = false
 	for path in [app.store.path, app.store.path + ".tmp"]:
 		if FileAccess.file_exists(path): DirAccess.remove_absolute(path)
-	app.queue_free()
-	await process_frame
+	app.queue_free(); app=null
+	await settle()
 	print("NAVIGATION PARTIAL REFRESH: %s" % ("PASS" if failures == 0 else "FAIL"))
 	quit(0 if failures == 0 else 1)

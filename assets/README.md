@@ -1,5 +1,7 @@
 # 素材登记
 
+2026-10-21 接入用户怪物包的五张原始 PNG，覆盖七个 `enemy.*` 映射（三层 Boss、旧 Boss、普通/精英巨蟹、遗迹守卫）。战斗、遭遇与图鉴复用 AssetCatalog；尺寸、hash、原包和映射见[来源记录](../asset-sources/monster-art-20261021/README.md)。
+
 2026-10-20 新增日常背景音乐 `audio.music.daily-aria`、`audio.music.daily-fuga` v1，以及 cue 表 `data.music.cues`、导演 `ui.music-director`。两首 MP3 为用户微信提供的巴赫吉他四重奏改编（BWV82 咏叹调 444.653 秒、BWV578 赋格 204.800 秒），字节未转码，仅重命名为稳定运行名；导入参数 `loop=true`。用户提供的 `boss配乐(1).zip` 内只有空目录，Boss cue 暂为空并回退航行曲目，登记时留空而非伪造占位音频。`ui.modal-layout`、`ui.settings-panel`、`ui.display-preferences` 同步版本与 hash（音乐开关与音量滑条）。来源与时长见[音乐源记录](../asset-sources/music-daily-20261020/README.md)，契约见[背景音乐](../docs/audio-and-music.md)，登记命令 `python tools/register_music.py`。
 
 图鉴所有类别的未发现条目统一使用用户提供的透明问号宝箱图 `ui.encyclopedia.unknown` v1（1254×1254），网格缩略图与右侧详情共用，按原比例显示；原始 PNG 字节不变。运行文件为 `assets/ui/encyclopedia-unknown-v1.png`，来源、SHA-256、依赖与映射登记在 manifest。右侧详情底色为象牙白 `#F6EBDA`，标题与正文使用深色。
