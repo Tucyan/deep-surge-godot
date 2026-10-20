@@ -2,7 +2,7 @@ extends RefCounted
 ## Read-only guide. Camera bindings come from local preferences, not rule state.
 const W = preload("res://presentation/widgets.gd")
 
-static func build(parent: Node, settings: RefCounted) -> void:
+static func build(parent: Node, settings: RefCounted, story_mode_visible: bool = false) -> void:
 	W.text(parent,"游戏说明",28,W.GOLD)
 	W.text(parent,"选择页签查看操作与流程；内容可上下滚动。右上角 X 返回游戏。",16,W.MUTED)
 	var tabs := TabContainer.new()
@@ -37,7 +37,7 @@ static func build(parent: Node, settings: RefCounted) -> void:
 		["木筏与面板","点击筏格打开安装、升级或修补等操作；点击扩建虚影查看费用后确认新建。点右上角问号查看本说明，齿轮打开设置，X 关闭面板。正文可用鼠标滚轮或右侧滚动条阅读。"]
 	])
 	_add_tab(tabs,"游戏流程",[
-		["1 · 开局与目标","初次游玩可先体验新手教程。正式航程选择模式、难度、出身和起手资源；挑战模式航行次数随机，末站为 Boss，击败后还需完成轮末结算；剧情模式按固定航线推进并穿插剧情。生命或精神归零会失败。"],
+		["1 · 开局与目标","初次游玩可先体验新手教程。正式航程选择难度、出身和起手资源；挑战模式航行次数随机，末站为 Boss，击败后还需完成轮末结算。" + ("剧情模式按固定航线推进并穿插剧情。" if story_mode_visible else "") + "生命或精神归零会失败。"],
 		["2 · 导航与出发","查看候选目的地及环境，选择后出发。出发支付精神（SAN）航耗，有燃料的灯可恢复精神；抵达后先进入准备阶段，再进入节点事件。出发前也可打捞、制造、使用补给或经营木筏。"],
 		["3 · 准备与经营","导航、准备、收尾共享本航次的基地 AP，出发与战后不会刷新。打捞获取资源，制造将材料变成卡牌；制造通常花 1 AP，设备还需安装，安装为 0 AP。设备生产在后续航次开始时按周期推进。"],
 		["4 · 处理事件","先阅读事件，再选择探索、领取、交易、迎战或离开等当前可用选项。商店可买卖，结束交易需离店；事件、战斗或商店完成后确认节点结果，进入收尾。收起说明或面板不会跳过事件。"],

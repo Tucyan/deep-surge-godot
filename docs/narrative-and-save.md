@@ -1,7 +1,11 @@
 # 独立剧情与配对存档
-<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v02-26; reviewed: 2026-10-19 -->
+<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v02-27; reviewed: 2026-10-20 -->
 
-当前第一章11个导航节点；章节内容版本为 `chapter1-local-v1`，定义见 [chapter_l1.json](../narrative/content/chapter_l1.json)。本文描述正式入口的当前行为，历史好感演示与旧夜间流程不覆盖它。
+剧情模式目前暂时隐藏。[FlowApp](../flow_app.gd) 的 `story_mode_visible` 默认 `false`，统一隐藏首页剧情模式按钮、选档入口、设置剧情页（含好感、线索、道具和保存操作）及帮助中的剧情模式说明；仅有剧情档时不会启用首页“继续”。旧的剧情设置页状态回退到显示页，界面路由也不再打开剧情选档或准备页。独立开场序章、“回溯潮涌”及挑战中的普通节点事件保持可用。
+
+隐藏只作用于应用界面，不删除章节、资源、配对存档或规则/内部调用能力，不改存档格式，不自动载入或迁移已有剧情档。需要恢复界面时将 `story_mode_visible` 设为 `true`；保留实现的集成测试显式开启该开关。
+
+以下描述保留实现及开启界面后的契约。当前第一章11个导航节点；章节内容版本为 `chapter1-local-v1`，定义见 [chapter_l1.json](../narrative/content/chapter_l1.json)。历史好感演示与旧夜间流程不覆盖它。
 
 ## 边界与职责
 
@@ -42,7 +46,7 @@
 
 叙事state包括affinity、flags、items、clues、rest_count、ending、applied_beats、skipped_beats、seen_scenes、choices、cursor和prefs。gameplay使用GameSession.snapshot，含schema2、内容版本、内容指纹、随机算法、revision、state/profile及最近结算。
 
-当前玩法内容为 `godot-flow-v02-26`，指纹包含潮汐遗物定义。配对快照同时保存 `state.collectibles` 的实例、历史、剩余次数与激活标记，以及商店的 `relics/relic_purchased`；恢复进行结构、定义、唯一UID、次数范围及战斗激活阶段校验。恢复不重新执行获得奖励、开战触发或抽取货架，详见[潮汐遗物契约](collectible-effects.md)。旧内容版本和指纹不符的玩法档明确拒绝，不作迁移，并保留原文件。
+当前玩法内容为 `godot-flow-v02-27`，指纹包含潮汐遗物定义。配对快照同时保存 `state.collectibles` 的实例、历史、剩余次数与激活标记，以及商店的 `relics/relic_purchased`；恢复进行结构、定义、唯一UID、次数范围及战斗激活阶段校验。恢复不重新执行获得奖励、开战触发或抽取货架，详见[潮汐遗物契约](collectible-effects.md)。旧内容版本和指纹不符的玩法档明确拒绝，不作迁移，并保留原文件。
 
 剧情多槽位已经包含配对玩法快照；这不等于挑战模式拥有跨进程多槽位保存。剧情模式加载必须验证当前章节/版本、玩法长度11、mode=story及voyage/phase与已应用节拍一致，再同时替换有效会话。旧版本兼容或迁移不是要求；解析器可容忍的未知字段不代表正式入口承诺旧章节可载入。
 

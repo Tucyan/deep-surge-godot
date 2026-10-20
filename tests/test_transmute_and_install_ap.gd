@@ -217,7 +217,10 @@ func run() -> void:
 		await settle()
 		var grid = app.find_child("RecipeGrid", true, false)
 		check(grid != null and grid.columns == 4, "recipe tab still uses four columns")
-		check(app.get_global_rect().encloses(grid.get_global_rect()), "larger recipe UI fits " + str(config))
+		# The list scrolls, so the scroll region (not the whole grid) must fit the window.
+		var recipe_scroll = app.find_child("RecipeScroll", true, false)
+		if recipe_scroll == null: recipe_scroll = app.find_child("MobileRecipeScroll", true, false)
+		check(recipe_scroll != null and app.get_global_rect().encloses(recipe_scroll.get_global_rect()), "larger recipe UI fits " + str(config))
 		if "--capture" in OS.get_cmdline_user_args():
 			await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png("res://evidence/workbench-recipes-%dx%d-%d.png" % [config.x, config.y, roundi(config.z * 100)])

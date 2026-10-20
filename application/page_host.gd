@@ -212,7 +212,10 @@ func render(app, staged: bool = false) -> void:
 		event_body.anchor_left=0.0; event_body.anchor_top=0.0; event_body.anchor_right=1.0; event_body.anchor_bottom=1.0
 		# Tutorial guidance overlays the heading; event columns retain their full height.
 		var story_top: float = 124.0
-		event_body.offset_left=56; event_body.offset_top=story_top; event_body.offset_right=-56; event_body.offset_bottom=-328
+		event_body.offset_left=56; event_body.offset_top=story_top; event_body.offset_right=-56
+		# Phones run the event page to the bottom edge and hide the frozen hand
+		# strip; desktop keeps the original 328 offset above the AP bar and hand.
+		event_body.offset_bottom=-18 if app.display_settings.mobile else -328
 		app.page("story",event_body,view)
 	current_page = app.page("setup" if view.screen == "home" and app.setup_mode != "" else view.screen,host,view)
 	var panel_id: String = app.local_panel if app.local_panel != "" else view.panel
@@ -268,17 +271,30 @@ func _build_modal(app, panel_id: String, view: Dictionary) -> void:
 		var panel_width=minf(700.0,app.size.x-40.0)
 		inset.offset_left=-panel_width*0.5; inset.offset_right=panel_width*0.5
 		if app.display_settings.mobile:
+			# Phone settings stay a full-height surface but keep the game's 16:9
+			# frame: the widest 16:9 box that fits the safe area, centred. Areas
+			# outside it stay dimmed by the shade instead of being covered by the
+			# settings surface.
 			inset.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+			var area:=Rect2(Vector2.ZERO,app.size)
 			if OS.has_feature("mobile"):
 				var safe: Rect2i=DisplayServer.get_display_safe_area()
 				var window_rect:=Rect2i(app.get_window().position,app.get_window().size)
 				var visible:=safe.intersection(window_rect)
 				if visible.has_area():
 					var ratio: Vector2=app.size/Vector2(window_rect.size)
-					inset.offset_left=(visible.position.x-window_rect.position.x)*ratio.x
-					inset.offset_top=(visible.position.y-window_rect.position.y)*ratio.y
-					inset.offset_right=(visible.end.x-window_rect.end.x)*ratio.x
-					inset.offset_bottom=(visible.end.y-window_rect.end.y)*ratio.y
+					area=Rect2(
+						Vector2((visible.position.x-window_rect.position.x)*ratio.x,(visible.position.y-window_rect.position.y)*ratio.y),
+						Vector2(visible.size.x*ratio.x,visible.size.y*ratio.y))
+			var surface_rect:=area
+			if area.size.x>1.0 and area.size.y>1.0:
+				var fit_width:=minf(area.size.x,area.size.y*16.0/9.0)
+				var fit_size:=Vector2(fit_width,fit_width*9.0/16.0)
+				surface_rect=Rect2(area.position+(area.size-fit_size)*0.5,fit_size)
+			inset.offset_left=surface_rect.position.x
+			inset.offset_top=surface_rect.position.y
+			inset.offset_right=surface_rect.end.x-app.size.x
+			inset.offset_bottom=surface_rect.end.y-app.size.y
 	host.add_child(inset)
 	var dialog = W.panel(inset)
 	var surface: PanelContainer=dialog.get_parent(); surface.name="ModalSurface"
@@ -318,19 +334,28 @@ func _build_modal(app, panel_id: String, view: Dictionary) -> void:
 	var close:=W.corner_close(surface,func():
 		if panel_id == "quit_unsaved": app.handle_ui("cancel_quit")
 		elif panel_id == "replace_run": app.handle_ui("cancel_replacement")
+		elif panel_id == "shop": app.handle_command("shop_leave")
 		elif app.local_panel != "": app.local_panel = ""; app.render()
 		else: app.handle_command("close"))
 	if panel_id=="settings" and app.display_settings.mobile: close.get_parent().hide()
+	if panel_id == "shop" and current_page != null and current_page.has_method("can_leave") and not current_page.can_leave():
+		close.disabled = true
+		close.tooltip_text = str(current_page.leave_reason())
 	if panel_id in ["craft", "build"]:
 		var help = Button.new()
 		help.name = "CraftHelpButton"; help.text = "?"
 		help.accessibility_name = "工作台说明"; help.tooltip_text = "工作台说明"
 		surface.get_node("CloseOverlay").add_child(help)
+		# Sit left of the corner X using its real touch size, so the two never overlap.
+		var touch: bool = W.TextButtonArt.uses_touch_ui(surface)
+		var button_side: float = 60.0 if touch else 44.0
+		var gap: float = 12.0 if touch else 8.0
 		help.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-		help.offset_left = -104; help.offset_right = -60
-		help.offset_top = 0; help.offset_bottom = 44
-		help.custom_minimum_size = Vector2(44, 44)
-		help.add_theme_font_size_override("font_size", 26)
+		help.offset_right = -(button_side + gap)
+		help.offset_left = help.offset_right - button_side
+		help.offset_top = 0; help.offset_bottom = button_side
+		help.custom_minimum_size = Vector2(button_side, button_side)
+		help.add_theme_font_size_override("font_size", 30 if touch else 26)
 		for state in ["normal", "hover", "pressed", "focus"]:
 			var style = StyleBoxFlat.new()
 			style.bg_color = Color("203d49") if state in ["hover", "pressed"] else Color("0c1d26")
@@ -409,9 +434,9 @@ func local_content(app, parent: Node, id: String, view: Dictionary) -> void:
 		gallery.replay_requested.connect(func(story_id: String): app.handle_ui("recall_story", story_id))
 		gallery.setup(app.story_gallery.entries(), app.assets)
 	elif id == "narrative":
-		NarrativeMenu.build_choice(parent, app)
+		if app.story_mode_visible: NarrativeMenu.build_choice(parent, app)
 	elif id == "help":
-		preload("res://presentation/game_help.gd").build(parent,app.display_settings)
+		preload("res://presentation/game_help.gd").build(parent,app.display_settings,app.story_mode_visible)
 	else:
 		preload("res://presentation/settings_panel.gd").build(parent,app,view)
 

@@ -22,11 +22,22 @@ func run() -> void:
 	if app.session.state.is_empty():
 		app.queue_free(); await process_frame
 		print("CHALLENGE RESUME: %d checks, %d failures" % [total,failures]); quit(1); return
+	var title = app.current_page.get_child(0)
+	title.menu_action.emit("continue")
+	check(app.current_page.find_child("ModeChoice",true,false) == null, "title continue opens no mode choice")
+	var frames := 0
+	while app.get("transition_busy") == true and frames < 600:
+		await process_frame; frames += 1
+	check(frames < 600, "continue transition finishes")
+	check(app.session.screen == "game", "title continue returns to the run in progress without a mode choice")
+	app.handle_command("home")
+	for i in range(3): await process_frame
+	check(app.session.screen == "home", "home returns to the title menu")
 	var before: Dictionary = app.session.snapshot()
 	app.hud_view(); app.hud_view()
 	app.handle_ui("local_panel", "help"); app.handle_ui("local_panel", "")
 	check(app.session.snapshot() == before, "view and cancel do not alter checkpoint or RNG")
-	var title = app.current_page.get_child(0)
+	title = app.current_page.get_child(0)
 	app.current_page.select_mode(title)
 	check(app.current_page.find_child("ContinueChallenge",true,false) != null, "home offers explicit continue challenge")
 	var clone = app.Session.new(app.catalog)

@@ -1,5 +1,5 @@
 # 文档分层与更新
-<!-- doc-status: current; doc-role: governance; content-version: godot-flow-v02-26; reviewed: 2026-10-19 -->
+<!-- doc-status: current; doc-role: governance; content-version: godot-flow-v02-27; reviewed: 2026-10-20 -->
 
 ## 文档职责与读取顺序
 
@@ -21,7 +21,7 @@
 [documentation-map.json](documentation-map.json) 列出当前主文档和核对来源。登记文档在标题后保留一行 HTML 元数据：
 
 ```html
-<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v02-26; reviewed: 2026-10-19 -->
+<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v02-27; reviewed: 2026-10-20 -->
 ```
 
 `doc-role` 为 entry、contract 或 governance；内容版本必须与 GameSession 一致，reviewed 使用实际核对日期。版本变化后检查失败是提醒重新核对，不应只批量更新版本号/日期而不检查内容。

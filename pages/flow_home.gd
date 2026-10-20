@@ -23,7 +23,11 @@ func _title_action(id: String, title: Control) -> void:
 			if not meta.get("tutorial_prompt_handled",false) and not meta.get("tutorial_done",false) and not context.get("has_run",false):
 				tutorial_prompt(title)
 			else: select_mode(title)
-		"continue": select_mode(title)
+		"continue":
+			# Continue returns to the run in progress without asking again.
+			if context.get("can_resume",context.get("active",false)): send("resume")
+			elif context.get("story_mode_visible",false) and context.get("has_story_saves",false): request("narrative_choose","")
+			else: select_mode(title)
 		"journal": send("panel",{"id":"encyclopedia"})
 		"shop": send("panel",{"id":"meta_shop"})
 		"recall": request("local_panel","recall")
@@ -55,9 +59,10 @@ func select_mode(title: Control) -> void:
 	var center:=CenterContainer.new(); center.name="ModeChoice"; center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT); title.add_child(center)
 	var box:=W.panel(center,Vector2(520,260))
 	W.text(box,"选择航程",30,W.GOLD)
-	W.button(box,"剧情模式",func():
-		center.queue_free(); title.composition.visible=true
-		request("narrative_choose",""))
+	if context.get("story_mode_visible",false):
+		W.button(box,"剧情模式",func():
+			center.queue_free(); title.composition.visible=true
+			request("narrative_choose",""))
 	var challenge := W.button(box,"挑战模式",func(): request("setup","challenge"))
 	challenge.name = "ChallengeMode"
 	if context.get("can_resume",context.get("active",false)):

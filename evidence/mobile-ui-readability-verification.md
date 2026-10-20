@@ -50,3 +50,13 @@ GPU运行 `tests/test_mobile_readability.gd -- --capture` 正常退出并输出P
 以上真实触摸为Godot输入事件注入，不能代替Android设备触控验收。系统安全区域、系统返回键、屏幕密度、手势导航边缘和性能仍待真机确认。没有GPU验证2520×1080；无头窗口变更结果不作为真实分辨率证明。
 
 未实施独立文字缩放、150%UI上限或图鉴/遗物列表详情分离路由；当前以统一字号、减少密度与滚动解决阅读空间。剧情手机采用独立排版，桌面保留既有构图。
+
+## 2026-10-20 事件插画占比上调
+
+手机事件三栏把空间从中栏让给插画：插画栏宽由事件栏宽的26%（上限400）改为35%（上限600），正文栏保留340逻辑像素下限，空间不足时先缩插画。桌面比例（立绘0.94比正文1.06）不变。
+
+实测（21:9、逻辑1680×720、事件栏宽1568）：插画栏 400→549 逻辑像素（25.5%→35.0%），插图本体 384×562→533×562；正文栏 688→539（43.9%→34.4%），选项栏 456 不变。1440×720自由比例下插画栏 465（35.0%）、正文栏 383。桌面1600×900探针前后完全一致（立绘507／正文572／选项368）。
+
+命令与结果：`Godot_v4.7.2-stable_win64_console.exe --path . --script res://tests/mobile_node_visual.gd` → `MOBILE NODE AUDIT: 35 cases / 944 checks / 0 failures`（新增两条比例断言：插画≥事件栏宽32%、正文≤38%）；`--script res://tests/node_event_layout.gd` → `NODE EVENT UI: PASS`。截图：[intro](mobile-node-art-share-intro.png)、[choice](mobile-node-art-share-choice.png)、[preselect](mobile-node-art-share-preselect.png)。
+
+`python tools/check_docs.py` 当次为 FAIL：9 个当前文档的内容版本仍写旧值，而工作树 `core/game_session.gd` 的 `VERSION` 已是 `godot-flow-v02-27`；该不一致在本次改动前就存在（未提交的内容版本升级），本次未改文档版本号，留待版本落定统一处理。

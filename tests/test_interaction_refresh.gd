@@ -77,6 +77,21 @@ func run():
 	check(app.find_child("hand_fan",true,false).selected_uids.has("virtual_action_attack"),"selected action visibly raised")
 	check(not app.find_child("ConfirmBattleAction",true,false).disabled,"confirmation enables after valid selection")
 	check(app.session.snapshot()==rules,"combat selection never dispatches rules or RNG")
+	# A resolved battle action changes live combat state, but the battle HUD, hand,
+	# and world cell geometry are still the same structures and should be retained.
+	before=identity()
+	var battle_view_id: int=app.find_child("BattleHUDView",true,false).get_instance_id()
+	app.handle_command("battle_action",{"action":"attack"}); await settle()
+	check(identity()==before,"battle action retains voyage layout, hand and cells")
+	check(app.find_child("BattleHUDView",true,false).get_instance_id()==battle_view_id,"battle action retains BattleHUDView")
+	check(int(app.session.state.battle.hp)==5 and int(app.session.state.battle.ap)==2,"battle action refreshes enemy HP and AP from dispatched rules")
+	check(app.find_child("SurgeActionPointHUD",true,false).current_ap==int(app.session.state.battle.ap),"battle action point display matches dispatched AP")
+	check(app.find_child("BattlePreviewSummary",true,false).text.contains("从下方手牌选择"),"resolved action clears stale selection preview")
+	check(app.find_child("BattleHUDView",true,false).log_box.get_child_count()>0,"resolved action refreshes combat log in place")
+	var changed_phase: Dictionary=app.hud_view(); changed_phase.phase="aftermath"
+	check(not app.current_page.refresh_after_battle(changed_phase),"battle refresh rejects phase transitions for full-render fallback")
+	var changed_hand: Dictionary=app.hud_view(); changed_hand.hand.append({"uid":"structure-change"})
+	check(not app.current_page.refresh_after_battle(changed_hand),"battle refresh rejects hand structure changes for full-render fallback")
 	app.handle_ui("local_panel","settings"); await settle(); await close_modal()
 	check(identity()==before,"combat modal preserves selected hand")
 	check(app.current_page.context.ui_state.battle_selection==app.ui_state.battle_selection,"base context retains selection after modal close")

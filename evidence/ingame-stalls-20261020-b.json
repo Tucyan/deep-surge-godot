@@ -1,0 +1,4103 @@
+{
+	"failures": [],
+	"gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+	"persistence": false,
+	"renderer": "gl_compatibility",
+	"samples": [
+		{
+			"action": "idle",
+			"draw_ms": 9.399,
+			"error": "",
+			"following_max_frame_ms": 10.938,
+			"iteration": 0,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 0.003,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "camera_toggle",
+			"draw_ms": 13.966,
+			"error": "",
+			"following_max_frame_ms": 9.494,
+			"iteration": 0,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 4.459,
+			"texture_ms": 3.93,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_settings",
+			"draw_ms": 72.771,
+			"error": "",
+			"following_max_frame_ms": 9.82,
+			"iteration": 0,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 44.934,
+			"save_ms": 0.0,
+			"sync_ms": 44.964,
+			"texture_ms": 0.0,
+			"view_ms": 1.063
+		},
+		{
+			"action": "close_settings",
+			"draw_ms": 14.838,
+			"error": "",
+			"following_max_frame_ms": 9.131,
+			"iteration": 0,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 2.121,
+			"save_ms": 0.0,
+			"sync_ms": 2.171,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_help",
+			"draw_ms": 65.424,
+			"error": "",
+			"following_max_frame_ms": 7.066,
+			"iteration": 0,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 38.039,
+			"save_ms": 0.0,
+			"sync_ms": 38.062,
+			"texture_ms": 0.0,
+			"view_ms": 0.924
+		},
+		{
+			"action": "close_help",
+			"draw_ms": 14.581,
+			"error": "",
+			"following_max_frame_ms": 9.944,
+			"iteration": 0,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 1.499,
+			"save_ms": 0.0,
+			"sync_ms": 1.527,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_craft",
+			"draw_ms": 65.4,
+			"error": "",
+			"following_max_frame_ms": 7.815,
+			"iteration": 0,
+			"page_build_us": {
+				"craft": 35305
+			},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 40.021,
+			"save_ms": 0.007,
+			"sync_ms": 40.572,
+			"texture_ms": 0.071,
+			"view_ms": 1.237
+		},
+		{
+			"action": "craft_to_transmute",
+			"draw_ms": 103.023,
+			"error": "",
+			"following_max_frame_ms": 7.42,
+			"iteration": 0,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 79.71,
+			"texture_ms": 0.094,
+			"view_ms": 0.901
+		},
+		{
+			"action": "transmute_add_wood",
+			"draw_ms": 12.047,
+			"error": "",
+			"following_max_frame_ms": 8.508,
+			"iteration": 0,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 3.362,
+			"texture_ms": 0.011,
+			"view_ms": 0.977
+		},
+		{
+			"action": "transmute_target_plastic",
+			"draw_ms": 15.345,
+			"error": "",
+			"following_max_frame_ms": 9.95,
+			"iteration": 0,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 6.199,
+			"texture_ms": 0.018,
+			"view_ms": 1.606
+		},
+		{
+			"action": "transmute_to_craft",
+			"draw_ms": 64.205,
+			"error": "",
+			"following_max_frame_ms": 9.124,
+			"iteration": 0,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 39.769,
+			"texture_ms": 0.061,
+			"view_ms": 0.893
+		},
+		{
+			"action": "close_craft",
+			"draw_ms": 14.015,
+			"error": "",
+			"following_max_frame_ms": 8.863,
+			"iteration": 0,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 2.876,
+			"save_ms": 0.002,
+			"sync_ms": 3.227,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_raft",
+			"draw_ms": 31.134,
+			"error": "",
+			"following_max_frame_ms": 8.043,
+			"iteration": 0,
+			"page_build_us": {
+				"raft": 15038
+			},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 18.51,
+			"save_ms": 0.003,
+			"sync_ms": 18.907,
+			"texture_ms": 0.0,
+			"view_ms": 1.005
+		},
+		{
+			"action": "close_raft",
+			"draw_ms": 9.237,
+			"error": "",
+			"following_max_frame_ms": 8.253,
+			"iteration": 0,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 1.851,
+			"save_ms": 0.003,
+			"sync_ms": 2.224,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_collectibles",
+			"draw_ms": 21.817,
+			"error": "",
+			"following_max_frame_ms": 8.91,
+			"iteration": 0,
+			"page_build_us": {
+				"collectibles": 5426
+			},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 9.095,
+			"save_ms": 0.003,
+			"sync_ms": 9.451,
+			"texture_ms": 0.0,
+			"view_ms": 0.812
+		},
+		{
+			"action": "close_collectibles",
+			"draw_ms": 12.142,
+			"error": "",
+			"following_max_frame_ms": 7.482,
+			"iteration": 0,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 1.838,
+			"save_ms": 0.002,
+			"sync_ms": 2.142,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "salvage",
+			"draw_ms": 110.69,
+			"error": "",
+			"following_max_frame_ms": 7.421,
+			"iteration": 0,
+			"page_build_us": {
+				"game": 75114
+			},
+			"phase": "preparation",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 79.375,
+			"save_ms": 0.004,
+			"sync_ms": 80.49,
+			"texture_ms": 0.14,
+			"view_ms": 0.819
+		},
+		{
+			"action": "craft_lamp",
+			"draw_ms": 147.687,
+			"error": "",
+			"following_max_frame_ms": 7.815,
+			"iteration": 0,
+			"page_build_us": {
+				"craft": 29930,
+				"game": 71469
+			},
+			"phase": "preparation",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 115.921,
+			"save_ms": 0.003,
+			"sync_ms": 117.114,
+			"texture_ms": 0.208,
+			"view_ms": 0.679
+		},
+		{
+			"action": "raft_select_empty_cell",
+			"draw_ms": 33.277,
+			"error": "",
+			"following_max_frame_ms": 7.572,
+			"iteration": 0,
+			"page_build_us": {},
+			"phase": "preparation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 10.886,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "raft_deselect_cell",
+			"draw_ms": 6.771,
+			"error": "",
+			"following_max_frame_ms": 8.785,
+			"iteration": 0,
+			"page_build_us": {},
+			"phase": "preparation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 0.153,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "discard_wood",
+			"draw_ms": 82.319,
+			"error": "",
+			"following_max_frame_ms": 8.372,
+			"iteration": 0,
+			"page_build_us": {
+				"game": 56261
+			},
+			"phase": "discard",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 60.749,
+			"save_ms": 0.003,
+			"sync_ms": 61.552,
+			"texture_ms": 0.101,
+			"view_ms": 0.604
+		},
+		{
+			"action": "install_filter",
+			"draw_ms": 104.321,
+			"error": "",
+			"following_max_frame_ms": 8.657,
+			"iteration": 0,
+			"page_build_us": {
+				"game": 60570
+			},
+			"phase": "preparation",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 72.895,
+			"save_ms": 0.003,
+			"sync_ms": 0.127,
+			"texture_ms": 0.11,
+			"view_ms": 0.698
+		},
+		{
+			"action": "transmute_execute",
+			"draw_ms": 82.611,
+			"error": "",
+			"following_max_frame_ms": 6.995,
+			"iteration": 0,
+			"page_build_us": {
+				"game": 52576
+			},
+			"phase": "preparation",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 63.811,
+			"save_ms": 0.004,
+			"sync_ms": 65.21,
+			"texture_ms": 0.092,
+			"view_ms": 0.823
+		},
+		{
+			"action": "shop_enter",
+			"draw_ms": 140.938,
+			"error": "",
+			"following_max_frame_ms": 7.645,
+			"iteration": 0,
+			"page_build_us": {
+				"game": 72028,
+				"shop": 31464
+			},
+			"phase": "interaction",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 109.252,
+			"save_ms": 0.003,
+			"sync_ms": 110.463,
+			"texture_ms": 0.123,
+			"view_ms": 0.688
+		},
+		{
+			"action": "shop_sell_tab",
+			"draw_ms": 23.408,
+			"error": "",
+			"following_max_frame_ms": 9.906,
+			"iteration": 0,
+			"page_build_us": {},
+			"phase": "interaction",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 10.313,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "shop_buy_tab",
+			"draw_ms": 37.254,
+			"error": "",
+			"following_max_frame_ms": 9.983,
+			"iteration": 0,
+			"page_build_us": {},
+			"phase": "interaction",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 26.558,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "shop_buy_preview",
+			"draw_ms": 16.573,
+			"error": "",
+			"following_max_frame_ms": 7.083,
+			"iteration": 0,
+			"page_build_us": {},
+			"phase": "interaction",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 6.243,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "shop_buy_confirm",
+			"draw_ms": 145.102,
+			"error": "",
+			"following_max_frame_ms": 7.25,
+			"iteration": 0,
+			"page_build_us": {
+				"game": 86643,
+				"shop": 23597
+			},
+			"phase": "interaction",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 115.944,
+			"save_ms": 0.003,
+			"sync_ms": 118.119,
+			"texture_ms": 0.147,
+			"view_ms": 0.832
+		},
+		{
+			"action": "shop_leave",
+			"draw_ms": 88.115,
+			"error": "",
+			"following_max_frame_ms": 8.155,
+			"iteration": 0,
+			"page_build_us": {
+				"game": 59958,
+				"story": 4857
+			},
+			"phase": "story",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 68.775,
+			"save_ms": 0.004,
+			"sync_ms": 69.564,
+			"texture_ms": 0.126,
+			"view_ms": 0.727
+		},
+		{
+			"action": "battle_select_attack",
+			"draw_ms": 8.889,
+			"error": "",
+			"following_max_frame_ms": 7.779,
+			"iteration": 0,
+			"page_build_us": {},
+			"phase": "battle",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 1.557,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "battle_confirm_attack",
+			"draw_ms": 12.767,
+			"error": "",
+			"following_max_frame_ms": 8.477,
+			"iteration": 0,
+			"page_build_us": {},
+			"phase": "battle",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.004,
+			"sync_ms": 4.891,
+			"texture_ms": 0.0,
+			"view_ms": 0.984
+		},
+		{
+			"action": "idle",
+			"draw_ms": 6.742,
+			"error": "",
+			"following_max_frame_ms": 8.124,
+			"iteration": 1,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 0.002,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "camera_toggle",
+			"draw_ms": 8.14,
+			"error": "",
+			"following_max_frame_ms": 9.564,
+			"iteration": 1,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 0.411,
+			"texture_ms": 0.009,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_settings",
+			"draw_ms": 28.847,
+			"error": "",
+			"following_max_frame_ms": 7.302,
+			"iteration": 1,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 18.928,
+			"save_ms": 0.0,
+			"sync_ms": 18.952,
+			"texture_ms": 0.0,
+			"view_ms": 0.951
+		},
+		{
+			"action": "close_settings",
+			"draw_ms": 10.307,
+			"error": "",
+			"following_max_frame_ms": 8.883,
+			"iteration": 1,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 1.111,
+			"save_ms": 0.0,
+			"sync_ms": 1.13,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_help",
+			"draw_ms": 31.363,
+			"error": "",
+			"following_max_frame_ms": 7.638,
+			"iteration": 1,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 20.321,
+			"save_ms": 0.0,
+			"sync_ms": 20.348,
+			"texture_ms": 0.0,
+			"view_ms": 0.975
+		},
+		{
+			"action": "close_help",
+			"draw_ms": 10.404,
+			"error": "",
+			"following_max_frame_ms": 7.314,
+			"iteration": 1,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 1.203,
+			"save_ms": 0.0,
+			"sync_ms": 1.221,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_craft",
+			"draw_ms": 54.51,
+			"error": "",
+			"following_max_frame_ms": 10.21,
+			"iteration": 1,
+			"page_build_us": {
+				"craft": 32737
+			},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 36.5,
+			"save_ms": 0.003,
+			"sync_ms": 36.881,
+			"texture_ms": 0.069,
+			"view_ms": 0.955
+		},
+		{
+			"action": "craft_to_transmute",
+			"draw_ms": 53.487,
+			"error": "",
+			"following_max_frame_ms": 9.317,
+			"iteration": 1,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 33.328,
+			"texture_ms": 0.096,
+			"view_ms": 0.962
+		},
+		{
+			"action": "transmute_add_wood",
+			"draw_ms": 10.099,
+			"error": "",
+			"following_max_frame_ms": 8.156,
+			"iteration": 1,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 2.647,
+			"texture_ms": 0.009,
+			"view_ms": 0.732
+		},
+		{
+			"action": "transmute_target_plastic",
+			"draw_ms": 18.108,
+			"error": "",
+			"following_max_frame_ms": 9.58,
+			"iteration": 1,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 7.399,
+			"texture_ms": 0.022,
+			"view_ms": 1.994
+		},
+		{
+			"action": "transmute_to_craft",
+			"draw_ms": 51.04,
+			"error": "",
+			"following_max_frame_ms": 7.857,
+			"iteration": 1,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 31.273,
+			"texture_ms": 0.064,
+			"view_ms": 0.948
+		},
+		{
+			"action": "close_craft",
+			"draw_ms": 14.423,
+			"error": "",
+			"following_max_frame_ms": 8.515,
+			"iteration": 1,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 2.867,
+			"save_ms": 0.003,
+			"sync_ms": 3.206,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_raft",
+			"draw_ms": 28.388,
+			"error": "",
+			"following_max_frame_ms": 7.806,
+			"iteration": 1,
+			"page_build_us": {
+				"raft": 12778
+			},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 17.876,
+			"save_ms": 0.004,
+			"sync_ms": 18.454,
+			"texture_ms": 0.0,
+			"view_ms": 1.158
+		},
+		{
+			"action": "close_raft",
+			"draw_ms": 10.795,
+			"error": "",
+			"following_max_frame_ms": 8.442,
+			"iteration": 1,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 2.108,
+			"save_ms": 0.003,
+			"sync_ms": 2.367,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_collectibles",
+			"draw_ms": 18.979,
+			"error": "",
+			"following_max_frame_ms": 7.678,
+			"iteration": 1,
+			"page_build_us": {
+				"collectibles": 4616
+			},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 8.527,
+			"save_ms": 0.004,
+			"sync_ms": 8.88,
+			"texture_ms": 0.0,
+			"view_ms": 1.147
+		},
+		{
+			"action": "close_collectibles",
+			"draw_ms": 11.266,
+			"error": "",
+			"following_max_frame_ms": 9.159,
+			"iteration": 1,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 2.242,
+			"save_ms": 0.003,
+			"sync_ms": 2.586,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "salvage",
+			"draw_ms": 89.034,
+			"error": "",
+			"following_max_frame_ms": 7.391,
+			"iteration": 1,
+			"page_build_us": {
+				"game": 60607
+			},
+			"phase": "preparation",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 63.936,
+			"save_ms": 0.003,
+			"sync_ms": 64.889,
+			"texture_ms": 0.116,
+			"view_ms": 0.63
+		},
+		{
+			"action": "craft_lamp",
+			"draw_ms": 134.625,
+			"error": "",
+			"following_max_frame_ms": 7.321,
+			"iteration": 1,
+			"page_build_us": {
+				"craft": 28584,
+				"game": 57599
+			},
+			"phase": "preparation",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 101.439,
+			"save_ms": 0.004,
+			"sync_ms": 103.137,
+			"texture_ms": 0.154,
+			"view_ms": 0.961
+		},
+		{
+			"action": "raft_select_empty_cell",
+			"draw_ms": 8.798,
+			"error": "",
+			"following_max_frame_ms": 9.674,
+			"iteration": 1,
+			"page_build_us": {},
+			"phase": "preparation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 2.901,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "raft_deselect_cell",
+			"draw_ms": 8.675,
+			"error": "",
+			"following_max_frame_ms": 8.936,
+			"iteration": 1,
+			"page_build_us": {},
+			"phase": "preparation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 0.234,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "discard_wood",
+			"draw_ms": 87.855,
+			"error": "",
+			"following_max_frame_ms": 8.035,
+			"iteration": 1,
+			"page_build_us": {
+				"game": 61443
+			},
+			"phase": "discard",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 66.918,
+			"save_ms": 0.003,
+			"sync_ms": 67.652,
+			"texture_ms": 0.105,
+			"view_ms": 0.678
+		},
+		{
+			"action": "install_filter",
+			"draw_ms": 77.038,
+			"error": "",
+			"following_max_frame_ms": 7.052,
+			"iteration": 1,
+			"page_build_us": {
+				"game": 51633
+			},
+			"phase": "preparation",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 57.96,
+			"save_ms": 0.003,
+			"sync_ms": 0.086,
+			"texture_ms": 0.095,
+			"view_ms": 0.634
+		},
+		{
+			"action": "transmute_execute",
+			"draw_ms": 91.989,
+			"error": "",
+			"following_max_frame_ms": 7.645,
+			"iteration": 1,
+			"page_build_us": {
+				"game": 61422
+			},
+			"phase": "preparation",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 72.635,
+			"save_ms": 0.004,
+			"sync_ms": 73.578,
+			"texture_ms": 0.116,
+			"view_ms": 0.594
+		},
+		{
+			"action": "shop_enter",
+			"draw_ms": 126.216,
+			"error": "",
+			"following_max_frame_ms": 11.762,
+			"iteration": 1,
+			"page_build_us": {
+				"game": 69537,
+				"shop": 25251
+			},
+			"phase": "interaction",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 101.199,
+			"save_ms": 0.002,
+			"sync_ms": 102.28,
+			"texture_ms": 0.1,
+			"view_ms": 0.63
+		},
+		{
+			"action": "shop_sell_tab",
+			"draw_ms": 12.897,
+			"error": "",
+			"following_max_frame_ms": 7.027,
+			"iteration": 1,
+			"page_build_us": {},
+			"phase": "interaction",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 6.294,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "shop_buy_tab",
+			"draw_ms": 33.789,
+			"error": "",
+			"following_max_frame_ms": 9.933,
+			"iteration": 1,
+			"page_build_us": {},
+			"phase": "interaction",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 22.032,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "shop_buy_preview",
+			"draw_ms": 10.881,
+			"error": "",
+			"following_max_frame_ms": 8.474,
+			"iteration": 1,
+			"page_build_us": {},
+			"phase": "interaction",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 4.911,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "shop_buy_confirm",
+			"draw_ms": 131.324,
+			"error": "",
+			"following_max_frame_ms": 7.458,
+			"iteration": 1,
+			"page_build_us": {
+				"game": 70532,
+				"shop": 28927
+			},
+			"phase": "interaction",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 105.212,
+			"save_ms": 0.002,
+			"sync_ms": 109.268,
+			"texture_ms": 0.114,
+			"view_ms": 0.773
+		},
+		{
+			"action": "shop_leave",
+			"draw_ms": 110.724,
+			"error": "",
+			"following_max_frame_ms": 8.007,
+			"iteration": 1,
+			"page_build_us": {
+				"game": 74120,
+				"story": 6091
+			},
+			"phase": "story",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 84.757,
+			"save_ms": 0.004,
+			"sync_ms": 85.77,
+			"texture_ms": 0.148,
+			"view_ms": 0.923
+		},
+		{
+			"action": "battle_select_attack",
+			"draw_ms": 10.805,
+			"error": "",
+			"following_max_frame_ms": 8.01,
+			"iteration": 1,
+			"page_build_us": {},
+			"phase": "battle",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 1.062,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "battle_confirm_attack",
+			"draw_ms": 13.188,
+			"error": "",
+			"following_max_frame_ms": 8.414,
+			"iteration": 1,
+			"page_build_us": {},
+			"phase": "battle",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.003,
+			"sync_ms": 4.345,
+			"texture_ms": 0.0,
+			"view_ms": 1.01
+		},
+		{
+			"action": "idle",
+			"draw_ms": 6.728,
+			"error": "",
+			"following_max_frame_ms": 8.243,
+			"iteration": 2,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 0.003,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "camera_toggle",
+			"draw_ms": 8.332,
+			"error": "",
+			"following_max_frame_ms": 9.767,
+			"iteration": 2,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 0.355,
+			"texture_ms": 0.007,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_settings",
+			"draw_ms": 33.944,
+			"error": "",
+			"following_max_frame_ms": 7.082,
+			"iteration": 2,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 22.808,
+			"save_ms": 0.0,
+			"sync_ms": 22.831,
+			"texture_ms": 0.0,
+			"view_ms": 1.044
+		},
+		{
+			"action": "close_settings",
+			"draw_ms": 10.202,
+			"error": "",
+			"following_max_frame_ms": 8.515,
+			"iteration": 2,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 1.615,
+			"save_ms": 0.0,
+			"sync_ms": 1.636,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_help",
+			"draw_ms": 29.962,
+			"error": "",
+			"following_max_frame_ms": 6.971,
+			"iteration": 2,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 16.932,
+			"save_ms": 0.0,
+			"sync_ms": 16.951,
+			"texture_ms": 0.0,
+			"view_ms": 0.811
+		},
+		{
+			"action": "close_help",
+			"draw_ms": 9.868,
+			"error": "",
+			"following_max_frame_ms": 8.517,
+			"iteration": 2,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 1.378,
+			"save_ms": 0.0,
+			"sync_ms": 1.395,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_craft",
+			"draw_ms": 55.055,
+			"error": "",
+			"following_max_frame_ms": 7.144,
+			"iteration": 2,
+			"page_build_us": {
+				"craft": 32841
+			},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 36.942,
+			"save_ms": 0.003,
+			"sync_ms": 37.281,
+			"texture_ms": 0.082,
+			"view_ms": 0.802
+		},
+		{
+			"action": "craft_to_transmute",
+			"draw_ms": 42.009,
+			"error": "",
+			"following_max_frame_ms": 8.789,
+			"iteration": 2,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 23.094,
+			"texture_ms": 0.07,
+			"view_ms": 0.676
+		},
+		{
+			"action": "transmute_add_wood",
+			"draw_ms": 9.156,
+			"error": "",
+			"following_max_frame_ms": 8.814,
+			"iteration": 2,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 2.8,
+			"texture_ms": 0.009,
+			"view_ms": 0.895
+		},
+		{
+			"action": "transmute_target_plastic",
+			"draw_ms": 18.578,
+			"error": "",
+			"following_max_frame_ms": 13.125,
+			"iteration": 2,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 7.57,
+			"texture_ms": 0.02,
+			"view_ms": 2.142
+		},
+		{
+			"action": "transmute_to_craft",
+			"draw_ms": 51.481,
+			"error": "",
+			"following_max_frame_ms": 7.479,
+			"iteration": 2,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 32.955,
+			"texture_ms": 0.067,
+			"view_ms": 0.907
+		},
+		{
+			"action": "close_craft",
+			"draw_ms": 12.323,
+			"error": "",
+			"following_max_frame_ms": 8.994,
+			"iteration": 2,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 2.679,
+			"save_ms": 0.003,
+			"sync_ms": 3.003,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_raft",
+			"draw_ms": 27.052,
+			"error": "",
+			"following_max_frame_ms": 7.135,
+			"iteration": 2,
+			"page_build_us": {
+				"raft": 12972
+			},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 16.847,
+			"save_ms": 0.004,
+			"sync_ms": 17.223,
+			"texture_ms": 0.0,
+			"view_ms": 1.223
+		},
+		{
+			"action": "close_raft",
+			"draw_ms": 11.079,
+			"error": "",
+			"following_max_frame_ms": 8.58,
+			"iteration": 2,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 2.195,
+			"save_ms": 0.004,
+			"sync_ms": 2.562,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_collectibles",
+			"draw_ms": 20.011,
+			"error": "",
+			"following_max_frame_ms": 7.132,
+			"iteration": 2,
+			"page_build_us": {
+				"collectibles": 5069
+			},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 9.384,
+			"save_ms": 0.003,
+			"sync_ms": 9.76,
+			"texture_ms": 0.0,
+			"view_ms": 0.95
+		},
+		{
+			"action": "close_collectibles",
+			"draw_ms": 13.331,
+			"error": "",
+			"following_max_frame_ms": 8.89,
+			"iteration": 2,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 1.929,
+			"save_ms": 0.003,
+			"sync_ms": 2.241,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "salvage",
+			"draw_ms": 74.608,
+			"error": "",
+			"following_max_frame_ms": 7.905,
+			"iteration": 2,
+			"page_build_us": {
+				"game": 51971
+			},
+			"phase": "preparation",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 55.144,
+			"save_ms": 0.002,
+			"sync_ms": 55.929,
+			"texture_ms": 0.091,
+			"view_ms": 0.586
+		},
+		{
+			"action": "craft_lamp",
+			"draw_ms": 129.987,
+			"error": "",
+			"following_max_frame_ms": 34.035,
+			"iteration": 2,
+			"page_build_us": {
+				"craft": 26383,
+				"game": 54833
+			},
+			"phase": "preparation",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 92.294,
+			"save_ms": 0.003,
+			"sync_ms": 93.594,
+			"texture_ms": 0.176,
+			"view_ms": 0.525
+		},
+		{
+			"action": "raft_select_empty_cell",
+			"draw_ms": 9.117,
+			"error": "",
+			"following_max_frame_ms": 7.122,
+			"iteration": 2,
+			"page_build_us": {},
+			"phase": "preparation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 2.708,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "raft_deselect_cell",
+			"draw_ms": 8.057,
+			"error": "",
+			"following_max_frame_ms": 8.717,
+			"iteration": 2,
+			"page_build_us": {},
+			"phase": "preparation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 0.18,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "discard_wood",
+			"draw_ms": 70.388,
+			"error": "",
+			"following_max_frame_ms": 7.183,
+			"iteration": 2,
+			"page_build_us": {
+				"game": 49309
+			},
+			"phase": "discard",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 54.029,
+			"save_ms": 0.003,
+			"sync_ms": 54.702,
+			"texture_ms": 0.079,
+			"view_ms": 0.512
+		},
+		{
+			"action": "install_filter",
+			"draw_ms": 81.148,
+			"error": "",
+			"following_max_frame_ms": 7.551,
+			"iteration": 2,
+			"page_build_us": {
+				"game": 56851
+			},
+			"phase": "preparation",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 63.004,
+			"save_ms": 0.003,
+			"sync_ms": 0.117,
+			"texture_ms": 0.098,
+			"view_ms": 0.729
+		},
+		{
+			"action": "transmute_execute",
+			"draw_ms": 73.773,
+			"error": "",
+			"following_max_frame_ms": 7.028,
+			"iteration": 2,
+			"page_build_us": {
+				"game": 46240
+			},
+			"phase": "preparation",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 56.156,
+			"save_ms": 0.006,
+			"sync_ms": 57.408,
+			"texture_ms": 0.082,
+			"view_ms": 0.616
+		},
+		{
+			"action": "shop_enter",
+			"draw_ms": 123.74,
+			"error": "",
+			"following_max_frame_ms": 7.078,
+			"iteration": 2,
+			"page_build_us": {
+				"game": 73053,
+				"shop": 23009
+			},
+			"phase": "interaction",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 102.168,
+			"save_ms": 0.003,
+			"sync_ms": 103.456,
+			"texture_ms": 0.122,
+			"view_ms": 0.973
+		},
+		{
+			"action": "shop_sell_tab",
+			"draw_ms": 12.199,
+			"error": "",
+			"following_max_frame_ms": 7.018,
+			"iteration": 2,
+			"page_build_us": {},
+			"phase": "interaction",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 5.441,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "shop_buy_tab",
+			"draw_ms": 26.722,
+			"error": "",
+			"following_max_frame_ms": 7.153,
+			"iteration": 2,
+			"page_build_us": {},
+			"phase": "interaction",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 19.036,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "shop_buy_preview",
+			"draw_ms": 10.687,
+			"error": "",
+			"following_max_frame_ms": 57.797,
+			"iteration": 2,
+			"page_build_us": {},
+			"phase": "interaction",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 4.156,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "shop_buy_confirm",
+			"draw_ms": 123.299,
+			"error": "",
+			"following_max_frame_ms": 8.383,
+			"iteration": 2,
+			"page_build_us": {
+				"game": 67314,
+				"shop": 25634
+			},
+			"phase": "interaction",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 98.503,
+			"save_ms": 0.004,
+			"sync_ms": 100.966,
+			"texture_ms": 0.123,
+			"view_ms": 0.83
+		},
+		{
+			"action": "shop_leave",
+			"draw_ms": 101.15,
+			"error": "",
+			"following_max_frame_ms": 9.005,
+			"iteration": 2,
+			"page_build_us": {
+				"game": 64781,
+				"story": 4345
+			},
+			"phase": "story",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 73.607,
+			"save_ms": 0.003,
+			"sync_ms": 74.389,
+			"texture_ms": 0.108,
+			"view_ms": 0.577
+		},
+		{
+			"action": "battle_select_attack",
+			"draw_ms": 9.152,
+			"error": "",
+			"following_max_frame_ms": 8.372,
+			"iteration": 2,
+			"page_build_us": {},
+			"phase": "battle",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 1.199,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "battle_confirm_attack",
+			"draw_ms": 11.319,
+			"error": "",
+			"following_max_frame_ms": 9.445,
+			"iteration": 2,
+			"page_build_us": {},
+			"phase": "battle",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.003,
+			"sync_ms": 4.172,
+			"texture_ms": 0.0,
+			"view_ms": 0.835
+		},
+		{
+			"action": "idle",
+			"draw_ms": 6.713,
+			"error": "",
+			"following_max_frame_ms": 8.402,
+			"iteration": 3,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 0.003,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "camera_toggle",
+			"draw_ms": 8.117,
+			"error": "",
+			"following_max_frame_ms": 8.822,
+			"iteration": 3,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 0.426,
+			"texture_ms": 0.006,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_settings",
+			"draw_ms": 31.908,
+			"error": "",
+			"following_max_frame_ms": 8.002,
+			"iteration": 3,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 21.516,
+			"save_ms": 0.0,
+			"sync_ms": 21.533,
+			"texture_ms": 0.0,
+			"view_ms": 0.838
+		},
+		{
+			"action": "close_settings",
+			"draw_ms": 10.806,
+			"error": "",
+			"following_max_frame_ms": 7.503,
+			"iteration": 3,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 1.187,
+			"save_ms": 0.0,
+			"sync_ms": 1.206,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_help",
+			"draw_ms": 33.267,
+			"error": "",
+			"following_max_frame_ms": 9.498,
+			"iteration": 3,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 22.286,
+			"save_ms": 0.0,
+			"sync_ms": 22.305,
+			"texture_ms": 0.0,
+			"view_ms": 0.877
+		},
+		{
+			"action": "close_help",
+			"draw_ms": 11.435,
+			"error": "",
+			"following_max_frame_ms": 8.44,
+			"iteration": 3,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 1.208,
+			"save_ms": 0.0,
+			"sync_ms": 1.23,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_craft",
+			"draw_ms": 63.39,
+			"error": "",
+			"following_max_frame_ms": 9.067,
+			"iteration": 3,
+			"page_build_us": {
+				"craft": 36705
+			},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 40.994,
+			"save_ms": 0.004,
+			"sync_ms": 41.398,
+			"texture_ms": 0.076,
+			"view_ms": 1.041
+		},
+		{
+			"action": "craft_to_transmute",
+			"draw_ms": 50.868,
+			"error": "",
+			"following_max_frame_ms": 7.109,
+			"iteration": 3,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 31.492,
+			"texture_ms": 0.096,
+			"view_ms": 0.799
+		},
+		{
+			"action": "transmute_add_wood",
+			"draw_ms": 12.521,
+			"error": "",
+			"following_max_frame_ms": 7.104,
+			"iteration": 3,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 3.107,
+			"texture_ms": 0.011,
+			"view_ms": 0.782
+		},
+		{
+			"action": "transmute_target_plastic",
+			"draw_ms": 14.537,
+			"error": "",
+			"following_max_frame_ms": 8.467,
+			"iteration": 3,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 6.686,
+			"texture_ms": 0.021,
+			"view_ms": 1.836
+		},
+		{
+			"action": "transmute_to_craft",
+			"draw_ms": 47.117,
+			"error": "",
+			"following_max_frame_ms": 6.981,
+			"iteration": 3,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 28.896,
+			"texture_ms": 0.054,
+			"view_ms": 0.863
+		},
+		{
+			"action": "close_craft",
+			"draw_ms": 11.729,
+			"error": "",
+			"following_max_frame_ms": 8.189,
+			"iteration": 3,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 2.386,
+			"save_ms": 0.004,
+			"sync_ms": 2.764,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_raft",
+			"draw_ms": 27.948,
+			"error": "",
+			"following_max_frame_ms": 7.009,
+			"iteration": 3,
+			"page_build_us": {
+				"raft": 12544
+			},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 15.819,
+			"save_ms": 0.004,
+			"sync_ms": 16.14,
+			"texture_ms": 0.0,
+			"view_ms": 0.841
+		},
+		{
+			"action": "close_raft",
+			"draw_ms": 11.85,
+			"error": "",
+			"following_max_frame_ms": 8.769,
+			"iteration": 3,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 2.025,
+			"save_ms": 0.003,
+			"sync_ms": 2.426,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_collectibles",
+			"draw_ms": 17.139,
+			"error": "",
+			"following_max_frame_ms": 7.601,
+			"iteration": 3,
+			"page_build_us": {
+				"collectibles": 4013
+			},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 6.928,
+			"save_ms": 0.004,
+			"sync_ms": 7.256,
+			"texture_ms": 0.0,
+			"view_ms": 0.78
+		},
+		{
+			"action": "close_collectibles",
+			"draw_ms": 9.944,
+			"error": "",
+			"following_max_frame_ms": 10.271,
+			"iteration": 3,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 1.98,
+			"save_ms": 0.003,
+			"sync_ms": 2.282,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "salvage",
+			"draw_ms": 92.54,
+			"error": "",
+			"following_max_frame_ms": 7.822,
+			"iteration": 3,
+			"page_build_us": {
+				"game": 68425
+			},
+			"phase": "preparation",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 71.768,
+			"save_ms": 0.002,
+			"sync_ms": 72.694,
+			"texture_ms": 0.133,
+			"view_ms": 0.556
+		},
+		{
+			"action": "craft_lamp",
+			"draw_ms": 118.562,
+			"error": "",
+			"following_max_frame_ms": 8.286,
+			"iteration": 3,
+			"page_build_us": {
+				"craft": 26669,
+				"game": 50206
+			},
+			"phase": "preparation",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 88.136,
+			"save_ms": 0.004,
+			"sync_ms": 89.418,
+			"texture_ms": 0.145,
+			"view_ms": 0.692
+		},
+		{
+			"action": "raft_select_empty_cell",
+			"draw_ms": 8.914,
+			"error": "",
+			"following_max_frame_ms": 8.565,
+			"iteration": 3,
+			"page_build_us": {},
+			"phase": "preparation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 2.259,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "raft_deselect_cell",
+			"draw_ms": 8.135,
+			"error": "",
+			"following_max_frame_ms": 8.604,
+			"iteration": 3,
+			"page_build_us": {},
+			"phase": "preparation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 0.271,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "discard_wood",
+			"draw_ms": 72.5,
+			"error": "",
+			"following_max_frame_ms": 11.0,
+			"iteration": 3,
+			"page_build_us": {
+				"game": 49702
+			},
+			"phase": "discard",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 54.471,
+			"save_ms": 0.003,
+			"sync_ms": 55.256,
+			"texture_ms": 0.095,
+			"view_ms": 0.609
+		},
+		{
+			"action": "install_filter",
+			"draw_ms": 78.868,
+			"error": "",
+			"following_max_frame_ms": 7.163,
+			"iteration": 3,
+			"page_build_us": {
+				"game": 53403
+			},
+			"phase": "preparation",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 60.74,
+			"save_ms": 0.008,
+			"sync_ms": 0.129,
+			"texture_ms": 0.092,
+			"view_ms": 0.973
+		},
+		{
+			"action": "transmute_execute",
+			"draw_ms": 74.571,
+			"error": "",
+			"following_max_frame_ms": 8.204,
+			"iteration": 3,
+			"page_build_us": {
+				"game": 43502
+			},
+			"phase": "preparation",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 55.738,
+			"save_ms": 0.004,
+			"sync_ms": 57.145,
+			"texture_ms": 0.086,
+			"view_ms": 0.7
+		},
+		{
+			"action": "shop_enter",
+			"draw_ms": 116.507,
+			"error": "",
+			"following_max_frame_ms": 7.146,
+			"iteration": 3,
+			"page_build_us": {
+				"game": 64926,
+				"shop": 22281
+			},
+			"phase": "interaction",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 92.73,
+			"save_ms": 0.003,
+			"sync_ms": 93.92,
+			"texture_ms": 0.12,
+			"view_ms": 0.698
+		},
+		{
+			"action": "shop_sell_tab",
+			"draw_ms": 13.736,
+			"error": "",
+			"following_max_frame_ms": 10.887,
+			"iteration": 3,
+			"page_build_us": {},
+			"phase": "interaction",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 5.835,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "shop_buy_tab",
+			"draw_ms": 23.321,
+			"error": "",
+			"following_max_frame_ms": 7.645,
+			"iteration": 3,
+			"page_build_us": {},
+			"phase": "interaction",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 16.109,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "shop_buy_preview",
+			"draw_ms": 14.036,
+			"error": "",
+			"following_max_frame_ms": 9.506,
+			"iteration": 3,
+			"page_build_us": {},
+			"phase": "interaction",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 4.955,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "shop_buy_confirm",
+			"draw_ms": 128.106,
+			"error": "",
+			"following_max_frame_ms": 7.076,
+			"iteration": 3,
+			"page_build_us": {
+				"game": 72326,
+				"shop": 24538
+			},
+			"phase": "interaction",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 102.328,
+			"save_ms": 0.003,
+			"sync_ms": 104.253,
+			"texture_ms": 0.137,
+			"view_ms": 0.668
+		},
+		{
+			"action": "shop_leave",
+			"draw_ms": 83.815,
+			"error": "",
+			"following_max_frame_ms": 7.248,
+			"iteration": 3,
+			"page_build_us": {
+				"game": 57719,
+				"story": 4661
+			},
+			"phase": "story",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 65.98,
+			"save_ms": 0.004,
+			"sync_ms": 66.617,
+			"texture_ms": 0.105,
+			"view_ms": 0.653
+		},
+		{
+			"action": "battle_select_attack",
+			"draw_ms": 6.795,
+			"error": "",
+			"following_max_frame_ms": 8.559,
+			"iteration": 3,
+			"page_build_us": {},
+			"phase": "battle",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 0.885,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "battle_confirm_attack",
+			"draw_ms": 13.064,
+			"error": "",
+			"following_max_frame_ms": 8.38,
+			"iteration": 3,
+			"page_build_us": {},
+			"phase": "battle",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.003,
+			"sync_ms": 5.284,
+			"texture_ms": 0.0,
+			"view_ms": 0.757
+		},
+		{
+			"action": "idle",
+			"draw_ms": 6.787,
+			"error": "",
+			"following_max_frame_ms": 7.946,
+			"iteration": 4,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 0.002,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "camera_toggle",
+			"draw_ms": 8.326,
+			"error": "",
+			"following_max_frame_ms": 8.763,
+			"iteration": 4,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 0.373,
+			"texture_ms": 0.008,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_settings",
+			"draw_ms": 39.011,
+			"error": "",
+			"following_max_frame_ms": 7.514,
+			"iteration": 4,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 26.602,
+			"save_ms": 0.0,
+			"sync_ms": 26.628,
+			"texture_ms": 0.0,
+			"view_ms": 0.906
+		},
+		{
+			"action": "close_settings",
+			"draw_ms": 9.785,
+			"error": "",
+			"following_max_frame_ms": 8.617,
+			"iteration": 4,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 1.145,
+			"save_ms": 0.0,
+			"sync_ms": 1.165,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_help",
+			"draw_ms": 28.337,
+			"error": "",
+			"following_max_frame_ms": 8.14,
+			"iteration": 4,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 17.285,
+			"save_ms": 0.0,
+			"sync_ms": 17.307,
+			"texture_ms": 0.0,
+			"view_ms": 0.79
+		},
+		{
+			"action": "close_help",
+			"draw_ms": 9.726,
+			"error": "",
+			"following_max_frame_ms": 8.401,
+			"iteration": 4,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 1.013,
+			"save_ms": 0.0,
+			"sync_ms": 1.034,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_craft",
+			"draw_ms": 47.913,
+			"error": "",
+			"following_max_frame_ms": 7.041,
+			"iteration": 4,
+			"page_build_us": {
+				"craft": 26081
+			},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 29.577,
+			"save_ms": 0.003,
+			"sync_ms": 29.93,
+			"texture_ms": 0.056,
+			"view_ms": 0.799
+		},
+		{
+			"action": "craft_to_transmute",
+			"draw_ms": 41.507,
+			"error": "",
+			"following_max_frame_ms": 9.288,
+			"iteration": 4,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 25.721,
+			"texture_ms": 0.067,
+			"view_ms": 0.706
+		},
+		{
+			"action": "transmute_add_wood",
+			"draw_ms": 10.774,
+			"error": "",
+			"following_max_frame_ms": 7.632,
+			"iteration": 4,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 2.916,
+			"texture_ms": 0.012,
+			"view_ms": 0.837
+		},
+		{
+			"action": "transmute_target_plastic",
+			"draw_ms": 12.3,
+			"error": "",
+			"following_max_frame_ms": 8.75,
+			"iteration": 4,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 5.448,
+			"texture_ms": 0.015,
+			"view_ms": 1.732
+		},
+		{
+			"action": "transmute_to_craft",
+			"draw_ms": 46.754,
+			"error": "",
+			"following_max_frame_ms": 7.127,
+			"iteration": 4,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 29.67,
+			"texture_ms": 0.056,
+			"view_ms": 0.884
+		},
+		{
+			"action": "close_craft",
+			"draw_ms": 10.627,
+			"error": "",
+			"following_max_frame_ms": 8.464,
+			"iteration": 4,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 1.979,
+			"save_ms": 0.003,
+			"sync_ms": 2.232,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_raft",
+			"draw_ms": 36.747,
+			"error": "",
+			"following_max_frame_ms": 7.001,
+			"iteration": 4,
+			"page_build_us": {
+				"raft": 19014
+			},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 23.043,
+			"save_ms": 0.004,
+			"sync_ms": 23.404,
+			"texture_ms": 0.0,
+			"view_ms": 1.055
+		},
+		{
+			"action": "close_raft",
+			"draw_ms": 9.01,
+			"error": "",
+			"following_max_frame_ms": 8.73,
+			"iteration": 4,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 1.781,
+			"save_ms": 0.002,
+			"sync_ms": 2.078,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_collectibles",
+			"draw_ms": 15.939,
+			"error": "",
+			"following_max_frame_ms": 8.201,
+			"iteration": 4,
+			"page_build_us": {
+				"collectibles": 3901
+			},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 6.931,
+			"save_ms": 0.003,
+			"sync_ms": 7.25,
+			"texture_ms": 0.0,
+			"view_ms": 0.827
+		},
+		{
+			"action": "close_collectibles",
+			"draw_ms": 8.8,
+			"error": "",
+			"following_max_frame_ms": 8.879,
+			"iteration": 4,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 1.847,
+			"save_ms": 0.003,
+			"sync_ms": 2.161,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "salvage",
+			"draw_ms": 75.018,
+			"error": "",
+			"following_max_frame_ms": 8.02,
+			"iteration": 4,
+			"page_build_us": {
+				"game": 49633
+			},
+			"phase": "preparation",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 52.352,
+			"save_ms": 0.002,
+			"sync_ms": 53.244,
+			"texture_ms": 0.093,
+			"view_ms": 0.642
+		},
+		{
+			"action": "craft_lamp",
+			"draw_ms": 161.67,
+			"error": "",
+			"following_max_frame_ms": 8.764,
+			"iteration": 4,
+			"page_build_us": {
+				"craft": 34964,
+				"game": 77080
+			},
+			"phase": "preparation",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 126.414,
+			"save_ms": 0.004,
+			"sync_ms": 127.782,
+			"texture_ms": 0.237,
+			"view_ms": 0.833
+		},
+		{
+			"action": "raft_select_empty_cell",
+			"draw_ms": 9.602,
+			"error": "",
+			"following_max_frame_ms": 7.049,
+			"iteration": 4,
+			"page_build_us": {},
+			"phase": "preparation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 2.836,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "raft_deselect_cell",
+			"draw_ms": 8.099,
+			"error": "",
+			"following_max_frame_ms": 10.554,
+			"iteration": 4,
+			"page_build_us": {},
+			"phase": "preparation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 0.192,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "discard_wood",
+			"draw_ms": 89.294,
+			"error": "",
+			"following_max_frame_ms": 7.245,
+			"iteration": 4,
+			"page_build_us": {
+				"game": 63052
+			},
+			"phase": "discard",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 69.645,
+			"save_ms": 0.004,
+			"sync_ms": 70.684,
+			"texture_ms": 0.121,
+			"view_ms": 0.934
+		},
+		{
+			"action": "install_filter",
+			"draw_ms": 90.77,
+			"error": "",
+			"following_max_frame_ms": 11.529,
+			"iteration": 4,
+			"page_build_us": {
+				"game": 62765
+			},
+			"phase": "preparation",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 69.909,
+			"save_ms": 0.003,
+			"sync_ms": 0.094,
+			"texture_ms": 0.122,
+			"view_ms": 0.616
+		},
+		{
+			"action": "transmute_execute",
+			"draw_ms": 122.541,
+			"error": "",
+			"following_max_frame_ms": 7.504,
+			"iteration": 4,
+			"page_build_us": {
+				"game": 75199
+			},
+			"phase": "preparation",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 91.931,
+			"save_ms": 0.004,
+			"sync_ms": 93.17,
+			"texture_ms": 0.137,
+			"view_ms": 0.887
+		},
+		{
+			"action": "shop_enter",
+			"draw_ms": 157.494,
+			"error": "",
+			"following_max_frame_ms": 9.145,
+			"iteration": 4,
+			"page_build_us": {
+				"game": 88624,
+				"shop": 31081
+			},
+			"phase": "interaction",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 127.504,
+			"save_ms": 0.005,
+			"sync_ms": 128.962,
+			"texture_ms": 0.148,
+			"view_ms": 1.134
+		},
+		{
+			"action": "shop_sell_tab",
+			"draw_ms": 15.447,
+			"error": "",
+			"following_max_frame_ms": 8.027,
+			"iteration": 4,
+			"page_build_us": {},
+			"phase": "interaction",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 6.855,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "shop_buy_tab",
+			"draw_ms": 34.236,
+			"error": "",
+			"following_max_frame_ms": 9.489,
+			"iteration": 4,
+			"page_build_us": {},
+			"phase": "interaction",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 24.652,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "shop_buy_preview",
+			"draw_ms": 14.644,
+			"error": "",
+			"following_max_frame_ms": 7.348,
+			"iteration": 4,
+			"page_build_us": {},
+			"phase": "interaction",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 5.315,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "shop_buy_confirm",
+			"draw_ms": 150.804,
+			"error": "",
+			"following_max_frame_ms": 7.384,
+			"iteration": 4,
+			"page_build_us": {
+				"game": 78545,
+				"shop": 33889
+			},
+			"phase": "interaction",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 119.046,
+			"save_ms": 0.003,
+			"sync_ms": 121.901,
+			"texture_ms": 0.153,
+			"view_ms": 0.934
+		},
+		{
+			"action": "shop_leave",
+			"draw_ms": 92.886,
+			"error": "",
+			"following_max_frame_ms": 7.292,
+			"iteration": 4,
+			"page_build_us": {
+				"game": 63806,
+				"story": 4410
+			},
+			"phase": "story",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 71.834,
+			"save_ms": 0.003,
+			"sync_ms": 72.644,
+			"texture_ms": 0.125,
+			"view_ms": 0.743
+		},
+		{
+			"action": "battle_select_attack",
+			"draw_ms": 8.551,
+			"error": "",
+			"following_max_frame_ms": 7.061,
+			"iteration": 4,
+			"page_build_us": {},
+			"phase": "battle",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 1.195,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "battle_confirm_attack",
+			"draw_ms": 11.48,
+			"error": "",
+			"following_max_frame_ms": 8.577,
+			"iteration": 4,
+			"page_build_us": {},
+			"phase": "battle",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.003,
+			"sync_ms": 4.302,
+			"texture_ms": 0.0,
+			"view_ms": 0.807
+		},
+		{
+			"action": "idle",
+			"draw_ms": 6.767,
+			"error": "",
+			"following_max_frame_ms": 8.463,
+			"iteration": 5,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 0.002,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "camera_toggle",
+			"draw_ms": 7.807,
+			"error": "",
+			"following_max_frame_ms": 8.519,
+			"iteration": 5,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 0.724,
+			"texture_ms": 0.012,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_settings",
+			"draw_ms": 35.822,
+			"error": "",
+			"following_max_frame_ms": 7.551,
+			"iteration": 5,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 24.074,
+			"save_ms": 0.0,
+			"sync_ms": 24.098,
+			"texture_ms": 0.0,
+			"view_ms": 0.797
+		},
+		{
+			"action": "close_settings",
+			"draw_ms": 9.878,
+			"error": "",
+			"following_max_frame_ms": 9.438,
+			"iteration": 5,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 1.333,
+			"save_ms": 0.0,
+			"sync_ms": 1.351,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_help",
+			"draw_ms": 34.617,
+			"error": "",
+			"following_max_frame_ms": 11.992,
+			"iteration": 5,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 20.563,
+			"save_ms": 0.0,
+			"sync_ms": 20.585,
+			"texture_ms": 0.0,
+			"view_ms": 0.973
+		},
+		{
+			"action": "close_help",
+			"draw_ms": 15.582,
+			"error": "",
+			"following_max_frame_ms": 9.552,
+			"iteration": 5,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 1.217,
+			"save_ms": 0.0,
+			"sync_ms": 1.239,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_craft",
+			"draw_ms": 58.142,
+			"error": "",
+			"following_max_frame_ms": 15.813,
+			"iteration": 5,
+			"page_build_us": {
+				"craft": 30519
+			},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 35.039,
+			"save_ms": 0.003,
+			"sync_ms": 35.372,
+			"texture_ms": 0.067,
+			"view_ms": 0.842
+		},
+		{
+			"action": "craft_to_transmute",
+			"draw_ms": 60.453,
+			"error": "",
+			"following_max_frame_ms": 10.551,
+			"iteration": 5,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 34.02,
+			"texture_ms": 0.101,
+			"view_ms": 1.021
+		},
+		{
+			"action": "transmute_add_wood",
+			"draw_ms": 13.647,
+			"error": "",
+			"following_max_frame_ms": 9.336,
+			"iteration": 5,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 4.8,
+			"texture_ms": 0.015,
+			"view_ms": 2.028
+		},
+		{
+			"action": "transmute_target_plastic",
+			"draw_ms": 21.157,
+			"error": "",
+			"following_max_frame_ms": 9.651,
+			"iteration": 5,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 9.131,
+			"texture_ms": 0.03,
+			"view_ms": 2.189
+		},
+		{
+			"action": "transmute_to_craft",
+			"draw_ms": 67.643,
+			"error": "",
+			"following_max_frame_ms": 9.368,
+			"iteration": 5,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 43.246,
+			"texture_ms": 0.089,
+			"view_ms": 1.901
+		},
+		{
+			"action": "close_craft",
+			"draw_ms": 18.149,
+			"error": "",
+			"following_max_frame_ms": 12.054,
+			"iteration": 5,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 4.638,
+			"save_ms": 0.005,
+			"sync_ms": 5.052,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_raft",
+			"draw_ms": 42.371,
+			"error": "",
+			"following_max_frame_ms": 10.03,
+			"iteration": 5,
+			"page_build_us": {
+				"raft": 23639
+			},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 27.876,
+			"save_ms": 0.004,
+			"sync_ms": 28.291,
+			"texture_ms": 0.0,
+			"view_ms": 1.068
+		},
+		{
+			"action": "close_raft",
+			"draw_ms": 16.997,
+			"error": "",
+			"following_max_frame_ms": 9.169,
+			"iteration": 5,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 3.089,
+			"save_ms": 0.004,
+			"sync_ms": 3.527,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "open_collectibles",
+			"draw_ms": 38.298,
+			"error": "",
+			"following_max_frame_ms": 13.985,
+			"iteration": 5,
+			"page_build_us": {
+				"collectibles": 9311
+			},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 15.039,
+			"save_ms": 0.007,
+			"sync_ms": 15.706,
+			"texture_ms": 0.0,
+			"view_ms": 1.105
+		},
+		{
+			"action": "close_collectibles",
+			"draw_ms": 17.445,
+			"error": "",
+			"following_max_frame_ms": 12.396,
+			"iteration": 5,
+			"page_build_us": {},
+			"phase": "navigation",
+			"rebuilt_hud": false,
+			"rebuilt_page": true,
+			"render_ms": 2.57,
+			"save_ms": 0.004,
+			"sync_ms": 3.415,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "salvage",
+			"draw_ms": 148.315,
+			"error": "",
+			"following_max_frame_ms": 9.961,
+			"iteration": 5,
+			"page_build_us": {
+				"game": 99375
+			},
+			"phase": "preparation",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 104.965,
+			"save_ms": 0.005,
+			"sync_ms": 106.88,
+			"texture_ms": 0.208,
+			"view_ms": 0.983
+		},
+		{
+			"action": "craft_lamp",
+			"draw_ms": 173.072,
+			"error": "",
+			"following_max_frame_ms": 8.127,
+			"iteration": 5,
+			"page_build_us": {
+				"craft": 37709,
+				"game": 77244
+			},
+			"phase": "preparation",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 131.395,
+			"save_ms": 0.004,
+			"sync_ms": 132.728,
+			"texture_ms": 0.235,
+			"view_ms": 0.867
+		},
+		{
+			"action": "raft_select_empty_cell",
+			"draw_ms": 9.418,
+			"error": "",
+			"following_max_frame_ms": 7.038,
+			"iteration": 5,
+			"page_build_us": {},
+			"phase": "preparation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 3.136,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "raft_deselect_cell",
+			"draw_ms": 8.378,
+			"error": "",
+			"following_max_frame_ms": 8.958,
+			"iteration": 5,
+			"page_build_us": {},
+			"phase": "preparation",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 0.183,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "discard_wood",
+			"draw_ms": 91.949,
+			"error": "",
+			"following_max_frame_ms": 8.117,
+			"iteration": 5,
+			"page_build_us": {
+				"game": 62482
+			},
+			"phase": "discard",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 69.108,
+			"save_ms": 0.004,
+			"sync_ms": 70.506,
+			"texture_ms": 0.102,
+			"view_ms": 0.776
+		},
+		{
+			"action": "install_filter",
+			"draw_ms": 93.028,
+			"error": "",
+			"following_max_frame_ms": 7.01,
+			"iteration": 5,
+			"page_build_us": {
+				"game": 65160
+			},
+			"phase": "preparation",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 72.24,
+			"save_ms": 0.003,
+			"sync_ms": 0.105,
+			"texture_ms": 0.114,
+			"view_ms": 0.69
+		},
+		{
+			"action": "transmute_execute",
+			"draw_ms": 95.629,
+			"error": "",
+			"following_max_frame_ms": 7.017,
+			"iteration": 5,
+			"page_build_us": {
+				"game": 59922
+			},
+			"phase": "preparation",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 75.801,
+			"save_ms": 0.009,
+			"sync_ms": 77.011,
+			"texture_ms": 0.135,
+			"view_ms": 1.311
+		},
+		{
+			"action": "shop_enter",
+			"draw_ms": 182.903,
+			"error": "",
+			"following_max_frame_ms": 8.385,
+			"iteration": 5,
+			"page_build_us": {
+				"game": 105894,
+				"shop": 37278
+			},
+			"phase": "interaction",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 152.522,
+			"save_ms": 0.004,
+			"sync_ms": 154.009,
+			"texture_ms": 0.245,
+			"view_ms": 1.145
+		},
+		{
+			"action": "shop_sell_tab",
+			"draw_ms": 17.259,
+			"error": "",
+			"following_max_frame_ms": 9.925,
+			"iteration": 5,
+			"page_build_us": {},
+			"phase": "interaction",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 6.751,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "shop_buy_tab",
+			"draw_ms": 43.647,
+			"error": "",
+			"following_max_frame_ms": 14.909,
+			"iteration": 5,
+			"page_build_us": {},
+			"phase": "interaction",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 28.858,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "shop_buy_preview",
+			"draw_ms": 16.02,
+			"error": "",
+			"following_max_frame_ms": 9.23,
+			"iteration": 5,
+			"page_build_us": {},
+			"phase": "interaction",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 6.309,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "shop_buy_confirm",
+			"draw_ms": 171.782,
+			"error": "",
+			"following_max_frame_ms": 13.883,
+			"iteration": 5,
+			"page_build_us": {
+				"game": 91483,
+				"shop": 36175
+			},
+			"phase": "interaction",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 135.158,
+			"save_ms": 0.004,
+			"sync_ms": 138.098,
+			"texture_ms": 0.2,
+			"view_ms": 1.074
+		},
+		{
+			"action": "shop_leave",
+			"draw_ms": 135.273,
+			"error": "",
+			"following_max_frame_ms": 12.552,
+			"iteration": 5,
+			"page_build_us": {
+				"game": 91704,
+				"story": 5571
+			},
+			"phase": "story",
+			"rebuilt_hud": true,
+			"rebuilt_page": true,
+			"render_ms": 102.066,
+			"save_ms": 0.003,
+			"sync_ms": 102.971,
+			"texture_ms": 0.225,
+			"view_ms": 0.835
+		},
+		{
+			"action": "battle_select_attack",
+			"draw_ms": 9.492,
+			"error": "",
+			"following_max_frame_ms": 10.327,
+			"iteration": 5,
+			"page_build_us": {},
+			"phase": "battle",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.0,
+			"sync_ms": 1.257,
+			"texture_ms": 0.0,
+			"view_ms": 0.0
+		},
+		{
+			"action": "battle_confirm_attack",
+			"draw_ms": 16.275,
+			"error": "",
+			"following_max_frame_ms": 10.274,
+			"iteration": 5,
+			"page_build_us": {},
+			"phase": "battle",
+			"rebuilt_hud": false,
+			"rebuilt_page": false,
+			"render_ms": 0.0,
+			"save_ms": 0.004,
+			"sync_ms": 6.65,
+			"texture_ms": 0.0,
+			"view_ms": 1.307
+		}
+	],
+	"size": [
+		1280,
+		720
+	],
+	"summary": {
+		"battle_confirm_attack": {
+			"first": {
+				"action": "battle_confirm_attack",
+				"draw_ms": 12.767,
+				"error": "",
+				"following_max_frame_ms": 8.477,
+				"iteration": 0,
+				"page_build_us": {},
+				"phase": "battle",
+				"rebuilt_hud": false,
+				"rebuilt_page": false,
+				"render_ms": 0.0,
+				"save_ms": 0.004,
+				"sync_ms": 4.891,
+				"texture_ms": 0.0,
+				"view_ms": 0.984
+			},
+			"warm_draw_ms": {
+				"max": 16.275,
+				"median": 13.064
+			},
+			"warm_render_ms": {
+				"max": 0.0,
+				"median": 0.0
+			},
+			"warm_sync_ms": {
+				"max": 6.65,
+				"median": 4.345
+			}
+		},
+		"battle_select_attack": {
+			"first": {
+				"action": "battle_select_attack",
+				"draw_ms": 8.889,
+				"error": "",
+				"following_max_frame_ms": 7.779,
+				"iteration": 0,
+				"page_build_us": {},
+				"phase": "battle",
+				"rebuilt_hud": false,
+				"rebuilt_page": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 1.557,
+				"texture_ms": 0.0,
+				"view_ms": 0.0
+			},
+			"warm_draw_ms": {
+				"max": 10.805,
+				"median": 9.152
+			},
+			"warm_render_ms": {
+				"max": 0.0,
+				"median": 0.0
+			},
+			"warm_sync_ms": {
+				"max": 1.257,
+				"median": 1.195
+			}
+		},
+		"camera_toggle": {
+			"first": {
+				"action": "camera_toggle",
+				"draw_ms": 13.966,
+				"error": "",
+				"following_max_frame_ms": 9.494,
+				"iteration": 0,
+				"page_build_us": {},
+				"phase": "navigation",
+				"rebuilt_hud": false,
+				"rebuilt_page": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 4.459,
+				"texture_ms": 3.93,
+				"view_ms": 0.0
+			},
+			"warm_draw_ms": {
+				"max": 8.332,
+				"median": 8.14
+			},
+			"warm_render_ms": {
+				"max": 0.0,
+				"median": 0.0
+			},
+			"warm_sync_ms": {
+				"max": 0.724,
+				"median": 0.411
+			}
+		},
+		"close_collectibles": {
+			"first": {
+				"action": "close_collectibles",
+				"draw_ms": 12.142,
+				"error": "",
+				"following_max_frame_ms": 7.482,
+				"iteration": 0,
+				"page_build_us": {},
+				"phase": "navigation",
+				"rebuilt_hud": false,
+				"rebuilt_page": true,
+				"render_ms": 1.838,
+				"save_ms": 0.002,
+				"sync_ms": 2.142,
+				"texture_ms": 0.0,
+				"view_ms": 0.0
+			},
+			"warm_draw_ms": {
+				"max": 17.445,
+				"median": 11.266
+			},
+			"warm_render_ms": {
+				"max": 2.57,
+				"median": 1.98
+			},
+			"warm_sync_ms": {
+				"max": 3.415,
+				"median": 2.282
+			}
+		},
+		"close_craft": {
+			"first": {
+				"action": "close_craft",
+				"draw_ms": 14.015,
+				"error": "",
+				"following_max_frame_ms": 8.863,
+				"iteration": 0,
+				"page_build_us": {},
+				"phase": "navigation",
+				"rebuilt_hud": false,
+				"rebuilt_page": true,
+				"render_ms": 2.876,
+				"save_ms": 0.002,
+				"sync_ms": 3.227,
+				"texture_ms": 0.0,
+				"view_ms": 0.0
+			},
+			"warm_draw_ms": {
+				"max": 18.149,
+				"median": 12.323
+			},
+			"warm_render_ms": {
+				"max": 4.638,
+				"median": 2.679
+			},
+			"warm_sync_ms": {
+				"max": 5.052,
+				"median": 3.003
+			}
+		},
+		"close_help": {
+			"first": {
+				"action": "close_help",
+				"draw_ms": 14.581,
+				"error": "",
+				"following_max_frame_ms": 9.944,
+				"iteration": 0,
+				"page_build_us": {},
+				"phase": "navigation",
+				"rebuilt_hud": false,
+				"rebuilt_page": false,
+				"render_ms": 1.499,
+				"save_ms": 0.0,
+				"sync_ms": 1.527,
+				"texture_ms": 0.0,
+				"view_ms": 0.0
+			},
+			"warm_draw_ms": {
+				"max": 15.582,
+				"median": 10.404
+			},
+			"warm_render_ms": {
+				"max": 1.378,
+				"median": 1.208
+			},
+			"warm_sync_ms": {
+				"max": 1.395,
+				"median": 1.23
+			}
+		},
+		"close_raft": {
+			"first": {
+				"action": "close_raft",
+				"draw_ms": 9.237,
+				"error": "",
+				"following_max_frame_ms": 8.253,
+				"iteration": 0,
+				"page_build_us": {},
+				"phase": "navigation",
+				"rebuilt_hud": false,
+				"rebuilt_page": true,
+				"render_ms": 1.851,
+				"save_ms": 0.003,
+				"sync_ms": 2.224,
+				"texture_ms": 0.0,
+				"view_ms": 0.0
+			},
+			"warm_draw_ms": {
+				"max": 16.997,
+				"median": 11.079
+			},
+			"warm_render_ms": {
+				"max": 3.089,
+				"median": 2.108
+			},
+			"warm_sync_ms": {
+				"max": 3.527,
+				"median": 2.426
+			}
+		},
+		"close_settings": {
+			"first": {
+				"action": "close_settings",
+				"draw_ms": 14.838,
+				"error": "",
+				"following_max_frame_ms": 9.131,
+				"iteration": 0,
+				"page_build_us": {},
+				"phase": "navigation",
+				"rebuilt_hud": false,
+				"rebuilt_page": false,
+				"render_ms": 2.121,
+				"save_ms": 0.0,
+				"sync_ms": 2.171,
+				"texture_ms": 0.0,
+				"view_ms": 0.0
+			},
+			"warm_draw_ms": {
+				"max": 10.806,
+				"median": 10.202
+			},
+			"warm_render_ms": {
+				"max": 1.615,
+				"median": 1.187
+			},
+			"warm_sync_ms": {
+				"max": 1.636,
+				"median": 1.206
+			}
+		},
+		"craft_lamp": {
+			"first": {
+				"action": "craft_lamp",
+				"draw_ms": 147.687,
+				"error": "",
+				"following_max_frame_ms": 7.815,
+				"iteration": 0,
+				"page_build_us": {
+					"craft": 29930,
+					"game": 71469
+				},
+				"phase": "preparation",
+				"rebuilt_hud": true,
+				"rebuilt_page": true,
+				"render_ms": 115.921,
+				"save_ms": 0.003,
+				"sync_ms": 117.114,
+				"texture_ms": 0.208,
+				"view_ms": 0.679
+			},
+			"warm_draw_ms": {
+				"max": 173.072,
+				"median": 134.625
+			},
+			"warm_render_ms": {
+				"max": 131.395,
+				"median": 101.439
+			},
+			"warm_sync_ms": {
+				"max": 132.728,
+				"median": 103.137
+			}
+		},
+		"craft_to_transmute": {
+			"first": {
+				"action": "craft_to_transmute",
+				"draw_ms": 103.023,
+				"error": "",
+				"following_max_frame_ms": 7.42,
+				"iteration": 0,
+				"page_build_us": {},
+				"phase": "navigation",
+				"rebuilt_hud": false,
+				"rebuilt_page": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 79.71,
+				"texture_ms": 0.094,
+				"view_ms": 0.901
+			},
+			"warm_draw_ms": {
+				"max": 60.453,
+				"median": 50.868
+			},
+			"warm_render_ms": {
+				"max": 0.0,
+				"median": 0.0
+			},
+			"warm_sync_ms": {
+				"max": 34.02,
+				"median": 31.492
+			}
+		},
+		"discard_wood": {
+			"first": {
+				"action": "discard_wood",
+				"draw_ms": 82.319,
+				"error": "",
+				"following_max_frame_ms": 8.372,
+				"iteration": 0,
+				"page_build_us": {
+					"game": 56261
+				},
+				"phase": "discard",
+				"rebuilt_hud": true,
+				"rebuilt_page": true,
+				"render_ms": 60.749,
+				"save_ms": 0.003,
+				"sync_ms": 61.552,
+				"texture_ms": 0.101,
+				"view_ms": 0.604
+			},
+			"warm_draw_ms": {
+				"max": 91.949,
+				"median": 87.855
+			},
+			"warm_render_ms": {
+				"max": 69.645,
+				"median": 66.918
+			},
+			"warm_sync_ms": {
+				"max": 70.684,
+				"median": 67.652
+			}
+		},
+		"idle": {
+			"first": {
+				"action": "idle",
+				"draw_ms": 9.399,
+				"error": "",
+				"following_max_frame_ms": 10.938,
+				"iteration": 0,
+				"page_build_us": {},
+				"phase": "navigation",
+				"rebuilt_hud": false,
+				"rebuilt_page": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.003,
+				"texture_ms": 0.0,
+				"view_ms": 0.0
+			},
+			"warm_draw_ms": {
+				"max": 6.787,
+				"median": 6.742
+			},
+			"warm_render_ms": {
+				"max": 0.0,
+				"median": 0.0
+			},
+			"warm_sync_ms": {
+				"max": 0.003,
+				"median": 0.002
+			}
+		},
+		"install_filter": {
+			"first": {
+				"action": "install_filter",
+				"draw_ms": 104.321,
+				"error": "",
+				"following_max_frame_ms": 8.657,
+				"iteration": 0,
+				"page_build_us": {
+					"game": 60570
+				},
+				"phase": "preparation",
+				"rebuilt_hud": true,
+				"rebuilt_page": true,
+				"render_ms": 72.895,
+				"save_ms": 0.003,
+				"sync_ms": 0.127,
+				"texture_ms": 0.11,
+				"view_ms": 0.698
+			},
+			"warm_draw_ms": {
+				"max": 93.028,
+				"median": 81.148
+			},
+			"warm_render_ms": {
+				"max": 72.24,
+				"median": 63.004
+			},
+			"warm_sync_ms": {
+				"max": 0.129,
+				"median": 0.105
+			}
+		},
+		"open_collectibles": {
+			"first": {
+				"action": "open_collectibles",
+				"draw_ms": 21.817,
+				"error": "",
+				"following_max_frame_ms": 8.91,
+				"iteration": 0,
+				"page_build_us": {
+					"collectibles": 5426
+				},
+				"phase": "navigation",
+				"rebuilt_hud": false,
+				"rebuilt_page": true,
+				"render_ms": 9.095,
+				"save_ms": 0.003,
+				"sync_ms": 9.451,
+				"texture_ms": 0.0,
+				"view_ms": 0.812
+			},
+			"warm_draw_ms": {
+				"max": 38.298,
+				"median": 18.979
+			},
+			"warm_render_ms": {
+				"max": 15.039,
+				"median": 8.527
+			},
+			"warm_sync_ms": {
+				"max": 15.706,
+				"median": 8.88
+			}
+		},
+		"open_craft": {
+			"first": {
+				"action": "open_craft",
+				"draw_ms": 65.4,
+				"error": "",
+				"following_max_frame_ms": 7.815,
+				"iteration": 0,
+				"page_build_us": {
+					"craft": 35305
+				},
+				"phase": "navigation",
+				"rebuilt_hud": false,
+				"rebuilt_page": true,
+				"render_ms": 40.021,
+				"save_ms": 0.007,
+				"sync_ms": 40.572,
+				"texture_ms": 0.071,
+				"view_ms": 1.237
+			},
+			"warm_draw_ms": {
+				"max": 63.39,
+				"median": 55.055
+			},
+			"warm_render_ms": {
+				"max": 40.994,
+				"median": 36.5
+			},
+			"warm_sync_ms": {
+				"max": 41.398,
+				"median": 36.881
+			}
+		},
+		"open_help": {
+			"first": {
+				"action": "open_help",
+				"draw_ms": 65.424,
+				"error": "",
+				"following_max_frame_ms": 7.066,
+				"iteration": 0,
+				"page_build_us": {},
+				"phase": "navigation",
+				"rebuilt_hud": false,
+				"rebuilt_page": false,
+				"render_ms": 38.039,
+				"save_ms": 0.0,
+				"sync_ms": 38.062,
+				"texture_ms": 0.0,
+				"view_ms": 0.924
+			},
+			"warm_draw_ms": {
+				"max": 34.617,
+				"median": 31.363
+			},
+			"warm_render_ms": {
+				"max": 22.286,
+				"median": 20.321
+			},
+			"warm_sync_ms": {
+				"max": 22.305,
+				"median": 20.348
+			}
+		},
+		"open_raft": {
+			"first": {
+				"action": "open_raft",
+				"draw_ms": 31.134,
+				"error": "",
+				"following_max_frame_ms": 8.043,
+				"iteration": 0,
+				"page_build_us": {
+					"raft": 15038
+				},
+				"phase": "navigation",
+				"rebuilt_hud": false,
+				"rebuilt_page": true,
+				"render_ms": 18.51,
+				"save_ms": 0.003,
+				"sync_ms": 18.907,
+				"texture_ms": 0.0,
+				"view_ms": 1.005
+			},
+			"warm_draw_ms": {
+				"max": 42.371,
+				"median": 28.388
+			},
+			"warm_render_ms": {
+				"max": 27.876,
+				"median": 17.876
+			},
+			"warm_sync_ms": {
+				"max": 28.291,
+				"median": 18.454
+			}
+		},
+		"open_settings": {
+			"first": {
+				"action": "open_settings",
+				"draw_ms": 72.771,
+				"error": "",
+				"following_max_frame_ms": 9.82,
+				"iteration": 0,
+				"page_build_us": {},
+				"phase": "navigation",
+				"rebuilt_hud": false,
+				"rebuilt_page": false,
+				"render_ms": 44.934,
+				"save_ms": 0.0,
+				"sync_ms": 44.964,
+				"texture_ms": 0.0,
+				"view_ms": 1.063
+			},
+			"warm_draw_ms": {
+				"max": 39.011,
+				"median": 33.944
+			},
+			"warm_render_ms": {
+				"max": 26.602,
+				"median": 22.808
+			},
+			"warm_sync_ms": {
+				"max": 26.628,
+				"median": 22.831
+			}
+		},
+		"raft_deselect_cell": {
+			"first": {
+				"action": "raft_deselect_cell",
+				"draw_ms": 6.771,
+				"error": "",
+				"following_max_frame_ms": 8.785,
+				"iteration": 0,
+				"page_build_us": {},
+				"phase": "preparation",
+				"rebuilt_hud": false,
+				"rebuilt_page": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 0.153,
+				"texture_ms": 0.0,
+				"view_ms": 0.0
+			},
+			"warm_draw_ms": {
+				"max": 8.675,
+				"median": 8.135
+			},
+			"warm_render_ms": {
+				"max": 0.0,
+				"median": 0.0
+			},
+			"warm_sync_ms": {
+				"max": 0.271,
+				"median": 0.192
+			}
+		},
+		"raft_select_empty_cell": {
+			"first": {
+				"action": "raft_select_empty_cell",
+				"draw_ms": 33.277,
+				"error": "",
+				"following_max_frame_ms": 7.572,
+				"iteration": 0,
+				"page_build_us": {},
+				"phase": "preparation",
+				"rebuilt_hud": false,
+				"rebuilt_page": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 10.886,
+				"texture_ms": 0.0,
+				"view_ms": 0.0
+			},
+			"warm_draw_ms": {
+				"max": 9.602,
+				"median": 9.117
+			},
+			"warm_render_ms": {
+				"max": 0.0,
+				"median": 0.0
+			},
+			"warm_sync_ms": {
+				"max": 3.136,
+				"median": 2.836
+			}
+		},
+		"salvage": {
+			"first": {
+				"action": "salvage",
+				"draw_ms": 110.69,
+				"error": "",
+				"following_max_frame_ms": 7.421,
+				"iteration": 0,
+				"page_build_us": {
+					"game": 75114
+				},
+				"phase": "preparation",
+				"rebuilt_hud": true,
+				"rebuilt_page": true,
+				"render_ms": 79.375,
+				"save_ms": 0.004,
+				"sync_ms": 80.49,
+				"texture_ms": 0.14,
+				"view_ms": 0.819
+			},
+			"warm_draw_ms": {
+				"max": 148.315,
+				"median": 89.034
+			},
+			"warm_render_ms": {
+				"max": 104.965,
+				"median": 63.936
+			},
+			"warm_sync_ms": {
+				"max": 106.88,
+				"median": 64.889
+			}
+		},
+		"shop_buy_confirm": {
+			"first": {
+				"action": "shop_buy_confirm",
+				"draw_ms": 145.102,
+				"error": "",
+				"following_max_frame_ms": 7.25,
+				"iteration": 0,
+				"page_build_us": {
+					"game": 86643,
+					"shop": 23597
+				},
+				"phase": "interaction",
+				"rebuilt_hud": true,
+				"rebuilt_page": true,
+				"render_ms": 115.944,
+				"save_ms": 0.003,
+				"sync_ms": 118.119,
+				"texture_ms": 0.147,
+				"view_ms": 0.832
+			},
+			"warm_draw_ms": {
+				"max": 171.782,
+				"median": 131.324
+			},
+			"warm_render_ms": {
+				"max": 135.158,
+				"median": 105.212
+			},
+			"warm_sync_ms": {
+				"max": 138.098,
+				"median": 109.268
+			}
+		},
+		"shop_buy_preview": {
+			"first": {
+				"action": "shop_buy_preview",
+				"draw_ms": 16.573,
+				"error": "",
+				"following_max_frame_ms": 7.083,
+				"iteration": 0,
+				"page_build_us": {},
+				"phase": "interaction",
+				"rebuilt_hud": false,
+				"rebuilt_page": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 6.243,
+				"texture_ms": 0.0,
+				"view_ms": 0.0
+			},
+			"warm_draw_ms": {
+				"max": 16.02,
+				"median": 14.036
+			},
+			"warm_render_ms": {
+				"max": 0.0,
+				"median": 0.0
+			},
+			"warm_sync_ms": {
+				"max": 6.309,
+				"median": 4.955
+			}
+		},
+		"shop_buy_tab": {
+			"first": {
+				"action": "shop_buy_tab",
+				"draw_ms": 37.254,
+				"error": "",
+				"following_max_frame_ms": 9.983,
+				"iteration": 0,
+				"page_build_us": {},
+				"phase": "interaction",
+				"rebuilt_hud": false,
+				"rebuilt_page": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 26.558,
+				"texture_ms": 0.0,
+				"view_ms": 0.0
+			},
+			"warm_draw_ms": {
+				"max": 43.647,
+				"median": 33.789
+			},
+			"warm_render_ms": {
+				"max": 0.0,
+				"median": 0.0
+			},
+			"warm_sync_ms": {
+				"max": 28.858,
+				"median": 22.032
+			}
+		},
+		"shop_enter": {
+			"first": {
+				"action": "shop_enter",
+				"draw_ms": 140.938,
+				"error": "",
+				"following_max_frame_ms": 7.645,
+				"iteration": 0,
+				"page_build_us": {
+					"game": 72028,
+					"shop": 31464
+				},
+				"phase": "interaction",
+				"rebuilt_hud": true,
+				"rebuilt_page": true,
+				"render_ms": 109.252,
+				"save_ms": 0.003,
+				"sync_ms": 110.463,
+				"texture_ms": 0.123,
+				"view_ms": 0.688
+			},
+			"warm_draw_ms": {
+				"max": 182.903,
+				"median": 126.216
+			},
+			"warm_render_ms": {
+				"max": 152.522,
+				"median": 102.168
+			},
+			"warm_sync_ms": {
+				"max": 154.009,
+				"median": 103.456
+			}
+		},
+		"shop_leave": {
+			"first": {
+				"action": "shop_leave",
+				"draw_ms": 88.115,
+				"error": "",
+				"following_max_frame_ms": 8.155,
+				"iteration": 0,
+				"page_build_us": {
+					"game": 59958,
+					"story": 4857
+				},
+				"phase": "story",
+				"rebuilt_hud": true,
+				"rebuilt_page": true,
+				"render_ms": 68.775,
+				"save_ms": 0.004,
+				"sync_ms": 69.564,
+				"texture_ms": 0.126,
+				"view_ms": 0.727
+			},
+			"warm_draw_ms": {
+				"max": 135.273,
+				"median": 101.15
+			},
+			"warm_render_ms": {
+				"max": 102.066,
+				"median": 73.607
+			},
+			"warm_sync_ms": {
+				"max": 102.971,
+				"median": 74.389
+			}
+		},
+		"shop_sell_tab": {
+			"first": {
+				"action": "shop_sell_tab",
+				"draw_ms": 23.408,
+				"error": "",
+				"following_max_frame_ms": 9.906,
+				"iteration": 0,
+				"page_build_us": {},
+				"phase": "interaction",
+				"rebuilt_hud": false,
+				"rebuilt_page": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 10.313,
+				"texture_ms": 0.0,
+				"view_ms": 0.0
+			},
+			"warm_draw_ms": {
+				"max": 17.259,
+				"median": 13.736
+			},
+			"warm_render_ms": {
+				"max": 0.0,
+				"median": 0.0
+			},
+			"warm_sync_ms": {
+				"max": 6.855,
+				"median": 6.294
+			}
+		},
+		"transmute_add_wood": {
+			"first": {
+				"action": "transmute_add_wood",
+				"draw_ms": 12.047,
+				"error": "",
+				"following_max_frame_ms": 8.508,
+				"iteration": 0,
+				"page_build_us": {},
+				"phase": "navigation",
+				"rebuilt_hud": false,
+				"rebuilt_page": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 3.362,
+				"texture_ms": 0.011,
+				"view_ms": 0.977
+			},
+			"warm_draw_ms": {
+				"max": 13.647,
+				"median": 10.774
+			},
+			"warm_render_ms": {
+				"max": 0.0,
+				"median": 0.0
+			},
+			"warm_sync_ms": {
+				"max": 4.8,
+				"median": 2.916
+			}
+		},
+		"transmute_execute": {
+			"first": {
+				"action": "transmute_execute",
+				"draw_ms": 82.611,
+				"error": "",
+				"following_max_frame_ms": 6.995,
+				"iteration": 0,
+				"page_build_us": {
+					"game": 52576
+				},
+				"phase": "preparation",
+				"rebuilt_hud": true,
+				"rebuilt_page": true,
+				"render_ms": 63.811,
+				"save_ms": 0.004,
+				"sync_ms": 65.21,
+				"texture_ms": 0.092,
+				"view_ms": 0.823
+			},
+			"warm_draw_ms": {
+				"max": 122.541,
+				"median": 91.989
+			},
+			"warm_render_ms": {
+				"max": 91.931,
+				"median": 72.635
+			},
+			"warm_sync_ms": {
+				"max": 93.17,
+				"median": 73.578
+			}
+		},
+		"transmute_target_plastic": {
+			"first": {
+				"action": "transmute_target_plastic",
+				"draw_ms": 15.345,
+				"error": "",
+				"following_max_frame_ms": 9.95,
+				"iteration": 0,
+				"page_build_us": {},
+				"phase": "navigation",
+				"rebuilt_hud": false,
+				"rebuilt_page": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 6.199,
+				"texture_ms": 0.018,
+				"view_ms": 1.606
+			},
+			"warm_draw_ms": {
+				"max": 21.157,
+				"median": 18.108
+			},
+			"warm_render_ms": {
+				"max": 0.0,
+				"median": 0.0
+			},
+			"warm_sync_ms": {
+				"max": 9.131,
+				"median": 7.399
+			}
+		},
+		"transmute_to_craft": {
+			"first": {
+				"action": "transmute_to_craft",
+				"draw_ms": 64.205,
+				"error": "",
+				"following_max_frame_ms": 9.124,
+				"iteration": 0,
+				"page_build_us": {},
+				"phase": "navigation",
+				"rebuilt_hud": false,
+				"rebuilt_page": false,
+				"render_ms": 0.0,
+				"save_ms": 0.0,
+				"sync_ms": 39.769,
+				"texture_ms": 0.061,
+				"view_ms": 0.893
+			},
+			"warm_draw_ms": {
+				"max": 67.643,
+				"median": 51.04
+			},
+			"warm_render_ms": {
+				"max": 0.0,
+				"median": 0.0
+			},
+			"warm_sync_ms": {
+				"max": 43.246,
+				"median": 31.273
+			}
+		}
+	},
+	"version": "godot-flow-v02-26"
+}

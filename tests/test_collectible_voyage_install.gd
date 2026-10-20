@@ -83,7 +83,7 @@ func test_install() -> void:
 	check(install(s,"lamp",2) and s.state.cells[2].equipment.level==1,"reentry does not reset uses")
 func test_strong_temporary_max() -> void:
 	var s=fresh("strong")
-	acquire(s,"borrowedPulse"); acquire(s,"borrowedPulse")
+	acquire(s,"test-pulse"); acquire(s,"test-pulse")
 	s.state.node=catalog.entry("nodes","crabBattle"); s.state.node.visit_id="collectible-strong-test"
 	s.state.phase="story"; s.state.story_step="choice"
 	check(s.dispatch("fight"),"enter battle with stacked temporary health")
@@ -99,5 +99,6 @@ func _init() -> void:
 	fixture("test-water",[{"key":"water","type":"modifier","target":"survival.hydration_cost","amount":-5}])
 	fixture("test-install",[{"key":"install","type":"install_level","level":2,"uses":2}])
 	fixture("test-install-other",[{"key":"install","type":"install_level","level":2,"uses":2}])
+	fixture("test-pulse",[{"key":"pulse","type":"temporary_max","trigger":"battle_start","stat":"hp","amount":2,"heal":2,"uses":1}])
 	test_survival(); test_install(); test_strong_temporary_max()
 	print("COLLECTIBLE VOYAGE INSTALL: %s" % ("PASS" if failures==0 else "FAIL")); quit(0 if failures==0 else 1)

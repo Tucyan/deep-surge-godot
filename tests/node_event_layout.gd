@@ -65,8 +65,12 @@ func run() -> void:
 	check(reset_node.visible and toggle_node.visible, "视角按钮仍在，只是被底板覆盖")
 	check(salvage_node != null and salvage_node.visible, "打捞按钮仍在，只是被底板覆盖")
 	check(reset_node.focus_mode == Control.FOCUS_NONE and salvage_node.focus_mode == Control.FOCUS_NONE, "被覆盖的按钮不可用键盘触发")
-	check(node_of("VoyageHandTopBar").z_index > surface.z_index, "手牌顶栏在事件底板之上")
 	check(node_of("VoyageNavigationBar").z_index > surface.z_index, "顶栏在事件底板之上")
+	# Desktop keeps the hand strip visible; the event page stops above the AP bar.
+	check(node_of("VoyageHandTopBar").z_index > surface.z_index, "手牌顶栏在事件底板之上")
+	check(node_of("VoyageHandTopBar").is_visible_in_tree() and node_of("VoyageHandTray").is_visible_in_tree(), "桌面事件页不遮挡手牌区")
+	var hand_top: float = node_of("VoyageHandTopBar").get_global_rect().position.y
+	check(node_of("NodeEventOptions").get_global_rect().end.y <= hand_top - 8.0, "桌面事件栏止于手牌顶栏之上")
 	await shot("intro")
 
 	# intro: advance stays one-step.

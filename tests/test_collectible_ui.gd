@@ -32,32 +32,33 @@ func run() -> void:
 	page.select_buy(offer); page.confirm_selection()
 	check(commands.size()==1 and commands[0].command=="buy_collectible" and commands[0].args.revision==s.revision,"confirmation sends collectible transaction revision")
 	page.free()
-	for id in ["lifeboatTag","rationTin","fittersBadge","spearParcel","borrowedPulse","luckyKnot"]:
+	for id in ["rescueBadge","sealedFishTin","foldingRule","barbedBundle","crimsonVial","sailorsKnot"]:
 		check(s.Collectibles.acquire(s,id),"collection fixture "+id)
 	s.state.phase="navigation"
 	var collection=load("res://pages/collectibles_page.gd").new(); root.add_child(collection)
 	collection.size=Vector2(1280,720); collection.theme=load("res://presentation/widgets.gd").theme()
 	collection.setup(s.view(),catalog,null)
-	check(collection.find_children("*","ScrollContainer",true,false).size()==1,"collection scroll supports multiple effects")
+	check(collection.find_children("*","ScrollContainer",true,false).size()==2,"grid and detail each scroll")
 	await process_frame; await process_frame
 	if DisplayServer.get_name()!="headless":
 		await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(directory+"/collection.png")
 	collection.free()
-	# Dense paging and selection track instances, including duplicate definitions.
-	for i in range(16): check(s.Collectibles.acquire(s,"luckyKnot"),"warehouse duplicate fixture")
+	# Dense scrolling and selection track instances, including duplicate definitions.
+	for i in range(16): check(s.Collectibles.acquire(s,"sailorsKnot"),"warehouse duplicate fixture")
 	var rules: Dictionary=s.snapshot()
 	collection=load("res://pages/collectibles_page.gd").new(); root.add_child(collection)
 	collection.size=Vector2(1280,720); collection.theme=load("res://presentation/widgets.gd").theme()
 	collection.setup(s.view(),catalog,null)
 	await process_frame; await process_frame
-	check(collection.grid.columns==5 and collection.grid.get_child_count()==20,"dense warehouse fills first page")
+	check(collection.grid.columns==5 and collection.grid.get_child_count()==22,"dense warehouse lists every instance")
 	var slots=collection.grid.get_children().filter(func(node):return node is Button)
 	slots[1].pressed.emit(); await process_frame
 	check(collection.selected_uid==s.view().collectibles[1].uid,"selection uses instance UID")
-	collection.footer.get_children().back().pressed.emit(); await process_frame; await process_frame
-	check(collection.page_index==1 and collection.grid.get_child_count()==20,"warehouse pages and pads slots")
-	check(collection.selected_uid==s.view().collectibles[20].uid,"second page selects real first instance")
-	check(s.snapshot()==rules,"warehouse inspection and paging never mutate state/RNG")
+	collection.grid_scroll.scroll_vertical=1000; await process_frame; await process_frame
+	slots=collection.grid.get_children().filter(func(node):return node is Button)
+	slots[20].pressed.emit(); await process_frame
+	check(collection.selected_uid==s.view().collectibles[20].uid,"scroll reaches real instance after twentieth")
+	check(s.snapshot()==rules,"warehouse inspection and scrolling never mutate state/RNG")
 	collection.free()
 	print("COLLECTIBLE UI: %s" % ("PASS" if failures==0 else "FAIL")); quit(failures)

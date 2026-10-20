@@ -9,7 +9,8 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 	notice.name="SettingsNotice"; notice.visible=not app.message.is_empty()
 	var compact := app.size.y<780
 	if compact: parent.add_theme_constant_override("separation",6)
-	var current_tab: String = app.settings_tab if app.settings_tab in ["display", "game", "narrative"] else "display"
+	var available_tabs: Array = ["display", "game", "narrative"] if app.story_mode_visible else ["display", "game"]
+	var current_tab: String = app.settings_tab if app.settings_tab in available_tabs else "display"
 
 	# Subtitle / context description
 	var subtitle := Label.new()
@@ -47,6 +48,7 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 	tab_narrative.custom_minimum_size = Vector2(0, 36)
 	tab_narrative.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	tab_bar.add_child(tab_narrative)
+	tab_narrative.visible = app.story_mode_visible
 	W.TextButtonArt.apply(tab_narrative)
 
 	# 2. Tab Content Containers
@@ -86,6 +88,7 @@ static func build(parent: Node, app: Control, view: Dictionary) -> void:
 	var built: Dictionary={}
 	var boxes: Dictionary={"display":display_box,"game":game_box,"narrative":narrative_box}
 	var update_tabs = func(target: String):
+		if target not in available_tabs: return
 		if mobile_scroll: mobile_scroll.set_meta("restoring_scroll",true)
 		if not built.has(target):
 			match target:

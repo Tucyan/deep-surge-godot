@@ -1,5 +1,5 @@
 # 回溯潮涌：只读剧情回廊
-<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v02-26; reviewed: 2026-10-19 -->
+<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v02-27; reviewed: 2026-10-20 -->
 
 当前恢复范围是五幕特殊序章和原本地旧剧情归档，属于旧档兼容规范的明确例外。它与新独立剧情会话分开，不恢复旧campaign/night玩法。
 

@@ -1,10 +1,9 @@
 extends "res://pages/flow_base.gd"
+## Both platforms scroll the whole shelf; there is no paging.
 const Placeholder=preload("res://presentation/collectible_art.gd")
-const PAGE_SIZE:=20
-var page_index:=0
 var selected_uid:=""
 var grid: GridContainer
-var footer: HBoxContainer
+var grid_scroll: ScrollContainer
 var detail: VBoxContainer
 var items: Array=[]
 
@@ -18,40 +17,32 @@ func build() -> void:
 	var body:=HBoxContainer.new(); body.name="CollectionBody"; body.size_flags_vertical=Control.SIZE_EXPAND_FILL; add_child(body)
 	body.add_theme_constant_override("separation",18)
 	var left:=VBoxContainer.new(); left.size_flags_horizontal=Control.SIZE_EXPAND_FILL; left.size_flags_stretch_ratio=1.8; body.add_child(left)
+	grid_scroll=ScrollContainer.new(); grid_scroll.name="CollectiblesScroll"
+	grid_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
+	grid_scroll.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	grid_scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL
+	left.add_child(grid_scroll)
 	grid=GridContainer.new(); grid.name="CollectiblesGrid"; grid.columns=3 if context.get("mobile",false) else 5
-	grid.size_flags_vertical=Control.SIZE_EXPAND_FILL
-	grid.add_theme_constant_override("h_separation",9); grid.add_theme_constant_override("v_separation",9); left.add_child(grid)
-	footer=HBoxContainer.new(); footer.alignment=BoxContainer.ALIGNMENT_CENTER; left.add_child(footer)
+	grid.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	grid.add_theme_constant_override("h_separation",9); grid.add_theme_constant_override("v_separation",9); grid_scroll.add_child(grid)
 	detail=W.panel(body); detail.name="CollectibleDetail"; detail.get_parent().name="CollectibleDetailSurface"
 	detail.add_theme_constant_override("separation",12)
 	_refresh_grid()
 
 func _refresh_grid() -> void:
 	for node in grid.get_children(): grid.remove_child(node); node.queue_free()
-	for node in footer.get_children(): footer.remove_child(node); node.queue_free()
-	var page_size:=6 if context.get("mobile",false) else PAGE_SIZE
-	var pages:=maxi(1,ceili(float(items.size())/page_size))
-	page_index=clampi(page_index,0,pages-1)
-	var visible_items: Array=items.slice(page_index*page_size,(page_index+1)*page_size)
-	if not visible_items.any(func(item):return item.uid==selected_uid): selected_uid=visible_items[0].uid if not visible_items.is_empty() else ""
-	for item in visible_items: _slot(item)
-	for unused in range(page_size-visible_items.size()):
-		var empty:=PanelContainer.new(); empty.custom_minimum_size=Vector2(80,80)
-		empty.size_flags_horizontal=Control.SIZE_EXPAND_FILL; empty.size_flags_vertical=Control.SIZE_EXPAND_FILL
-		empty.mouse_filter=Control.MOUSE_FILTER_IGNORE
-		var style:=StyleBoxFlat.new(); style.bg_color=Color(.04,.1,.17,.45); style.border_color=Color(.24,.34,.42,.35); style.set_border_width_all(1)
-		empty.add_theme_stylebox_override("panel",style); grid.add_child(empty)
-	W.button(footer,"上一页",func():page_index-=1; _refresh_grid(),page_index==0)
-	W.text(footer,"%d / %d" % [page_index+1,pages],16).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
-	W.button(footer,"下一页",func():page_index+=1; _refresh_grid(),page_index==pages-1)
-	for control in footer.get_children():
-		control.size_flags_horizontal=Control.SIZE_SHRINK_CENTER
-		control.custom_minimum_size.x=64 if control is Label else 96
+	if not items.any(func(item):return item.uid==selected_uid):
+		selected_uid=items[0].uid if not items.is_empty() else ""
+	for item in items: _slot(item)
+	if items.is_empty():
+		var empty:=W.text(grid,"仓库还是空的。",18,W.MUTED)
+		empty.name="CollectiblesEmptyHint"
 	_refresh_detail()
 
 func _slot(item: Dictionary) -> void:
 	var button:=Button.new(); button.name="CollectibleSlot_"+item.uid; button.accessibility_name=item.name
-	button.custom_minimum_size=Vector2(80,80); button.size_flags_horizontal=Control.SIZE_EXPAND_FILL; button.size_flags_vertical=Control.SIZE_EXPAND_FILL
+	# Fixed cell height keeps the shelf readable inside the scroll region.
+	button.custom_minimum_size=Vector2(92,148); button.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	button.tooltip_text=item.name; grid.add_child(button)
 	for state in ["normal","hover","pressed","focus"]:
 		var style:=StyleBoxFlat.new(); style.bg_color=Color("102d50") if state=="normal" else Color("1a4160")

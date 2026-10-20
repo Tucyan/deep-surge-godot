@@ -1,5 +1,5 @@
 # 应用编排与刷新边界
-<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v02-26; reviewed: 2026-10-19 -->
+<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v02-27; reviewed: 2026-10-20 -->
 
 2026-10-19。当前工程为 Godot；根目录 Three.js 契约仅供历史追溯。
 

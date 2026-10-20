@@ -27,13 +27,25 @@ func inspect_event(name: String):
 	var body=app.find_child("NodeEventBodyHost",true,false)
 	var header=app.find_child("VoyageHandTopBar",true,false)
 	check(body!=null and body.size.y>0,"event host has space: "+name)
+	# The event page now stretches to the bottom edge and the hand strip hides.
+	check(not header.is_visible_in_tree(),"hand header steps aside: "+name)
 	var rects: Array=[]
 	for id in ["NodeEventArt","NodeEventProse","NodeEventOptions"]:
 		var column=app.find_child(id,true,false)
+		check(column.is_visible_in_tree(),"column visible: "+name+" "+id)
 		check(app.get_global_rect().grow(2).encloses(column.get_global_rect()),"column in viewport: "+name+" "+id)
 		check(body.get_global_rect().grow(2).encloses(column.get_global_rect()),"column inside event host: "+name+" "+id)
-		check(column.get_global_rect().end.y<=header.global_position.y-8,"column clears hand: "+name+" "+id)
+		check(column.get_global_rect().end.y>=app.size.y-40.0,"column reaches the bottom edge: "+name+" "+id)
 		rects.append(column.get_global_rect())
+	check(rects[0].size.y>400.0,"event columns use the freed card space: "+name+" "+str(rects[0].size.y))
+	# The illustration stays on phones and since 2026-10-20 owns the larger share:
+	# the prose column no longer absorbs every pixel the options leave behind.
+	check(rects[0].size.x>=200.0,"illustration keeps a usable width: "+name+" "+str(rects[0].size.x))
+	check(rects[1].size.x>=340.0,"prose keeps a usable width: "+name+" "+str(rects[1].size.x))
+	check(rects[0].size.x>=body.size.x*0.32,"illustration takes the larger share: "+name+" %d/%d" % [rects[0].size.x,body.size.x])
+	check(rects[1].size.x<=body.size.x*0.38,"prose column stays within its share: "+name+" %d/%d" % [rects[1].size.x,body.size.x])
+	var illustration=app.find_child("NodeEventIllustration",true,false)
+	check(illustration!=null and illustration.texture!=null and illustration.size.x>=180.0,"illustration renders art: "+name)
 	check(not rects[0].intersects(rects[1]) and not rects[1].intersects(rects[2]),"event columns do not overlap: "+name)
 	var page=app.find_child("NodeEventBody",true,false)
 	for entry in page.entries:
@@ -77,11 +89,20 @@ func run():
 				if not options.is_empty():
 					var before: Dictionary=app.session.snapshot()
 					page.press(options[0]); await settle()
-					var cancel=app.find_child("CancelPreselect",true,false)
-					check(cancel.is_visible_in_tree() and cancel.size.y>=44,"cancel touch height: "+suffix)
+					# Phones drop the header row: 取消选择 lives inside the preselected option.
+					check(app.find_child("NodeEventOptionsHeader",true,false)==null,"no header row on phones: "+suffix)
+					var cancel=options[0].get("cancel")
+					check(cancel!=null and cancel.is_visible_in_tree(),"inline cancel appears on the selected option: "+suffix)
+					if cancel!=null:
+						check(cancel.size.y>=44,"cancel touch height: "+suffix)
+						var button_rect: Rect2=options[0].button.get_global_rect()
+						check(button_rect.encloses(cancel.get_global_rect()),"cancel sits inside its option: "+suffix)
+						check(cancel.get_global_rect().end.x>button_rect.get_center().x,"cancel hugs the option's right edge: "+suffix)
+						check(cancel.get_global_rect().end.x<=button_rect.end.x-24.0,"cancel clears the option frame: "+suffix)
 					check(app.session.snapshot()==before,"preselect preserves rules: "+suffix)
 					await capture(suffix+"-preselect")
-					cancel.pressed.emit(); await settle()
+					if cancel!=null: cancel.pressed.emit(); await settle()
+					check(page.preselect_key=="","inline cancel clears preselect: "+suffix)
 					check(app.session.snapshot()==before,"cancel preserves rules: "+suffix)
 		if resolution==Vector2i(1680,720):
 			for definition in nodes:

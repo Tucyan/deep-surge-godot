@@ -1,5 +1,5 @@
 # Deep Surge 文档索引
-<!-- doc-status: current; doc-role: entry; content-version: godot-flow-v02-26; reviewed: 2026-10-19 -->
+<!-- doc-status: current; doc-role: entry; content-version: godot-flow-v02-27; reviewed: 2026-10-20 -->
 
 当前工程为 Godot。先按任务选择下表主文档，再阅读专题；详细数值与行为只在对应主文档维护。文档、代码或测试冲突时需核对，不用历史条目覆盖现行实现。
 
@@ -38,6 +38,7 @@
 | 类型 | 入口 | 使用方式 |
 |---|---|---|
 | 设计提案 | [design/](design/) | 待讨论方案，不直接覆盖当前契约 |
+| 0.3更新范围 | [范围定稿](design/v03-release-scope.md)、[配置解耦审查](design/v03-layer-configuration-audit.md) | 已敲定的版本功能、试测参数边界及待实施架构拆分；不代表已上线 |
 | 实施计划 | [superpowers/plans/](superpowers/plans/) | 过程与验收进度，以各计划的状态及实际证据为准 |
 | 验证记录 | [evidence 索引](../evidence/README.md) | 记录执行版本、命令、结果和未验证项 |
 | 旧出身 | [出身 v1](origins-v1.md) | v24历史设计，当前使用上表 v2 |
@@ -46,3 +47,5 @@
 导航局部刷新已经实施；覆盖范围和未达成项查 [原计划实施记录](superpowers/plans/2026-10-18-navigation-stall-repair.md)，不再将它标为尚未实施。当前应用架构检查见 [架构验证](../evidence/architecture-health-verification.md)；这不代表全部卡顿或所有平台均已验收。
 
 根目录规则原稿、Three.js/Unity 实验、压缩包与本地 `.planning/` 记录按需追溯，不作为本工程当前规则入口。默认阅读不加载全部历史、计划或截图记录。
+
+- [藏品与寻物节点 v27](relic-expedition.md)：20件全新藏品、10个获取节点与旧案归档。

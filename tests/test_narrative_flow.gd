@@ -91,6 +91,16 @@ func run() -> void:
 	# UI entry points render without touching the game.
 	app.handle_ui("narrative_choose", "")
 	await process_frame
+	check(app.local_panel == "" and app.layout.find_child("NarrativeName", true, false) == null, "story picker stays hidden by default")
+	app.settings_tab = "narrative"
+	app.handle_ui("local_panel", "settings")
+	await process_frame
+	check(app.settings_tab == "display" and not app.layout.find_child("TabNarrative", true, false).visible, "hidden narrative tab falls back to display settings")
+	app.local_panel = ""
+	# Explicitly opt in to keep exercising the retained UI and paired-save behavior.
+	app.story_mode_visible = true
+	app.handle_ui("narrative_choose", "")
+	await process_frame
 	check(app.layout.find_child("NarrativeName", true, false) != null, "home narrative picker renders")
 	app.local_panel = ""
 	app.handle_ui("local_panel", "settings")

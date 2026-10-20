@@ -17,7 +17,7 @@ const Origins = preload("res://core/origin_rules.gd")
 const Collectibles = preload("res://core/collectible_rules.gd")
 const EffectQuery = preload("res://core/effect_query.gd")
 const EffectRules = preload("res://core/effect_rules.gd")
-const VERSION := "godot-flow-v02-26"
+const VERSION := "godot-flow-v02-27"
 const ORIGINS = Origins.DEFINITIONS
 var catalog: RefCounted
 var state: Dictionary = {}

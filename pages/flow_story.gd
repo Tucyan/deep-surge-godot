@@ -6,8 +6,14 @@ const Difficulty = preload("res://core/difficulty_rules.gd")
 
 const COLUMN_GAP := 20.0
 const CHOICES_WIDTH := 332.0
+## Mobile gives the illustration the larger share of the row; the prose column
+## only keeps a readable minimum instead of absorbing everything that is left.
+const ART_MOBILE_SHARE := 0.35
+const ART_MOBILE_MIN_WIDTH := 220.0
+const ART_MOBILE_MAX_WIDTH := 600.0
+const PROSE_MOBILE_MIN_WIDTH := 340.0
 const ART_DEFAULT := "opening.image.05"
-## Presentation-only art table: no node owns a dedicated illustration yet.
+## Presentation-only fallback; authored nodes may supply a registered art ID.
 const ART_BY_KIND := {
 	"ruin": "opening.image.02",
 	"shop": "opening.image.03",
@@ -16,8 +22,11 @@ const ART_BY_KIND := {
 	"battle": "opening.image.04",
 }
 const PRESELECT_HINT := "再次点击该选项即可确认；也可点右上角“取消选择”返回。"
+const PRESELECT_HINT_MOBILE := "再次点击该选项即可确认；也可点选项右侧的“取消选择”返回。"
 
 var art_view: TextureRect
+var art_column: Control
+var options_frame: Control
 var prose: VBoxContainer
 var options_panel: VBoxContainer
 var options_header: Control
@@ -45,7 +54,6 @@ func build() -> void:
 	columns.clip_contents = true
 	add_child(columns)
 	build_art_column(columns)
-	if context.get("mobile",false): columns.get_child(0).hide()
 	var prose_column := build_frame_column(columns, 1.06, "NodeEventProse")
 	prose = VBoxContainer.new()
 	prose.name = "NodeEventText"
@@ -59,40 +67,14 @@ func build() -> void:
 	prose_scroll.add_child(prose)
 	prose.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	var choices_column := build_frame_column(columns, 0.0, "NodeEventOptions")
+	options_frame = choices_column.get_parent() as Control
 	choices_column.custom_minimum_size.x = CHOICES_WIDTH
 	if context.get("mobile",false):
 		choices_column.custom_minimum_size.x=420
 	choices_column.size_flags_horizontal = Control.SIZE_FILL
-	# The header keeps its height in every state so showing 取消选择 never moves the options.
-	options_header = HBoxContainer.new()
-	options_header.name = "NodeEventOptionsHeader"
-	options_header.add_theme_constant_override("separation", 6)
-	options_header.custom_minimum_size.y = 56 if context.get("mobile",false) else 34
-	choices_column.add_child(options_header)
-	var prompt := W.text(options_header, "请做出选择", 14, W.MUTED)
-	prompt.name = "NodeEventOptionsHint"
-	prompt.autowrap_mode = TextServer.AUTOWRAP_OFF
-	prompt.size_flags_horizontal = Control.SIZE_FILL
-	# An expanding spacer right-aligns 取消选择 without relying on shrink flags.
-	var push := Control.new()
-	push.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	push.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	options_header.add_child(push)
-	# Plain text action: bypass the shared decorative button artwork.
-	cancel_button = Button.new()
-	cancel_button.text = "取消选择"
-	cancel_button.pressed.connect(cancel_preselect)
-	cancel_button.flat = true
-	for state in ["normal", "hover", "pressed", "hover_pressed", "focus", "disabled"]:
-		cancel_button.add_theme_stylebox_override(state, StyleBoxEmpty.new())
-	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "font_focus_color", "font_disabled_color"]:
-		cancel_button.add_theme_color_override(state, Color("ef7777"))
-	options_header.add_child(cancel_button)
-	cancel_button.name = "CancelPreselect"
-	cancel_button.tooltip_text = "回到事件说明，不提交选项"
-	cancel_button.custom_minimum_size = Vector2(136, 56 if context.get("mobile",false) else 34)
-	cancel_button.size_flags_horizontal = Control.SIZE_SHRINK_END
-	cancel_button.add_theme_font_size_override("font_size", 14)
+	# Desktop keeps the header row; phones drop it so the buttons inherit its height
+	# and 取消选择 moves inside the preselected option instead.
+	if not context.get("mobile",false): build_options_header(choices_column)
 	options_panel = VBoxContainer.new()
 	options_panel.name = "NodeEventChoices"
 	options_panel.add_theme_constant_override("separation", 0)
@@ -110,6 +92,59 @@ func build() -> void:
 	pack_options()
 	paint_options()
 	paint_prose({})
+	if context.get("mobile",false): fit_art_width.call_deferred()
+
+## Desktop header: 请做出选择 on the left, 取消选择 on the right. The row keeps its
+## height in every state so showing 取消选择 never moves the options.
+func build_options_header(parent: Node) -> void:
+	options_header = HBoxContainer.new()
+	options_header.name = "NodeEventOptionsHeader"
+	options_header.add_theme_constant_override("separation", 6)
+	options_header.custom_minimum_size.y = 34
+	parent.add_child(options_header)
+	var prompt := W.text(options_header, "请做出选择", 14, W.MUTED)
+	prompt.name = "NodeEventOptionsHint"
+	prompt.autowrap_mode = TextServer.AUTOWRAP_OFF
+	prompt.size_flags_horizontal = Control.SIZE_FILL
+	var push := Control.new()
+	push.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	push.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	options_header.add_child(push)
+	cancel_button = cancel_label()
+	options_header.add_child(cancel_button)
+	cancel_button.name = "CancelPreselect"
+	cancel_button.custom_minimum_size = Vector2(136, 34)
+	cancel_button.size_flags_horizontal = Control.SIZE_SHRINK_END
+
+## Plain red text action: bypasses the shared decorative button artwork.
+func cancel_label() -> Button:
+	var button := Button.new()
+	button.text = "取消选择"
+	button.pressed.connect(cancel_preselect)
+	button.flat = true
+	for state in ["normal", "hover", "pressed", "hover_pressed", "focus", "disabled"]:
+		button.add_theme_stylebox_override(state, StyleBoxEmpty.new())
+	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "font_focus_color", "font_disabled_color"]:
+		button.add_theme_color_override(state, Color("ef7777"))
+	button.tooltip_text = "回到事件说明，不提交选项"
+	button.add_theme_font_size_override("font_size", 14)
+	return button
+
+## Phones only: 取消选择 sits at the right end of the preselected option, which
+## frees the header row for one more visible choice.
+func build_inline_cancel(option: Button) -> Button:
+	var button := cancel_label()
+	button.name = "InlineCancelPreselect"
+	button.add_theme_font_size_override("font_size", 18)
+	button.focus_mode = Control.FOCUS_NONE
+	button.visible = false
+	option.add_child(button)
+	button.anchor_left = 1.0; button.anchor_right = 1.0
+	button.anchor_top = 0.5; button.anchor_bottom = 0.5
+	# Keep clear of the decorative diamond on the option's right edge.
+	button.offset_left = -194; button.offset_right = -70
+	button.offset_top = -28; button.offset_bottom = 28
+	return button
 
 func build_art_column(columns: Node) -> void:
 	var frame := preload("res://presentation/hud_frame.gd").new()
@@ -117,6 +152,13 @@ func build_art_column(columns: Node) -> void:
 	frame.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	frame.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	frame.size_flags_stretch_ratio = 0.94
+	if context.get("mobile",false):
+		# Phones give the illustration a share of the row instead of hiding it.
+		frame.size_flags_horizontal = Control.SIZE_FILL
+		frame.size_flags_stretch_ratio = 1.0
+		frame.custom_minimum_size.x = ART_MOBILE_MIN_WIDTH
+		art_column = frame
+		columns.resized.connect(fit_art_width)
 	var style: StyleBoxFlat = VoyagePage.compact_style()
 	style.bg_color = Color(0.02,0.045,0.065,0.96)
 	style.content_margin_left = 8; style.content_margin_right = 8
@@ -129,6 +171,21 @@ func build_art_column(columns: Node) -> void:
 	art_view.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	art_view.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	frame.add_child(art_view)
+
+## Mobile only: the illustration owns its share of the row so the prose column
+## gives room back to the art instead of eating everything the options leave.
+## The prose keeps a readable minimum, so a narrow row shrinks the art first.
+func fit_art_width() -> void:
+	if art_column == null or not is_instance_valid(art_column): return
+	var columns := art_column.get_parent() as Control
+	if columns == null: return
+	var target := clampf(columns.size.x * ART_MOBILE_SHARE, ART_MOBILE_MIN_WIDTH, ART_MOBILE_MAX_WIDTH)
+	if is_instance_valid(options_frame):
+		var gaps := float(columns.get_theme_constant("separation")) * 2.0
+		var free := columns.size.x - options_frame.get_combined_minimum_size().x - gaps
+		target = minf(target, maxf(free - PROSE_MOBILE_MIN_WIDTH, ART_MOBILE_MIN_WIDTH))
+	if is_equal_approx(art_column.custom_minimum_size.x, target): return
+	art_column.custom_minimum_size.x = target
 
 func build_frame_column(columns: Node, ratio: float, frame_name: String) -> VBoxContainer:
 	var frame := preload("res://presentation/hud_frame.gd").new()
@@ -155,9 +212,26 @@ func apply_art() -> void:
 	if target == "" and monster != "" and not assets.show_label("enemy."+monster): target = "enemy."+monster
 	if target == "":
 		target = str(ART_BY_KIND.get(str(node.get("kind", "")), ART_DEFAULT))
-	art_view.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED if target.begins_with("enemy.") else TextureRect.STRETCH_KEEP_ASPECT_COVERED
-	art_view.texture = assets.texture(target)
+	art_view.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED if target.begins_with("enemy.") or target.begins_with("relic.") else TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	art_view.texture = visible_still(assets.texture(target), target)
 	art_view.set_meta("asset_id", target)
+
+## Opening stills ship with letterbox bars; scenes.json records the drawn region,
+## so the illustration fills the column instead of showing black bands.
+static func visible_still(texture: Texture2D, target: String) -> Texture2D:
+	if texture == null or not target.begins_with("opening.image."): return texture
+	var data = JSON.parse_string(FileAccess.get_file_as_string("res://assets/opening-intro/scenes.json"))
+	if not data is Dictionary: return texture
+	var scenes: Array = data.get("scenes", [])
+	var index := int(target.get_slice(".", 2)) - 1
+	if index < 0 or index >= scenes.size(): return texture
+	var region: Array = scenes[index].get("display_region", [])
+	if region.size() != 4: return texture
+	var cropped := AtlasTexture.new()
+	cropped.atlas = texture
+	cropped.region = Rect2(region[0], region[1], region[2], region[3])
+	cropped.filter_clip = true
+	return cropped
 
 func node_event() -> void:
 	var node: Dictionary = context.node
@@ -262,6 +336,7 @@ func add_entry(label: String, entry: Dictionary) -> void:
 	if entry.get("selection") != null: row.add_child(entry.selection)
 	var button := build_direct_button(row, label, func(): press(entry))
 	entry.button = button
+	if context.get("mobile",false): entry.cancel = build_inline_cancel(button)
 	entries.append(entry)
 	widgets.append(row)
 
@@ -312,10 +387,12 @@ func paint_options() -> void:
 		var selected: bool = entry.key == preselect_key
 		entry.button.text = "确认" if selected else entry.label
 		entry.button.set_meta("surge_primary", selected)
+		if entry.get("cancel") != null: entry.cancel.visible = selected
 		if entry.button.has_node("SurgeTextButtonArt"): entry.button.get_node("SurgeTextButtonArt").queue_redraw()
 	paint_header()
 
 func paint_header() -> void:
+	if cancel_button == null: return
 	cancel_button.visible = not preselect_key.is_empty()
 
 func paint_prose(active: Dictionary) -> void:
@@ -332,7 +409,11 @@ func paint_prose(active: Dictionary) -> void:
 	var selection: OptionButton = active.get("selection", null)
 	var alternatives: Array = active.get("alternatives", [])
 	if selection != null and alternatives.size() > 1: lines.append("方式："+str(alternatives[selection.selected].label))
-	paint_lines("预选选项", str(active.get("name", "")), lines, PRESELECT_HINT)
+	paint_lines("预选选项", str(active.get("name", "")), lines, preselect_hint())
+
+## The cancel action lives in a different place per platform.
+func preselect_hint() -> String:
+	return PRESELECT_HINT_MOBILE if context.get("mobile",false) else PRESELECT_HINT
 
 func paint_lines(eyebrow: String, headline: String, lines: Array, hint: String = "") -> void:
 	if eyebrow != "":

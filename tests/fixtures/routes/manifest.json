@@ -8,8 +8,8 @@
         "outcome": "survived",
         "completed": 12
       },
-      "steps": 181,
-      "version": "godot-flow-v02-26"
+      "steps": 165,
+      "version": "godot-flow-v02-27"
     },
     {
       "id": "standard-story",
@@ -19,8 +19,8 @@
         "outcome": "survived",
         "completed": 11
       },
-      "steps": 177,
-      "version": "godot-flow-v02-26"
+      "steps": 159,
+      "version": "godot-flow-v02-27"
     },
     {
       "id": "hard-challenge",
@@ -30,8 +30,8 @@
         "outcome": "survived",
         "completed": 12
       },
-      "steps": 223,
-      "version": "godot-flow-v02-26"
+      "steps": 189,
+      "version": "godot-flow-v02-27"
     },
     {
       "id": "hard-story",
@@ -41,8 +41,8 @@
         "outcome": "dead",
         "completed": 10
       },
-      "steps": 203,
-      "version": "godot-flow-v02-26"
+      "steps": 159,
+      "version": "godot-flow-v02-27"
     },
     {
       "id": "nightmare-challenge",
@@ -52,8 +52,8 @@
         "outcome": "dead",
         "completed": 11
       },
-      "steps": 231,
-      "version": "godot-flow-v02-26"
+      "steps": 194,
+      "version": "godot-flow-v02-27"
     },
     {
       "id": "nightmare-story",
@@ -63,8 +63,8 @@
         "outcome": "dead",
         "completed": 10
       },
-      "steps": 209,
-      "version": "godot-flow-v02-26"
+      "steps": 164,
+      "version": "godot-flow-v02-27"
     },
     {
       "id": "standard-failure",
@@ -74,8 +74,8 @@
         "outcome": "mad",
         "completed": 7
       },
-      "steps": 57,
-      "version": "godot-flow-v02-26"
+      "steps": 61,
+      "version": "godot-flow-v02-27"
     }
   ],
   "historical_paths": [

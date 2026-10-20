@@ -28,6 +28,8 @@ var turn_label: Label
 var shield_summary_label: Label
 var log_box: VBoxContainer
 var log_scroll: ScrollContainer
+var log_button: Button
+var log_overlay: ColorRect
 var confirm_button: Button
 
 func setup(parent_hud: Control, view: Dictionary, cat: RefCounted, art: RefCounted, sess: RefCounted) -> void:
@@ -40,6 +42,58 @@ func setup(parent_hud: Control, view: Dictionary, cat: RefCounted, art: RefCount
 	mouse_filter = MOUSE_FILTER_IGNORE
 	set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	build_ui()
+
+## Refresh values after a resolved action while retaining the battle panel tree.
+func refresh_after_action(view: Dictionary) -> bool:
+	if view.get("phase","")!="battle" or str(context.get("battle",{}).get("id",""))!=str(view.get("battle",{}).get("id","")): return false
+	context=view
+	selected_action=""; selected_resource_uid=""; selected_card_uid=""; selected_buff_uid=""
+	var enemy_id:=str(context.battle.get("id","biter"))
+	var enemy:=preload("res://core/difficulty_rules.gd").enemy(catalog,context,enemy_id)
+	var hp:=int(context.battle.get("hp",enemy.get("hp",0)))
+	var max_hp:=int(enemy.get("hp",hp))
+	if is_instance_valid(monster_hp_label): monster_hp_label.text="%s  ·  %d/%d" % [enemy.get("name","敌人"),hp,max_hp]
+	if is_instance_valid(monster_hp_bar): monster_hp_bar.max_value=float(maxi(1,max_hp)); monster_hp_bar.value=float(hp)
+	if is_instance_valid(monster_shield_label): monster_shield_label.text=shield_text(context.battle)
+	refresh_intent_label()
+	if is_instance_valid(turn_label): turn_label.text="第 %d 回合" % int(context.battle.get("turn",1))
+	var fan:=hud.find_child("hand_fan",true,false)
+	if is_instance_valid(fan):
+		fan.context=context
+		fan.set_selected_uids([])
+		if fan.has_method("refresh_battle_affordability"): fan.refresh_battle_affordability()
+	var retreat:=find_child("BattleRetreat",true,false) as Button
+	if is_instance_valid(retreat): retreat.disabled=int(context.battle.get("turn",1))<2 or bool(context.get("scene",{}).get("combat",false))
+	populate_combat_logs()
+	update_preview()
+	return true
+
+func shield_text(battle: Dictionary) -> String:
+	var total:=0; var current:=0; var next:=0
+	for shield in battle.get("shields",[]):
+		var amount:=int(shield.get("amount",0)); total+=amount
+		if int(shield.get("expires_turn",0))<=int(battle.get("turn",1)): current+=amount
+		else: next+=amount
+	return "" if total<=0 else "护盾 %d（本轮%d · 下轮%d）" % [total,current,next]
+
+func refresh_intent_label() -> void:
+	if not is_instance_valid(intent_label): return
+	var enemy_id:=str(context.battle.get("id","biter"))
+	var enemy:=preload("res://core/difficulty_rules.gd").enemy(catalog,context,enemy_id)
+	var intent: Dictionary=context.battle.get("intent",{})
+	var lines:=PackedStringArray()
+	if intent.get("type","")=="biter_bite":
+		var cell_id:=str(context.battle.get("raft_target_cell",intent.get("target_cell","")))
+		var cell: Dictionary={}
+		for candidate in context.get("cells",[]):
+			if candidate.id==cell_id: cell=candidate; break
+		var location: String="无可攻击的外围筏格" if cell.is_empty() else "筏格 %d,%d" % [int(cell.x)+1,int(cell.y)+1]
+		lines.append("【破坏预告】啃咬锁定：%s（将造成 1 点结构损耗）" % location)
+	lines.append("【直接攻击】意图对玩家造成 %d 点伤害（可通过护盾格挡）" % int(context.battle.get("enemy_direct_damage",enemy.get("damage",3))))
+	if enemy.get("buff","")=="poisoned": lines.append("【毒刺特性】攻击附带剧毒污染，持续造成伤害")
+	if enemy.get("buff","")=="fearful": lines.append("【恐惧震慑】削弱玩家的反击攻击力")
+	if int(context.battle.get("poison_until",0))>=int(context.battle.get("turn",1)): lines.append("【当前异常】玩家处于中毒状态（回合末结算失血）")
+	intent_label.text="\n".join(lines)
 
 var panel_layout: Control
 var tutorial_banner: Control
@@ -224,6 +278,7 @@ func build_monster_panel(parent: Control) -> void:
 	var shield_area := content_area(parent, Vector4(0.28,0.80,0.72,0.86))
 	monster_shield_label = W.text(shield_area, "", 15, Color("79b7dd"))
 	monster_shield_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	monster_shield_label.text=shield_text(context.battle)
 	parent.tooltip_text = str(enemy.get("description", ""))
 
 func build_action_preview_panel(parent: Control, preview_parent: Control) -> void:
@@ -363,57 +418,29 @@ func build_combat_log_panel(parent: Control) -> void:
 	vbox.add_theme_constant_override("separation", 8)
 	parent.add_child(vbox)
 
-	# 1. Top bar: Turn number & Player shields
-	var header := PanelContainer.new()
-	var h_style := StyleBoxFlat.new()
-	h_style.bg_color = Color.TRANSPARENT
-	h_style.border_color = Color("48758e")
-	h_style.set_border_width_all(0)
-	h_style.set_corner_radius_all(3)
-	h_style.content_margin_left = 12; h_style.content_margin_right = 12
-	h_style.content_margin_top = 6; h_style.content_margin_bottom = 6
-	header.add_theme_stylebox_override("panel", h_style)
-	vbox.add_child(header)
-
+	# 1. Header row: turn number and the folded log toggle share one line.
 	var h_row := HBoxContainer.new()
-	header.add_child(h_row)
-
-	var hourglass_spacer := Control.new(); hourglass_spacer.custom_minimum_size.x = 32
-	h_row.add_child(hourglass_spacer)
+	h_row.add_theme_constant_override("separation", 8)
+	vbox.add_child(h_row)
+	# The panel artwork carries an hourglass ornament on its left edge.
+	var ornament_space := Control.new()
+	ornament_space.custom_minimum_size.x = 40.0 if mobile else 34.0
+	ornament_space.mouse_filter = MOUSE_FILTER_IGNORE
+	h_row.add_child(ornament_space)
 	turn_label = W.text(h_row, "第 %d 回合" % int(context.battle.get("turn", 1)), 21, W.GOLD)
 	turn_label.size_flags_horizontal = SIZE_EXPAND_FILL
+	turn_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	log_button = W.text_button(h_row, "战斗记录 ›", func(): toggle_combat_log(true))
+	log_button.name = "BattleLogButton"
+	log_button.size_flags_horizontal = SIZE_SHRINK_END
+	log_button.custom_minimum_size.y = 44.0 if mobile else 30.0
 
-	# 2. Main Body: Combat Log
-	var log_header := HBoxContainer.new()
-	vbox.add_child(log_header)
-	W.text(log_header, "战斗记录", 14, W.MUTED)
+	# 2. The panel keeps only the two actions, pinned to the bottom edge.
+	var push := Control.new()
+	push.mouse_filter = MOUSE_FILTER_IGNORE
+	push.size_flags_vertical = SIZE_EXPAND_FILL
+	vbox.add_child(push)
 
-	var log_panel := PanelContainer.new()
-	log_panel.size_flags_vertical = SIZE_EXPAND_FILL
-	var lp_style := StyleBoxFlat.new()
-	lp_style.bg_color = Color(0.015,0.03,0.045,0.35)
-	lp_style.border_color = Color("2d4857")
-	lp_style.set_border_width_all(0)
-	lp_style.set_corner_radius_all(3)
-	lp_style.content_margin_left = 8; lp_style.content_margin_right = 8
-	lp_style.content_margin_top = 6; lp_style.content_margin_bottom = 6
-	log_panel.add_theme_stylebox_override("panel", lp_style)
-	vbox.add_child(log_panel)
-
-	log_scroll = ScrollContainer.new()
-	log_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
-	log_scroll.size_flags_horizontal = SIZE_EXPAND_FILL
-	log_scroll.size_flags_vertical = SIZE_EXPAND_FILL
-	log_panel.add_child(log_scroll)
-
-	log_box = VBoxContainer.new()
-	log_box.size_flags_horizontal = SIZE_EXPAND_FILL
-	log_box.add_theme_constant_override("separation", 4)
-	log_scroll.add_child(log_box)
-
-	populate_combat_logs()
-
-	# 3. Bottom bar: 2 Buttons: Skip Turn (battle_end) & Abandon / Retreat
 	var btn_row: BoxContainer = VBoxContainer.new() if mobile else HBoxContainer.new()
 	btn_row.add_theme_constant_override("separation", 10)
 	vbox.add_child(btn_row)
@@ -431,6 +458,75 @@ func build_combat_log_panel(parent: Control) -> void:
 	retreat_btn.custom_minimum_size.y = 34
 	retreat_btn.add_theme_font_size_override("font_size", 14)
 	retreat_btn.name = "BattleRetreat"
+
+	build_combat_log_overlay()
+
+## Folding the log keeps the right column to a turn line plus two actions; the
+## history itself opens as a dim full-screen layer above the whole HUD.
+func build_combat_log_overlay() -> void:
+	log_overlay = ColorRect.new()
+	log_overlay.name = "BattleLogOverlay"
+	log_overlay.color = Color(0.005, 0.012, 0.02, 0.74)
+	log_overlay.mouse_filter = MOUSE_FILTER_STOP
+	log_overlay.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
+	log_overlay.z_index = 60
+	log_overlay.visible = false
+	add_child(log_overlay)
+	log_overlay.gui_input.connect(func(event: InputEvent):
+		if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT: toggle_combat_log(false))
+
+	var card := PanelContainer.new()
+	card.name = "BattleLogCard"
+	card.mouse_filter = MOUSE_FILTER_STOP
+	card.anchor_left = 0.18; card.anchor_right = 0.82
+	card.anchor_top = 0.16; card.anchor_bottom = 0.82
+	var card_style := StyleBoxFlat.new()
+	card_style.bg_color = Color(0.02, 0.05, 0.07, 1.0)
+	card_style.border_color = W.GOLD
+	card_style.set_border_width_all(1)
+	card_style.set_corner_radius_all(4)
+	card_style.content_margin_left = 22; card_style.content_margin_right = 22
+	card_style.content_margin_top = 16; card_style.content_margin_bottom = 16
+	card.add_theme_stylebox_override("panel", card_style)
+	log_overlay.add_child(card)
+	# Clicks anywhere on the card must not fall through to the dim background.
+	card.gui_input.connect(func(event: InputEvent):
+		if event is InputEventMouseButton and event.pressed: card.accept_event())
+
+	var column := VBoxContainer.new()
+	column.add_theme_constant_override("separation", 10)
+	card.add_child(column)
+	var head := HBoxContainer.new()
+	head.add_theme_constant_override("separation", 10)
+	column.add_child(head)
+	var title := W.text(head, "战斗记录", 24, W.GOLD)
+	title.autowrap_mode = TextServer.AUTOWRAP_OFF
+	title.size_flags_horizontal = SIZE_EXPAND_FILL
+	var close_btn := W.text_button(head, "关闭", func(): toggle_combat_log(false))
+	close_btn.name = "BattleLogClose"
+	close_btn.size_flags_horizontal = SIZE_SHRINK_END
+	close_btn.add_theme_color_override("font_color", Color("ef7777"))
+	close_btn.custom_minimum_size.y = 44.0 if mobile else 30.0
+
+	log_scroll = ScrollContainer.new()
+	log_scroll.name = "BattleLogScroll"
+	log_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	log_scroll.size_flags_horizontal = SIZE_EXPAND_FILL
+	log_scroll.size_flags_vertical = SIZE_EXPAND_FILL
+	column.add_child(log_scroll)
+
+	log_box = VBoxContainer.new()
+	log_box.size_flags_horizontal = SIZE_EXPAND_FILL
+	log_box.add_theme_constant_override("separation", 6)
+	log_scroll.add_child(log_box)
+
+	populate_combat_logs()
+
+func toggle_combat_log(open: bool) -> void:
+	if not is_instance_valid(log_overlay): return
+	log_overlay.visible = open
+	if open:
+		populate_combat_logs()
 
 func populate_combat_logs() -> void:
 	for child in log_box.get_children():

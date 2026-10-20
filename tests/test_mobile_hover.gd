@@ -3,6 +3,13 @@ var failures := 0
 func _init(): call_deferred("run")
 func check(ok: bool, why: String):
 	if not ok: failures += 1; printerr("FAIL: "+why)
+func tap(fan: Control, index: int) -> void:
+	var point: Vector2=fan.tiles[index].position+Vector2(10,80)
+	fan.touch_index=0
+	fan._begin_press(index,point)
+	var release:=InputEventScreenTouch.new(); release.index=0; release.pressed=false
+	release.position=fan.get_global_transform()*point
+	fan._input(release)
 func run():
 	var app=load("res://scenes/main.tscn").instantiate(); app.persistence=false; root.add_child(app)
 	await process_frame; await process_frame
@@ -21,6 +28,13 @@ func run():
 			check(fan.tip.visible==not mobile,"hover tooltip follows platform "+str(mobile)+mode)
 			if mobile:
 				check(fan.hovered==-1 and fan.target_positions==rest,"mobile mouse motion leaves cards at rest "+mode)
+				tap(fan,0)
+				check(fan.tip.visible and fan.tip_text.text.contains("水"),"mobile tap shows card description "+mode)
+				tap(fan,1)
+				check(fan.tip.visible and fan.tip_text.text.contains("水"),"mobile second card keeps description visible "+mode)
+				var outside:=InputEventScreenTouch.new(); outside.index=1; outside.pressed=true
+				outside.position=fan.get_global_transform()*Vector2(-20,-20); fan._input(outside)
+				check(not fan.tip.visible,"mobile outside tap hides description "+mode)
 				fan._begin_press(0,motion.position); fan.cancel_gesture(); fan._process(.4)
 				check(fan.target_positions==rest and not fan.tip.visible,"touch release leaves no hover expansion or delayed tooltip "+mode)
 				var saved: Dictionary=fan.capture_visual(); saved.hover_uid=fan.cards[0].uid; saved.tip_visible=true; saved.dwell=.4

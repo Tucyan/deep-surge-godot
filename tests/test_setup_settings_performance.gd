@@ -50,6 +50,7 @@ func run():
 	check(not app.find_child("StartVoyage",true,false).disabled,"tutorial exact starting set enables start")
 	# Real existing run, open/close settings without changing rule state.
 	app.setup_mode=""; app.handle_command("resume"); await settle()
+	app.story_mode_visible=true # Include the retained optional tab in lazy-build checks.
 	app.settings_tab="display"; app.handle_ui("local_panel","settings"); await settle()
 	check(app.find_child("MotionToggle",true,false)!=null,"active display tab is built")
 	check(app.find_child("auto_sort",true,false)==null,"S05 inactive game tab is not built")

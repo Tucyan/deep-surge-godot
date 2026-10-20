@@ -10,7 +10,7 @@
 
 当次验证：Godot 4.7.2，tests/test_title_playback.gd 在 RTX 4060/OpenGL 实际运行 PASS，覆盖菜单信号、播放器唯一性/实例保留、播放进度不回退、设置返回和离开首页释放；tests/test_clean_ui.gd headless PASS。未用人工鼠标逐项点击验收。
 
-开始→模式选择→现有新局准备；继续→resume；航海笔记→现有图鉴；局外商店→meta_shop；回溯潮涌→读取profile.endings展示已记录结局；退出→现有quit。选择模式或进入准备时只呈现相应界面。
+开始→航程选择→挑战模式新局准备；继续→直接回到进行中的航程，不再经过航程选择（无可续航程时按钮禁用，仅有剧情档时按剧情选档进入）；首次开始仍提供新手教学提示。剧情模式及选档入口暂时隐藏，仅有剧情档不会启用“继续”。航海笔记→现有图鉴；局外商店→meta_shop；回溯潮涌→五幕序章与旧归档只读回廊；退出→现有quit。选择模式或进入准备时只呈现相应界面。隐藏范围见[剧情契约](narrative-and-save.md)。
 
 使用python tools/register_title_ui.py登记AssetId、hash、尺寸、依赖、源和遮罩参数。纹理由Godot ResourceLoader缓存，VideoStreamPlayer归首页实例持有，离开页面释放。替换按钮须保留透明RGBA及深浅对应；视频可替换为同规格OGV。
 
@@ -46,3 +46,7 @@ GPU截图和交互验证：tests/title_v2_visual.gd，evidence/title-v2-*；验�
 ### 2026-10-17 首页背景替换（带边框视频）
 
 当前首页使用用户提供的 `深潮_月下灯塔与远航帆船_去水印_2x超分2K_带边框.mp4`，运行资源为 `assets/title_ui/lighthouse_loop.ogv`（2560×1440、16:9、约5.09秒、Theora q7、静音循环）及同源首帧。完整画面等比居中，未覆盖区域纯黑，不裁剪画面。视频已含边框及Logo，移除独立 `TitleFrame`、透明Logo与圆形挡板实例，避免重复叠加；六个菜单按钮与设置入口保留。旧边框和Logo文件仅保留作历史资产。稳定AssetId沿用，来源、版本、依赖、映射和SHA-256由 `tools/register_title_v3.py` 更新。
+
+### 2026-10-20 继续游戏直达
+
+首页“继续游戏”由 `pages/flow_home.gd` 的 `_title_action` 直接派发 `resume` 命令，沿用原有 UI 命令过渡（加载层、命令串行、失败回退），不再弹出“选择航程”。仅有剧情档而无活动挑战时仍进入剧情选档；“开始游戏”的航程选择、挑战模式新局准备与替换确认不变，其面板内“继续/返回当前航程”按钮保留为次要入口。继续不重掷随机、不结算、不重复发放奖励。回归：`test_challenge_resume.gd`（新增直达与无覆盖层检查）、`test_loading_transition.gd`、`test_title_playback.gd`。

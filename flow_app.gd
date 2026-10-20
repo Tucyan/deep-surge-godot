@@ -38,6 +38,8 @@ var setup_mode := ""
 var message := ""
 var save_blocked := false
 var persistence := true
+## Temporary presentation switch; story content and paired saves remain intact.
+@export var story_mode_visible := false
 var display_settings = preload("res://presentation/display_settings.gd").new()
 var settings_tab := "display"
 var camera_binding_capture := false
@@ -220,6 +222,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 func handle_ui(action: String, value: String = "") -> void:
 	if transition_busy or is_instance_valid(acquisition_overlay): return
+	if not story_mode_visible and (action == "narrative_choose" or (action in ["setup", "local_panel"] and value in ["story", "narrative"])): return
 	if action=="close_settings":
 		if local_panel=="settings": local_panel=""; render()
 		return
@@ -313,6 +316,12 @@ func handle_ui(action: String, value: String = "") -> void:
 				message="手牌设置保存失败"
 				render()
 			return
+	if action == "craft_tab" and (session.panel in ["craft", "build"] or local_panel in ["craft", "build"]) \
+		and is_instance_valid(current_page) and current_page.has_method("refresh_craft_tab"):
+		if current_page.refresh_craft_tab(hud_view()): return
+	if action in ["transmute_target", "transmute_uids"] and (session.panel in ["craft", "build"] or local_panel in ["craft", "build"]) \
+		and is_instance_valid(current_page) and current_page.has_method("refresh_transmute_ui"):
+		if current_page.refresh_transmute_ui(hud_view(), action): return
 	render()
 
 func _notification(what: int) -> void:
@@ -366,6 +375,7 @@ func _visible_candidate(visit_id: String) -> bool:
 func hud_view() -> Dictionary:
 	var view: Dictionary = session.view()
 	view.can_resume = session.active()
+	view.story_mode_visible = story_mode_visible
 	view.save_pending = persistence_coordinator.save_pending
 	preload("res://application/acquisition_projection.gd").apply_pending(view,_pending_receipt)
 	view.has_story_saves = narrative_store != null and narrative_store.has_saves()
@@ -529,6 +539,19 @@ func handle_command(command: String, args: Dictionary = {}) -> void:
 			and old_hand==JSON.stringify(session.state.get("hand",[])) and old_cells==JSON.stringify(session.state.get("cells",[])) \
 			and update_after_departure():
 			return
+		# Continuing combat actions retain the battle HUD when the same enemy,
+		# hand and raft-cell structures remain active. Terminal/structural changes
+		# deliberately fall through to the existing complete render.
+		if command in ["battle_action"] and old_phase=="battle" and session.phase()=="battle" and message.is_empty() \
+			and local_panel=="" and _modal_root==null and _base_page==current_page and is_instance_valid(current_page) and current_page.has_method("refresh_after_battle") \
+			and update_after_battle():
+			return
+		# Salvage and other stable preparation operations update the existing HUD;
+		# operations that change phase, panel or board topology use full render.
+		if command=="salvage" and old_phase=="preparation" and session.phase()=="preparation" and message.is_empty() \
+			and local_panel=="" and _modal_root==null and _base_page==current_page and is_instance_valid(current_page) and current_page.has_method("refresh_after_operation") \
+			and _pending_receipt.get("uids",[]).is_empty() and update_after_operation():
+			return
 	render()
 	if not narrative_playing and not _transition_command_running: _maybe_story()
 
@@ -552,6 +575,26 @@ func update_after_departure() -> bool:
 	_update_world_framing.call_deferred()
 	# The full path opens the next narrative beat after rendering; keep that order.
 	if not narrative_playing: _maybe_story()
+	return true
+
+func update_after_battle() -> bool:
+	if local_panel!="" or session.panel!="" or not is_instance_valid(current_page): return false
+	var view:=hud_view()
+	if not current_page.refresh_after_battle(view): return false
+	world_view.sync(view)
+	_base_signature=_retained_hud_signature()
+	_update_world_framing.call_deferred()
+	return true
+
+func update_after_operation() -> bool:
+	if local_panel!="" or session.panel!="" or not is_instance_valid(current_page): return false
+	var view:=hud_view()
+	if not current_page.refresh_after_operation(view): return false
+	world_view.sync(view)
+	var interaction:=find_child("RaftInteraction",true,false)
+	if is_instance_valid(interaction) and interaction.has_method("refresh_policy"): interaction.refresh_policy()
+	_base_signature=_retained_hud_signature()
+	_update_world_framing.call_deferred()
 	return true
 
 func _init_narrative() -> void:

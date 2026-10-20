@@ -41,4 +41,4 @@ GameSession仍负责dispatch、revision检查、事务失败回滚；页面发�
 
 经济 v11 的历史验证见 [经济 v11 验证](../evidence/economy-v11-verification.md)。
 
-潮汐遗物本次执行结果及限制见[潮汐遗物 v26 验证](../evidence/collectible-effects-v26-verification.md)。
+潮汐遗物本次执行结果及限制见[v27验收记录](../evidence/relic-expedition-v27-verification.md)。
