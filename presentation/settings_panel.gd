@@ -350,6 +350,50 @@ static func _build_game(game_box: VBoxContainer, app: Control, view: Dictionary)
 		game_box.add_child(make_row("视角复位快捷键","点击后按字母、数字或F键；Esc取消",reset_keys,210))
 
 	# --- TAB 2: 游戏偏好 ---
+	# Row 0: 背景音乐开关与音量
+	var music_toggle := CheckButton.new()
+	music_toggle.name = "MusicEnabled"
+	music_toggle.text = "开启配乐"
+	music_toggle.button_pressed = prefs.music_enabled
+	music_toggle.toggled.connect(func(on):
+		prefs.music_enabled = on
+		app.apply_audio_settings.call_deferred()
+	)
+	game_box.add_child(make_row("背景音乐 (Music)", "首页与航行时的配乐；关闭后保留音量设置，重新开启时恢复当前曲目", music_toggle, 130))
+
+	var music_value := Label.new()
+	music_value.name = "MusicVolumeValue"
+	music_value.text = "%d%%" % roundi(prefs.music_volume * 100)
+	music_value.custom_minimum_size.x = 44
+	music_value.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	music_value.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	music_value.add_theme_font_size_override("font_size", 14)
+	music_value.add_theme_color_override("font_color", W.GOLD)
+	var music_slider := HSlider.new()
+	music_slider.name = "MusicVolume"
+	music_slider.custom_minimum_size = Vector2(140, 32)
+	music_slider.min_value = 0; music_slider.max_value = 100; music_slider.step = 5
+	music_slider.value = prefs.music_volume * 100
+	music_slider.accessibility_name = "背景音乐音量百分比"
+	music_slider.drag_started.connect(func(): music_slider.set_meta("dragging", true))
+	music_slider.value_changed.connect(func(val):
+		music_value.text = "%d%%" % roundi(val)
+		if not music_slider.get_meta("dragging", false):
+			prefs.music_volume = val / 100.0
+			app.apply_audio_settings.call_deferred()
+	)
+	music_slider.drag_ended.connect(func(changed):
+		music_slider.set_meta("dragging", false)
+		if changed:
+			prefs.music_volume = music_slider.value / 100.0
+			app.apply_audio_settings.call_deferred()
+	)
+	var music_row := HBoxContainer.new()
+	music_row.add_theme_constant_override("separation", 8)
+	music_row.alignment = BoxContainer.ALIGNMENT_END
+	music_row.add_child(music_value); music_row.add_child(music_slider)
+	game_box.add_child(make_row("音乐音量 (Volume)", "0% 为静音；设置保存在本机显示偏好，不写入航程存档", music_row, 195))
+
 	# Row 1: 自动理牌
 	var opt_sort := CheckButton.new()
 	opt_sort.name = "auto_sort"
@@ -467,6 +511,12 @@ static func sync_controls(app: Control) -> void:
 		if is_instance_valid(toggle): toggle.set_pressed_no_signal(item[1])
 	var notice=app.find_child("SettingsNotice",true,false)
 	if is_instance_valid(notice): notice.text=app.message; notice.visible=not app.message.is_empty()
+	var music_toggle=app.find_child("MusicEnabled",true,false)
+	if is_instance_valid(music_toggle): music_toggle.set_pressed_no_signal(prefs.music_enabled)
+	var music_slider=app.find_child("MusicVolume",true,false)
+	if is_instance_valid(music_slider): music_slider.set_value_no_signal(prefs.music_volume*100.0)
+	var music_value=app.find_child("MusicVolumeValue",true,false)
+	if is_instance_valid(music_value): music_value.text="%d%%" % roundi(prefs.music_volume*100.0)
 	for item in [["CameraOrbitBinding",prefs.camera_orbit_button],["CameraPanBinding",prefs.camera_pan_button]]:
 		var picker=app.find_child(item[0],true,false)
 		if is_instance_valid(picker): picker.select(Display.CAMERA_MOUSE_BUTTONS.find(item[1]))

@@ -27,7 +27,7 @@
 
 程序接口：`GameSession.view().hand` 在永久/临时实例之外投影余额卡，`quantity` 表示贝币数量；该卡来自 `state.coins`，不写入 `state.hand` 或存档，不消耗实例 ID 或随机流。库存支付、容量、统计和旧存档格式保持现有规则。视图中的条目数量不能直接作为容量。
 
-程序化资产：`ui.hand.fan` v11（`presentation/hand_fan.gd`），`ui.hand.layout` v3（`presentation/hand_layout.gd`），`ui.item-card` v2 及 `ui.hand.stack-quantity` v1（`presentation/item_card.gd`）。贝币复用 `card.coin` 和数量徽章。数量徽章采用铜金边/深蓝底，与现有卡面字体及 W.GOLD 共用；没有新增外部图片或视觉随机种子。映射与源 hash 登记在 `assets/manifest.json`。
+程序化资产：`ui.hand.fan` v11（`presentation/hand_fan.gd`），`ui.hand.layout` v3（`presentation/hand_layout.gd`），`ui.item-card` v2 及 `ui.hand.stack-quantity` v1（`presentation/item_card.gd`）。贝币货币卡使用 `card.coin` v2 真实卡图（2026-10-20 用户提供的低模奶油色宝螺组合，去白底后 1024×1024 RGBA，载入失败仍回退 v1 纯色与标签）。数量徽章采用铜金边/深蓝底，与现有卡面字体及 W.GOLD 共用；未新增视觉随机种子。怪物尸体卡同步换用 `card.corpse` v2 真实卡图（低多边形骨甲海怪尸骸，同批去白底接入）。原图、运行图 hash 与来源见 [怪物尸体与贝币卡图 v1](../asset-sources/corpse-cowrie-20261020/README.md)，映射与源 hash 登记在 `assets/manifest.json`。
 
 验证入口：`tests/test_hand_layout.gd`、`tests/test_hand_gestures.gd`、`tests/test_hand_fan.gd`、`tests/test_hand_click.gd`；实际渲染入口 `tests/hand_layout_visual.gd`。画面使用明确的超限测试夹具，不表示正常初始库存。证据见 `evidence/hand-layout-verification.md`。
 

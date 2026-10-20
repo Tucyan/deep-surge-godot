@@ -6,7 +6,7 @@ func _init() -> void:
 	call_deferred("run")
 func run() -> void:
 	var assets = load("res://presentation/asset_catalog.gd").new()
-	for id in ["wood","iron","plastic","rope","cloth","food","water","calm","punch","arrow","spear","lamp","filter","planter","medkit","crossbow","spearRack","repair","dismantle"]:
+	for id in ["wood","iron","plastic","rope","cloth","food","water","calm","punch","arrow","spear","lamp","filter","planter","medkit","crossbow","spearRack","repair","dismantle","corpse","coin"]:
 		check(not assets.show_label("card."+id),"实际PNG载入，隐藏占位叠字："+id)
 		check(assets.texture("card."+id).get_size().x > 64,"图片源尺寸保留："+id)
 	check(not assets.show_label("ui.unavailable"),"禁用工具图标接入")

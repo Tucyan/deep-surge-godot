@@ -16,6 +16,7 @@
 | 新藏品及寻物节点 | [20件藏品与10节点](relic-expedition.md) | 全新定义、图片、代价、单局配额与0.3投放 |
 | 潮汐遗物效果 | [潮汐遗物契约](collectible-effects.md) | 配置字段、商店、实例生命周期与效果时机 |
 | 旧剧情回看 | [回廊契约](story-gallery.md) | 五幕序章、旧归档只读例外 |
+| 音乐与音量 | [背景音乐](audio-and-music.md) | cue 判定、曲目回退、音量与偏好保存 |
 | 修改文档 | [维护规则](documentation-governance.md) | 文档类型、读取顺序、同步与检查 |
 
 ## 专题参考

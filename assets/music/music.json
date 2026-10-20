@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "fade_seconds": 1.5,
+  "trim_db": -6.0,
+  "cues": {
+    "home": {
+      "tracks": ["res://assets/music/daily-arsnova-bwv82-aria-v1.mp3"],
+      "fallback": "voyage"
+    },
+    "voyage": {
+      "tracks": ["res://assets/music/daily-arsnova-bwv578-fuga-v1.mp3"]
+    },
+    "boss": {
+      "tracks": [],
+      "fallback": "voyage"
+    }
+  }
+}

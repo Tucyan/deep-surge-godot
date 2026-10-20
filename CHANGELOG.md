@@ -1,5 +1,16 @@
 # 更新日志
 
+## 2026-10-20 · 背景音乐接入
+
+开发分支：`codex/integrate-v03-relics`；内容版本：`godot-flow-v03-02`。表现层改动，规则、存档 schema 与随机流不变。
+
+- 接入用户提供的两首巴赫吉他四重奏改编：首页与结算用 BWV82 咏叹调，航行用 BWV578 赋格；字节未转码，循环由导入参数与运行时各设一次。
+- 新增 `presentation/music_director.gd`：按 `home` / `voyage` / `boss` 三个 cue 双轨交叉淡入，只读 `screen`、`phase` 与当前节点 `boss` 标记，不写会话、不消耗随机。
+- 新增 `assets/music/music.json` 曲目表，支持 cue 内多条候选与最多 4 层回退；任一曲目缺失时跳过而不中断游戏。
+- 用户提供的 `boss配乐(1).zip` 内只有空目录，Boss cue 暂为空并回退到航行曲目；收到音频后只需填 `tracks`，不改代码。
+- 设置「游戏偏好」新增音乐开关与音量滑条（0–100%，步进 5），保存于 `user://display-settings.cfg` 的 `[audio]` 段，不写入航程或剧情配对存档；回廊重播期间自动挂起。
+- 新增 `tests/test_music_director.gd`；`tools/register_music.py` 登记两首音频、cue 表与相关脚本 hash。契约见[背景音乐](docs/audio-and-music.md)，来源见[音乐源记录](asset-sources/music-daily-20261020/README.md)，执行记录见[音乐接入验证](evidence/music-integration-verification.md)。
+
 ## 2026-10-20 · 0.3整合更新
 
 开发分支：`codex/integrate-v03-relics`；内容版本：`godot-flow-v03-02`。本条记录已实施内容及已执行验证，不表示发行版、Android包或最终平衡已经完成。

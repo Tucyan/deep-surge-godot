@@ -140,18 +140,46 @@
       "license": "user-supplied; no additional license assertion"
     },
     "card.corpse": {
-      "path": "",
+      "path": "res://assets/images/cards-20261020/card-corpse-v1.png",
       "color": "#284c57",
       "label": "怪物尸体",
-      "version": 1,
-      "source": "procedural-solid-label-v1"
+      "version": 2,
+      "source": "asset-sources/corpse-cowrie-20261020/originals/低多边形骨甲海怪尸骸.jpg",
+      "source_hashes": {
+        "asset-sources/corpse-cowrie-20261020/originals/低多边形骨甲海怪尸骸.jpg": "47fd3d35c2105d86cda9cc1ab2abbfa9c2bc956c8d2486b0f8cfedf77f916471"
+      },
+      "source_hash_verified_on": "2026-10-20",
+      "sha256": "1d0d9b62c54370612d2303e47d95303f887fe3b40cea327d9faec42b2053984c",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "crop": null,
+      "show_label": false,
+      "dependencies": [],
+      "license": "user-supplied; no additional license assertion",
+      "runtime_mapping": "presentation/item_card.gd card face art; hand tray, craft page, encyclopedia, acquisition overlay and shop all load it through assets.texture(\"card.corpse\")"
     },
     "card.coin": {
-      "path": "",
+      "path": "res://assets/images/cards-20261020/card-coin-v1.png",
       "color": "#756439",
       "label": "贝币",
-      "version": 1,
-      "source": "procedural-solid-label-v1"
+      "version": 2,
+      "source": "asset-sources/corpse-cowrie-20261020/originals/低模风格奶油色宝螺组合.jpg",
+      "source_hashes": {
+        "asset-sources/corpse-cowrie-20261020/originals/低模风格奶油色宝螺组合.jpg": "620c1979ddb1d3a6cfb0629f69564dabdc0f77c40faffd76dfe3f937ef747e4b"
+      },
+      "source_hash_verified_on": "2026-10-20",
+      "sha256": "e5a4aa265c67368d5e90f68ae9cdb0a1ced75ed6885ed483b672e5daf4ce386f",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "crop": null,
+      "show_label": false,
+      "dependencies": [],
+      "license": "user-supplied; no additional license assertion",
+      "runtime_mapping": "presentation/item_card.gd card face art; hand tray, craft page, encyclopedia, acquisition overlay and shop all load it through assets.texture(\"card.coin\")"
     },
     "card.water": {
       "path": "res://assets/images/supplied-20261012/asset-13.png",
@@ -2133,8 +2161,8 @@
     "ui.settings-panel": {
       "path": "res://presentation/settings_panel.gd",
       "source": "presentation/settings_panel.gd",
-      "version": 16,
-      "sha256": "b5b9cb0572a9031bcd22f966747df543924f9e77346e4fa5a96270fae2eaa9ba",
+      "version": 17,
+      "sha256": "8e817a9a4bb5072c12f6257e0bf312727b81a8e34aedce647efa5febc2af351f",
       "dependencies": [
         "ui.controls.close",
         "ui.display-preferences",
@@ -2151,19 +2179,19 @@
     "ui.display-preferences": {
       "path": "res://presentation/display_settings.gd",
       "source": "presentation/display_settings.gd",
-      "version": 7,
-      "sha256": "ef64665b0d1d773cb6aa9c545f3137cf0dc46450c8903331e78c18ee7789b4cc",
+      "version": 8,
+      "sha256": "9262aa450c02f3cb1a7c45faf1bac793f09df0e2286e0f697c83f1b4ee3f54df",
       "dependencies": [],
       "role": "persistent UI/window/render settings and immediate engine FPS limit, VSync disabled for selected cap",
       "license": "project-authored procedural UI; reuses existing artwork and theme",
       "visual_random": "none",
-      "source_hash_verified_on": "2026-10-19"
+      "source_hash_verified_on": "2026-10-20"
     },
     "ui.modal-layout": {
       "path": "res://flow_app.gd",
       "source": "flow_app.gd",
-      "version": 27,
-      "sha256": "933abbdb9875391c712db5b4d01c3371410510cf13ec27527f8c1cf5bd3a6015",
+      "version": 28,
+      "sha256": "33658d7112aab2d56db8eeb75f63ac8f88cab97a5f3a56e44df0d8ed95d5bce5",
       "dependencies": [
         "ui.controls.close",
         "ui.settings-panel",
@@ -4991,6 +5019,125 @@
       "show_label": false,
       "runtime_mapping": "relic.sailorsKnot: acquisition receipt, warehouse, encyclopedia, node art",
       "derivation": "Pillow LANCZOS 1254x1254 to 512x512; no cropping or recoloring"
+    },
+    "audio.music.daily-aria": {
+      "path": "res://assets/music/daily-arsnova-bwv82-aria-v1.mp3",
+      "source": "user-supplied/日常背景音乐(1).zip/Quartetto Chitarristico Ars Nova Johann Sebastian Bach - Cantata Ich Habe Genug BWV82 Aria.mp3",
+      "version": 1,
+      "sha256": "3335b22420d03ad2edb06303fb6971064752bcf81f0bf285b10a78ecde8a574a",
+      "dependencies": [],
+      "role": "Home and settlement background music (Bach BWV82 aria, guitar quartet)",
+      "license": "user-supplied audio",
+      "source_hash_verified_on": "2026-10-20",
+      "runtime_mapping": {
+        "cue": "home",
+        "loop": true,
+        "player": "music_director.gd/MusicTrackA"
+      },
+      "bytes": 18321578
+    },
+    "audio.music.daily-fuga": {
+      "path": "res://assets/music/daily-arsnova-bwv578-fuga-v1.mp3",
+      "source": "user-supplied/日常背景音乐(1).zip/Quartetto Chitarristico Ars Nova Johann Sebastian Bach - Fuga BWV578.mp3",
+      "version": 1,
+      "sha256": "1d7efbb8234298530e066a9d33ebc0636ce9afca880efdd98126a3d3fe28a1ec",
+      "dependencies": [],
+      "role": "Voyage background music (Bach BWV578 fugue, guitar quartet)",
+      "license": "user-supplied audio",
+      "source_hash_verified_on": "2026-10-20",
+      "runtime_mapping": {
+        "cue": "voyage",
+        "loop": true,
+        "player": "music_director.gd/MusicTrackB"
+      },
+      "bytes": 8727278
+    },
+    "data.music.cues": {
+      "path": "res://assets/music/music.json",
+      "source": "assets/music/music.json",
+      "version": 1,
+      "sha256": "15bec76d5159ab5fbea059a234b21a282e081915bae076697755843002c8041d",
+      "dependencies": [
+        "audio.music.daily-aria",
+        "audio.music.daily-fuga"
+      ],
+      "role": "Cue table, crossfade length and per-cue fallback",
+      "license": "project-authored configuration and code",
+      "source_hash_verified_on": "2026-10-20",
+      "runtime_mapping": {
+        "cues": "home | voyage | boss",
+        "boss_tracks": "empty until the boss archive contains audio; the cue falls back to voyage",
+        "fade_seconds": 1.5,
+        "trim_db": -6.0
+      }
+    },
+    "ui.music-director": {
+      "path": "res://presentation/music_director.gd",
+      "source": "presentation/music_director.gd",
+      "version": 1,
+      "sha256": "ca1355d68ad4895611fc696c8f340272996669a2b86133183118db1e381f9f2c",
+      "dependencies": [
+        "data.music.cues"
+      ],
+      "role": "Two-player music crossfade; reads only screen, phase and the current node boss flag",
+      "license": "project-authored configuration and code",
+      "source_hash_verified_on": "2026-10-20",
+      "runtime_mapping": {
+        "entry": "flow_app.gd/render after page_host.render",
+        "preferences": "user://display-settings.cfg [audio]",
+        "suspension": "an open gallery replay keeps only the narration music"
+      }
+    },
+    "audio.ambience.waves-loop": {
+      "path": "res://assets/audio/ambience/waves-loop-v1.ogg",
+      "source": "project-authored/ocean-waves-20261020 (CC0 OpenGameArt sources)",
+      "version": 1,
+      "sha256": "ffd8d2621aa94d2c3f9a1c0949fca17277e777947733112abbe3da18de22686d",
+      "dependencies": [],
+      "role": "Continuous sea ambience; one seamless 48 s loop under every music cue",
+      "license": "CC0 1.0 (OpenGameArt sources); processed into a seamless loop",
+      "source_hash_verified_on": "2026-10-20",
+      "runtime_mapping": {
+        "loop": true,
+        "player": "ambience_director.gd/AmbienceTrack",
+        "trim_db": -16.0,
+        "config": "res://assets/audio/ambience.json"
+      },
+      "bytes": 624727
+    },
+    "data.ambience.config": {
+      "path": "res://assets/audio/ambience.json",
+      "source": "assets/audio/ambience.json",
+      "version": 1,
+      "sha256": "4da5ffed89cb7d6c20d0cd02893ccaf2444886877592cd3cbbf66d7a74de3374",
+      "dependencies": [
+        "audio.ambience.waves-loop"
+      ],
+      "role": "Ambience track list, fade length and per-track trim",
+      "license": "project-authored configuration and code",
+      "source_hash_verified_on": "2026-10-20",
+      "runtime_mapping": {
+        "tracks": "res://assets/audio/ambience/waves-loop-v1.ogg",
+        "fade_seconds": 2.0,
+        "trim_db": -16.0
+      }
+    },
+    "ui.ambience-director": {
+      "path": "res://presentation/ambience_director.gd",
+      "source": "presentation/ambience_director.gd",
+      "version": 2,
+      "sha256": "4cbad03aa2434ef809baa2f0a7f60a17fb31e62365f99a39a80d3c46acdc6f4f",
+      "dependencies": [
+        "data.ambience.config"
+      ],
+      "role": "Single looping ambience player; reads only the local audio preferences and the replay flag",
+      "license": "project-authored configuration and code",
+      "source_hash_verified_on": "2026-10-20",
+      "runtime_mapping": {
+        "entry": "flow_app.gd/render after page_host.render",
+        "preferences": "user://display-settings.cfg [audio] (shared with the music toggle)",
+        "suspension": "an open gallery replay silences the sea as well"
+      }
     }
   }
 }

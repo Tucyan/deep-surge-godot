@@ -1,5 +1,7 @@
 # 素材登记
 
+2026-10-20 新增日常背景音乐 `audio.music.daily-aria`、`audio.music.daily-fuga` v1，以及 cue 表 `data.music.cues`、导演 `ui.music-director`。两首 MP3 为用户微信提供的巴赫吉他四重奏改编（BWV82 咏叹调 444.653 秒、BWV578 赋格 204.800 秒），字节未转码，仅重命名为稳定运行名；导入参数 `loop=true`。用户提供的 `boss配乐(1).zip` 内只有空目录，Boss cue 暂为空并回退航行曲目，登记时留空而非伪造占位音频。`ui.modal-layout`、`ui.settings-panel`、`ui.display-preferences` 同步版本与 hash（音乐开关与音量滑条）。来源与时长见[音乐源记录](../asset-sources/music-daily-20261020/README.md)，契约见[背景音乐](../docs/audio-and-music.md)，登记命令 `python tools/register_music.py`。
+
 图鉴所有类别的未发现条目统一使用用户提供的透明问号宝箱图 `ui.encyclopedia.unknown` v1（1254×1254），网格缩略图与右侧详情共用，按原比例显示；原始 PNG 字节不变。运行文件为 `assets/ui/encyclopedia-unknown-v1.png`，来源、SHA-256、依赖与映射登记在 manifest。右侧详情底色为象牙白 `#F6EBDA`，标题与正文使用深色。
 
 2026-10-19 首页设置入口改为项目原创 SVG 齿轮图标 `icon.settings.gear`，版本1，无外部依赖；源尺寸64×64，运行映射为 `pages/flow_home.gd/HomeSettings/HomeSettingsGear`，来源与SHA-256登记在manifest。
@@ -290,3 +292,5 @@ GPU验证：`test_acquisition_ui.gd` 的获取/说明/飞行动画、`test_acqui
 
 
 2026-10-20：`藏品.zip` 的20张1254×1254透明原图完整归档于 [relics-v1](../asset-sources/relics-v1/README.md)，运行图等比缩至512×512，稳定AssetId为 `relic.<id>`，登记双hash与尺寸。获取提示、仓库、图鉴、新寻物节点复用缓存，未知ID才使用旧占位图。旧藏品设计已整体归档，当前20件全部采用新定义；详见[当前设计](../docs/relic-expedition.md)。
+
+2026-10-20 怪物尸体与贝币换用真实卡图：`card.corpse` 与 `card.coin` 由 v1 纯色占位升级为 v2 用户提供的低多边形骨甲海怪尸骸、低模风格奶油色宝螺组合。原图为纯白摄影棚底，由 `tools/cutout_white_background.py` 做边界连通泛洪去底、边缘 alpha 过渡与去白边，按内容包围盒居中裁为 1024×1024 RGBA（运行图在 `assets/images/cards-20261020/`），不引入外部下载依赖。手牌、合成页、图鉴、获取提示与商店经 `assets.texture("card.<id>")` 统一生效；`show_label` 置 false，载入失败仍回退原纯色与标签。原图、算法阈值与双 hash 见 [corpse-cowrie-20261020](../asset-sources/corpse-cowrie-20261020/README.md)。

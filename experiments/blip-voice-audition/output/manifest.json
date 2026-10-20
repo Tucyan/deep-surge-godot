@@ -1,0 +1,424 @@
+{
+	"cues": 16,
+	"generated_by": "experiments/blip-voice-audition/bake.gd",
+	"items": [
+		{
+			"desc": "最小的一次点击确认，方波短促，几乎不占听觉注意力。",
+			"duration": 0.086,
+			"file": "output/sfx_ui_tap.wav",
+			"group": "界面反馈",
+			"id": "ui_tap",
+			"kind": "sfx",
+			"label": "界面轻点",
+			"params": {
+				"base_freq": 1050.0,
+				"gain": 0.18,
+				"glide": 0.0,
+				"lowpass_cutoff": 4200.0,
+				"wave": 0
+			},
+			"peak": 0.485
+		},
+		{
+			"desc": "三角波版本，用于高频重复操作（翻页、滚动）时避免刺耳。",
+			"duration": 0.09,
+			"file": "output/sfx_ui_tap_soft.wav",
+			"group": "界面反馈",
+			"id": "ui_tap_soft",
+			"kind": "sfx",
+			"label": "界面轻点 · 柔和",
+			"params": {
+				"base_freq": 780.0,
+				"gain": 0.14,
+				"glide": 0.0,
+				"lowpass_cutoff": 3200.0,
+				"wave": 2
+			},
+			"peak": 0.301
+		},
+		{
+			"desc": "上行五度两音，表示「这一步生效了」。对应选项二次点击提交。",
+			"duration": 0.17,
+			"file": "output/sfx_ui_confirm.wav",
+			"group": "界面反馈",
+			"id": "ui_confirm",
+			"kind": "sfx",
+			"label": "确认 / 提交",
+			"params": {
+				"base_freq": 900.0,
+				"gain": 0.26,
+				"glide": 0.0,
+				"lowpass_cutoff": 5200.0,
+				"wave": 2
+			},
+			"peak": 0.605
+		},
+		{
+			"desc": "下行四度两音，和确认形成明确的反向轮廓。",
+			"duration": 0.16,
+			"file": "output/sfx_ui_cancel.wav",
+			"group": "界面反馈",
+			"id": "ui_cancel",
+			"kind": "sfx",
+			"label": "取消 / 退出预选",
+			"params": {
+				"base_freq": 820.0,
+				"gain": 0.22,
+				"glide": 0.0,
+				"lowpass_cutoff": 3400.0,
+				"wave": 0
+			},
+			"peak": 0.596
+		},
+		{
+			"desc": "同音重复两下的闷响，只表示「没生效」，不带失败感。",
+			"duration": 0.145,
+			"file": "output/sfx_ui_blocked.wav",
+			"group": "界面反馈",
+			"id": "ui_blocked",
+			"kind": "sfx",
+			"label": "不可用 / 条件不足",
+			"params": {
+				"base_freq": 700.0,
+				"gain": 0.16,
+				"glide": 0.0,
+				"lowpass_cutoff": 2500.0,
+				"wave": 1
+			},
+			"peak": 0.361
+		},
+		{
+			"desc": "单音轻微上滑，一步动作之前的「括号提示」音，不打断阅读。",
+			"duration": 0.115,
+			"file": "output/sfx_choice_preselect.wav",
+			"group": "事件节点",
+			"id": "choice_preselect",
+			"kind": "sfx",
+			"label": "选项预选",
+			"params": {
+				"base_freq": 880.0,
+				"gain": 0.22,
+				"glide": 0.05,
+				"lowpass_cutoff": 4600.0,
+				"wave": 0
+			},
+			"peak": 0.595
+		},
+		{
+			"desc": "三连下行，短促收束，用于 AP 扣除。",
+			"duration": 0.2,
+			"file": "output/sfx_ap_spend.wav",
+			"group": "事件节点",
+			"id": "ap_spend",
+			"kind": "sfx",
+			"label": "消耗行动点",
+			"params": {
+				"base_freq": 860.0,
+				"gain": 0.22,
+				"glide": 0.0,
+				"lowpass_cutoff": 3800.0,
+				"wave": 0
+			},
+			"peak": 0.596
+		},
+		{
+			"desc": "两音上行，纸牌轻挑的手感。",
+			"duration": 0.165,
+			"file": "output/sfx_card_draw.wav",
+			"group": "事件节点",
+			"id": "card_draw",
+			"kind": "sfx",
+			"label": "抽牌 / 入袋",
+			"params": {
+				"base_freq": 900.0,
+				"gain": 0.22,
+				"glide": 0.03,
+				"lowpass_cutoff": 4400.0,
+				"wave": 2
+			},
+			"peak": 0.5
+		},
+		{
+			"desc": "四音上行琶音，最后一个音拉长，给「捡到东西」一点仪式感。",
+			"duration": 0.49,
+			"file": "output/sfx_relic_found.wav",
+			"group": "事件节点",
+			"id": "relic_found",
+			"kind": "sfx",
+			"label": "拾得遗物",
+			"params": {
+				"base_freq": 760.0,
+				"gain": 0.26,
+				"glide": 0.02,
+				"lowpass_cutoff": 5000.0,
+				"wave": 2
+			},
+			"peak": 0.64
+		},
+		{
+			"desc": "两次低音下滑，锯齿波、截止点压低，只提示不惊吓。",
+			"duration": 0.38,
+			"file": "output/sfx_danger_warning.wav",
+			"group": "环境与战斗",
+			"id": "danger_warning",
+			"kind": "sfx",
+			"label": "危险预警",
+			"params": {
+				"base_freq": 320.0,
+				"gain": 0.28,
+				"glide": 0.1,
+				"lowpass_cutoff": 1800.0,
+				"wave": 1
+			},
+			"peak": 0.691
+		},
+		{
+			"desc": "极低频长下滑 + 上层五度短音，压出来的体积感。",
+			"duration": 0.56,
+			"file": "output/sfx_monster_appear.wav",
+			"group": "环境与战斗",
+			"id": "monster_appear",
+			"kind": "sfx",
+			"label": "遭遇怪物",
+			"params": {
+				"base_freq": 120.0,
+				"gain": 0.3,
+				"glide": 0.25,
+				"lowpass_cutoff": 900.0,
+				"wave": 1
+			},
+			"peak": 0.748
+		},
+		{
+			"desc": "低音短促下滑，可当作一次攻击结算的落点。",
+			"duration": 0.145,
+			"file": "output/sfx_battle_hit.wav",
+			"group": "环境与战斗",
+			"id": "battle_hit",
+			"kind": "sfx",
+			"label": "战斗命中",
+			"params": {
+				"base_freq": 220.0,
+				"gain": 0.3,
+				"glide": 0.18,
+				"lowpass_cutoff": 1600.0,
+				"wave": 1
+			},
+			"peak": 0.581
+		},
+		{
+			"desc": "三音上行，比确认更长，用于节点结果正向结算。",
+			"duration": 0.36,
+			"file": "output/sfx_result_good.wav",
+			"group": "结果结算",
+			"id": "result_good",
+			"kind": "sfx",
+			"label": "结果 · 成功",
+			"params": {
+				"base_freq": 820.0,
+				"gain": 0.26,
+				"glide": 0.02,
+				"lowpass_cutoff": 5200.0,
+				"wave": 2
+			},
+			"peak": 0.61
+		},
+		{
+			"desc": "三音下行并压低截止点，闷而不刺，避免玩家烦躁。",
+			"duration": 0.39,
+			"file": "output/sfx_result_bad.wav",
+			"group": "结果结算",
+			"id": "result_bad",
+			"kind": "sfx",
+			"label": "结果 · 失败",
+			"params": {
+				"base_freq": 780.0,
+				"gain": 0.24,
+				"glide": 0.04,
+				"lowpass_cutoff": 2600.0,
+				"wave": 0
+			},
+			"peak": 0.641
+		},
+		{
+			"desc": "四音上扫，从低沉爬到开阔，用作一段流程的开头。",
+			"duration": 0.56,
+			"file": "output/sfx_voyage_start.wav",
+			"group": "流程",
+			"id": "voyage_start",
+			"kind": "sfx",
+			"label": "起航 / 进入航行",
+			"params": {
+				"base_freq": 300.0,
+				"gain": 0.24,
+				"glide": 0.15,
+				"lowpass_cutoff": 2400.0,
+				"wave": 1
+			},
+			"peak": 0.573
+		},
+		{
+			"desc": "大三和弦上行并收在长音上，是整套里最长的一条。",
+			"duration": 0.68,
+			"file": "output/sfx_victory.wav",
+			"group": "流程",
+			"id": "victory",
+			"kind": "sfx",
+			"label": "战斗胜利",
+			"params": {
+				"base_freq": 700.0,
+				"gain": 0.28,
+				"glide": 0.02,
+				"lowpass_cutoff": 5400.0,
+				"wave": 2
+			},
+			"peak": 0.673
+		},
+		{
+			"char_interval": 0.0833333333333333,
+			"desc": "opening_intro.gd 第 90-93 行的现有配置，作为其余音色的音量与语速基准。",
+			"duration": 1.35,
+			"file": "output/voice_narrator.wav",
+			"group": "对白音色",
+			"id": "narrator",
+			"kind": "voice",
+			"label": "旁白（序章现用，作对照）",
+			"params": {
+				"char_interval": 0.0833333333333333,
+				"gain": 0.22,
+				"pitch_mode": 1
+			},
+			"peak": 0.219,
+			"preset": "animal_crossing",
+			"sample": "最初，人们以为那只是一场海啸。"
+		},
+		{
+			"char_interval": 0.085,
+			"desc": "正弦波 + 低截止 + 大抖动，像贴着耳朵的耳语，不抢文本注意力。",
+			"duration": 1.76,
+			"file": "output/voice_relic.wav",
+			"group": "对白音色",
+			"id": "relic",
+			"kind": "voice",
+			"label": "遗物低语",
+			"params": {
+				"base_freq": 430.0,
+				"char_interval": 0.085,
+				"declination": 5.0,
+				"gain": 0.26,
+				"glide": 0.08,
+				"lowpass_cutoff": 1600.0,
+				"note_duration": 0.06,
+				"pitch_jitter": 6.0,
+				"pitch_mode": 0,
+				"wave": 3
+			},
+			"peak": 0.242,
+			"preset": "animal_crossing",
+			"sample": "潮水从未退去。它把名字留在了甲板上。"
+		},
+		{
+			"char_interval": 0.105,
+			"desc": "低频锯齿 + 明显下滑，慢而沉，用于非人说话者。",
+			"duration": 3.14,
+			"file": "output/voice_entity.wav",
+			"group": "对白音色",
+			"id": "entity",
+			"kind": "voice",
+			"label": "深海存在 / 怪物",
+			"params": {
+				"base_freq": 190.0,
+				"char_interval": 0.105,
+				"declination": 8.0,
+				"gain": 0.28,
+				"glide": 0.1,
+				"lowpass_cutoff": 1100.0,
+				"note_duration": 0.095,
+				"pitch_jitter": 9.0,
+				"pitch_mode": 0,
+				"wave": 1
+			},
+			"peak": 0.251,
+			"preset": "robot",
+			"sample": "……你听见了吗。海面之下有人在数你的心跳。"
+		},
+		{
+			"char_interval": 0.058,
+			"desc": "中频三角波、语速偏快，听起来像在兜售东西。",
+			"duration": 1.616,
+			"file": "output/voice_trader.wav",
+			"group": "对白音色",
+			"id": "trader",
+			"kind": "voice",
+			"label": "商人",
+			"params": {
+				"base_freq": 640.0,
+				"char_interval": 0.058,
+				"declination": 2.0,
+				"gain": 0.26,
+				"glide": 0.02,
+				"lowpass_cutoff": 4200.0,
+				"note_duration": 0.05,
+				"pitch_jitter": 2.2,
+				"pitch_mode": 1,
+				"wave": 2
+			},
+			"peak": 0.237,
+			"preset": "chip",
+			"sample": "远航鱼罐，换你剩下的半瓶淡水。要,还是不要？"
+		},
+		{
+			"char_interval": 0.05,
+			"desc": "零抖动、零降调，机械地播报规则文本；音高固定所以不会像谁在说话。",
+			"duration": 1.07,
+			"file": "output/voice_system.wav",
+			"group": "对白音色",
+			"id": "system",
+			"kind": "voice",
+			"label": "系统提示",
+			"params": {
+				"base_freq": 720.0,
+				"char_interval": 0.05,
+				"declination": 0.0,
+				"gain": 0.2,
+				"glide": 0.0,
+				"lowpass_cutoff": 6000.0,
+				"note_duration": 0.045,
+				"pitch_jitter": 0.0,
+				"pitch_mode": 2,
+				"wave": 0
+			},
+			"peak": 0.2,
+			"preset": "famicom",
+			"sample": "获得时饱食上限 +10，本件仅结算一次。"
+		},
+		{
+			"char_interval": 0.056,
+			"desc": "逆转裁判底子降到 540Hz，比旁白低一档，两个声音同屏能分开。",
+			"duration": 1.162,
+			"file": "output/voice_captain.wav",
+			"group": "对白音色",
+			"id": "captain",
+			"kind": "voice",
+			"label": "船长 / 主角",
+			"params": {
+				"base_freq": 540.0,
+				"char_interval": 0.056,
+				"declination": 4.0,
+				"gain": 0.24,
+				"glide": 0.02,
+				"lowpass_cutoff": 3200.0,
+				"note_duration": 0.042,
+				"pitch_jitter": 1.6,
+				"pitch_mode": 1,
+				"wave": 0
+			},
+			"peak": 0.239,
+			"preset": "ace_attorney",
+			"sample": "把绳子收紧。这一点风浪还推不动我们。"
+		}
+	],
+	"plugin": "addons/blip_voice",
+	"profiles": 6,
+	"sample_rate": 44100
+}

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>深潮 · Blip Voice 音效试听</title>
+<style>
+  :root {
+    --bg: #f5f7f9; --card: #ffffff; --line: #e2e6ec; --ink: #1b2027;
+    --muted: #69737f; --accent: #17667f; --accent-soft: #e6f2f6;
+    --mono: Consolas, "Cascadia Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 40px 24px 72px; background: var(--bg); color: var(--ink);
+    font: 15px/1.6 -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+  }
+  main { max-width: 1040px; margin: 0 auto; }
+  header { margin-bottom: 36px; }
+  h1 { font-size: 25px; margin: 0 0 6px; letter-spacing: .01em; }
+  .sub { color: var(--muted); font-size: 14px; margin: 0; }
+  .summary { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .chip {
+    background: var(--card); border: 1px solid var(--line); border-radius: 999px;
+    padding: 5px 13px; font-size: 13px; color: var(--muted);
+  }
+  .chip b { color: var(--ink); font-weight: 600; }
+  .caveat {
+    margin-top: 16px; padding: 12px 16px; border-left: 3px solid var(--accent);
+    background: var(--accent-soft); border-radius: 0 8px 8px 0; font-size: 13.5px; color: #245062;
+  }
+  section { margin-top: 40px; }
+  h2 { font-size: 16px; margin: 0 0 4px; display: flex; align-items: center; gap: 9px; }
+  .count {
+    font: 11px/1 var(--mono); color: var(--muted); background: #eceff3;
+    border-radius: 5px; padding: 4px 6px;
+  }
+  .note { margin: 0 0 14px; color: var(--muted); font-size: 13px; }
+  .item {
+    display: grid; grid-template-columns: 46px 1fr 92px; gap: 16px; align-items: start;
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 15px 17px; margin-bottom: 10px; transition: border-color .15s, box-shadow .15s;
+  }
+  .item:hover { border-color: #cdd6e0; }
+  .item.on { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .play {
+    width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--line);
+    background: #fbfcfd; color: var(--accent); cursor: pointer; font-size: 15px;
+    display: flex; align-items: center; justify-content: center; padding: 0;
+    transition: background .15s, transform .1s;
+  }
+  .play:hover { background: var(--accent-soft); }
+  .play:active { transform: scale(.94); }
+  .item.on .play { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .item.on .play .glyph { font-size: 12px; }
+  .head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  h3 { font-size: 15px; margin: 0; font-weight: 600; }
+  code { font: 12px var(--mono); color: #9aa4b0; }
+  .desc { margin: 3px 0 0; font-size: 13.5px; color: #3f4855; }
+  .sample { margin: 6px 0 0; font-size: 13.5px; color: #3f4855; font-style: normal; }
+  .sample::before { content: "文案 "; color: var(--muted); font-size: 12px; }
+  .params { margin: 6px 0 0; font: 11.5px/1.7 var(--mono); color: #8b96a2; }
+  .track { height: 3px; background: #eef1f5; border-radius: 2px; margin-top: 10px; overflow: hidden; }
+  .track i { display: block; height: 100%; width: 0; background: var(--accent); }
+  .meta { text-align: right; font: 12px/1.7 var(--mono); color: var(--muted); }
+  .dur { display: block; color: var(--ink); }
+  footer { margin-top: 48px; color: var(--muted); font-size: 12.5px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>深潮 · Blip Voice 音效试听</h1>
+    <p class="sub">全部由 addons/blip_voice 的程序化合成器烘出，没有任何外部音频素材。此页仅供审核，游戏代码尚未接入。</p>
+    <div class="summary">
+      <span class="chip"><b>16</b> 条音效</span>
+      <span class="chip"><b>6</b> 条对白音色</span>
+      <span class="chip">总长 <b>14.8</b> 秒</span>
+      <span class="chip">44.1 kHz · 16 bit · 单声道</span>
+    </div>
+    <p class="caveat">两条产线的电平是分开设计的：音效按 AudioStreamPlayer 0 dB 播放烘到接近满刻度；对白音色保持和 opening_intro.gd 现有旁白同一增益链，所以听起来会明显更轻——这是刻意的，方便你比较音色本身而不是比较响度。</p>
+  </header>
+  <section>
+    <h2>界面反馈<span class="count">5</span></h2>
+    <p class="note">点击、确认、取消、不可用——最频繁的一层，音量压得最低。</p>
+    <article class="item" data-src="output/sfx_ui_tap.wav" data-dur="0.086">
+      <button class="play" type="button" aria-label="播放 界面轻点"><span class="glyph">▶</span></button>
+      <div class="body">
+        <div class="head"><h3>界面轻点</h3><code>ui_tap</code></div>
+        <p class="desc">最小的一次点击确认，方波短促，几乎不占听觉注意力。</p>
+        
+        <p class="params">方波 · 基频 1050 Hz · 低通 4200 Hz · 下滑 0.00 · 增益 0.18</p>
+        <div class="track"><i></i></div>
+      </div>
+      <div class="meta"><span class="dur">86 mss</span><span class="peak">-6.3 dB</span></div>
+    </article>
+    <article class="item" data-src="output/sfx_ui_tap_soft.wav" data-dur="0.09">
+      <button class="play" type="button" aria-label="播放 界面轻点 · 柔和"><span class="glyph">▶</span></button>
+      <div class="body">
+        <div class="head"><h3>界面轻点 · 柔和</h3><code>ui_tap_soft</code></div>
+        <p class="desc">三角波版本，用于高频重复操作（翻页、滚动）时避免刺耳。</p>
+        
+        <p class="params">三角波 · 基频 780 Hz · 低通 3200 Hz · 下滑 0.00 · 增益 0.14</p>
+        <div class="track"><i></i></div>
+      </div>
+      <div class="meta"><span class="dur">90 mss</span><span class="peak">-10.4 dB</span></div>
+    </article>
+    <article class="item" data-src="output/sfx_ui_confirm.wav" data-dur="0.17">
+      <button class="play" type="button" aria-label="播放 确认 / 提交"><span class="glyph">▶</span></button>
+      <div class="body">
+        <div class="head"><h3>确认 / 提交</h3><code>ui_confirm</code></div>
+        <p class="desc">上行五度两音，表示「这一步生效了」。对应选项二次点击提交。</p>
+        
+        <p class="params">三角波 · 基频 900 Hz · 低通 5200 Hz · 下滑 0.00 · 增益 0.26</p>
+        <div class="track"><i></i></div>
+      </div>
+      <div class="meta"><span class="dur">170 mss</span><span class="peak">-4.4 dB</span></div>
+    </article>
+    <article class="item" data-src="output/sfx_ui_cancel.wav" data-dur="0.16">
+      <button class="play" type="button" aria-label="播放 取消 / 退出预选"><span class="glyph">▶</span></button>
+      <div class="body">
+        <div class="head"><h3>取消 / 退出预选</h3><code>ui_cancel</code></div>
+        <p class="desc">下行四度两音，和确认形成明确的反向轮廓。</p>
+        
+        <p class="params">方波 · 基频 820 Hz · 低通 3400 Hz · 下滑 0.00 · 增益 0.22</p>
+        <div class="track"><i></i></div>
+      </div>
+      <div class="meta"><span class="dur">160 mss</span><span class="peak">-4.5 dB</span></div>
+    </article>
+    <article class="item" data-src="output/sfx_ui_blocked.wav" data-dur="0.145">
+      <button class="play" type="button" aria-label="播放 不可用 / 条件不足"><span class="glyph">▶</span></button>
+      <div class="body">
+        <div class="head"><h3>不可用 / 条件不足</h3><code>ui_blocked</code></div>
+        <p class="desc">同音重复两下的闷响，只表示「没生效」，不带失败感。</p>
+        
+        <p class="params">锯齿波 · 基频 700 Hz · 低通 2500 Hz · 下滑 0.00 · 增益 0.16</p>
+        <div class="track"><i></i></div>
+      </div>
+      <div class="meta"><span class="dur">145 mss</span><span class="peak">-8.8 dB</span></div>
+    </article>
+  </section>
+  <section>
+    <h2>事件节点<span class="count">4</span></h2>
+    <p class="note">预选、扣 AP、抽牌、拾遗物——节点事件里一步动作的落点。</p>
+    <article class="item" data-src="output/sfx_choice_preselect.wav" data-dur="0.115">
+      <button class="play" type="button" aria-label="播放 选项预选"><span class="glyph">▶</span></button>
+      <div class="body">
+        <div class="head"><h3>选项预选</h3><code>choice_preselect</code></div>
+        <p class="desc">单音轻微上滑，一步动作之前的「括号提示」音，不打断阅读。</p>
+        
+        <p class="params">方波 · 基频 880 Hz · 低通 4600 Hz · 下滑 0.05 · 增益 0.22</p>
+        <div class="track"><i></i></div>
+      </div>
+      <div class="meta"><span class="dur">115 mss</span><span class="peak">-4.5 dB</span></div>
+    </article>
+    <article class="item" data-src="output/sfx_ap_spend.wav" data-dur="0.2">
+      <button class="play" type="button" aria-label="播放 消耗行动点"><span class="glyph">▶</span></button>
+      <div class="body">
+        <div class="head"><h3>消耗行动点</h3><code>ap_spend</code></div>
+        <p class="desc">三连下行，短促收束，用于 AP 扣除。</p>
+        
+        <p class="params">方波 · 基频 860 Hz · 低通 3800 Hz · 下滑 0.00 · 增益 0.22</p>
+        <div class="track"><i></i></div>
+      </div>
+      <div class="meta"><span class="dur">200 mss</span><span class="peak">-4.5 dB</span></div>
+    </article>
+    <article class="item" data-src="output/sfx_card_draw.wav" data-dur="0.165">
+      <button class="play" type="button" aria-label="播放 抽牌 / 入袋"><span class="glyph">▶</span></button>
+      <div class="body">
+        <div class="head"><h3>抽牌 / 入袋</h3><code>card_draw</code></div>
+        <p class="desc">两音上行，纸牌轻挑的手感。</p>
+        
+        <p class="params">三角波 · 基频 900 Hz · 低通 4400 Hz · 下滑 0.03 · 增益 0.22</p>
+        <div class="track"><i></i></div>
+      </div>
+      <div class="meta"><span class="dur">165 mss</span><span class="peak">-6.0 dB</span></div>
+    </article>
+    <article class="item" data-src="output/sfx_relic_found.wav" data-dur="0.49">
+      <button class="play" type="button" aria-label="播放 拾得遗物"><span class="glyph">▶</span></button>
+      <div class="body">
+        <div class="head"><h3>拾得遗物</h3><code>relic_found</code></div>
+        <p class="desc">四音上行琶音，最后一个音拉长，给「捡到东西」一点仪式感。</p>
+        
+        <p class="params">三角波 · 基频 760 Hz · 低通 5000 Hz · 下滑 0.02 · 增益 0.26</p>
+        <div class="track"><i></i></div>
+      </div>
+      <div class="meta"><span class="dur">490 mss</span><span class="peak">-3.9 dB</span></div>
+    </article>
+  </section>
+  <section>
+    <h2>环境与战斗<span class="count">3</span></h2>
+    <p class="note">预警、遭遇、命中——低频为主，靠截止点制造压迫感。</p>
+    <article class="item" data-src="output/sfx_danger_warning.wav" data-dur="0.38">
+      <button class="play" type="button" aria-label="播放 危险预警"><span class="glyph">▶</span></button>
+      <div class="body">
+        <div class="head"><h3>危险预警</h3><code>danger_warning</code></div>
+        <p class="desc">两次低音下滑，锯齿波、截止点压低，只提示不惊吓。</p>
+        
+        <p class="params">锯齿波 · 基频 320 Hz · 低通 1800 Hz · 下滑 0.10 · 增益 0.28</p>
+        <div class="track"><i></i></div>
+      </div>
+      <div class="meta"><span class="dur">380 mss</span><span class="peak">-3.2 dB</span></div>
+    </article>
+    <article class="item" data-src="output/sfx_monster_appear.wav" data-dur="0.56">
+      <button class="play" type="button" aria-label="播放 遭遇怪物"><span class="glyph">▶</span></button>
+      <div class="body">
+        <div class="head"><h3>遭遇怪物</h3><code>monster_appear</code></div>
+        <p class="desc">极低频长下滑 + 上层五度短音，压出来的体积感。</p>
+        
+        <p class="params">锯齿波 · 基频 120 Hz · 低通 900 Hz · 下滑 0.25 · 增益 0.30</p>
+        <div class="track"><i></i></div>
+      </div>
+      <div class="meta"><span class="dur">560 mss</span><span class="peak">-2.5 dB</span></div>
+    </article>
+    <article class="item" data-src="output/sfx_battle_hit.wav" data-dur="0.145">
+      <button class="play" type="button" aria-label="播放 战斗命中"><span class="glyph">▶</span></button>
+      <div class="body">
+        <div class="head"><h3>战斗命中</h3><code>battle_hit</code></div>
+        <p class="desc">低音短促下滑，可当作一次攻击结算的落点。</p>
+        
+        <p class="params">锯齿波 · 基频 220 Hz · 低通 1600 Hz · 下滑 0.18 · 增益 0.30</p>
+        <div class="track"><i></i></div>
+      </div>
+      <div class="meta"><span class="dur">145 mss</span><span class="peak">-4.7 dB</span></div>
+    </article>
+  </section>
+  <section>
+    <h2>结果结算<span class="count">2</span></h2>
+    <p class="note">成功与失败两条对称轮廓，避免玩家分不清结果。</p>
+    <article class="item" data-src="output/sfx_result_good.wav" data-dur="0.36">
+      <button class="play" type="button" aria-label="播放 结果 · 成功"><span class="glyph">▶</span></button>
+      <div class="body">
+        <div class="head"><h3>结果 · 成功</h3><code>result_good</code></div>
+        <p class="desc">三音上行，比确认更长，用于节点结果正向结算。</p>
+        
+        <p class="params">三角波 · 基频 820 Hz · 低通 5200 Hz · 下滑 0.02 · 增益 0.26</p>
+        <div class="track"><i></i></div>
+      </div>
+      <div class="meta"><span class="dur">360 mss</span><span class="peak">-4.3 dB</span></div>
+    </article>
+    <article class="item" data-src="output/sfx_result_bad.wav" data-dur="0.39">
+      <button class="play" type="button" aria-label="播放 结果 · 失败"><span class="glyph">▶</span></button>
+      <div class="body">
+        <div class="head"><h3>结果 · 失败</h3><code>result_bad</code></div>
+        <p class="desc">三音下行并压低截止点，闷而不刺，避免玩家烦躁。</p>
+        
+        <p class="params">方波 · 基频 780 Hz · 低通 2600 Hz · 下滑 0.04 · 增益 0.24</p>
+        <div class="track"><i></i></div>
+      </div>
+      <div class="meta"><span class="dur">390 mss</span><span class="peak">-3.9 dB</span></div>
+    </article>
+  </section>
+  <section>
+    <h2>流程<span class="count">2</span></h2>
+    <p class="note">起航与胜利，用在段落开头结尾，长度明显更长。</p>
+    <article class="item" data-src="output/sfx_voyage_start.wav" data-dur="0.56">
+      <button class="play" type="button" aria-label="播放 起航 / 进入航行"><span class="glyph">▶</span></button>
+      <div class="body">
+        <div class="head"><h3>起航 / 进入航行</h3><code>voyage_start</code></div>
+        <p class="desc">四音上扫，从低沉爬到开阔，用作一段流程的开头。</p>
+        
+        <p class="params">锯齿波 · 基频 300 Hz · 低通 2400 Hz · 下滑 0.15 · 增益 0.24</p>
+        <div class="track"><i></i></div>
+      </div>
+      <div class="meta"><span class="dur">560 mss</span><span class="peak">-4.8 dB</span></div>
+    </article>
+    <article class="item" data-src="output/sfx_victory.wav" data-dur="0.68">
+      <button class="play" type="button" aria-label="播放 战斗胜利"><span class="glyph">▶</span></button>
+      <div class="body">
+        <div class="head"><h3>战斗胜利</h3><code>victory</code></div>
+        <p class="desc">大三和弦上行并收在长音上，是整套里最长的一条。</p>
+        
+        <p class="params">三角波 · 基频 700 Hz · 低通 5400 Hz · 下滑 0.02 · 增益 0.28</p>
+        <div class="track"><i></i></div>
+      </div>
+      <div class="meta"><span class="dur">680 mss</span><span class="peak">-3.4 dB</span></div>
+    </article>
+  </section>
+  <section>
+    <h2>对白音色<span class="count">6</span></h2>
+    <p class="note">同一句真实文案、不同参数；第一条就是 opening_intro.gd 现在用的旁白，作为音量与语速基准。</p>
+    <article class="item" data-src="output/voice_narrator.wav" data-dur="1.35">
+      <button class="play" type="button" aria-label="播放 旁白（序章现用，作对照）"><span class="glyph">▶</span></button>
+      <div class="body">
+        <div class="head"><h3>旁白（序章现用，作对照）</h3><code>narrator</code></div>
+        <p class="desc">opening_intro.gd 第 90-93 行的现有配置，作为其余音色的音量与语速基准。</p>
+        <p class="sample">「最初，人们以为那只是一场海啸。」</p>
+        <p class="params">方波 · 基频 0 Hz · 字间隔 0.0833333 s · 增益 0.22 · 音高 按字固定 · 预设 animal_crossing</p>
+        <div class="track"><i></i></div>
+      </div>
+      <div class="meta"><span class="dur">1.35 ss</span><span class="peak">-13.2 dB</span></div>
+    </article>
+    <article class="item" data-src="output/voice_relic.wav" data-dur="1.76">
+      <button class="play" type="button" aria-label="播放 遗物低语"><span class="glyph">▶</span></button>
+      <div class="body">
+        <div class="head"><h3>遗物低语</h3><code>relic</code></div>
+        <p class="desc">正弦波 + 低截止 + 大抖动，像贴着耳朵的耳语，不抢文本注意力。</p>
+        <p class="sample">「潮水从未退去。它把名字留在了甲板上。」</p>
+        <p class="params">正弦波 · 基频 430 Hz · 抖动 6 半音 · 句尾降调 5 半音 · 单音 0.06 s · 字间隔 0.085 s · 低通 1600 Hz · 下滑 0.08 · 增益 0.26 · 音高 随机 · 预设 animal_crossing</p>
+        <div class="track"><i></i></div>
+      </div>
+      <div class="meta"><span class="dur">1.76 ss</span><span class="peak">-12.3 dB</span></div>
+    </article>
+    <article class="item" data-src="output/voice_entity.wav" data-dur="3.14">
+      <button class="play" type="button" aria-label="播放 深海存在 / 怪物"><span class="glyph">▶</span></button>
+      <div class="body">
+        <div class="head"><h3>深海存在 / 怪物</h3><code>entity</code></div>
+        <p class="desc">低频锯齿 + 明显下滑，慢而沉，用于非人说话者。</p>
+        <p class="sample">「……你听见了吗。海面之下有人在数你的心跳。」</p>
+        <p class="params">锯齿波 · 基频 190 Hz · 抖动 9 半音 · 句尾降调 8 半音 · 单音 0.095 s · 字间隔 0.105 s · 低通 1100 Hz · 下滑 0.1 · 增益 0.28 · 音高 随机 · 预设 robot</p>
+        <div class="track"><i></i></div>
+      </div>
+      <div class="meta"><span class="dur">3.14 ss</span><span class="peak">-12.0 dB</span></div>
+    </article>
+    <article class="item" data-src="output/voice_trader.wav" data-dur="1.616">
+      <button class="play" type="button" aria-label="播放 商人"><span class="glyph">▶</span></button>
+      <div class="body">
+        <div class="head"><h3>商人</h3><code>trader</code></div>
+        <p class="desc">中频三角波、语速偏快，听起来像在兜售东西。</p>
+        <p class="sample">「远航鱼罐，换你剩下的半瓶淡水。要,还是不要？」</p>
+        <p class="params">三角波 · 基频 640 Hz · 抖动 2.2 半音 · 句尾降调 2 半音 · 单音 0.05 s · 字间隔 0.058 s · 低通 4200 Hz · 下滑 0.02 · 增益 0.26 · 音高 按字固定 · 预设 chip</p>
+        <div class="track"><i></i></div>
+      </div>
+      <div class="meta"><span class="dur">1.62 ss</span><span class="peak">-12.5 dB</span></div>
+    </article>
+    <article class="item" data-src="output/voice_system.wav" data-dur="1.07">
+      <button class="play" type="button" aria-label="播放 系统提示"><span class="glyph">▶</span></button>
+      <div class="body">
+        <div class="head"><h3>系统提示</h3><code>system</code></div>
+        <p class="desc">零抖动、零降调，机械地播报规则文本；音高固定所以不会像谁在说话。</p>
+        <p class="sample">「获得时饱食上限 +10，本件仅结算一次。」</p>
+        <p class="params">方波 · 基频 720 Hz · 抖动 0 半音 · 句尾降调 0 半音 · 单音 0.045 s · 字间隔 0.05 s · 低通 6000 Hz · 下滑 0 · 增益 0.2 · 音高 完全一致 · 预设 famicom</p>
+        <div class="track"><i></i></div>
+      </div>
+      <div class="meta"><span class="dur">1.07 ss</span><span class="peak">-14.0 dB</span></div>
+    </article>
+    <article class="item" data-src="output/voice_captain.wav" data-dur="1.162">
+      <button class="play" type="button" aria-label="播放 船长 / 主角"><span class="glyph">▶</span></button>
+      <div class="body">
+        <div class="head"><h3>船长 / 主角</h3><code>captain</code></div>
+        <p class="desc">逆转裁判底子降到 540Hz，比旁白低一档，两个声音同屏能分开。</p>
+        <p class="sample">「把绳子收紧。这一点风浪还推不动我们。」</p>
+        <p class="params">方波 · 基频 540 Hz · 抖动 1.6 半音 · 句尾降调 4 半音 · 单音 0.042 s · 字间隔 0.056 s · 低通 3200 Hz · 下滑 0.02 · 增益 0.24 · 音高 按字固定 · 预设 ace_attorney</p>
+        <div class="track"><i></i></div>
+      </div>
+      <div class="meta"><span class="dur">1.16 ss</span><span class="peak">-12.4 dB</span></div>
+    </article>
+  </section>
+  <footer>重烘：Godot --headless --path . --script res://experiments/blip-voice-audition/bake.gd　重生成本页：python experiments/blip-voice-audition/build_page.py</footer>
+</main>
+<script>
+  var audio = new Audio();
+  var current = null;
+  var raf = null;
+  document.querySelectorAll('.item').forEach(function (item) {
+    var bar = item.querySelector('.track i');
+    var glyph = item.querySelector('.glyph');
+    item.querySelector('.play').addEventListener('click', function () {
+      if (current === item) {
+        if (audio.paused) { audio.play(); } else { audio.pause(); }
+        return;
+      }
+      if (current) {
+        current.classList.remove('on');
+        current.querySelector('.glyph').textContent = '▶';
+        current.querySelector('.track i').style.width = '0';
+      }
+      current = item;
+      audio.src = item.dataset.src;
+      audio.currentTime = 0;
+      audio.play();
+    });
+    item._bar = bar; item._glyph = glyph;
+  });
+  audio.addEventListener('play', function () {
+    if (!current) return;
+    current.classList.add('on');
+    current.querySelector('.glyph').textContent = '❚❚';
+    tick();
+  });
+  audio.addEventListener('pause', function () {
+    if (!current) return;
+    current.classList.remove('on');
+    current.querySelector('.glyph').textContent = '▶';
+    cancelAnimationFrame(raf);
+  });
+  audio.addEventListener('ended', function () {
+    if (!current) return;
+    current.classList.remove('on');
+    current.querySelector('.glyph').textContent = '▶';
+    current.querySelector('.track i').style.width = '100%';
+  });
+  function tick() {
+    if (!current || !audio.duration) { raf = requestAnimationFrame(tick); return; }
+    current.querySelector('.track i').style.width = (audio.currentTime / audio.duration * 100) + '%';
+    raf = requestAnimationFrame(tick);
+  }
+</script>
+</body>
+</html>

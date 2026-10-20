@@ -1,0 +1,70 @@
+{
+  "pack": "corpse-cowrie-20261020",
+  "date": "2026-10-20",
+  "supplier": "user-supplied in chat (clipboard)",
+  "version": 1,
+  "entries": [
+    {
+      "asset_id": "card.coin",
+      "label": "贝币",
+      "original": {
+        "file": "asset-sources/corpse-cowrie-20261020/originals/低模风格奶油色宝螺组合.jpg",
+        "format": "JPEG",
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "sha256": "620c1979ddb1d3a6cfb0629f69564dabdc0f77c40faffd76dfe3f937ef747e4b"
+      },
+      "runtime": {
+        "file": "assets/images/cards-20261020/card-coin-v1.png",
+        "dimensions": [
+          1024,
+          1024
+        ],
+        "sha256": "e5a4aa265c67368d5e90f68ae9cdb0a1ced75ed6885ed483b672e5daf4ce386f",
+        "bytes": 685384
+      },
+      "background": "pure white studio (sampled corners and edges are RGB 255); removed, see procedure",
+      "opaque_share": 0.452,
+      "status": "integrated"
+    },
+    {
+      "asset_id": "card.corpse",
+      "label": "怪物尸体",
+      "original": {
+        "file": "asset-sources/corpse-cowrie-20261020/originals/低多边形骨甲海怪尸骸.jpg",
+        "format": "JPEG",
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "sha256": "47fd3d35c2105d86cda9cc1ab2abbfa9c2bc956c8d2486b0f8cfedf77f916471"
+      },
+      "runtime": {
+        "file": "assets/images/cards-20261020/card-corpse-v1.png",
+        "dimensions": [
+          1024,
+          1024
+        ],
+        "sha256": "1d0d9b62c54370612d2303e47d95303f887fe3b40cea327d9faec42b2053984c",
+        "bytes": 682748
+      },
+      "background": "pure white studio (sampled corners and edges are RGB 255); removed, see procedure",
+      "opaque_share": 0.323,
+      "status": "integrated"
+    }
+  ],
+  "procedure": {
+    "tool": "python tools/cutout_white_background.py (committed, reproducible from the archived originals)",
+    "steps": [
+      "Convert to RGB; per-pixel white distance = max(255-r, 255-g, 255-b).",
+      "Flood fill from the four borders where distance <= 8: only background connected to the border becomes transparent, so enclosed cream highlights survive.",
+      "Edge ramp: alpha = ((distance - 8) / 14) ** 0.85 for pixels with distance < 22; ramp below 26/255 snaps to 0.",
+      "De-fringe: recover subject colour C = (P - (1-alpha)*255) / alpha for partially transparent edge pixels, clamped to 0..255, so downscaling leaves no white halo.",
+      "Crop to the alpha bounding box, centre into a square with 5.5% padding per side, resample to 1024x1024 with LANCZOS; no colour edits."
+    ],
+    "verification": "previews on a checkerboard showed no residual white fringe; opaque/transparent shares above; interior pure-white pixels kept as subject: 0 (coin), 83 (carcass)"
+  },
+  "notes": "Both cards previously used procedural-solid-label placeholders (card.corpse v1 color #284c57, card.coin v1 color #756439); manifest versions bumped to v2 with show_label=false. Load failure still falls back to the old solid colour plus label text."
+}

@@ -19,6 +19,9 @@ var camera_orbit_button := MOUSE_BUTTON_RIGHT
 var camera_pan_button := MOUSE_BUTTON_LEFT
 var camera_reset_key := KEY_R
 var fps_limit := 60
+## Local audio preferences: music only; the run never stores them.
+var music_volume := 0.6
+var music_enabled := true
 var path := "user://display-settings.cfg"
 
 func _init(is_mobile: bool = OS.has_feature("mobile")) -> void:
@@ -68,10 +71,16 @@ func load_preferences() -> void:
 	camera_reset_key=reset_value if valid_camera_reset_key(reset_value) else KEY_R
 	var fps_value = config.get_value("display","fps_limit",60)
 	fps_limit=fps_value if fps_value is int and fps_value in FRAME_RATES else 60
+	var volume_value=config.get_value("audio","music_volume",music_volume)
+	if (volume_value is float or volume_value is int) and is_finite(float(volume_value)):
+		music_volume=clampf(float(volume_value),0.0,1.0)
+	music_enabled=config.get_value("audio","music_enabled",true)==true
 func save_preferences() -> Error:
 	var config:=ConfigFile.new()
 	for key in ["ui_scale","quality","resolution","free_aspect","fullscreen","motion","view_locked","camera_mode","camera_orbit_button","camera_pan_button","camera_reset_key","fps_limit"]: config.set_value("display",key,get(key))
 	config.set_value("game","auto_end_voyage",auto_end_voyage)
+	config.set_value("audio","music_volume",music_volume)
+	config.set_value("audio","music_enabled",music_enabled)
 	return config.save(path)
 func apply_window(window: Window, change_mode: bool = true) -> void:
 	window.content_scale_factor=ui_scale

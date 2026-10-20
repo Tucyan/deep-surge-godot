@@ -41,6 +41,8 @@ var persistence := true
 ## Temporary presentation switch; story content and paired saves remain intact.
 @export var story_mode_visible := false
 var display_settings = preload("res://presentation/display_settings.gd").new()
+var music = preload("res://presentation/music_director.gd").new()
+var ambience = preload("res://presentation/ambience_director.gd").new()
 var settings_tab := "display"
 var camera_binding_capture := false
 var hand_layout = preload("res://presentation/hand_layout.gd").new()
@@ -111,6 +113,8 @@ var story_replay: Control:
 
 func _ready() -> void:
 	set_meta("mobile_ui",display_settings.mobile)
+	add_child(music)
+	add_child(ambience)
 	get_tree().node_added.connect(_queue_mobile_control_policy)
 	get_tree().auto_accept_quit = false
 	theme = W.theme()
@@ -136,6 +140,8 @@ func _ready() -> void:
 	if persistence:
 		display_settings.load_preferences()
 		display_settings.apply_window(get_window())
+	music.apply_preferences(display_settings.music_volume, display_settings.music_enabled)
+	ambience.apply_preferences(display_settings.music_volume, display_settings.music_enabled)
 	session.auto_end_voyage=display_settings.auto_end_voyage
 	_init_narrative()
 	if persistence:
@@ -195,6 +201,14 @@ func apply_display_settings(change_mode: bool = true, rebuild_ui: bool = true) -
 		return
 	render()
 	if restore_slider_focus: _restore_scale_focus.call_deferred()
+
+## Music is local presentation state: volume and mute persist with display
+## preferences and never enter the run save.
+func apply_audio_settings() -> void:
+	music.apply_preferences(display_settings.music_volume, display_settings.music_enabled)
+	ambience.apply_preferences(display_settings.music_volume, display_settings.music_enabled)
+	if persistence and display_settings.save_preferences()!=OK: message="音频设置保存失败"
+	preload("res://presentation/settings_panel.gd").sync_controls(self)
 
 func refresh_hand_preferences() -> void:
 	if local_panel=="settings" and is_instance_valid(current_page) and current_page.has_method("refresh_hand_preferences"):
@@ -693,6 +707,8 @@ func render(staged: bool = false) -> void:
 	set_meta("mobile_ui",display_settings.mobile)
 	persistence_coordinator.refresh_notice(self)
 	await page_host.render(self, staged)
+	music.sync(self)
+	ambience.sync(self)
 	if display_settings.mobile:
 		for node in find_children("*","Control",true,false):
 			W.suppress_mobile_hover(node)

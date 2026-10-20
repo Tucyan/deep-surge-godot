@@ -130,6 +130,18 @@
         "tests/test_relic_art.gd",
         "tools/import_relic_art.py"
       ]
+    },
+    {
+      "path": "docs/audio-and-music.md",
+      "sources": [
+        "presentation/music_director.gd",
+        "presentation/ambience_director.gd",
+        "presentation/display_settings.gd",
+        "assets/music/music.json",
+        "assets/audio/ambience.json",
+        "tests/test_music_director.gd",
+        "tests/test_ambience_director.gd"
+      ]
     }
   ]
 }
