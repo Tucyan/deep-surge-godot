@@ -94,7 +94,7 @@ effective和allowed不同：满属性恢复牌可以合法消耗，但没有恢�
 - `salvage`、`craft`、`install`、`upgrade`、`battle_action` 自动应用当前出身；`origin_status` 只投影已公开效果，不暴露战斗狂隐藏保底计数。
 - 转化是一次3换2；可通过参数选择任意合法的三张资源UID，批量转化靠重复动作。Agent 不能覆盖 action 的固定参数或调用任意函数。
 - 节点事件按公开选项/目标提交，商店买入指定库存ID及coin付款，出售指定真实手牌UID。扩建列出全部合法位置，界面可以只提示下一个位置。
-- 潮汐遗物购买为 `buy_collectible {id,payment:"coin"}`，仅列本店剩余货架；丢弃为 `discard_collectible {uid}`，只在非教程基地操作阶段提供。持有投影返回 uid、定义ID、名称、说明及各效果 remaining/active。战斗和事件可由内容配置获得遗物，仍通过原有战斗/选项命令执行；事件 `preview.relics` 只显示指定ID或随机池与数量，不给出随机结果。没有任意发放或重新持有的公开命令。商店潮汐遗物报价在 `shop.relic_stock`，不混入六项 `stock`；详见[潮汐遗物契约](collectible-effects.md)。
+- 潮汐遗物购买为 `buy_collectible {id,payment:"coin"}`，仅列本店剩余货架；丢弃为 `discard_collectible {uid}`，只在非教程基地操作阶段提供。持有投影返回 uid、定义ID、名称、说明及各效果 remaining/active。战斗和事件可由内容配置获得遗物，仍通过原有战斗/选项命令执行；事件 `preview.relics` 只显示指定ID或随机池与数量，不给出随机结果。漂流遗物堆免费揭示使用普通 `option` 行动，揭示后出现 `offered_<ID>` 选项；`event_options` 与选项预览反映已揭示候选，`encounter.last_result` 和持有藏品反映已选结果，观察不重抽，恢复不发奖。没有任意发放或重新持有的公开命令。商店潮汐遗物报价在 `shop.relic_stock`，不混入六项 `stock`；详见[潮汐遗物契约](collectible-effects.md)。
 - 普通观察包含当前 journey、player、hand、cells、node/candidates、battle、shop、collectibles、event_options、environments、navigation、survival_settlement、tech_tree 及revision；临时战斗保留正常visit_id供选择，但观察不公开template_id/template_layer或未来授权池；被迷雾隐藏的候选可能没有id/monster/options，选择仍使用visit_id。
 - 观察不包含种子、规则随机流、未来池、完整统计、UI面板或隐藏剧情脚本；事件effects/outcomes不直接返回。战斗返回可见敌方数据和公开资源附魔组合。
 - ActionQuery 支持首页局外操作，但独立Agent的正常航程动作不提供返回首页购买玩家成长的入口。reset 的 `purchases` 字典是隔离测试配置，不读取真实账户进度；教程测试可使用 `difficulty=tutorial` 与固定教学起手资源，正式试玩CLI仅列三档。

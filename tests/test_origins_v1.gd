@@ -55,7 +55,7 @@ func test_zealot() -> void:
 	check(before==s.snapshot(),"reward not duplicated by view")
 	s=fresh("zealot"); begin_battle(s); s.state.battle.turn=2
 	var hp=s.state.player.hp
-	check(s.dispatch("retreat") and s.state.player.hp==hp-2,"old free retreat removed")
+	check(s.dispatch("retreat") and s.state.player.hp==hp-4,"ordinary retreat pays current four-HP cost")
 func test_hoarder() -> void:
 	var s=fresh("hoarder")
 	check(s.state.player.limit==13,"hoarder base capacity+3")

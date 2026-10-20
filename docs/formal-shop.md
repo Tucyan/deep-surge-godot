@@ -42,3 +42,5 @@ GameSession仍负责dispatch、revision检查、事务失败回滚；页面发�
 经济 v11 的历史验证见 [经济 v11 验证](../evidence/economy-v11-verification.md)。
 
 潮汐遗物本次执行结果及限制见[潮汐遗物 v26 验证](../evidence/collectible-effects-v26-verification.md)。
+
+藏品购买同时遵守[唯一性规则](collectible-effects.md)：本局已获得的 run 藏品、当前持有的同 ID held 藏品均禁用购买并显示原因；拒绝购买不扣贝币、不耗随机，货架不重抽。

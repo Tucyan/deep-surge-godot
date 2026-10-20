@@ -1,0 +1,41 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+V03 RELIC INTEGRATION: FAIL
+FAIL: registered in shallows: sealedLarder
+FAIL: registered in shallows: powderWreck
+FAIL: registered in shallows: kelpDryingRack
+FAIL: registered in shallows: silentWayfinder
+FAIL: registered in shallows: boneHunter
+FAIL: registered in shallows: shellGraveyard
+FAIL: registered in shallows: drownedMint
+FAIL: registered in shallows: rescuePontoon
+FAIL: registered in shallows: riggersCache
+FAIL: registered in open_sea: sealedLarder
+FAIL: registered in open_sea: powderWreck
+FAIL: registered in open_sea: kelpDryingRack
+FAIL: registered in open_sea: silentWayfinder
+FAIL: registered in open_sea: boneHunter
+FAIL: registered in open_sea: shellGraveyard
+FAIL: registered in open_sea: drownedMint
+FAIL: registered in open_sea: rescuePontoon
+FAIL: registered in open_sea: coralShrine
+FAIL: registered in open_sea: riggersCache
+FAIL: registered in abyss: sealedLarder
+FAIL: registered in abyss: powderWreck
+FAIL: registered in abyss: kelpDryingRack
+FAIL: registered in abyss: silentWayfinder
+FAIL: registered in abyss: boneHunter
+FAIL: registered in abyss: shellGraveyard
+FAIL: registered in abyss: drownedMint
+FAIL: registered in abyss: rescuePontoon
+FAIL: registered in abyss: coralShrine
+FAIL: registered in abyss: riggersCache
+FAIL: new node actually eligible: sealedLarder
+FAIL: new node actually eligible: powderWreck
+FAIL: new node actually eligible: kelpDryingRack
+FAIL: new node actually eligible: silentWayfinder
+FAIL: new node actually eligible: boneHunter
+FAIL: new node actually eligible: shellGraveyard
+FAIL: new node actually eligible: drownedMint
+FAIL: new node actually eligible: rescuePontoon
+FAIL: new node actually eligible: riggersCache

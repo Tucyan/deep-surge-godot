@@ -1,6 +1,6 @@
 extends SceneTree
 const Session=preload("res://core/game_session.gd")
-const NODES=preload("res://tests/test_relic_expedition.gd").NODES
+const NODES=["restCove","relicCache","tollGate","luckyDrift","deepCache"]
 var failures:=0
 var catalog
 func check(ok: bool, why: String) -> void:
@@ -13,32 +13,29 @@ func fresh():
 	s._auto_advancing=true
 	return s
 func test_pools() -> void:
-	# Legacy A min_voyage values describe GLOBAL arrival windows (3..6).
-	# B pool min/max are layer-local: shallows starts1, open_sea6, abyss16.
+	# These five nodes share the same local voyage gates in every layer.
 	for layer in ["shallows","open_sea","abyss"]:
-		var offset: int={"shallows":0,"open_sea":5,"abyss":15}[layer]
 		for id in NODES:
 			var d: Dictionary=catalog.entry("nodes",id)
 			var entries: Array=catalog.entry("node_pools",layer).entries.filter(func(e):return e.node==id)
-			if layer=="shallows" and int(d.min_voyage)>5:
-				check(entries.is_empty(),"global6 node excluded from shallows: "+id); continue
 			check(entries.size()==1,"registered in "+layer+": "+id)
 			if entries.is_empty():continue
 			var e: Dictionary=entries[0]
-			check(e.min_voyage==maxi(1,int(d.min_voyage)-offset),"global-to-local minimum: "+layer+id)
-			check(e.scope=="run" and e.max_visits==1 and e.cooldown==3 and e.weight==1,"once per run policy: "+layer+id)
+			check(e.min_voyage==d.min_voyage,"local minimum matches node: "+layer+id)
+			check(e.scope=="layer" and e.max_visits==1 and e.cooldown==3 and e.weight==1,"once per layer policy: "+layer+id)
 	for layer in ["story","tutorial"]:
-		check(catalog.entry("node_pools",layer).entries.all(func(e):return e.node not in NODES),"paused modes unchanged: "+layer)
+		check(NODES.all(func(id):return not catalog.entry("node_pools",layer).entries.any(func(e):return e.node==id)),"challenge-only scope excludes "+layer)
 	var s=fresh()
 	s.state.flags.node_visits={}
 	for id in NODES:
 		var d: Dictionary=catalog.entry("nodes",id)
 		s.state.journey.layer_voyage=int(d.min_voyage); s.state.voyage=int(d.min_voyage)
-		if d.min_voyage>5:continue
 		check(preload("res://core/navigation_rules.gd").eligible(s,d,s.state),"new node actually eligible: "+id)
-		s.state.flags.node_visits[id]=1
-		s.state.journey.layer_index=1; s.state.journey.layer_voyage=1; s.state.voyage=6
-		check(not preload("res://core/navigation_rules.gd").eligible(s,d,s.state),"run visit survives layer transition: "+id)
+		var key="shallows:"+s.Encounter.key(d)
+		s.state.flags.node_visits[key]=1
+		check(not preload("res://core/navigation_rules.gd").eligible(s,d,s.state),"one visit consumes the current layer quota: "+id)
+		s.state.journey.layer_index=1; s.state.journey.layer_voyage=int(d.min_voyage); s.state.voyage=5+int(d.min_voyage)
+		check(preload("res://core/navigation_rules.gd").eligible(s,d,s.state),"visit quota resets in a later layer: "+id)
 		s.state.journey.layer_index=0
 func test_public_art() -> void:
 	var s=fresh()
@@ -47,9 +44,9 @@ func test_public_art() -> void:
 		s.state.phase="story"; s.state.story_step="choice"; s.Encounter.arrived(s)
 		var before: Dictionary=s.snapshot()
 		var v: Dictionary=s.view()
-		check(v.node.get("art","")==s.state.node.art,"safe display art survives public projection: "+id)
+		check(v.node.get("art","")==s.state.node.get("art",""),"safe display art survives public projection: "+id)
 		check(not v.node.has("rewards") and not v.node.has("stages"),"hidden node data stripped")
-		for o in v.node.options:check(not o.has("battle") and not o.has("outcomes") and not o.has("effects"),"hidden option data stripped")
+		for o in v.node.get("options",[]):check(not o.has("battle") and not o.has("outcomes") and not o.has("effects"),"hidden option data stripped")
 		check(s.snapshot()==before,"art view is pure")
 func restored(s):
 	var other=Session.new(catalog)

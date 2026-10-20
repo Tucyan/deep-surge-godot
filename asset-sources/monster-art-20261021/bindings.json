@@ -1,0 +1,69 @@
+[
+  {
+    "archive_entry": "怪物素材/boss/ChatGPT 图像 2026年10月21日 00_39_08-1.png",
+    "path": "res://assets/images/monsters-20261021/boss_shallows.png",
+    "sha256": "e17e7334a8bdaebe655fed140b75ccccd52fd6bce73ace11f836ed921eb3e4f6",
+    "dimensions": [
+      1086,
+      1448
+    ],
+    "mode": "RGBA",
+    "asset_ids": [
+      "enemy.boss_shallows"
+    ]
+  },
+  {
+    "archive_entry": "怪物素材/boss/ChatGPT 图像 2026年10月21日 00_39_09-2.png",
+    "path": "res://assets/images/monsters-20261021/boss_open_sea.png",
+    "sha256": "d347ab2e5d951d9a8cd8df2ad1d3efac39ef7f04aaab6db2eac57274c67d393a",
+    "dimensions": [
+      1086,
+      1448
+    ],
+    "mode": "RGBA",
+    "asset_ids": [
+      "enemy.boss_open_sea"
+    ]
+  },
+  {
+    "archive_entry": "怪物素材/boss/ChatGPT 图像 2026年10月21日 00_39_11-3.png",
+    "path": "res://assets/images/monsters-20261021/boss_abyss.png",
+    "sha256": "4e46ec6b30f6f1eb516bedc2d546ab0f89d9812af5f9d10cc8173453d4fd4c98",
+    "dimensions": [
+      1086,
+      1448
+    ],
+    "mode": "RGBA",
+    "asset_ids": [
+      "enemy.boss_abyss",
+      "enemy.boss"
+    ]
+  },
+  {
+    "archive_entry": "怪物素材/普通怪物补充/沉船巨钳海怪概念设计.png",
+    "path": "res://assets/images/monsters-20261021/crab.png",
+    "sha256": "5182b3b45ad550e53503ee02000e8811cab2eb76b48c7908deec79b74536dc1e",
+    "dimensions": [
+      1536,
+      1024
+    ],
+    "mode": "RGBA",
+    "asset_ids": [
+      "enemy.crab",
+      "enemy.crab_elite"
+    ]
+  },
+  {
+    "archive_entry": "怪物素材/普通怪物补充/深海遗迹石像守卫者.png",
+    "path": "res://assets/images/monsters-20261021/sentinel.png",
+    "sha256": "6bb0aee33023b85cf500645cd6694eb4b36b2a7a42be821920cbee00b731090f",
+    "dimensions": [
+      1448,
+      1086
+    ],
+    "mode": "RGBA",
+    "asset_ids": [
+      "enemy.sentinel"
+    ]
+  }
+]

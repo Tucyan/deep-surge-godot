@@ -10,7 +10,7 @@ func _init() -> void:
 	check(catalog.table("cards").size() == 26)
 	for id in ["shieldRack","generator","fishingNet","crate"]:
 		check(catalog.entry("cards",id).kind=="equipment")
-	check(catalog.table("nodes").size() == 32, "18 base nodes, three layer bosses, sealed chest and ten relic nodes")
+	check(catalog.table("nodes").size() == 37, "18 base nodes, three layer bosses, eleven retired relic nodes and five replacement collectible nodes")
 	var card: Dictionary = catalog.entry("cards", "water")
 	card.name = "changed"
 	check(catalog.entry("cards", "water").name == "淡水")

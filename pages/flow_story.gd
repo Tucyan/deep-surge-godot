@@ -400,6 +400,12 @@ func node_event() -> void:
 	if step == "choice":
 		var previous: String = str(context.get("encounter", {}).get("last_result", ""))
 		if previous != "": lines.append(previous)
+		else:
+			for option in context.get("event_options", []):
+				if str(option.get("id", "")) == "reveal_relics":
+					var preview_line := relic_preview_text(option.get("preview", {}))
+					if preview_line != "": lines.append(preview_line)
+					break
 		if node.has("monster"):
 			var enemy: Dictionary = Difficulty.enemy(catalog, context, node.monster)
 			lines.append("%s · 生命%d · %s" % [enemy.name, enemy.hp, enemy.intent])
@@ -470,6 +476,7 @@ func event_option(option: Dictionary) -> void:
 		"id": option.get("id", ""),
 		"name": option.name,
 		"description": option.get("description", ""),
+		"preview": option.get("preview", {}),
 		"cost": cost,
 		"command": "option",
 		"args": {},
@@ -566,6 +573,8 @@ func paint_prose(active: Dictionary) -> void:
 	var lines: Array = []
 	var description := str(active.get("description", ""))
 	if description != "": lines.append(description)
+	var preview_line := relic_preview_text(active.get("preview", {}))
+	if preview_line != "": lines.append(preview_line)
 	var cost := str(active.get("cost", ""))
 	if cost != "": lines.append("消耗："+cost)
 	var selection: OptionButton = active.get("selection", null)
@@ -585,7 +594,7 @@ func paint_lines(eyebrow: String, headline: String, lines: Array, hint: String =
 	title.name = "NodeEventHeadline"
 	for line in lines:
 		var paragraph := W.text(prose, str(line), 18, W.INK)
-		paragraph.name = "NodeEventParagraph"
+		paragraph.name = "NodeEventPreviewRelics" if str(line).begins_with("可选潮汐遗物：") else "NodeEventParagraph"
 	var fill := Control.new()
 	fill.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	fill.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -594,6 +603,24 @@ func paint_lines(eyebrow: String, headline: String, lines: Array, hint: String =
 		var note := W.text(prose, hint, 14, W.MUTED)
 		note.name = "NodeEventHint"
 	if merged_art(): fit_merged_plate.call_deferred()
+
+func relic_preview_text(preview: Dictionary) -> String:
+	var rows: Array = preview.get("relics", [])
+	if rows.is_empty(): return ""
+	var names := PackedStringArray()
+	for row in rows:
+		if not row is Dictionary: continue
+		if row.has("name"):
+			var description := str(row.get("description", ""))
+			var name := str(row.get("name", ""))
+			if name != "": names.append(name+("："+description if description != "" else ""))
+		elif row.get("pool", []) is Array:
+			for id in row.pool:
+				var definition: Dictionary = catalog.entry("relics", str(id))
+				var name := str(definition.get("name", id))
+				if name != "": names.append(name)
+	if names.is_empty(): return ""
+	return "可选潮汐遗物："+"；".join(names)
 
 ## Equal spacers keep every option on the same rhythm and remove the empty bottom.
 func pack_options() -> void:

@@ -1,0 +1,10 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ROUTE standard-challenge: finished / dead, 15 nodes
+ROUTE standard-story: finished / survived, 11 nodes
+ROUTE hard-challenge: finished / survived, 25 nodes
+ROUTE hard-story: finished / survived, 11 nodes
+ROUTE nightmare-challenge: finished / dead, 7 nodes
+ROUTE nightmare-story: finished / dead, 10 nodes
+ROUTE standard-failure: finished / dead, 4 nodes
+ROUTES: PASS (executed=7, stale=13, failed=0)

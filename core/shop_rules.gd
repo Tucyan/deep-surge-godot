@@ -95,7 +95,10 @@ static func _relic_quote(ctx, id: String) -> Dictionary:
 	var definition: Dictionary=ctx.catalog.entry("relics",id)
 	var remaining: int=0 if id in ctx.state.shop.get("relic_purchased",[]) else 1
 	var price: int=int(definition.price)
-	return {"id":id,"name":definition.name,"description":definition.description,"kind":"collectible","price":price,"remaining":remaining,"limit":1,"can_coin":remaining>0 and ctx.state.coins>=price}
+	var eligible: bool=id in ctx.Collectibles.eligible_ids(ctx,[id])
+	var reason: String=""
+	if not eligible: reason="本局已获得，不能再次获取" if definition.get("unique","")=="run" else "已持有同种藏品"
+	return {"id":id,"name":definition.name,"description":definition.description,"kind":"collectible","price":price,"remaining":remaining,"limit":1,"reason":reason,"can_coin":remaining>0 and eligible and ctx.state.coins>=price}
 
 static func buy_collectible(ctx, args: Dictionary) -> bool:
 	if not _active(ctx) or ctx.state.get("mode","")=="tutorial": return ctx.fail("当前不能购买潮汐遗物")
@@ -104,6 +107,7 @@ static func buy_collectible(ctx, args: Dictionary) -> bool:
 	if args.get("payment","coin")!="coin": return ctx.fail("潮汐遗物仅支持贝币支付")
 	var row: Dictionary=_relic_quote(ctx,id)
 	if row.remaining<=0: return ctx.fail("该潮汐遗物已售罄")
+	if not str(row.get("reason","")).is_empty(): return ctx.fail(row.reason)
 	if ctx.state.coins<int(row.price): return ctx.fail("贝币不足")
 	if not RelicRewards.grant(ctx,[{"id":id}],[]): return false
 	I.consume(ctx.state,"coin",int(row.price),"collectible_shop")

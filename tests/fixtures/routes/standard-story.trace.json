@@ -1,7 +1,7 @@
 {
   "initial": {
     "content_version": "godot-flow-v03-03",
-    "fingerprint": "1c214cb08b92d531636fec3b4e33b889c900526306aa031f7944a965eabe00fb",
+    "fingerprint": "e2ac9021363e6abfe9dab3b8e7a19e021c9b08ed8cb0aecde7914a84e33316d4",
     "last_settlement": {},
     "profile": {
       "discovered": [
@@ -375,7 +375,7 @@
           "value": 3266489891
         }
       },
-      "run_id": "b54ef79df08b302c4b0a68da6b51b1b9",
+      "run_id": "3aa0f8d69ffda4df6dde05245d2785b9",
       "seed": 22,
       "shop": {},
       "stats": {
@@ -448,7 +448,7 @@
             "kind": "card",
             "node": "",
             "reason": "initial",
-            "run_id": "b54ef79df08b302c4b0a68da6b51b1b9",
+            "run_id": "3aa0f8d69ffda4df6dde05245d2785b9",
             "sequence": 0,
             "source": "initial",
             "subsequence": 0,
@@ -465,7 +465,7 @@
             "kind": "card",
             "node": "",
             "reason": "initial",
-            "run_id": "b54ef79df08b302c4b0a68da6b51b1b9",
+            "run_id": "3aa0f8d69ffda4df6dde05245d2785b9",
             "sequence": 1,
             "source": "initial",
             "subsequence": 1,
@@ -482,7 +482,7 @@
             "kind": "card",
             "node": "",
             "reason": "initial",
-            "run_id": "b54ef79df08b302c4b0a68da6b51b1b9",
+            "run_id": "3aa0f8d69ffda4df6dde05245d2785b9",
             "sequence": 2,
             "source": "initial",
             "subsequence": 2,
@@ -499,7 +499,7 @@
             "kind": "card",
             "node": "",
             "reason": "initial",
-            "run_id": "b54ef79df08b302c4b0a68da6b51b1b9",
+            "run_id": "3aa0f8d69ffda4df6dde05245d2785b9",
             "sequence": 3,
             "source": "initial",
             "subsequence": 3,
@@ -516,7 +516,7 @@
             "kind": "card",
             "node": "",
             "reason": "initial",
-            "run_id": "b54ef79df08b302c4b0a68da6b51b1b9",
+            "run_id": "3aa0f8d69ffda4df6dde05245d2785b9",
             "sequence": 4,
             "source": "initial",
             "subsequence": 4,
@@ -533,7 +533,7 @@
             "kind": "card",
             "node": "",
             "reason": "initial",
-            "run_id": "b54ef79df08b302c4b0a68da6b51b1b9",
+            "run_id": "3aa0f8d69ffda4df6dde05245d2785b9",
             "sequence": 5,
             "source": "initial",
             "subsequence": 5,
@@ -550,7 +550,7 @@
             "kind": "card",
             "node": "",
             "reason": "initial",
-            "run_id": "b54ef79df08b302c4b0a68da6b51b1b9",
+            "run_id": "3aa0f8d69ffda4df6dde05245d2785b9",
             "sequence": 6,
             "source": "initial",
             "subsequence": 6,
@@ -589,51 +589,51 @@
         "id": "candidate-10"
       },
       "command": "voyage",
-      "hash": "d54e1d1998e4e09d19d07e6a65185c07d3bd01a7d6c1c74873424f4829c42998"
+      "hash": "a9c1736c5f609e46d1375a3f13462cbc6160dbe26834ae216ddb019fb067f140"
     },
     {
       "args": {},
       "command": "enter",
-      "hash": "768baadf6941c27afec2299fee6c989bec81c2c617499deb4cfbb710d95886ae"
+      "hash": "12b2a25fcb2e2c619251fc2c69073771cf52e597ff82eeaffc53ddb527541620"
     },
     {
       "args": {},
       "command": "advance",
-      "hash": "30fc0c2d94e8ca535a81121546956506350b56ed6c1fe43e4285847a8b7adb07"
+      "hash": "c068554e15c0abc19ca287201eb272a5cdf715a05564d13f8669db9c5149a0a3"
     },
     {
       "args": {
         "id": "rest"
       },
       "command": "option",
-      "hash": "d9fccfe544ea01a3a99528f053edbe52871c1126aa9cdce3514cbdb9868ae245"
+      "hash": "fd6648655e5dfcddf6df997c0e98b39566992f45cefc39bbdb35a14bf8bdeb86"
     },
     {
       "args": {},
       "command": "advance",
-      "hash": "8637af717a23d2a7e20faedfd544140063a28469c5ada0f2793655bf989b4ebf"
+      "hash": "225972408e2a3f67a6f48b283f980801774da717364740845542b82692323f1e"
     },
     {
       "args": {},
       "command": "salvage",
-      "hash": "13339f43c97f330633a802e14189d8b0453059c229cb2fe71bed024976ce1ca1"
+      "hash": "d92733218ba6021f507891e434295deda582b1886de240837bc2c901c08ac54f"
     },
     {
       "args": {},
       "command": "salvage",
-      "hash": "e7bb8890f670ba4a60feb922c0210acbfb4e196a7cb09469f14d565ea1cef67f"
+      "hash": "22e35678ba5a3e27bf6657de6ddd90a96880730ffa6def59c2bfc01d5c82bec4"
     },
     {
       "args": {},
       "command": "salvage",
-      "hash": "16dd67686769bd4531f34a6cb2678d77a0d1e36526e1e207764395a5ba71ad15"
+      "hash": "8607143363b5980ce9b5ccf8502d31ce648fb64117e07823c84a5375e5d6fd4a"
     },
     {
       "args": {
         "id": "filter"
       },
       "command": "craft",
-      "hash": "6b7302c15fec0dbed3d29801e137f0b9f0dbfb31b4e549433c75012d3133fde4"
+      "hash": "9e3bf3a1c84445c8c33d546ea420dc82121c4ec36f1a95608a1ed51e3366e087"
     },
     {
       "args": {
@@ -641,14 +641,14 @@
         "uid": "card-19"
       },
       "command": "install",
-      "hash": "d4b428529d58781befb79d9c047d43b4a2c7e1064ef8187a29ea6fc6113e7692"
+      "hash": "3683b6465b8bb2f307d80600a0bbbec739bc7934ea7d45f75d9bf6b6aae356a0"
     },
     {
       "args": {
         "id": "lamp"
       },
       "command": "craft",
-      "hash": "66765d65e354297b105d4d284385d9594ae53cf4b1cb3e88bf185121b72ffd4c"
+      "hash": "f5bfded13fcdcdb6d07ac92da0ca0e30fe3bd0bd07946fd34e397b25ed00832f"
     },
     {
       "args": {
@@ -656,48 +656,48 @@
         "uid": "card-20"
       },
       "command": "install",
-      "hash": "aa89b2f165e4a8386034e94b4a915e651ef175c77ffe77eb30c1d18ccfe0383c"
+      "hash": "56e29a5c1d3bec0110896bc31097deffd11b338c362080289d85e3fdea35798b"
     },
     {
       "args": {
         "id": "candidate-16"
       },
       "command": "voyage",
-      "hash": "74a985d58804bda44a43bbc910afe8991504a46457c7a3a921a720407d786569"
+      "hash": "8d646c4911532b4738d88a9e6e3fa9bd1d5d8230542de1d1bab32b37a9450d61"
     },
     {
       "args": {},
       "command": "enter",
-      "hash": "e05d5424b54a9f2587a4acb8cfd838730104eb48fcc1204b27668b41bda15f97"
+      "hash": "9516bf42eaca5dc8d1a79502f13ded3bf4892aa04397f979047c2c2ef5c15814"
     },
     {
       "args": {},
       "command": "advance",
-      "hash": "3aed69be29eb027e7079799399d0c85ebfa136bb1ab29d3a56d228cefa8d8e66"
+      "hash": "534c14bf721acb02774f580d3343edb2ba39902e2837aaab02479c0f8ade74fc"
     },
     {
       "args": {
         "id": "food"
       },
       "command": "option",
-      "hash": "757377bf11b2595b60ef68d964a67dd278acaa388757ad8df42090ad9f5d73c4"
+      "hash": "7d878b01c63219e9f43786a000463af46010f054c5fad091ecd15d7414641c1b"
     },
     {
       "args": {},
       "command": "advance",
-      "hash": "fb9ce1bdc5ee58b923a0c8d12c9c0a0c650ad02f062889179d24d4e6eb25baa6"
+      "hash": "eac67997c9c2a62bd60f71d6493bd2f6d022cc14441c8406ed92a1ab1efa2168"
     },
     {
       "args": {
         "uid": "card-21"
       },
       "command": "play",
-      "hash": "e9384b0bb959baf65c0d2d458a054c578e505c248480f6286eff59238f434208"
+      "hash": "961ac25d96002194dcd766de2d8283aa0cb020c71860c2a169aeb7b4f7fcc195"
     },
     {
       "args": {},
       "command": "salvage",
-      "hash": "434c9cbcaa6d19911f76394f6febe5b4c203fcfdbe87d9d7af143f8b57319403"
+      "hash": "6f871f5c58ed24dcbdacfc0ee74d9e4e41390cfa943baadfa3f5cd64f08da748"
     },
     {
       "args": {
@@ -706,36 +706,36 @@
         "uid": "card-23"
       },
       "command": "fuel",
-      "hash": "92c8e50e6a843e2668832518e59e56e4dfebbe69af01ac6c47568ce0964bf27c"
+      "hash": "9e3fa4d811312ee32b3ec2be47b5c828132b8572dd3ca869e5ede2c0c2b20c43"
     },
     {
       "args": {
         "id": "candidate-26"
       },
       "command": "voyage",
-      "hash": "63171d6c2b15f1eb8bbc26dda7e64dbc20495a09a374d6f13ec8cc92a7f6611a"
+      "hash": "d2422a55ecf8c832c0a2af311c9bdb9da33d276a59e7686fbb00b3da86a4337b"
     },
     {
       "args": {},
       "command": "enter",
-      "hash": "07fa30637db7722269c12460bb8d30777ea45de73438cbdb2a0b80f47530e270"
+      "hash": "d56dbd06420ee090037fbd1c061b4f3caf0b4b60544b56a1f83dbf1c0c3b69db"
     },
     {
       "args": {},
       "command": "advance",
-      "hash": "8a7761db47cfac5388039f02d3660f01b4bc804bca99f03dfb4e65851cee119f"
+      "hash": "3d66c3bff9c22a3e122e2a4ef08365d4f1f8259a6506c9902c70fc828985545c"
     },
     {
       "args": {
         "id": "wood"
       },
       "command": "option",
-      "hash": "3418e32d72cb0bb1e7a607051bced8deaeabc34d9309f12733678b6a3468de76"
+      "hash": "3cdf32a54a45b4d69f1937db82e2cc8501e1cc2c0c907fe866a536933e40d2d5"
     },
     {
       "args": {},
       "command": "advance",
-      "hash": "5cd4aa68673779979e89956cde668e859a2ce2bed7af835dd51b0c95138c0278"
+      "hash": "c9ce63db1931e40887ba40915c9ff66eb8548824578c08eef82fb6c048c5ab87"
     },
     {
       "args": {
@@ -744,14 +744,14 @@
         "uid": "card-28"
       },
       "command": "fuel",
-      "hash": "8784b244afcc33caae1e615988996947d3ba5184acfd56d8d9566c0a8a36d369"
+      "hash": "8db3f7ce3f85e08640ddc848232bf86756e1a0fefbdaea461e6da814b3eb4c69"
     },
     {
       "args": {
         "id": "crossbow"
       },
       "command": "craft",
-      "hash": "7b3bcef85e28a3bc3630128cb31212ba82b9a0224f9647419063be1a76af4a42"
+      "hash": "b1f7ca695134506aaa649bac030244b3aa2de3b0c8bbdec88eab5e1e4def1410"
     },
     {
       "args": {
@@ -759,19 +759,19 @@
         "uid": "card-30"
       },
       "command": "install",
-      "hash": "43fff5c9273e4a192f73118c372cbc1109e2841c21972aff043a0d58c3d4800d"
+      "hash": "7dee93f341c7c31025338d2d5682caef2e78e820ab8c6a31727897f5c5821c31"
     },
     {
       "args": {},
       "command": "salvage",
-      "hash": "9a71522ad7e734fd8a72531d922fb837823ab90526b9a77098a8d888d2e55489"
+      "hash": "5377be933e7f2f43e10e3887ab2211ef5ef98aea3ec802f81f278f570b0c8ec3"
     },
     {
       "args": {
         "id": "fishingNet"
       },
       "command": "craft",
-      "hash": "9097ee3e4f6763d2c6d8c021d0326ce65eb798fe852ee7bb69592f830217f4cf"
+      "hash": "2bd83b55ba6a47246dfe0930fc8f818d9f035f551c849b3d9930c23c5ca3b36b"
     },
     {
       "args": {
@@ -779,14 +779,14 @@
         "uid": "card-32"
       },
       "command": "install",
-      "hash": "f5496fd9f298dfdad323f190f64cd168596e6d23e3bf3287ae7df2bf8780934e"
+      "hash": "ba95e650af648426c104d71e0688aabd5631038f1f823f77f0e0a195dc076357"
     },
     {
       "args": {
         "uid": "card-33"
       },
       "command": "play",
-      "hash": "42ffbd758ef3a91004a3ceb9a1b0f2f63027ec9dcecf787521ffd7acdb47f4be"
+      "hash": "cbf65c734a28b57c700b89bb4440df6c277ab231347f1ebffbd24805a9092324"
     },
     {
       "args": {
@@ -794,46 +794,46 @@
         "craft": true
       },
       "command": "upgrade",
-      "hash": "733af9d0c596bd004cf40006706032cf8bf895f20ca2e4829d206c3a80be4058"
+      "hash": "c0b9bc1611d26d965a9a985b53e834d02a87a14e527248f67668b8914755bf56"
     },
     {
       "args": {
         "id": "candidate-39"
       },
       "command": "voyage",
-      "hash": "a12e051c8f4a6cb7fb99257b1808ec3dd8f37671a17a1129ea7b4d6cb4d063eb"
+      "hash": "91573aac198b813a3c84d71d060a3d1ca2b670804c0e26e8716a5dfe8f6e3291"
     },
     {
       "args": {},
       "command": "enter",
-      "hash": "548ca276523f28f128878638190e1ce0035825a3a1e3d014cc29ec560e97ce0a"
+      "hash": "70e152db179e77fd9f28d844a2fa2ea69b632e03effe414332534d151956f9c8"
     },
     {
       "args": {},
       "command": "advance",
-      "hash": "0117de67aa6c34a0e93ddbcfef93bc7a889df5615eb71c5774bb6ec478b89f89"
+      "hash": "8d7cb6dbb07eff9e6d55316b0ef6c3c7ec03c2e0dcb8916788bc73b2b1d7f9a8"
     },
     {
       "args": {
         "id": "scraps"
       },
       "command": "option",
-      "hash": "b68d72c684432ee274e98a702da4d5c697e79867ce685d1cb7312b2ad6d12a5e"
+      "hash": "050b26e3d045f1c73d53f8c495ea763369685ee76268561a9f007422bd4d790e"
     },
     {
       "args": {},
       "command": "advance",
-      "hash": "2ef7f4328718d5fffe05e64a335fcdb68ca3a9a77422b540fab28c0e83ebfcce"
+      "hash": "cd898aed3928585e71d6a8346c6c6d91e015cd542bf4c7443e605a7e6877f8f6"
     },
     {
       "args": {},
       "command": "salvage",
-      "hash": "9d86dbe9e785ab16c022ced26d7ae36759fcd890002c402f84bf73874518352f"
+      "hash": "82f33c7ec9e695c010f99cbabbdb3e352b48514d4c6ea80cf5012a040c765941"
     },
     {
       "args": {},
       "command": "end_voyage",
-      "hash": "1d207b5acf2c0e1cbd5883345df4cc87d12a26f4c0a5fcf35609418fe5f524d9"
+      "hash": "89fdfdd6e60792a9ce1977f19c66b1ffc25c1c2740a36f50026a12c4b0e92189"
     },
     {
       "args": {
@@ -841,28 +841,28 @@
         "craft": true
       },
       "command": "upgrade",
-      "hash": "49b3283985e0a1abeab419cfebbe34a2dd14aa6d7d42f5d156591cab6e7dd0d3"
+      "hash": "ed7d443e822fc5eb6e456f6bb1914bc099d903ec1704962b4efc200ff533e3c0"
     },
     {
       "args": {
         "id": "medkit"
       },
       "command": "craft",
-      "hash": "10a2cda5dff3fcdccc1505929ac9a30fb4ce70aa46f5037b2c39898af5b7ae04"
+      "hash": "d409870dad047f03c753a3d011f4716f4b197d1b706ab0d1bbedb11b9dfa12a5"
     },
     {
       "args": {
         "uid": "card-52"
       },
       "command": "play",
-      "hash": "ddcb903a97cba71ae577da7e86783f5c0b6a86bce1bc18b93796389df58ecd80"
+      "hash": "77cc6c9fcc118773d3f978b3a1574ef3b4befa6918fe54e1d3eb336bc7766cac"
     },
     {
       "args": {
         "id": "candidate-48"
       },
       "command": "voyage",
-      "hash": "dc6b4850e4744092ab68c9b1d59a79c8306ad7897cedbbdab605757a9b104584"
+      "hash": "763321c3abfdd9b09c2354eb5d22045fc2adaee129851bf0154eef2002e4c318"
     },
     {
       "args": {
@@ -871,72 +871,72 @@
         "uid": "card-46"
       },
       "command": "fuel",
-      "hash": "a139a056f0f157fae5af5bbe939b9da6602622b9ff21dcfeed406e126618b8ae"
+      "hash": "853966d09fab18452e358ecfbab0dc315a38f678f38489434e21f8c3bfed12a4"
     },
     {
       "args": {},
       "command": "enter",
-      "hash": "f3f896848f95c7ab6feefb3671f71d3d66157d58cb647de301189d40ee137bf8"
+      "hash": "0419e07202939e1a56748e92cccff74c9db4a788173026058fbe77681ec60ba2"
     },
     {
       "args": {},
       "command": "advance",
-      "hash": "0f185493e894504da314c0ae479b8e4f2096725d08db0229b95069e031aae224"
+      "hash": "2303596bde008ac49a4694d55ad6e0b957f227c8ba74de0197ac7c9d6f4feba2"
     },
     {
       "args": {
         "id": "food"
       },
       "command": "option",
-      "hash": "1c3ba30b3609ecc9ac6b48f18c0e47f2097764d57d18f3c7e3f76df1f2665308"
+      "hash": "ffffe1c5157c4301791e785021f44fe63a559dfb8689b749987e0b8264791a29"
     },
     {
       "args": {},
       "command": "advance",
-      "hash": "42b99cf39d1096a8ea65a59eb12f980c53187e2035f5aae44acc3c6f41b249bb"
+      "hash": "8609960e9d4dd5cdd13f4d7b745c1c78dfc82711047d40b55d25a9e8036e5628"
     },
     {
       "args": {
         "uid": "card-53"
       },
       "command": "play",
-      "hash": "8aa741e5d5db33fd92b918de4380d664d77b1a16f7925ed208549a46d64c1d31"
+      "hash": "79d4fe42297dfab9666a0105d92b02ee2ea0209934b20de9d763f88b39399936"
     },
     {
       "args": {
         "uid": "card-54"
       },
       "command": "play",
-      "hash": "baa747989e334b8fff22f0362e5a409ab255c8ccc56e72ef42721f8b1da25ad8"
+      "hash": "4a0e5401becb1bb7427a9bcc6a95202f218f0fc35db541b8fa43c635aa4d2d51"
     },
     {
       "args": {
         "id": "candidate-58"
       },
       "command": "voyage",
-      "hash": "78f4c8e6f9bf8bf6f88f9e7e2bdbdd68a463026cecc40374777952c5112b536b"
+      "hash": "03614f2d52f193b9c826a9249bfc514096f10bd9f855f0cbd24fe1740d739e0e"
     },
     {
       "args": {},
       "command": "enter",
-      "hash": "e99e961419350c6b2985fd40f2d8611061d3c7f78f78523204bcb15c7e93a358"
+      "hash": "c6356be687dd2a02b8370f2875e3e12513542111ccf9580d4a8f56d0a223cb8d"
     },
     {
       "args": {},
       "command": "advance",
-      "hash": "213ecbf639bab02af163c574bd96c53726fa205ddbc29c598c43a99552a8bb03"
+      "hash": "9a60ed5bb97c36691486ee660963a320d3af6f8d0cc58464265a5b4965a8d61b"
     },
     {
       "args": {
         "id": "net"
       },
       "command": "option",
-      "hash": "f402326f5da6c8b84558b3dda2107714dbbfa1e01d19e30c2b0f09546eeb8925"
+      "hash": "c0952af8218c8949465717c17bb2baea501df3f030764e4612da7501c8b24867"
     },
     {
       "args": {},
       "command": "advance",
-      "hash": "c9b5da51280ad30b979624fc876ddd9ca15bff1a1daae0f420c1f69fdaf0243e"
+      "hash": "067ad5623f743827be96f4f746dea20276f33e084c228bba1bff9d118fe45cdf"
     },
     {
       "args": {
@@ -944,14 +944,14 @@
         "y": 0
       },
       "command": "expand",
-      "hash": "6cfdff818b2ffbb50d5b9fd70b5edb19aedb1e9a4104fc692c535d4010c4bbfc"
+      "hash": "f8017b799e614e2ea321de3b827741fdc1d04574bc5d03f47bf519bffc799b9d"
     },
     {
       "args": {
         "id": "planter"
       },
       "command": "craft",
-      "hash": "4dc235e905a85ec8a1eb3611febde7fe679f617edcae7261d9c1708be7d2db53"
+      "hash": "ff54769f9f294a6e30699b86a5d5271c47e74e217d1b7d00aa82fdcaea7866c0"
     },
     {
       "args": {
@@ -959,26 +959,26 @@
         "uid": "card-64"
       },
       "command": "install",
-      "hash": "9868667b22bd7960dd0d0b4a6e0611d0eb314884c55cdddb5fe23a8a83224303"
+      "hash": "e088deb619d0e2e15ac1035c36a7bb3f1b69a5a494e87f2cd82029f375759637"
     },
     {
       "args": {},
       "command": "salvage",
-      "hash": "83d8af0b730878ddb0e0cca7dd847f684e97300ca47b410de3de10906fc69348"
+      "hash": "5d842fe9cdf9ae08bd52e12db1912ed8d90cbe1d99569cd75bf2e36845ceaa78"
     },
     {
       "args": {
         "uid": "card-24"
       },
       "command": "discard",
-      "hash": "2b8cc3b1e0e17aa7f8932074ef158cecfe5e961171dee39a6a6f3b3eff038f43"
+      "hash": "d6222a4ddb9ff5e31df8522b3dfa780e49e39d0de4690ab1e791da49c3acb11d"
     },
     {
       "args": {
         "uid": "card-68"
       },
       "command": "play",
-      "hash": "7eb11ff325ba3f0a25f046974c23b9d526684f4b1af4bd2bbab6c31205c2a822"
+      "hash": "2a06a44e9f8179865e689d500b738aa17a8cf7d5e5797f602c6d683e0d79b8f4"
     },
     {
       "args": {
@@ -986,36 +986,36 @@
         "craft": true
       },
       "command": "upgrade",
-      "hash": "91b8c10f4efc034e3b2f658fcab117832d8df69b1dad7a21f9e4cfb45aaabace"
+      "hash": "04b6d8e6738b2861c9d2cc50b62a8661363a1c7225f2d55633c4d02ae008e9aa"
     },
     {
       "args": {
         "id": "candidate-73"
       },
       "command": "voyage",
-      "hash": "07033060994bdffd410a71294c5f60f8021752ab69bc4c9673d885136a27368c"
+      "hash": "f44087e7d7b345b0b61f369e4798703cde3b2efd9fbe028d648694876150bc8c"
     },
     {
       "args": {},
       "command": "enter",
-      "hash": "e2010f1e47b22adaabb26cf98528d5692f673595d4137cf6290145ca59fa22c6"
+      "hash": "8b5fd8542955c86bc28d58792d52dc6367a0bc4e30d7c1d172147af59ec01465"
     },
     {
       "args": {},
       "command": "advance",
-      "hash": "8a7db4b8706c8a8e71136a7086f355b6e35af37907d397827ef8e374095983f2"
+      "hash": "499c336e29e856230f8ede6936b6111026309fa8230a5d8a4ed70e377e291892"
     },
     {
       "args": {},
       "command": "fight",
-      "hash": "01a1beb8d3bc7888540da9b48766865acd13f8aa076a18ca46bc984b8ad66245"
+      "hash": "54913b86e7ade7b9b06a28b302c147dd0c9b2b7ce8bddb5ba2f750d5e7ed667e"
     },
     {
       "args": {
         "uid": "card-76"
       },
       "command": "play",
-      "hash": "08edd1079789ccef31ebe715426018b8ae969150f609d396bc7754ef3f1cabdb"
+      "hash": "b87d81131d37890d5af9df140c945b8aebd2b15aae2c6dbc6c727b262e5eff26"
     },
     {
       "args": {
@@ -1023,7 +1023,7 @@
         "resource_uid": "card-55"
       },
       "command": "battle_action",
-      "hash": "be25910354893e06cb6796a056848ed33f38a1d8b061c9e2612f12f19ff8f6c3"
+      "hash": "4de4fc1f526f9f0adbe1e7c25b8279b3338d8d7d58e5fde45235a36f6e5e6b5c"
     },
     {
       "args": {
@@ -1031,7 +1031,7 @@
         "resource_uid": "card-12"
       },
       "command": "battle_action",
-      "hash": "a4fdb110a1e32d6ada95de681415187a330233ddd379addec1735f8ff50da660"
+      "hash": "00908c3018f3e7edcc6a495afb887eb9becbb0fd56af9380043f8e3fbad25ef1"
     },
     {
       "args": {
@@ -1039,14 +1039,14 @@
         "resource_uid": "card-13"
       },
       "command": "battle_action",
-      "hash": "8285dcc32c76c536fc3328bc50e06df27cb622b1097b2921c2a0bf9fcfa06604"
+      "hash": "b99ef3de617069e90e8aeba1fd82ae41bd1630bfb4ae15abef06d89c4d668d15"
     },
     {
       "args": {
         "uid": "card-77"
       },
       "command": "play",
-      "hash": "6fc233b2e2c857cde8496ace2dafb8b7e9d2bc8bf46e1021463c0f323269c72f"
+      "hash": "1b75c02001e8102174d280d6ea8f37640a593eb56a4982ff2b97a0e0d6db30cb"
     },
     {
       "args": {
@@ -1054,12 +1054,12 @@
         "resource_uid": "card-62"
       },
       "command": "battle_action",
-      "hash": "eb468476867b872ff8395d00a0e29c51b0651c9a5607d3cb2a40eee5da2fb184"
+      "hash": "d82595902b092cf22f4ba2e037f0f094e46c636b2a74b710eb326c0123ae2670"
     },
     {
       "args": {},
       "command": "advance",
-      "hash": "88ffbfe5fde487a669dc92ad9e15619a91e5ddb19c44a699a3e1ff2742d01a2c"
+      "hash": "4e94ebabe3f0a296addd735801f67555aa4942ee51df2ca921d06625ebfb2783"
     },
     {
       "args": {
@@ -1068,83 +1068,83 @@
         "uid": "card-78"
       },
       "command": "fuel",
-      "hash": "b8f54197a3db33fa913879b7bf4ef2c42f686f287bde05f4aa43e514637a5365"
+      "hash": "6b357665f159cb4f40c9a6e3573b4a2a4ede9f89898f43419d68c99442128884"
     },
     {
       "args": {},
       "command": "salvage",
-      "hash": "e6cc88084675c82847e3663d8ebbf234df39e7976b75b2597483ed0f5525b911"
+      "hash": "b8e3543eb3acf838605d759836e7025d47733f58923638ebebe8a31a57d7d052"
     },
     {
       "args": {
         "uid": "card-57"
       },
       "command": "discard",
-      "hash": "285b8e40d363bfbcc539bde36b243e56b255ad192d5ef0368e716b9c5f265866"
+      "hash": "bb1223c9dba80208edbd418f5f3bbc43e86688529223acc996af2c7efe24981c"
     },
     {
       "args": {
         "uid": "card-43"
       },
       "command": "discard",
-      "hash": "9ba9cac1e90c287321d92cec6e669e936d1d8a5b4b684b52e51067650c15e245"
+      "hash": "25ebf19afa62084d6191cf75bdac5fb61ad992304e378bb5c6e7b14ce46b258c"
     },
     {
       "args": {
         "uid": "card-83"
       },
       "command": "play",
-      "hash": "bc96f62a49bf35ce397968cfe91538c0824c991f160261d81bd4097f188830f3"
+      "hash": "c0684eae7ff224f21bee98e67fc1d5237c3c42419aa03486c867048fea9923c1"
     },
     {
       "args": {
         "uid": "card-85"
       },
       "command": "play",
-      "hash": "74361fbedd78b5c97c9abe2157e0d83e321e057483391acdcd5c022d7ee91256"
+      "hash": "71015130a907de944f319c2fd8d6b8ab4b8faded7ebe30af88bc4c9e354f52fd"
     },
     {
       "args": {
         "id": "medkit"
       },
       "command": "craft",
-      "hash": "96624ce9fd8fd04466e3da3d128cb5043a70c3f30a013726412da332c06b5578"
+      "hash": "9b3b1699a14c3568f4c6a5a69ef3f0da5cfb83362e3ce769d4405b7c8f75330c"
     },
     {
       "args": {
         "uid": "card-91"
       },
       "command": "play",
-      "hash": "ec2086c16d70198d743eb8834ff0cb79c9ab46bd42639f266e632473ebb69fcc"
+      "hash": "3eaddbfb5556e5bd794cb4ca3b8d2f17ab72b417c7b0f37047991daedd0064c2"
     },
     {
       "args": {
         "id": "candidate-89"
       },
       "command": "voyage",
-      "hash": "34fbc487710a1003d53406c8cdaf7a54b1132fef853e899796ade5b6572b710a"
+      "hash": "aa8bcc4f5629ad00ae212177d57ad2a0880d23203d1f51e79035d3b985556120"
     },
     {
       "args": {},
       "command": "enter",
-      "hash": "9939ff54a0ddf34c4cdc13144b386337caeeefd7bbcaa17479b525db32869e19"
+      "hash": "7e38897c952f21fcc932a1a089040f74ab0dcb152f6c8fed0205d4a3d41b90a7"
     },
     {
       "args": {},
       "command": "advance",
-      "hash": "83461bd9bb2dceb747b642368e066ea5b46732b5be5b88598e7f40f891927788"
+      "hash": "f7d113e6c1c03a47d3f3f156819b7d7cc00540085248e2297a451719c0e0bb28"
     },
     {
       "args": {},
       "command": "fight",
-      "hash": "10d22706d3a30079d551b87d653053b28e94b072acc83a8d52bcdccee0f64637"
+      "hash": "65964712c2bf84ae50bc9be45e4cf964b7cb2c2b4f94c276b3cf0bd9c4896357"
     },
     {
       "args": {
         "uid": "card-92"
       },
       "command": "play",
-      "hash": "095bbfb64c3fc78a5fee2cebf555e29fbe33343ee284c088710ca9519b3729a9"
+      "hash": "7d67062409a42c4c5dc4b299500cd3b6029bbc5bb037acb48645bdffe5e0b115"
     },
     {
       "args": {
@@ -1152,7 +1152,7 @@
         "resource_uid": "card-65"
       },
       "command": "battle_action",
-      "hash": "aae0f850a4bc20d7e66f188771157137607692e9a91c83879eed14f6ec483787"
+      "hash": "6447587cb3964388b948ea0b3d750dc39207d32f9f8637aaf679b598a3608b9d"
     },
     {
       "args": {
@@ -1160,31 +1160,31 @@
         "resource_uid": "card-66"
       },
       "command": "battle_action",
-      "hash": "ac955b603a4ccef1c53487fb3e2253d2dbc4c1864398fb24569fca8656814e33"
+      "hash": "5cde2c3c3495861558fe4bb672f0d3dad91a4e61cb0495af21fa1125fc5b559d"
     },
     {
       "args": {},
       "command": "advance",
-      "hash": "6c102189bdafcb9c8c472dbf5b4782734cb64013df567830a4c1961405479815"
+      "hash": "309d69729d8c748fb3b1246e3cc7357f73aaff1a8573fe8c232a4f7f144af271"
     },
     {
       "args": {},
       "command": "end_voyage",
-      "hash": "167213839546e0a0f4226b59d93d2eee9aceabf4db3cda7f04dddc781ffd4a4b"
+      "hash": "5b1840d935a197cadb6d4dc5b925f79cbbcb95e6a95a64779cd63ce714855a7f"
     },
     {
       "args": {
         "uid": "card-95"
       },
       "command": "play",
-      "hash": "6d27438576e8d5967ad871b6e3f7f1d92f46b2e4c06b28bc6f685e10203abba1"
+      "hash": "0980b709b1eb4d6b3d158bfbfcdbb050fc9b152d2482d5c9720eaa06dc1be882"
     },
     {
       "args": {
         "uid": "card-97"
       },
       "command": "play",
-      "hash": "94322ac6a5d0e27997be5e4619cb18abdb9d67370c0acfda60b4f6f1861cc73a"
+      "hash": "6af87ccc1f91f036e982594b8dfb93408185b13bab5a4591b796703a017c91a1"
     },
     {
       "args": {
@@ -1192,14 +1192,14 @@
         "y": 0
       },
       "command": "expand",
-      "hash": "b7d5d2fd5fc15be9ab3db601f526a96405cf8d8b301cf123982feb43be3cef43"
+      "hash": "c91f51d242c6aad839e0475d9d2e317eff17592333c85b2805184d265d7ff969"
     },
     {
       "args": {
         "id": "shieldRack"
       },
       "command": "craft",
-      "hash": "0b9ced7a1ff6ef200e92e0319423a236614d9d1ccdd1af983cc719ca483a54f3"
+      "hash": "bf2445ac91e397eca48ff0585a3ab19242a971bcad0adc4f7b85b2e2c3233d5a"
     },
     {
       "args": {
@@ -1207,102 +1207,102 @@
         "uid": "card-103"
       },
       "command": "install",
-      "hash": "3a06823b98cbf8c69389726086a8a5a54d84085b5b99be6f14a1dbfa6d251c63"
+      "hash": "6b1c421bd9e55698487c12f069f34ee104a56d039eb1bfd28139ec7f33334a98"
     },
     {
       "args": {
         "id": "candidate-100"
       },
       "command": "voyage",
-      "hash": "b166fc48cd54bb28142e0dd3dc493edbf4e32f48680676bc85f328f1bfb026cd"
+      "hash": "d3ad6732c155937c78bf9ad2d401cfc7b58e6cfa9b63d5fdfb7d0a1907e23d85"
     },
     {
       "args": {},
       "command": "enter",
-      "hash": "0e5c3a343476731be87a699677734d5a9a9fff9f8d15d88bf57acc37504cd4f3"
+      "hash": "4147a97409f27694344ed028cdeb477519b3012b0ee7b995e97ed159e73d08ad"
     },
     {
       "args": {},
       "command": "advance",
-      "hash": "dd3873b19290fe7f4d54bd91041b87500dc9758f7e8d0db0cdaec33b067a369a"
+      "hash": "4035feb1a629a4873e9d2fd3b581aae63606524198f947c5b994b6c3e9ab7f88"
     },
     {
       "args": {
         "id": "calm"
       },
       "command": "option",
-      "hash": "640e2b6143b3c21b31a012f2a5134f1cc9ae90eb57263a5b000b69e408d1bd12"
+      "hash": "fe5be3a7884f1434a9fc66a810373e1b67e8111aea5952194ce3f34dc1585b9f"
     },
     {
       "args": {},
       "command": "advance",
-      "hash": "bbe56a01961cf55b18cee4cab6699f56a1bdc147ca681f9435c2444ce6f481eb"
+      "hash": "4e6f2848fb46ff8f0307accd07576882a1bc728f2e669972298d77477aeb8ae3"
     },
     {
       "args": {},
       "command": "salvage",
-      "hash": "607fc83440269879123b519750b5fdbf799ccbba073de85661f7759fb1c35aca"
+      "hash": "354f3db15abbc79d89c960f0fe0d110834f6decb980eb2a6e1423cfbdff8f515"
     },
     {
       "args": {},
       "command": "end_voyage",
-      "hash": "c36e0bea32d7d70827978859a8b1b4125543a8fd7ff1dab7b70d19ea95172a0a"
+      "hash": "bf49b29e6e4f552d3846a4a4754268436b3c317c4802aea26e6ccbb1fec6284b"
     },
     {
       "args": {
         "uid": "card-69"
       },
       "command": "discard",
-      "hash": "fde0b7e6ee1d369050358360d5ec04cb19a723ff9b8e33ea6f65f6414c57d2c5"
+      "hash": "3989ae1c2971a291e91a8ac052a2055dd2d9d1a852a63f498bd6867a0f0de007"
     },
     {
       "args": {
         "uid": "card-80"
       },
       "command": "discard",
-      "hash": "46c95ea19091af8332b87fce225d364fe63755bd85b4096e74a6be9c5775d57b"
+      "hash": "7e90a6e61555dfcc9bf20f9e79ba2e24d792cf26018df8550b1c3196aac8af58"
     },
     {
       "args": {
         "uid": "card-107"
       },
       "command": "play",
-      "hash": "2c8f293552d4122e1322d95bf709fa92fe70494368997c3b1d3e273aac39eb2f"
+      "hash": "ee749ff43666ecf6d7d9d78ad84db1e4baceb1453f63902be05e1d418d365a82"
     },
     {
       "args": {
         "uid": "card-109"
       },
       "command": "play",
-      "hash": "206dee814f36e4c52024167805128a991919dede0f6d86129381994e1745e4b9"
+      "hash": "ab07d468dd1f435ca353ecb1d464561695109261a4e911dd9345bea0f92b572f"
     },
     {
       "args": {
         "id": "candidate-112"
       },
       "command": "scout",
-      "hash": "47e4c4fd50bb3185bd4c28c4d15d2443bc5cc924411549773f70fd1341905a5d"
+      "hash": "489529a12da51f27f374fe38edb11347204cdc436c97fd1135ad992d397244bb"
     },
     {
       "args": {
         "id": "candidate-113"
       },
       "command": "scout",
-      "hash": "eab2ffadb6d9d62d947e9fae8306e03507f7486db7542ea931499e4c16a04e19"
+      "hash": "2079e8962556f804df8dab42579bb7ad6ef09254d9b1de668b54392ab441cab7"
     },
     {
       "args": {
         "id": "candidate-114"
       },
       "command": "scout",
-      "hash": "177475be473f97e4cab534da72ad3ebc59ea8d33415f625e02804029f8587615"
+      "hash": "c41d9e9fd430cbf12c3c2eb5fa572691a1c350a9ff4a714d3e47378d5e6ad48d"
     },
     {
       "args": {
         "id": "candidate-113"
       },
       "command": "voyage",
-      "hash": "ab0525265f016cc76b756e2305ed1bf5d1ae2936fbb264e35e4e51d431908379"
+      "hash": "f8cd7ae4b72336a04609b58adcbca5a5996199a5b417f64a09f7928449864de3"
     },
     {
       "args": {
@@ -1311,29 +1311,29 @@
         "uid": "card-93"
       },
       "command": "fuel",
-      "hash": "0c90c37f573a9decf97a1bb9d8bb048fdc629bb7f60dbe81206e3b62417a05d5"
+      "hash": "230274b983637e5589b9793facc08153b38587d85e28975d40fff67fe1605fba"
     },
     {
       "args": {},
       "command": "enter",
-      "hash": "5c53b4820f159be8ae1b45fc22723301e29ea082895a747ec08031b17bc47530"
+      "hash": "183d0527d43cdead99a8c61b8bfafcaab428e9eb434c758b3164f0d2fbf6a373"
     },
     {
       "args": {},
       "command": "advance",
-      "hash": "ffd8505f9959db84cdf487e2d8b674683f02e1f405d984f871534cc1d6564456"
+      "hash": "bd4d91d01804fcdfa2b179a4384452e85716180c99e229af43170404f5a628b7"
     },
     {
       "args": {},
       "command": "fight",
-      "hash": "a7abf0901ae2a6e9e41d88c14ac86a90d2e690abdfd62c076f4617f3c36e6121"
+      "hash": "171f4ec32a0c312071b7dadcb033c1b8582943bf748e8f58d13e70d2021e930b"
     },
     {
       "args": {
         "uid": "card-115"
       },
       "command": "play",
-      "hash": "b2ed34b13405486a6aa4a28926a5e8997d1d19a4a0092850b4a821351d65b239"
+      "hash": "adee861b740b65c3d1cad51f1577d9de999c211c8ce86e80fdf4b64b64f6c421"
     },
     {
       "args": {
@@ -1341,7 +1341,7 @@
         "resource_uid": "card-82"
       },
       "command": "battle_action",
-      "hash": "173a1fea933eb20ff71badfc850d73dac0d2e0c7b67df05e5b90a15d852cb416"
+      "hash": "7dd38bd0b15c92fa553043484e175f75db7d8201240e423f203a1599b947a7d5"
     },
     {
       "args": {
@@ -1349,81 +1349,81 @@
         "resource_uid": "card-96"
       },
       "command": "battle_action",
-      "hash": "c6dc766bbfe73c3f0202da2194f7ead05be447b9fd2e9137913ef9e8337b4f9b"
+      "hash": "65fa19e5e4258a59cc478f76202c15c41b97bd877512a9e1eb6291f539968d66"
     },
     {
       "args": {},
       "command": "advance",
-      "hash": "4a6a76ab234c534b1aef68d0af9625cc2ae0545c171ca2eb8992525995790836"
+      "hash": "332943b55ad8811d37ebc217d8cf2bb0b100828b7a5e54f72f322920b6036ce3"
     },
     {
       "args": {},
       "command": "end_voyage",
-      "hash": "95d8966bb2abfca639649bd4baed1b1fa6c85fb57e34e222bd098962679469cf"
+      "hash": "a4e01f96edabf146fd800b1450c4f03bf16e5ad7e4bc6fef21081a488f29b278"
     },
     {
       "args": {
         "uid": "card-104"
       },
       "command": "discard",
-      "hash": "c37546db68648197653bcb29ac0a00be5d606e4b65ae60d7c6f47c525a27f14a"
+      "hash": "3d0ee1bd76e3c05084701ae4cb7df16ca6110e761893652d1248fcd97e8ca3a7"
     },
     {
       "args": {
         "uid": "card-105"
       },
       "command": "discard",
-      "hash": "c6d4b6e836e36d51662aa3ec674389dd3e6614e148b36f3bbbfe8e1982974295"
+      "hash": "19325c2f9477b0c0f3950e70957a0ce5566a9f40d963299cf7a4caf79f46bfe5"
     },
     {
       "args": {
         "uid": "card-118"
       },
       "command": "play",
-      "hash": "c831752d0fcbf06400c39d6d22997f0e48e41d58c44f9ffce335753bf54505a6"
+      "hash": "c8788bc088e08857a61ebd3c3b8c389e21c152e8b1cea5077b03e302adb0f3e9"
     },
     {
       "args": {
         "uid": "card-120"
       },
       "command": "play",
-      "hash": "f8f9fbb7b252e8731ad0562764ba4ac54e5a279bc68b4b4863d1efbffd63f71b"
+      "hash": "af5514c1dd79b18b54a73980cb689b5722f515682ad19e812bb223f3e90bd169"
     },
     {
       "args": {
         "id": "medkit"
       },
       "command": "craft",
-      "hash": "fc08e90a42fd2c02f7c6502cb3ace8d4f0388bdf8658b44ca4422d235f114096"
+      "hash": "ae8064c3b772fbf23ab56b296741fd2c958c9ca4b74739c88b805d35d9de29d5"
     },
     {
       "args": {
         "id": "candidate-123"
       },
       "command": "voyage",
-      "hash": "20451398ea7580d7021186319f5ba2b4721dae740e4bcf1a96a4fe94261733bb"
+      "hash": "66c26446ba73d863510912a9b43a0e12ccf0f69c48b4704349fe91a3b3ce4cb9"
     },
     {
       "args": {},
       "command": "enter",
-      "hash": "d5654e84ec8061f9dbb7533445addbb7c505c01e453dafce98fcc0abac7f7494"
+      "hash": "7074fe4569c75069189070a2e4373d9b7e6c20848e480406439d3b06da4f7f61"
     },
     {
       "args": {},
       "command": "advance",
-      "hash": "d24efb1703ace3232ca23fbc8a509ac94305d713380a46c4e5d93f99e53f4da0"
+      "hash": "6134c50e8bd886f8f4736b30cc39a6a4e85e71e1dae1beeda95a11eedc3cd9c7"
     },
     {
       "args": {},
       "command": "fight",
-      "hash": "aee00362ae755a5f9a1fb7b98d4363eb30ca9c7239d2731f67a513495f30530d"
+      "hash": "398447d40b1480c4503bef73a6191b5ce0ab3212d46fa872e35b1bdafacbcc60"
     },
     {
       "args": {
         "uid": "card-125"
       },
       "command": "play",
-      "hash": "f43f8a193d2c3da03d228eee95200677a58773ea5fc480d9c4f99c65d51b6b2f"
+      "hash": "80ebc52f77c2854531e5e6c639912fc47ae7a9112c89f36770637ccfd9cc1d15"
     },
     {
       "args": {
@@ -1431,7 +1431,7 @@
         "resource_uid": "card-81"
       },
       "command": "battle_action",
-      "hash": "c0722f99408f8013cc9699f4fa2a2f94781d888081377b44e8cf51c57f32c446"
+      "hash": "b8b363591e88fe8920557e03f6ae92251475a0523fa479c72814099af9f0e8a4"
     },
     {
       "args": {
@@ -1439,7 +1439,7 @@
         "resource_uid": "card-106"
       },
       "command": "battle_action",
-      "hash": "4a7359c52161f602e04e771501eda3076a426cf623568951f27bfbf617a19963"
+      "hash": "a9af9d3f605c2c5273565a535b60c89982ae517c5601e360d25dbcaa7ce6ec98"
     },
     {
       "args": {
@@ -1447,19 +1447,19 @@
         "resource_uid": "card-108"
       },
       "command": "battle_action",
-      "hash": "7981ada264b534de6cfd418da5691d7f1b43dd8c298980b2f8608a79d6e5ab8c"
+      "hash": "90dce3bfa7387c841e025d7aeab2b5b9ff4694fc114f757b4f4e64c5d7b2791b"
     },
     {
       "args": {},
       "command": "battle_end",
-      "hash": "f58a00a1f386e2a638bd7eca4b589573e22c2071d47725d5d004c6c107d2fa3d"
+      "hash": "21f223972436ebd516de644550704be291684dea4530ef73be969b466a380cd1"
     },
     {
       "args": {
         "uid": "card-127"
       },
       "command": "play",
-      "hash": "0ff89271c02b0a12a8bbdcca703322d2583f15e86ea3d6f3453b20e9a6202aa3"
+      "hash": "23d129b2b8b603d5e8c41551fc745ff97270a4c61f4aa206ac21ddb4d57d5764"
     },
     {
       "args": {
@@ -1467,14 +1467,14 @@
         "resource_uid": "card-87"
       },
       "command": "battle_action",
-      "hash": "18255cb83fa39cce335cff7fc3439234ba0befcaace684aa013b18bd6eaba90f"
+      "hash": "9a33100e9da13038ec0355f87d5e1b4eadc7c59d12de9d51ff763c43024a8ace"
     },
     {
       "args": {
         "uid": "card-126"
       },
       "command": "play",
-      "hash": "c15125b187f1e02b05c68716d4e61d7ac37d19f5e86aa1858e0e43dc6d723d74"
+      "hash": "0ed0051d8714c3ded126c36a60b82b9a7d37b9209902fd809b06af1d014a114b"
     },
     {
       "args": {
@@ -1482,26 +1482,26 @@
         "resource_uid": "card-111"
       },
       "command": "battle_action",
-      "hash": "b74f87771fc794f6e85c7b9b3769740a48d4495c3b95a98454f30154f336ab20"
+      "hash": "e46b141883dbfcfffeafaa65c81230b2fa9200c9c4d128981fa80326710e3873"
     },
     {
       "args": {},
       "command": "battle_end",
-      "hash": "4cc71086071aac973f01fe4905817517244750bb20f32bbdff62c784ec0c511c"
+      "hash": "3b7ff1c02fa1fd2174fee5af83ae95e1ebd16fc46edb5f60384219ced1c35a7d"
     },
     {
       "args": {
         "uid": "card-128"
       },
       "command": "play",
-      "hash": "75a1f7f5e214535bdb403cbacdada0d94ee26772df234b4467320b41b2a2abd1"
+      "hash": "c4c31e93051191b326c7a118f0bfecdbc6fa62754dcf9ddbea71599c4f05d9df"
     },
     {
       "args": {
         "action": "block"
       },
       "command": "battle_action",
-      "hash": "3123b0e3f3e0bd18315da341bb5c13528650335dfe241311de7111ff70eba726"
+      "hash": "5b1e395949d0f1f8833cb4894b7be6963ec223b48c3ce62ed992ac5e9cb5fa71"
     },
     {
       "args": {
@@ -1509,121 +1509,121 @@
         "resource_uid": "card-117"
       },
       "command": "battle_action",
-      "hash": "79dd9cbda9f29a3f4ed3692ef47c199948828406f0ccda9036fc7024da014b1e"
+      "hash": "0ddcba3b4ff48b947776e3e84a461f6bd54a264543f43532505dc4604c9ef0f7"
     },
     {
       "args": {
         "action": "attack"
       },
       "command": "battle_action",
-      "hash": "647cc87bfa3e9fe4385f995e0288884d7e4c62f94fd5e6c3b5c8d2f4978343fd"
+      "hash": "4268e6eef475a4f6690c474fe21ab643bba945b082a94b63f7226e143642b958"
     },
     {
       "args": {},
       "command": "battle_end",
-      "hash": "0e8b4d0419a1f0a3796ab0b5b257b49de1a2d0f1e096c6c413a6994ad7ad9db6"
+      "hash": "38c8e082ad62d13d47b9e5b9528fae07c70ebdc7044dfbf7cac42b570098692d"
     },
     {
       "args": {
         "uid": "card-130"
       },
       "command": "play",
-      "hash": "8b6c1e70c29f8aba52fcddf6e82e7305f5239a65e9aa6afb9b7b484adcb62afa"
+      "hash": "3ae801e038a50d4b2640f26bb42610f980a163c4db455266ac6e465ffc2a2b2c"
     },
     {
       "args": {
         "action": "block"
       },
       "command": "battle_action",
-      "hash": "dfcd1e0b2bfca67f4d6cf4198642597e88605148348d7a00662ea70c7ead0ef1"
+      "hash": "bc4f0e5aef00d533fdc77d1429b48c2eb2559378b879ae1a990cd1a0ea0c6c4f"
     },
     {
       "args": {
         "uid": "card-129"
       },
       "command": "play",
-      "hash": "1de8f047a0e8ece5446cf5080c62e051d405750b18af18ba09fd8993a816d6db"
+      "hash": "10a16de9e3e84f8dc768fef690aa85d0372d00679ff37e2beb481b0412374c01"
     },
     {
       "args": {
         "action": "attack"
       },
       "command": "battle_action",
-      "hash": "e4b0d5dd5c1ae0d0dc2315b2c0bfcfc6bd75ff1d4f86e2ee62fe520d2a4d56a5"
+      "hash": "837d5c12fa59b30552923c500241d2b20e5cc39199810c693b604cfc491bc03b"
     },
     {
       "args": {},
       "command": "battle_end",
-      "hash": "7cb9eb89288f8727bd908f7211b0d690bb3e59071da43dc3559965763d083e9e"
+      "hash": "35b2951c0e7e05ef2c1ea78077869ac492ffa85f35848173ce042d674fd62309"
     },
     {
       "args": {
         "uid": "card-131"
       },
       "command": "play",
-      "hash": "837e33d3b6d1e5decfd7e3bacb3b319d5d8fad16045199c563a6ed90bdb931af"
+      "hash": "5f507d61f530b483073627d17789bb5e0cb0aa6494128066e8121dc2339ae93a"
     },
     {
       "args": {
         "action": "block"
       },
       "command": "battle_action",
-      "hash": "c068ba919427eaaf469b88fac7ec2aa794d5ce9656258726cd8cebf110f810aa"
+      "hash": "73e79587610d99d3f17faf4654df8007381dccf45925f9bc2aa0f95dd09f69f0"
     },
     {
       "args": {
         "action": "attack"
       },
       "command": "battle_action",
-      "hash": "6d7185f90d45a9f2ebe2df55141fb4f3a0d523c1a3b6d7e504c78b0b4b8596bc"
+      "hash": "14a14491021b68f75ac6127306537a9b65593b578ecfd57548018bab25c09fb9"
     },
     {
       "args": {
         "action": "attack"
       },
       "command": "battle_action",
-      "hash": "e5cfd9de096929ad8277277ef230ad82b39d778e5006bbd691e70d56d58d4685"
+      "hash": "7947ef9a66ff62c84835b7ac1647b69808edb15a8956a67ec2b149c6f00950ff"
     },
     {
       "args": {},
       "command": "battle_end",
-      "hash": "7c98f721897257fee690b70b77d654677f7e021bafe17f318716aa983478ba95"
+      "hash": "bfaff178b8cdb11f100b3953cdd3a8c14492b7d1f7cc18503e804efcdb67e689"
     },
     {
       "args": {
         "uid": "card-133"
       },
       "command": "play",
-      "hash": "54a0bf2c3332660140cbb7cac292014bbe17581f61784b0d7872486f73d00488"
+      "hash": "5b5c6fe683cb3c692fddfa2ff4f998e18cf80f37c763cd2cd461abb797a3e8bd"
     },
     {
       "args": {
         "action": "attack"
       },
       "command": "battle_action",
-      "hash": "3ffb37824581e8a1b5f504434b4d145b0ab82e04494955eaa63eab167d8c549f"
+      "hash": "f85092316658d1ade1be9a4950cdfd06fab77f505828a2277ba9cc53019f97e8"
     },
     {
       "args": {},
       "command": "advance",
-      "hash": "c805eee904e3bd9dcb50a5024bcf138ddd2717c10ec81ffca72cff68e6212173"
+      "hash": "25fa2c054b403d0f3576b5ee7eca54a8b127c1ae7f21c4e6aa4c051bdc03602c"
     },
     {
       "args": {
         "id": "medkit"
       },
       "command": "craft",
-      "hash": "e041337f1a83bbcd1ddc189975b69aaa05b74676f1be38c870b903fb8d16803f"
+      "hash": "acdecfe2bc4883c5b0be6298586258d3807bfe9afa0de1f8139fb24194670793"
     },
     {
       "args": {},
       "command": "salvage",
-      "hash": "a96705f21bf3d041e6c0dd5089964549f06cbf6d51d1dd049b12a8e63716e458"
+      "hash": "c0eea90a93711229d94c46c27531284f2b94e4cd04c20d48b9094f5796acb298"
     },
     {
       "args": {},
       "command": "end_voyage",
-      "hash": "880519bacdd82c18e0740cf90190b3ab5e9b178b910c72bd4f0cda3b1a499f8f"
+      "hash": "a8f1d2b585476b6b5a0c42731f1d6010ea1ff8707191f37576fb035f853de020"
     }
   ],
   "version": "deep-surge-trace-v1"

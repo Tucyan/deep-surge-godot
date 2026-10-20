@@ -550,6 +550,7 @@
         "id": "surface",
         "name": "浪中的吊架",
         "kind": "environment",
+        "retired": true,
         "description": "让一块明确选定的空甲板接住吊架，或用绳索分批卸货；也可以安全离开。",
         "event": "E12",
         "category": "risk",
@@ -1096,6 +1097,7 @@
     "id": "winch",
     "name": "搁浅的绞盘",
     "kind": "environment",
+    "retired": true,
     "description": "借用绞盘可省下时间，也可自愿付出生命扳开转轴。",
     "event": "E09",
     "category": "service",
@@ -1230,7 +1232,18 @@
       "coin": 2,
       "corpse": 1,
       "resources": 2,
-      "xp": 5
+      "xp": 5,
+      "relics": [
+        {
+          "pool": [
+            "redCoral",
+            "tideTablet",
+            "homeCompass",
+            "hunterSpear"
+          ],
+          "amount": 1
+        }
+      ]
     }
   },
   "boss_open_sea": {
@@ -1249,7 +1262,19 @@
       "coin": 5,
       "corpse": 1,
       "resources": 3,
-      "xp": 10
+      "xp": 10,
+      "relics": [
+        {
+          "pool": [
+            "crimsonVial",
+            "crackedCarapace",
+            "foldingRule",
+            "drifterQuiver",
+            "scavengerSatchel"
+          ],
+          "amount": 1
+        }
+      ]
     }
   },
   "boss_abyss": {
@@ -1268,7 +1293,21 @@
       "coin": 5,
       "corpse": 1,
       "resources": 3,
-      "xp": 10
+      "xp": 10,
+      "relics": [
+        {
+          "pool": [
+            "crimsonVial",
+            "hunterSpear",
+            "tideBoneBlade",
+            "foldingRule",
+            "sailorsKnot",
+            "drifterQuiver",
+            "barbedBundle"
+          ],
+          "amount": 1
+        }
+      ]
     }
   },
   "sealedChest": {
@@ -1317,7 +1356,8 @@
         "id": "leave",
         "name": "离开"
       }
-    ]
+    ],
+    "retired": true
   },
   "sealedLarder": {
     "id": "sealedLarder",
@@ -1368,7 +1408,8 @@
         "cost": 0,
         "effects": []
       }
-    ]
+    ],
+    "retired": true
   },
   "powderWreck": {
     "id": "powderWreck",
@@ -1431,7 +1472,8 @@
         "cost": 0,
         "effects": []
       }
-    ]
+    ],
+    "retired": true
   },
   "kelpDryingRack": {
     "id": "kelpDryingRack",
@@ -1482,7 +1524,8 @@
         "cost": 0,
         "effects": []
       }
-    ]
+    ],
+    "retired": true
   },
   "silentWayfinder": {
     "id": "silentWayfinder",
@@ -1533,7 +1576,8 @@
         "cost": 0,
         "effects": []
       }
-    ]
+    ],
+    "retired": true
   },
   "boneHunter": {
     "id": "boneHunter",
@@ -1596,7 +1640,8 @@
         "cost": 0,
         "effects": []
       }
-    ]
+    ],
+    "retired": true
   },
   "shellGraveyard": {
     "id": "shellGraveyard",
@@ -1653,7 +1698,8 @@
         "cost": 0,
         "effects": []
       }
-    ]
+    ],
+    "retired": true
   },
   "drownedMint": {
     "id": "drownedMint",
@@ -1707,7 +1753,8 @@
         "cost": 0,
         "effects": []
       }
-    ]
+    ],
+    "retired": true
   },
   "rescuePontoon": {
     "id": "rescuePontoon",
@@ -1755,7 +1802,8 @@
         "cost": 0,
         "effects": []
       }
-    ]
+    ],
+    "retired": true
   },
   "coralShrine": {
     "id": "coralShrine",
@@ -1808,7 +1856,8 @@
         "cost": 0,
         "effects": []
       }
-    ]
+    ],
+    "retired": true
   },
   "riggersCache": {
     "id": "riggersCache",
@@ -1856,6 +1905,654 @@
         "id": "leave",
         "name": "留下物件，继续航行",
         "description": "不支付代价，不获得藏品。",
+        "cost": 0,
+        "effects": []
+      }
+    ],
+    "retired": true
+  },
+  "restCove": {
+    "id": "restCove",
+      "art": "node.camp",
+    "name": "避潮湾",
+    "kind": "environment",
+    "category": "service",
+    "min_voyage": 2,
+    "max_visits": 1,
+    "cooldown": 3,
+    "description": "一处被旧船骸围出的静水湾。没有敌人，也没有陷阱，只有一次把气力攒回来的机会。",
+    "event": "NEW:safeRest",
+    "options": [
+      {
+        "id": "warm",
+        "name": "靠岸休整",
+        "description": "免费。生命+3、饱食+20、水分+20、精神+15。",
+        "cost": 0,
+        "effects": [
+          {
+            "type": "ChangeCurrent",
+            "stat": "hp",
+            "delta": 3
+          },
+          {
+            "type": "ChangeCurrent",
+            "stat": "hunger",
+            "delta": 20
+          },
+          {
+            "type": "ChangeCurrent",
+            "stat": "hydration",
+            "delta": 20
+          },
+          {
+            "type": "ChangeCurrent",
+            "stat": "sanity",
+            "delta": 15
+          }
+        ]
+      },
+      {
+        "id": "ration",
+        "name": "分食口粮",
+        "description": "免费。获得食用植物1和淡水1。",
+        "cost": 0,
+        "effects": [
+          {
+            "type": "GiveCard",
+            "id": "food",
+            "amount": 1
+          },
+          {
+            "type": "GiveCard",
+            "id": "water",
+            "amount": 1
+          }
+        ]
+      },
+      {
+        "id": "salvage",
+        "name": "拆解船骸",
+        "description": "免费。废铁1、绳索1。",
+        "cost": 0,
+        "effects": [
+          {
+            "type": "GiveCard",
+            "id": "iron",
+            "amount": 1
+          },
+          {
+            "type": "GiveCard",
+            "id": "rope",
+            "amount": 1
+          }
+        ]
+      },
+      {
+        "id": "leave",
+        "name": "继续航行",
+        "description": "不付出代价，也不获得奖励。",
+        "cost": 0,
+        "effects": []
+      }
+    ]
+  },
+  "relicCache": {
+    "id": "relicCache",
+      "art": "relic.tideTablet",
+    "name": "漂流遗物堆",
+    "kind": "environment",
+    "category": "trade",
+    "min_voyage": 3,
+    "max_visits": 1,
+    "cooldown": 3,
+    "description": "几件被冲上岸的遗物压在一起。你可以拆开一件完整的，也可以拿材料去换一件未知的。",
+    "event": "NEW:equalExchange",
+    "stages": [
+      [
+        {
+          "id": "reveal_relics",
+          "name": "免费揭示三件潮汐遗物",
+          "description": "免费从当前可获得的遗物中揭示最多三件不同的遗物，再决定是否带走一件。",
+          "cost": 0,
+          "effects": [],
+          "reveal_relics": true
+        },
+        {
+          "id": "tradeForRandom",
+          "name": "付材料换一件未知遗物",
+          "description": "支付基地AP1、废铁1、绳索1；从六件遗物中随机获得一件。",
+          "cost": 1,
+          "cardCosts": {
+            "iron": 1,
+            "rope": 1
+          },
+          "effects": [
+            {
+              "type": "GiveRandomRelic",
+              "pool": [
+                "tideTablet",
+                "redCoral",
+                "homeCompass",
+                "glowConch",
+                "drifterMedkit",
+                "kelpRation"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "leave",
+          "name": "离开遗物堆",
+          "description": "不付出代价，不获得藏品。",
+          "cost": 0,
+          "effects": []
+        }
+      ],
+      [
+        {
+          "id": "leave",
+          "name": "离开遗物堆",
+          "description": "不付出代价，不获得藏品。",
+          "cost": 0,
+          "effects": []
+        }
+      ]
+    ]
+  },
+  "tollGate": {
+    "id": "tollGate",
+      "art": "node.storm",
+    "name": "旧闸口",
+    "kind": "environment",
+    "category": "service",
+    "min_voyage": 4,
+    "max_visits": 1,
+    "cooldown": 3,
+    "description": "锈死的闸门挡住了去路。想过去，总要留下点什么。",
+    "event": "NEW:midCost",
+    "options": [
+      {
+        "id": "payHp",
+        "name": "以血开闸",
+        "description": "支付生命3（支付后至少保留1）。获得潮汐遗物一件（随机）。",
+        "statCosts": {
+          "hp": 3
+        },
+        "effects": [
+          {
+            "type": "GiveRandomRelic",
+            "pool": [
+              "crimsonVial",
+              "scavengerSatchel",
+              "tideBoneBlade",
+              "crackedCarapace"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "paySanity",
+        "name": "以神志硬闯",
+        "description": "支付精神8（支付后至少保留1）。获得潮汐遗物一件（随机）。",
+        "statCosts": {
+          "sanity": 8
+        },
+        "effects": [
+          {
+            "type": "GiveRandomRelic",
+            "pool": [
+              "emberFuse",
+              "crackedCarapace",
+              "sunkenCoin",
+              "hunterSpear"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "payMaterials",
+        "name": "拆闸板垫路",
+        "description": "支付木头2、绳索2。获得潮汐遗物一件（随机）。",
+        "cardCosts": {
+          "wood": 2,
+          "rope": 2
+        },
+        "effects": [
+          {
+            "type": "GiveRandomRelic",
+            "pool": [
+              "scavengerSatchel",
+              "homeCompass",
+              "sailorsKnot",
+              "foldingRule"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "leave",
+        "name": "退回去",
+        "description": "不付出代价，不获得藏品。",
+        "cost": 0,
+        "effects": []
+      }
+    ]
+  },
+  "luckyDrift": {
+    "id": "luckyDrift",
+      "art": "node.drift",
+    "name": "潮汐赌局",
+    "kind": "environment",
+    "category": "risk",
+    "min_voyage": 5,
+    "max_visits": 1,
+    "cooldown": 3,
+    "description": "一处能看见回流的涡口。手伸进去总能摸到点什么——只是没人告诉你下一次还在不在。",
+    "event": "NEW:lucky",
+    "stages": [
+      [
+        {
+          "id": "reach",
+          "name": "伸手探入涡口",
+          "description": "支付生命1。摸到东西的机会均等。",
+          "cost": 0,
+          "statCosts": {
+            "hp": 1
+          },
+          "next_stage": 1,
+          "outcomes": [
+            {
+              "id": "heal",
+              "weight": 10,
+              "success": true,
+              "description": "摸到一袋压实的干粮。",
+              "effects": [
+                {
+                  "type": "ChangeCurrent",
+                  "stat": "hp",
+                  "delta": 2
+                }
+              ]
+            },
+            {
+              "id": "food",
+              "weight": 20,
+              "success": true,
+              "description": "捞到可以直接吃的东西。",
+              "effects": [
+                {
+                  "type": "GiveCard",
+                  "id": "food",
+                  "amount": 1
+                }
+              ]
+            },
+            {
+              "id": "water",
+              "weight": 20,
+              "success": true,
+              "description": "摸到密封的淡水。",
+              "effects": [
+                {
+                  "type": "GiveCard",
+                  "id": "water",
+                  "amount": 1
+                }
+              ]
+            },
+            {
+              "id": "material",
+              "weight": 20,
+              "success": true,
+              "description": "摸到压实的绳索团。",
+              "effects": [
+                {
+                  "type": "GiveCard",
+                  "id": "rope",
+                  "amount": 2
+                }
+              ]
+            },
+            {
+              "id": "equipment",
+              "weight": 12,
+              "success": true,
+              "description": "摸到一件还能用的设备牌。",
+              "effects": [
+                {
+                  "type": "GiveCard",
+                  "id": "filter",
+                  "amount": 1
+                }
+              ]
+            },
+            {
+              "id": "relic",
+              "weight": 8,
+              "success": true,
+              "description": "指尖触到一件不属于这里的东西。",
+              "effects": [
+                {
+                  "type": "GiveRandomRelic",
+                  "pool": [
+                    "glowConch",
+                    "drifterMedkit",
+                    "kelpRation",
+                    "copperStill"
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "hardBattle",
+              "weight": 10,
+              "success": false,
+              "description": "涡口深处有东西醒过来了。",
+              "battle": {
+                "enemy": "crab",
+                "rewards": {
+                  "coin": 2,
+                  "corpse": 1,
+                  "resources": 2,
+                  "xp": 5
+                },
+              "return_stage": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "leave",
+          "name": "收手离开",
+          "description": "保留已经摸到的一切，结束这次探摸。",
+          "cost": 0,
+          "effects": []
+        }
+      ],
+      [
+        {
+          "id": "again",
+          "name": "再伸手一次",
+          "description": "支付生命1。继续摸，可能摸到更好的，也可能摸到不该摸的。",
+          "cost": 0,
+          "statCosts": {
+            "hp": 1
+          },
+          "next_stage": 2,
+          "outcomes": [
+            {
+              "id": "heal",
+              "weight": 10,
+              "success": true,
+              "description": "干粮。",
+              "effects": [
+                {
+                  "type": "ChangeCurrent",
+                  "stat": "hp",
+                  "delta": 2
+                }
+              ]
+            },
+            {
+              "id": "food",
+              "weight": 20,
+              "success": true,
+              "description": "食物。",
+              "effects": [
+                {
+                  "type": "GiveCard",
+                  "id": "food",
+                  "amount": 1
+                }
+              ]
+            },
+            {
+              "id": "water",
+              "weight": 20,
+              "success": true,
+              "description": "淡水。",
+              "effects": [
+                {
+                  "type": "GiveCard",
+                  "id": "water",
+                  "amount": 1
+                }
+              ]
+            },
+            {
+              "id": "material",
+              "weight": 20,
+              "success": true,
+              "description": "绳索2。",
+              "effects": [
+                {
+                  "type": "GiveCard",
+                  "id": "rope",
+                  "amount": 2
+                }
+              ]
+            },
+            {
+              "id": "equipment",
+              "weight": 12,
+              "success": true,
+              "description": "土盆牌。",
+              "effects": [
+                {
+                  "type": "GiveCard",
+                  "id": "planter",
+                  "amount": 1
+                }
+              ]
+            },
+            {
+              "id": "relic",
+              "weight": 8,
+              "success": true,
+              "description": "一件遗物。",
+              "effects": [
+                {
+                  "type": "GiveRandomRelic",
+                  "pool": [
+                    "glowConch",
+                    "drifterMedkit",
+                    "kelpRation",
+                    "copperStill"
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "hardBattle",
+              "weight": 10,
+              "success": false,
+              "description": "深处的东西没有睡回去。",
+              "battle": {
+                "enemy": "sentinel",
+                "rewards": {
+                  "coin": 2,
+                  "corpse": 1,
+                  "resources": 2,
+                  "xp": 5
+                },
+              "return_stage": 2
+              }
+            }
+          ]
+        },
+        {
+          "id": "leave",
+          "name": "见好就收",
+          "description": "保留已经摸到的一切，结束这次探摸。",
+          "cost": 0,
+          "effects": []
+        }
+      ],
+      [
+        {
+          "id": "lastReach",
+          "name": "最后一次伸手",
+          "description": "支付生命2。这是最后一轮，摸完就必须离开。",
+          "cost": 0,
+          "statCosts": {
+            "hp": 2
+          },
+          "next_stage": 3,
+          "outcomes": [
+            {
+              "id": "heal",
+              "weight": 10,
+              "success": true,
+              "description": "压缩干粮。",
+              "effects": [
+                {
+                  "type": "ChangeCurrent",
+                  "stat": "hp",
+                  "delta": 2
+                }
+              ]
+            },
+            {
+              "id": "material",
+              "weight": 25,
+              "success": true,
+              "description": "木头2。",
+              "effects": [
+                {
+                  "type": "GiveCard",
+                  "id": "wood",
+                  "amount": 2
+                }
+              ]
+            },
+            {
+              "id": "equipment",
+              "weight": 20,
+              "success": true,
+              "description": "弓弩牌。",
+              "effects": [
+                {
+                  "type": "GiveCard",
+                  "id": "crossbow",
+                  "amount": 1
+                }
+              ]
+            },
+            {
+              "id": "relic",
+              "weight": 20,
+              "success": true,
+              "description": "一件遗物。",
+              "effects": [
+                {
+                  "type": "GiveRandomRelic",
+                  "pool": [
+                    "glowConch",
+                    "drifterMedkit",
+                    "sealedFishTin",
+                    "tideTablet"
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "hardBattle",
+              "weight": 25,
+              "success": false,
+              "description": "最深处的守门者。",
+              "battle": {
+              "enemy": "boss_shallows",
+                "rewards": {
+                  "coin": 3,
+                  "corpse": 1,
+                  "resources": 2,
+                  "xp": 10
+              },
+              "return_stage": 3
+              }
+            }
+          ]
+        },
+        {
+          "id": "leave",
+          "name": "立即收手",
+          "description": "保留已经摸到的一切，结束这次探摸。",
+          "cost": 0,
+          "effects": []
+        }
+      ],
+      [
+        {
+          "id": "done",
+          "name": "结束探摸",
+          "description": "带着这一局摸到的一切离开。",
+          "cost": 0,
+          "effects": []
+        }
+      ]
+    ]
+  },
+  "deepCache": {
+    "id": "deepCache",
+      "art": "node.ruin",
+    "name": "深处沉箱",
+    "kind": "environment",
+    "category": "risk",
+    "min_voyage": 5,
+    "max_visits": 1,
+    "cooldown": 3,
+    "description": "一只压得很深的箱子。开箱的动静会传出很远——但箱里的东西同样值得那个风险。",
+    "event": "NEW:riskRelic",
+    "options": [
+      {
+        "id": "forceOpen",
+        "name": "强行开箱",
+        "description": "支付基地AP1、木头1。60% 获得潮汐遗物一件（随机）；40% 遭遇绝壳蟹，战胜后仍获得贝币3与随机基础资源2，不获藏品。",
+        "cost": 1,
+        "cardCosts": {
+          "wood": 1
+        },
+        "risk": true,
+        "outcomes": [
+          {
+            "id": "clean",
+            "weight": 60,
+            "success": true,
+            "description": "箱里没有别的东西。",
+            "effects": [
+              {
+                "type": "GiveRandomRelic",
+                "pool": [
+                  "barbedBundle",
+                  "drifterQuiver",
+                  "emberFuse",
+                  "redCoral",
+                  "sunkenCoin"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "guard",
+            "weight": 40,
+            "success": false,
+            "description": "箱下有东西守着。",
+            "battle": {
+              "enemy": "crab",
+              "rewards": {
+                "coin": 3,
+                "corpse": 1,
+                "resources": 2,
+                "xp": 5
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "leave",
+        "name": "不冒险，离开",
+        "description": "不付出代价，不获得藏品。",
         "cost": 0,
         "effects": []
       }

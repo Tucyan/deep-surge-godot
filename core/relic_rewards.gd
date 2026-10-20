@@ -59,7 +59,18 @@ static func grant(ctx, entries: Array, summary: Array) -> bool:
 		for index in range(int(entry.get("amount",1))):
 			# Preview never draws or reveals a random award, even on its copy.
 			if entry.has("pool") and ctx._effect_preview: continue
-			var id: String=entry.id if entry.has("id") else R.pick(ctx.state.rng,"rewards",entry.pool)
+			var id: String
+			if entry.has("id"):
+				id=entry.id
+				if not Collectibles.eligible(ctx,id): return ctx.fail("潮汐遗物奖励发放失败：该遗物当前不可重复获得")
+			else:
+				var eligible: Array=Collectibles.eligible_ids(ctx,entry.pool)
+				if eligible.is_empty():
+					ctx.give("coin",2,false,"relic_pool_exhausted")
+					var exchanged: String="遗物池已耗尽，改获贝币2枚。"
+					ctx.log_text(exchanged); summary.append(exchanged)
+					continue
+				id=R.pick(ctx.state.rng,"rewards",eligible)
 			if not Collectibles.acquire(ctx,id): return ctx.fail("潮汐遗物奖励发放失败")
 			ctx.discover("relic."+id)
 			var text: String="获得潮汐遗物："+str(ctx.catalog.entry("relics",id).name)

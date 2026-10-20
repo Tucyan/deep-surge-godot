@@ -1,6 +1,6 @@
 # 藏品节点收缩与唯一性实施计划
 
-> 使用 writing-plans、test-driven-development、subagent-driven-development；按任务完成后复核规格与实现。**当前仅完成设计与验证，未授权改动工程代码**；本文件为待执行计划。不提交或推送。
+> 使用 writing-plans、test-driven-development、subagent-driven-development；按任务完成后复核规格与实现。**用户于 2026-10-21 已授权正式实施**；先保存并提交已有改动，再按两批执行。本轮允许本地提交，不推送。执行前快照：`4c30513`。
 
 **Goal:** 将 11 个藏品节点收缩为 5 类事件节点（安全休整 / 等价交换 / 中量代价 / 幸运 / risk），并为藏品引入唯一性限制，防止永久数值膨胀。分两批落地：先静态方案 A，再升级为揭示方案 B。
 
@@ -8,10 +8,12 @@
 
 **Tech Stack:** Godot 4.7.2 / GDScript / JSON / Python 标准库测试驱动。
 
-## 补充范围与待定事项（2026-10-21）
+## 已确认补充范围（2026-10-21）
 
 - 用户要求移除“搁浅的绞盘”（E09）及“浪中的吊架”（E12）：已单独退池，保留 retired 定义；不依赖本计划的藏品节点替换。
-- 用户质疑 5 个新节点整局一次过少。建议改为每层最多一次（`scope: layer`、`max_visits: 1`、`cooldown: 3`），与藏品唯一性分别控制；尚未确认，下面整局一次仍为原草案，不能当作最终定案。
+- 用户已确认 5 个新节点改为每层最多一次（`scope: layer`、`max_visits: 1`、`cooldown: 3`），与藏品唯一性分别控制。
+- 同步优化三层 Boss 藏品池：剔除纯恢复和弱补给，按永久成长、战斗和构筑价值选池；保持原有其他奖励。
+- 使用 gpt-6-luna / high 子代理并行开发，批次一通过后才修改揭示接口。
 
 ## 已确认的前置结论
 
@@ -34,26 +36,26 @@
 
 ## 批次一 · 静态方案 A
 
-- [ ] 先写 `tests/test_collectible_unique.gd`，覆盖：同一 grant_max 藏品第二次获取被拒；丢弃后再次获取仍被拒；`unique:"held"` 藏品丢弃后可再获取；同时持有两件不同 `"held"` 藏品被拒；无 `unique` 藏品可重复获取。运行确认失败。
-- [ ] `core/collectible_rules.acquire()` 在创建实例前加两级判定；`valid_definitions()` 校验 `unique` 取值只能是 `"run"`/`"held"`/缺省；`valid()` 补一条"`unique:"run"` 的藏品在 `items` 中不得出现两件以上"。
-- [ ] `core/relic_rewards.grant()` 抽取前过滤池中已持有的唯一藏品（`"run"` 查 history、`"held"` 查 held）；**池被过滤后为空时兜底**为给基础资源或贝币，不得静默失败也不得 `fail` 中断整条结算。
-- [ ] `content/data/relics.json` 为 18 件加 `unique` 字段；`valid_definitions` 不拒绝额外字段，确认内容校验仍 PASS。
-- [ ] `content/data/nodes.json` 移除 11 个旧藏品节点定义（`sealedLarder`/`powderWreck`/`kelpDryingRack`/`silentWayfinder`/`boneHunter`/`shellGraveyard`/`drownedMint`/`rescuePontoon`/`coralShrine`/`riggersCache`/`sealedChest`），加入 5 个新节点。保留旧节点为 `retired: true` 而非删除，便于回退。
-- [ ] 按 `outputs/新5节点配置草案.json` 落地 5 个节点；`relicCache` 采用**方案 A**：三个静态选项 `takeTablet`/`takeCoral`/`takeConch`（各给一件确定藏品，均为免费）+ `tradeForRandom`（1AP+废铁1+绳索1，6 件池随机）+ `leave`。
-- [ ] `content/data/node_pools.json` 5 个池各删 11 条 entry、加 5 条新 entry（`scope: run`、`max_visits: 1`、`cooldown: 3`）。**起始站按已定口径：`restCove` 2 / `relicCache` 3 / `tollGate` 4 / `luckyDrift` 5 / `deepCache` 5**；用户已确认**不要求浅潮见全 5 个节点**，因此不调整起始站，浅潮最多见到 3 个新节点为预期结果。
-- [ ] 运行 `python tools/check_docs.py` 与内容测试；更新 `tests/test_relic_rewards.gd` 中被新语义替换的叠层断言。
-- [ ] 更新 `docs/collectible-effects.md`、`docs/v03-configuration.md`、`docs/current-game-mechanics.md` 的节点清单与唯一性口径；同步 `outputs/节点事件清单-数值策划版.md` 与 `outputs/节点事件总表.csv`。
+- [x] 先写 `tests/test_collectible_unique.gd`，覆盖：同一 grant_max 藏品第二次获取被拒；丢弃后再次获取仍被拒；`unique:"held"` 藏品丢弃后可再获取；同时持有两件相同 `"held"` 藏品被拒，不同 ID 可共存；无 `unique` 藏品可重复获取。运行确认失败。
+- [x] `core/collectible_rules.acquire()` 在创建实例前加两级判定；`valid_definitions()` 校验 `unique` 取值只能是 `"run"`/`"held"`/缺省；`valid()` 补一条"`unique:"run"` 的藏品在 `items` 中不得出现两件以上"。
+- [x] `core/relic_rewards.grant()` 抽取前过滤池中已持有的唯一藏品（`"run"` 查 history、`"held"` 查 held）；**随机池被过滤后为空时兜底**为每份奖励给贝币 2；固定唯一藏品重复则明确拒绝，不得静默失败也不得 `fail` 中断整条结算。
+- [x] `content/data/relics.json` 为 18 件加 `unique` 字段；`valid_definitions` 不拒绝额外字段，确认内容校验仍 PASS。
+- [x] `content/data/nodes.json` 移除 11 个旧藏品节点定义（`sealedLarder`/`powderWreck`/`kelpDryingRack`/`silentWayfinder`/`boneHunter`/`shellGraveyard`/`drownedMint`/`rescuePontoon`/`coralShrine`/`riggersCache`/`sealedChest`），加入 5 个新节点。保留旧节点为 `retired: true` 而非删除，便于回退。
+- [x] 按 `outputs/新5节点配置草案.json` 落地 5 个节点；`relicCache` 采用**方案 A**：三个静态选项 `takeTablet`/`takeCoral`/`takeConch`（各给一件确定藏品，均为免费）+ `tradeForRandom`（1AP+废铁1+绳索1，6 件池随机）+ `leave`。
+- [x] `content/data/node_pools.json` 5 个池各删 11 条 entry、加 5 条新 entry（`scope: layer`、`max_visits: 1`、`cooldown: 3`）。**起始站按已定口径：`restCove` 2 / `relicCache` 3 / `tollGate` 4 / `luckyDrift` 5 / `deepCache` 5**；用户已确认**不要求浅潮见全 5 个节点**，因此不调整起始站，浅潮最多见到 3 个新节点为预期结果。
+- [x] 运行 `python tools/check_docs.py` 与内容测试；更新 `tests/test_relic_rewards.gd` 中被新语义替换的叠层断言。
+- [x] 更新 `docs/collectible-effects.md`、`docs/v03-configuration.md`、`docs/current-game-mechanics.md` 的节点清单与唯一性口径；同步 `outputs/节点事件清单-数值策划版.md` 与 `outputs/节点事件总表.csv`。
 
 ## 批次二 · 揭示方案 B
 
 > 必须在批次一验证通过后单独进行。两者叠加会让 `valid_state` 的问题难以定位。
 
-- [ ] 先写 `tests/test_relic_offer.gd`，覆盖：揭示后候选恰好 N 件且不重复、不含已持有的唯一藏品；读档后候选不重掷；选项 id 不与静态定义冲突；段索引不越界。运行确认失败。
-- [ ] `encounter_rules.options()` 加投影分支：当前段为选择段且 `encounter.offered` 非空时，由候选生成选项（id 前缀 `offered_`，效果为固定 `GiveRelic`），另附一个静态"不换"选项。
-- [ ] `encounter_rules.option()` 支持动态选项查找；揭示动作只抽一次并写入 `encounter.offered`，进入选择段时读已抽好的，绝不重掷。
-- [ ] `encounter_rules.valid_state()` 认 `offered`/`picked` 字段并校验候选数量与合法 id；**这是存档守门函数，改动必须连带跑存档往返测试**（同版本保存/恢复、数据完整性）。
-- [ ] 存档快照字段清单补 `encounter` 的新字段；`adapters/agent_session.gd` 确认 `offered` 可见而 `picked` 后的发放结果不重复下发。
-- [ ] `pages/flow_story.gd` 的 `event_option()` 渲染 `preview` 字段（当前完全不读，策划配的随机池玩家看不到）；同时把方案 A 的三个静态选项替换为揭示段。
+- [x] 先写 `tests/test_relic_offer.gd`，覆盖：揭示后候选恰好 N 件且不重复、不含已持有的唯一藏品；读档后候选不重掷；选项 id 不与静态定义冲突；段索引不越界。运行确认失败。
+- [x] `encounter_rules.options()` 加投影分支：当前段为选择段且 `encounter.offered` 非空时，由候选生成选项（id 前缀 `offered_`，效果为固定 `GiveRelic`），另附一个静态"不换"选项。
+- [x] `encounter_rules.option()` 支持动态选项查找；揭示动作只抽一次并写入 `encounter.offered`，进入选择段时读已抽好的，绝不重掷。
+- [x] `encounter_rules.valid_state()` 认 `offered`/`picked` 字段并校验候选数量与合法 id；**这是存档守门函数，改动必须连带跑存档往返测试**（同版本保存/恢复、数据完整性）。
+- [x] 存档快照字段清单补 `encounter` 的新字段；`adapters/agent_session.gd` 确认 `offered` 可见而 `picked` 后的发放结果不重复下发。
+- [x] `pages/flow_story.gd` 的 `event_option()` 渲染 `preview` 字段（当前完全不读，策划配的随机池玩家看不到）；同时把方案 A 的三个静态选项替换为揭示段。
 
 ## 替换用的 5 个节点
 
@@ -61,7 +63,7 @@
 
 ### `restCove` — 避潮湾
 
-`category` `service`　`kind` `environment`　起始站 **2**　访问上限 1　冷却 3
+`category` `service`　`kind` `environment`　起始站 **2**　每层访问上限 1　冷却 3
 
 > 一处被旧船骸围出的静水湾。没有敌人，也没有陷阱，只有一次把气力攒回来的机会。
 
@@ -76,7 +78,7 @@
 
 ### `relicCache` — 漂流遗物堆
 
-`category` `trade`　`kind` `environment`　起始站 **3**　访问上限 1　冷却 3
+`category` `trade`　`kind` `environment`　起始站 **3**　每层访问上限 1　冷却 3
 
 > 几件被冲上岸的遗物压在一起。你可以拆开一件完整的，也可以拿材料去换一件未知的。
 
@@ -93,7 +95,7 @@
 
 ### `tollGate` — 旧闸口
 
-`category` `service`　`kind` `environment`　起始站 **4**　访问上限 1　冷却 3
+`category` `service`　`kind` `environment`　起始站 **4**　每层访问上限 1　冷却 3
 
 > 锈死的闸门挡住了去路。想过去，总要留下点什么。
 
@@ -108,7 +110,7 @@
 
 ### `luckyDrift` — 潮汐赌局
 
-`category` `risk`　`kind` `environment`　起始站 **5**　访问上限 1　冷却 3
+`category` `risk`　`kind` `environment`　起始站 **5**　每层访问上限 1　冷却 3
 
 > 一处能看见回流的涡口。手伸进去总能摸到点什么——只是没人告诉你下一次还在不在。
 
@@ -161,7 +163,7 @@
 
 ### `deepCache` — 深处沉箱
 
-`category` `risk`　`kind` `environment`　起始站 **5**　访问上限 1　冷却 3
+`category` `risk`　`kind` `environment`　起始站 **5**　每层访问上限 1　冷却 3
 
 > 一只压得很深的箱子。开箱的动静会传出很远——但箱里的东西同样值得那个风险。
 
@@ -200,3 +202,13 @@ python tools/agent_client.py --play --seed 22 --trace evidence/collectible-uniqu
 ---
 
 *相关产出：`outputs/新5节点设计说明.md`、`outputs/新5节点配置草案.json`、`outputs/方案A_relicCache.json`、`outputs/节点事件清单-数值策划版.md`。*
+
+## 实施结果（2026-10-21）
+
+- 执行前保存提交 `4c30513`；现有隔离工作树保留，未推送。
+- 两批均已实施：新5类事件每层最多一次，起始站2/3/4/5/5，旧11类退役；静态A验证通过后升级为揭示B。免费揭示从刻碑/珊瑚/罗盘/螺壳过滤后无放回抽3件，不足3时全展示；付材料随机交换独立保留。
+- 保存增加 encounter 的 `offered/eligible_pool/offer_next_id/picked/picked_uid/offer_source`，冻结揭示池并绑定领奖实例；不写回node，查看与恢复不重抽或重发。
+- 三层Boss各增加1件精选池掉落，排除纯恢复型；其他奖励保留，稀有度标签仍为normal。
+- 完成独立规格与质量复核；52项相关规则/集成回归、82项揭示检查、121项GPU界面检查及7条当前Agent路线重生成/独立重放通过。额外自然抵达遗物堆的Agent揭示/领取前缀分别重放通过；真实触控和发行导出未运行。
+- 根outputs的策划清单/CSV已同步，原稿保留于 `outputs/archive-before-collectible-20261021/`；新增 `outputs/新5节点实施配置.json` 记录最终配置。原方案A草稿继续作为设计历史保留。
+- 当次证据见 `evidence/collectible-nodes-20261021/README.md`，历史日志中的失败仅用于诊断，不作为最终验收。

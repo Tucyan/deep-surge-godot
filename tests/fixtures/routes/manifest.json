@@ -6,9 +6,9 @@
       "expected": {
         "phase": "finished",
         "outcome": "dead",
-        "completed": 17.0
+        "completed": 15.0
       },
-      "steps": 222,
+      "steps": 199,
       "version": "godot-flow-v03-03"
     },
     {
@@ -27,10 +27,10 @@
       "path": "res://tests/fixtures/routes/hard-challenge.trace.json",
       "expected": {
         "phase": "finished",
-        "outcome": "dead",
-        "completed": 24.0
+        "outcome": "survived",
+        "completed": 25.0
       },
-      "steps": 321,
+      "steps": 373,
       "version": "godot-flow-v03-03"
     },
     {
@@ -50,9 +50,9 @@
       "expected": {
         "phase": "finished",
         "outcome": "dead",
-        "completed": 6
+        "completed": 7
       },
-      "steps": 78,
+      "steps": 86,
       "version": "godot-flow-v03-03"
     },
     {

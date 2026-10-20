@@ -53,3 +53,7 @@
 目录加载后由Campaign/Survival/Encounter/Environment/Shop各自校验所有新表及交叉引用，全部进入内容指纹。快照schema2、`godot-flow-v03-03`、`xorshift32-godot-v1`；旧版本/指纹不符明确拒绝、保留原文件，不做迁移。保存层进度、独立计数、费用来源、实例访问、事件随机分支、受控模板、环境剩余/刷新/雨触发标记和全部随机流；恢复不重抽或重复结算。新剧情档保留11航次配对校验，旧回廊只读例外不变。
 
 针对性入口：`tests/test_v03_campaign.gd`、`test_v03_survival.gd`、`test_v03_journey_flow.gd`、`test_v03_encounters.gd`、`test_v03_weather.gd`、`test_v03_weather_stage.gd`、`test_v03_projection.gd`。另有`test_environment.gd`、`test_difficulty.gd`、`test_recall_restore.gd`及当前Agent路线；它们的实际运行结果须查当次证据，列出入口不等于全部验收完成。
+
+## 藏品事件与Boss掉落
+
+原10个寻物节点和密封宝箱已退役，当前替换为 `restCove/relicCache/tollGate/luckyDrift/deepCache`，五个池均设置 `scope:layer`、`max_visits:1`、`cooldown:3`，起始层内航次2/3/4/5/5。Boss另配精选藏品池，其他奖励不变；明细与唯一性见[藏品与节点](relic-expedition.md)及[组合效果契约](collectible-effects.md)。

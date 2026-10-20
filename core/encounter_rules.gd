@@ -3,9 +3,11 @@ extends RefCounted
 const I = preload("res://core/inventory.gd")
 const R = preload("res://core/random_streams.gd")
 const RelicRewards = preload("res://core/relic_rewards.gd")
+const Collectibles = preload("res://core/collectible_rules.gd")
 const Origins = preload("res://core/origin_rules.gd")
 const Navigation = preload("res://core/navigation_rules.gd")
 const WEIGHTS := {"supply":25,"trade":10,"service":15,"risk":10,"battle":20,"camp":10,"shop":10}
+const RELIC_CACHE_POOL := ["tideTablet", "redCoral", "homeCompass", "glowConch"]
 
 static func key(node: Dictionary) -> String:
 	return str(node.id)+("/"+str(node.variant_id) if node.has("variant_id") else "")
@@ -100,6 +102,23 @@ static func stage(ctx) -> int:
 
 static func options(ctx) -> Array:
 	var node: Dictionary=ctx.state.node
+	if node.get("id","")=="relicCache":
+		var index: int=stage(ctx)
+		if index==0: return node.get("stages",[])[0].duplicate(true) if node.get("stages",[]).size()>0 else []
+		if index==1:
+			var runtime: Dictionary=ctx.state.get("encounter",{})
+			var result: Array=[]
+			if str(runtime.get("picked",""))=="":
+				for id in runtime.get("offered",[]):
+					var definition: Dictionary=ctx.catalog.entry("relics",str(id))
+					if definition.is_empty(): continue
+					result.append({"id":"offered_"+str(id),"name":"获得"+str(definition.name),"description":str(definition.description),"cost":0,"offered_relic":str(id)})
+			var leave: Dictionary={}
+			for option in node.get("stages",[])[1] if node.get("stages",[]).size()>1 else []:
+				if option.get("id","")=="leave": leave=option.duplicate(true); break
+			if not leave.is_empty(): result.append(leave)
+			return result
+		return []
 	if node.has("stages"):
 		var index: int=stage(ctx)
 		return node.stages[index].duplicate(true) if index>=0 and index<node.stages.size() else []
@@ -129,6 +148,10 @@ static func arguments(ctx, option: Dictionary) -> Array:
 	return result
 
 static func reason(ctx, option: Dictionary, args: Dictionary = {}) -> String:
+	if option.has("offered_relic"):
+		var runtime: Dictionary=ctx.state.get("encounter",{})
+		if ctx.state.node.get("id","")!="relicCache" or stage(ctx)!=1 or str(runtime.get("picked",""))!="" or str(option.offered_relic) not in runtime.get("offered",[]): return "这件遗物已不在当前选项中"
+		return ""
 	if option.has("special"): return "此特殊机制尚未开放"
 	if option.has("randomCardCost") or option.has("detachCell"): return "随机献祭尚未开放"
 	if ctx.state.voyage<int(option.get("min_voyage",1)): return "第%d站起开放" % int(option.min_voyage)
@@ -201,6 +224,8 @@ static func option(ctx, args: Dictionary) -> bool:
 	var blocked: String=reason(ctx,chosen,args)
 	if blocked!="": return ctx.fail(blocked)
 	if ctx.state.get("encounter",{}).get("visit_id","")!=ctx.state.node.get("visit_id",""): ctx.state.encounter={"visit_id":ctx.state.node.get("visit_id",""),"stage":0,"last_result":"","resolved":false}
+	if chosen.get("reveal_relics",false): return reveal_relics(ctx,chosen)
+	if chosen.has("offered_relic"): return take_offered_relic(ctx,chosen)
 	var s: Dictionary=ctx.state; var summary: Array=[]
 	s.ap-=int(chosen.get("cost",0))
 	for id in chosen.get("cardCosts",{}): I.consume(s,id,int(chosen.cardCosts[id]),"event")
@@ -257,6 +282,69 @@ static func option(ctx, args: Dictionary) -> bool:
 		s.encounter.resolved=true; ctx.result_story(text)
 	return true
 
+static func reveal_relics(ctx, chosen: Dictionary) -> bool:
+	var s: Dictionary=ctx.state
+	if s.node.get("id","")!="relicCache" or stage(ctx)!=0 or s.encounter.has("offered"): return ctx.fail("遗物选项已失效")
+	var available: Array=Collectibles.eligible_ids(ctx,RELIC_CACHE_POOL)
+	if available.is_empty(): return ctx.fail("当前没有可揭示的潮汐遗物")
+	var eligible_pool: Array=available.duplicate()
+	var offered: Array=[]
+	var count: int=mini(3,available.size())
+	if available.size()<=3:
+		offered=available.duplicate()
+	else:
+		while offered.size()<count:
+			var id: String=str(R.pick(s.rng,"rewards",available))
+			offered.append(id)
+			available.erase(id)
+	s.encounter.offered=offered
+	s.encounter.eligible_pool=eligible_pool
+	s.encounter.offer_next_id=int(s.collectibles.get("next_id",0))
+	s.encounter.picked=""
+	s.encounter.picked_uid=""
+	s.encounter.offer_source="free_relic_reveal"
+	s.encounter.stage=1
+	var summary: Array=[]
+	for id in offered: summary.append(str(ctx.catalog.entry("relics",id).name))
+	var text: String="揭示潮汐遗物："+"、".join(summary)+"。选择一件带走，也可以离开。"
+	s.encounter.last_result=text
+	ctx.log_text("选择："+str(chosen.get("name","揭示遗物")))
+	ctx.log_text(text)
+	return true
+
+static func take_offered_relic(ctx, chosen: Dictionary) -> bool:
+	var s: Dictionary=ctx.state
+	var id: String=str(chosen.get("offered_relic",""))
+	if s.node.get("id","")!="relicCache" or stage(ctx)!=1 or id not in s.encounter.get("offered",[]) or str(s.encounter.get("picked",""))!="": return ctx.fail("这件遗物已不在当前选项中")
+	var summary: Array=[]
+	if not RelicRewards.grant(ctx,[{"id":id}],summary): return false
+	s.encounter.picked=id
+	var acquired_items: Array=s.collectibles.get("items",[])
+	if acquired_items.is_empty(): return ctx.fail("潮汐遗物发放记录无效")
+	s.encounter.picked_uid=str(acquired_items[-1].get("uid",""))
+	s.encounter.resolved=true
+	var text: String="获得潮汐遗物："+str(ctx.catalog.entry("relics",id).name)+"。"
+	s.encounter.last_result=text
+	ctx.result_story(text)
+	return true
+
+static func relic_cache_eligible_ids(ctx, state: Dictionary) -> Array:
+	var result: Array=[]
+	var data: Dictionary=state.get("collectibles",{})
+	for id in RELIC_CACHE_POOL:
+		var definition: Dictionary=ctx.catalog.entry("relics",id)
+		if not definition.get("enabled",false): continue
+		var policy: String=str(definition.get("unique",""))
+		var eligible: bool=true
+		if policy=="run":
+			for acquired in data.get("history",[]):
+				if acquired is Dictionary and acquired.get("id","")==id: eligible=false; break
+		elif policy=="held":
+			for item in data.get("items",[]):
+				if item is Dictionary and item.get("id","")==id and item.get("held",false): eligible=false; break
+		if eligible: result.append(id)
+	return result
+
 static func action_label(ctx, args: Dictionary) -> String:
 	if args.has("cell"):
 		var cell: Dictionary=ctx.Rules.find_cell(ctx.state,str(args.cell))
@@ -266,9 +354,17 @@ static func action_label(ctx, args: Dictionary) -> String:
 		return "%s → %s×2" % [ctx.catalog.entry("cards",card.get("id","")).get("name",""),ctx.catalog.entry("cards",args.target).name]
 	return ""
 
-static func reward_preview(option: Dictionary) -> Dictionary:
+static func reward_preview(option: Dictionary, ctx = null) -> Dictionary:
 	# Only fixed, explicitly offered rewards; never evaluate a random outcome.
 	var result := {"cards":{},"attributes":{},"ap":0,"random_resources":0,"relics":[]}
+	if option.get("reveal_relics",false) and ctx!=null:
+		for id in Collectibles.eligible_ids(ctx,RELIC_CACHE_POOL):
+			var definition: Dictionary=ctx.catalog.entry("relics",id)
+			result.relics.append({"id":id,"name":str(definition.name),"description":str(definition.description)})
+	elif option.has("offered_relic") and ctx!=null:
+		var id: String=str(option.offered_relic)
+		var definition: Dictionary=ctx.catalog.entry("relics",id)
+		if not definition.is_empty(): result.relics.append({"id":id,"name":str(definition.name),"description":str(definition.description)})
 	for effect in option.get("effects",[]):
 		match effect.type:
 			"GiveRelic", "GiveRandomRelic": result.relics.append(RelicRewards.effect_entry(effect))
@@ -313,7 +409,7 @@ static func project(ctx, view: Dictionary) -> void:
 	view.event_options=[]
 	for item in options(ctx):
 		if item.get("conditions",{}).get("target","")=="damaged_cell" and targets(ctx,item).is_empty(): continue
-		var option: Dictionary=public_option(item); option.actions=[]; option.preview=reward_preview(item)
+		var option: Dictionary=public_option(item); option.actions=[]; option.preview=reward_preview(item,ctx)
 		for args in arguments(ctx,item): option.actions.append({"args":args,"label":action_label(ctx,args),"reason":reason(ctx,item,args)})
 		view.event_options.append(option)
 
@@ -367,6 +463,53 @@ static func valid_state(ctx, s: Dictionary) -> bool:
 	if s.node.has("stages"):
 		if runtime.stage>=s.node.stages.size(): return false
 	elif runtime.stage!=0: return false
+	if not relic_cache_offer_valid(ctx,s,runtime): return false
+	return true
+
+static func relic_cache_offer_valid(ctx, s: Dictionary, runtime: Dictionary) -> bool:
+	var has_offered: bool=runtime.has("offered")
+	var has_eligible_pool: bool=runtime.has("eligible_pool")
+	var has_offer_next_id: bool=runtime.has("offer_next_id")
+	var has_picked: bool=runtime.has("picked")
+	var has_picked_uid: bool=runtime.has("picked_uid")
+	var has_source: bool=runtime.has("offer_source")
+	if not has_offered and not has_eligible_pool and not has_offer_next_id and not has_picked and not has_picked_uid and not has_source:
+		return s.node.get("id","")!="relicCache" or int(runtime.get("stage",0))==0
+	if s.node.get("id","")!="relicCache" or not has_offered or not has_eligible_pool or not has_offer_next_id or not has_picked or not has_picked_uid or not has_source: return false
+	var offered: Variant=runtime.get("offered")
+	var eligible_pool: Variant=runtime.get("eligible_pool")
+	var offer_next_id: Variant=runtime.get("offer_next_id")
+	var picked: Variant=runtime.get("picked")
+	var picked_uid: Variant=runtime.get("picked_uid")
+	if not offered is Array or offered.is_empty() or offered.size()>3 or not eligible_pool is Array or eligible_pool.is_empty() or eligible_pool.size()>RELIC_CACHE_POOL.size() or not integral(offer_next_id,1) or not picked is String or not picked_uid is String or runtime.get("offer_source")!="free_relic_reveal" or int(runtime.get("stage",-1))!=1: return false
+	var eligible_seen: Array=[]
+	for id in eligible_pool:
+		if not id is String or id not in RELIC_CACHE_POOL or id in eligible_seen or not ctx.catalog.entry("relics",id).get("enabled",false): return false
+		eligible_seen.append(id)
+	if not picked.is_empty():
+		if picked not in offered or picked_uid!="collectible-%d" % int(offer_next_id) or int(s.get("collectibles",{}).get("next_id",0))<=int(offer_next_id) or not runtime.get("resolved",false) or s.story_step!="result" or s.phase not in ["story","aftermath","navigation","preparation"]: return false
+		var collectibles: Dictionary=s.get("collectibles",{})
+		var history: Array=collectibles.get("history",[])
+		var items: Array=collectibles.get("items",[])
+		if history.is_empty() or items.is_empty() or history.size()!=items.size(): return false
+		var acquired_index: int=-1
+		for index in range(history.size()):
+			var acquired: Variant=history[index]
+			var item: Variant=items[index]
+			if acquired is Dictionary and item is Dictionary and acquired.get("uid","")==picked_uid and acquired.get("id","")==picked and item.get("uid","")==picked_uid and item.get("id","")==picked:
+				acquired_index=index; break
+		if acquired_index<0: return false
+	elif not picked_uid.is_empty(): return false
+	elif runtime.get("resolved",false):
+		if s.story_step!="result" or s.phase not in ["story","aftermath","navigation","preparation"] or int(s.get("collectibles",{}).get("next_id",0))<int(offer_next_id): return false
+	else:
+		if s.phase!="story" or s.story_step!="choice" or int(s.get("collectibles",{}).get("next_id",0))!=int(offer_next_id): return false
+		if eligible_pool!=relic_cache_eligible_ids(ctx,s): return false
+	if offered.size()!=mini(3,eligible_pool.size()): return false
+	var seen: Array=[]
+	for id in offered:
+		if not id is String or id in seen or id not in eligible_pool: return false
+		seen.append(id)
 	return true
 
 static func leave(ctx) -> bool:
