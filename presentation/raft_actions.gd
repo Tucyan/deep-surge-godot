@@ -70,8 +70,8 @@ func expansions() -> Array:
 	if not view.get("can_base",false) or view.get("cells",[]).is_empty(): return []
 	if view.cells.any(func(c):return c.status=="intact" and c.equipment.is_empty()): return []
 	var result: Array=[]
-	var side: int=4 if int(view.profile.purchases.get("raft",0))>0 else 3
-	for point in Rules.Layout.positions(side):
+	var width: int=4 if int(view.profile.purchases.get("raft",0))>0 else 3
+	for point in Rules.Layout.positions(width,4):
 		var x: int=point.x; var y: int=point.y
 		if Rules.Layout.is_root(x,y): continue
 		if view.cells.any(func(c):return c.x==x and c.y==y and c.status!="detached"): continue

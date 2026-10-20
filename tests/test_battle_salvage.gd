@@ -59,9 +59,11 @@ func _init() -> void:
 	tiers.state.cells[0].equipment.level=2
 	tiers.state.cells[1].equipment=tiers.state.cells[0].equipment.duplicate(true)
 	tiers.state.cells[1].equipment.level=3
-	check(tiers.dispatch("salvage") and tiers.state.hand.size()==6,"level 2 and 3 nets yield base plus five independent resource cards for one AP")
-	check(int(tiers.state.stats.counters.get("produced",0))==5,"manual net output recorded in production statistics")
+	check(tiers.dispatch("salvage") and tiers.state.hand.size()==4,"level 2 and 3 nets cap battle net bonus at three cards")
+	check(int(tiers.state.stats.counters.get("produced",0))==3,"capped manual net output recorded in production statistics")
 	check(tiers.state.hand.all(func(c):return c.id in I.RESOURCES and not c.temporary),"all manually caught resources are permanent")
+	check(tiers.dispatch("salvage") and tiers.state.hand.size()==5,"same-turn salvage grants base card without repeating net bonus")
+	check(tiers.dispatch("battle_end") and tiers.dispatch("salvage") and tiers.state.hand.size()==9,"net bonus becomes available again on next battle turn")
 	var timeline=load("res://core/game_session.gd").new(catalog)
 	check(timeline.restore(JSON.parse_string(JSON.stringify(tiers.snapshot()))),"restore after manual salvage")
 	check(tiers.dispatch("salvage") and timeline.dispatch("salvage") and JSON.parse_string(JSON.stringify(tiers.snapshot()))==JSON.parse_string(JSON.stringify(timeline.snapshot())),"manual salvage restores RNG deterministically")

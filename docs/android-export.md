@@ -1,5 +1,9 @@
 # Android APK 导出
 
+## v0.3.0-rc.1 候选包
+
+本次候选包使用 Godot 4.7.2 release 模板，版本名 `0.3.0-rc.1`、versionCode `3`，包名 `com.tucyan.deepsurge`。导出预设输出 `builds/android/深潮-v0.3.0-rc.1.apk`，Windows 对应 `builds/windows/DeepSurge-v0.3.0-rc.1.exe`。规则回归、文档检查和桌面无头检查通过；未执行 Android 真机安装及触摸验收。
+
 ## Android 中文标点字体
 
 Android 界面通过 `Widgets.ui_font()` 使用包内 `assets/fonts/NotoSansSC-VF.ttf`，不再按手机系统字体名称选择中文字库；覆盖共享 UI、教程提示、独立剧情、序章与航行场景文字，保留原中文句号及中英混排文本。桌面维持原系统字体选择。字库采用 Noto Sans SC 可变字体，完整保留字形以覆盖动态名称，来源、版本和 SHA256 登记为 `font.ui.cjk`，授权随包包含 `assets/fonts/OFL.txt`。无系统字体回退的字形覆盖回归见 `tests/test_portable_font.gd`；APK 导出与字体入包检查不能替代手机实机验收。当前字体修复测试包为 `builds/android/深潮-v0.2-font-fix-debug.apk`；本次范围及限制见[Android 字体修复验证](../evidence/android-font-verification.md)。

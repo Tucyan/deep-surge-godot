@@ -118,8 +118,8 @@ static func base_candidates(ctx) -> Array:
 				for target in s.cells: add(items,"boost_device",{"cell":target.id,"buff_uid":boost.uid})
 	var expansion: Dictionary=ctx.Rules.expansion_cost(s,ctx.catalog)
 	if s.ap>=int(expansion.ap) and ctx.I.count(s,"wood")>=int(expansion.wood):
-		var side: int=4 if int(ctx.profile.purchases.get("raft",0))>0 else 3
-		for point in ctx.Rules.Layout.positions(side):
+		var width: int=4 if int(ctx.profile.purchases.get("raft",0))>0 else 3
+		for point in ctx.Rules.Layout.positions(width,4):
 			if not ctx.Rules.Layout.is_root(point.x,point.y): add(items,"expand",{"x":point.x,"y":point.y})
 	if s.ap>0:
 		add(items,"salvage")

@@ -196,16 +196,23 @@ static func salvage(ctx) -> bool:
 	ctx.give(preload("res://core/tutorial_rules.gd").fixed_resource(s) if s.mode=="tutorial" else R.pick(s.rng,"rewards",I.RESOURCES),1,false,"salvage")
 	var total := 1
 	var amounts: Array = ctx.catalog.entry("equipment","fishingNet").salvageAmounts
-	for cell in nets:
-		var level: int = clampi(int(cell.equipment.level)-1,0,amounts.size()-1)
-		var amount: int = int(amounts[level])+int(cell.equipment.get("production_bonus",0))
-		for index in range(amount):
-			var item: String = preload("res://core/tutorial_rules.gd").fixed_resource(s) if s.mode=="tutorial" else R.pick(s.rng,"rewards",I.RESOURCES)
-			ctx.give(item,1,false,"salvage","fishingNet",cell.id)
-			Stats.device_used(s,"fishingNet",cell.id,item,1)
-			Stats.increment(s,"produced",1)
-		cell.equipment.production_bonus=0
-		total += amount
+	var grant_net_bonus: bool = not in_battle or int(s.battle.get("salvage_net_bonus_turn",0)) != int(s.battle.turn)
+	if grant_net_bonus:
+		var bonus_limit: int = 2147483647 if not in_battle else maxi(0,3+Query.modifier(s,ctx.catalog,"battle.salvage_bonus_limit"))
+		var granted_bonus := 0
+		for cell in nets:
+			var level: int = clampi(int(cell.equipment.level)-1,0,amounts.size()-1)
+			var amount: int = int(amounts[level])+int(cell.equipment.get("production_bonus",0))
+			if in_battle: amount=mini(amount,maxi(0,bonus_limit-granted_bonus))
+			for index in range(amount):
+				var item: String = preload("res://core/tutorial_rules.gd").fixed_resource(s) if s.mode=="tutorial" else R.pick(s.rng,"rewards",I.RESOURCES)
+				ctx.give(item,1,false,"salvage","fishingNet",cell.id)
+				Stats.device_used(s,"fishingNet",cell.id,item,1)
+				Stats.increment(s,"produced",1)
+			total += amount
+			granted_bonus += amount
+			cell.equipment.production_bonus=0
+		if in_battle and not nets.is_empty(): s.battle.salvage_net_bonus_turn=int(s.battle.turn)
 	if origin_bonus:
 		s.origin_state.salvage_voyage=int(s.voyage)
 		ctx.give(R.pick(s.rng,"rewards",I.RESOURCES),1,false,"origin_salvage")
@@ -270,8 +277,9 @@ static func raft_action(ctx, command: String, args: Dictionary) -> bool:
 		var x: int = int(args.get("x",-1))
 		var y: int = int(args.get("y",-1))
 		if Layout.is_root(x,y): return ctx.fail("这是装饰筏根，不能扩建或安装设备")
-		var side: int = 4 if int(ctx.profile.purchases.get("raft",0)) > 0 else 3
-		if x < 0 or y < 0 or x >= side or y >= side: return ctx.fail("超出扩建范围")
+		var width: int = 4 if int(ctx.profile.purchases.get("raft",0)) > 0 else 3
+		var height: int = 4
+		if x < 0 or y < 0 or x >= width or y >= height: return ctx.fail("超出扩建范围")
 		var adjacent := false
 		var old := {}
 		for c in ctx.state.cells:
@@ -635,8 +643,9 @@ static func valid_save(ctx, data: Dictionary) -> bool:
 	for cell in s.cells:
 		if not cell is Dictionary or not cell.has("id") or cell.get("status") not in ["intact","damaged","detached"] or not cell.get("equipment") is Dictionary: return false
 		if not integer(cell.get("x")) or not integer(cell.get("y")) or not integer(cell.get("damaged_at")): return false
-		var side: int=4 if int(p.purchases.get("raft",0))>0 else 3
-		if cell.x<0 or cell.y<0 or cell.x>=side or cell.y>=side or Layout.is_root(int(cell.x),int(cell.y)): return false
+		var width: int=4 if int(p.purchases.get("raft",0))>0 else 3
+		var height: int=4
+		if cell.x<0 or cell.y<0 or cell.x>=width or cell.y>=height or Layout.is_root(int(cell.x),int(cell.y)): return false
 		if not cell.equipment.is_empty():
 			if not cell.equipment.has("level") or not cell.equipment.has("fuel") or not cell.equipment.has("progress") or ctx.catalog.entry("equipment",cell.equipment.get("id","")).is_empty(): return false
 			if not integer(cell.equipment.level) or cell.equipment.level<1 or cell.equipment.level>3 or not integer(cell.equipment.fuel) or cell.equipment.fuel<0 or cell.equipment.fuel>999 or not integer(cell.equipment.progress) or cell.equipment.progress<0 or cell.equipment.progress>999: return false

@@ -105,6 +105,7 @@ var _departure_result_pending:=false
 var _pending_failure_result:=""
 var acquisition_overlay: Control
 var _ui_command_pending:=false
+var _pending_battle_turn_notice:=0
 var _receipt_cursor: Dictionary={}
 var _pending_receipt: Dictionary={"uids":[],"coins":0}
 # Temporary legacy gallery: read archived records; new narrative replay is separate.
@@ -434,6 +435,10 @@ func request_command(command: String, args: Dictionary = {}) -> void:
 		await preload("res://application/acquisition_presenter.gd").new().present(self,batches)
 	_receipt_cursor={}; _pending_receipt={"uids":[],"coins":0}
 	_ui_command_pending=false
+	if _pending_battle_turn_notice>0:
+		var turn:=_pending_battle_turn_notice
+		_pending_battle_turn_notice=0
+		_show_battle_turn_notice(turn)
 	_maybe_story()
 
 func _request_command_with_transition(command: String, args: Dictionary = {}) -> void:
@@ -503,6 +508,7 @@ func handle_command(command: String, args: Dictionary = {}) -> void:
 	reset_hand_visual = command == "new"
 	var old_panel: String = session.panel
 	var old_phase: String = session.phase()
+	var old_battle_turn: int = int(session.state.get("battle",{}).get("turn",0))
 	var departure_before: Dictionary = session.state.get("player",{}).duplicate(true) if command=="voyage" and old_phase=="navigation" else {}
 	# Compared after dispatch: the partial path may only be taken when these regions
 	# really stayed the same.
@@ -526,6 +532,10 @@ func handle_command(command: String, args: Dictionary = {}) -> void:
 	if not succeeded:
 		message = session.error
 	else:
+		if command=="battle_end" and old_phase=="battle" and session.phase()=="battle" \
+			and int(session.state.get("battle",{}).get("turn",0))>old_battle_turn:
+			if _ui_command_pending: _pending_battle_turn_notice=int(session.state.battle.turn)
+			else: _show_battle_turn_notice.call_deferred(int(session.state.battle.turn))
 		var failure: String=""
 		if session.phase()=="finished" and str(session.state.get("result","")) in ["dead","mad"]:
 			failure=str(session.state.result)
@@ -603,6 +613,13 @@ func _show_departure_notice(before: Dictionary, after: Dictionary, failure: Stri
 		_departure_result_pending=false
 		_pending_failure_result=""
 		render.call_deferred()
+
+func _show_battle_turn_notice(turn: int) -> void:
+	var old:=get_node_or_null("BattleTurnNotice")
+	if is_instance_valid(old):
+		remove_child(old); old.queue_free()
+	var notice:=preload("res://presentation/battle_turn_notice.gd").new()
+	add_child(notice); notice.configure(turn)
 
 func update_after_departure() -> bool:
 	if local_panel!="" or session.panel!="": return false
