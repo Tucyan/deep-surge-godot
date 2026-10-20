@@ -37,7 +37,7 @@ func run() -> void:
 	check(page.find_children("CollectiblePlaceholder","TextureRect",true,false).size()>=20,"格子和详情应用图片")
 	if DisplayServer.get_name()!="headless":
 		await RenderingServer.frame_post_draw
-		root.get_texture().get_image().save_png("res://evidence/relic-expedition-warehouse.png")
+		check(root.get_texture().get_image().save_png("res://evidence/survival-departure-20261021/art-warehouse.png") == OK,"save current survival UI evidence")
 	check(s.snapshot()==before,"仓库浏览不改规则或随机")
 	page.free()
 	var mobile_view: Dictionary=s.view(); mobile_view.mobile=true
@@ -50,24 +50,26 @@ func run() -> void:
 	check(Rect2(Vector2.ZERO,Vector2(root.size)).grow(1).encloses(page.grid_scroll.get_global_rect()),"手机网格视口不越界")
 	if DisplayServer.get_name()!="headless":
 		await RenderingServer.frame_post_draw
-		root.get_texture().get_image().save_png("res://evidence/relic-expedition-mobile.png")
+		check(root.get_texture().get_image().save_png("res://evidence/survival-departure-20261021/art-mobile.png") == OK,"save current survival UI evidence")
 	page.free()
-	for node_id in preload("res://tests/test_relic_expedition.gd").NODES:
-		s.state.node=catalog.entry("nodes",node_id); s.state.node.visit_id="art-fixture"
-		s.Survival.lock_costs(s)
-		s.state.phase="story"; s.state.story_step="choice"; s.Encounter.arrived(s)
-		var view: Dictionary=s.view(); view.mobile=true
-		var event=load("res://pages/flow_story.gd").new(); root.add_child(event)
-		event.size=Vector2(1488,560); event.position=Vector2(56,124); event.theme=load("res://presentation/widgets.gd").theme()
-		event.setup(view,catalog,assets)
-		await process_frame; await process_frame
-		check(event.art_view.texture==assets.texture(s.state.node.art),"新节点使用主题藏品图片："+node_id)
-		check(event.art_view.stretch_mode==TextureRect.STRETCH_KEEP_ASPECT_CENTERED,"透明物件完整显示不裁切："+node_id)
-		check(event.entries.size()==3,"两个奖励选项和退出："+node_id)
-		if node_id=="riggersCache" and DisplayServer.get_name()!="headless":
-			await RenderingServer.frame_post_draw
-			root.get_texture().get_image().save_png("res://evidence/relic-expedition-node.png")
-		event.free()
+	# The current event contract keeps desktop art intact and covers the mobile panel.
+	for mobile in [false,true]:
+		for node_id in preload("res://tests/test_relic_expedition.gd").NODES:
+			s.state.node=catalog.entry("nodes",node_id); s.state.node.visit_id="art-fixture"
+			s.state.phase="story"; s.state.story_step="choice"; s.Encounter.arrived(s)
+			var view: Dictionary=s.view(); view.mobile=mobile
+			var event=load("res://pages/flow_story.gd").new(); root.add_child(event)
+			event.size=Vector2(1488,560); event.position=Vector2(56,124); event.theme=load("res://presentation/widgets.gd").theme()
+			event.setup(view,catalog,assets)
+			await process_frame; await process_frame
+			check(event.art_view.texture==assets.texture(s.state.node.art),"新节点使用主题藏品图片："+node_id)
+			var expected_stretch: int=TextureRect.STRETCH_KEEP_ASPECT_COVERED if mobile else TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			check(event.art_view.stretch_mode==expected_stretch,("手机合并面板铺满底图：" if mobile else "桌面立绘完整显示不裁切：")+node_id)
+			check(event.entries.size()==3,"两个奖励选项和退出："+node_id)
+			if not mobile and node_id=="riggersCache" and DisplayServer.get_name()!="headless":
+				await RenderingServer.frame_post_draw
+				check(root.get_texture().get_image().save_png("res://evidence/survival-departure-20261021/art-node.png") == OK,"save current survival UI evidence")
+			event.free()
 	s.panel="encyclopedia"
 	var encyclopedia_view: Dictionary=s.view(); encyclopedia_view.ui_state={"category":"relics","list_page":3,"selected_id":"sailorsKnot","encyclopedia_tab":"story"}
 	page=load("res://pages/paged_reference.gd").new(); root.add_child(page)
@@ -78,6 +80,6 @@ func run() -> void:
 	check(page.find_child("DetailImage",true,false).texture==assets.texture("relic.sailorsKnot"),"图鉴使用同一藏品原图")
 	if DisplayServer.get_name()!="headless":
 		await RenderingServer.frame_post_draw
-		root.get_texture().get_image().save_png("res://evidence/relic-expedition-encyclopedia.png")
+		check(root.get_texture().get_image().save_png("res://evidence/survival-departure-20261021/art-encyclopedia.png") == OK,"save current survival UI evidence")
 	page.free()
 	print("RELIC ART: %s" % ["PASS" if failures==0 else "FAIL"]); quit(failures)

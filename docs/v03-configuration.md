@@ -1,5 +1,5 @@
 # 三层航程、配置与生存契约
-<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v03-02; reviewed: 2026-10-20 -->
+<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v03-03; reviewed: 2026-10-21 -->
 
 本页依据当前加载的JSON和规则模块。代码已接入；发布路线、图形、触摸及导出分别按[验证记录](../evidence/v03-development-verification.md)核对，参数仍需试玩，不把范围定稿当作验收证据。
 
@@ -17,13 +17,13 @@
 
 20/30/40及敌人增量是开发试测值，SAN本轮不提升。愚者只减移动SAN5；灯/遗物效果仍按各自时机执行。挑战当前层Boss直接采用`difficulty_stage_profiles.boss_target`：简单Ⅰ/Ⅱ/Ⅲ为10/1、22/2、30/3，困难为12/1、28/3、38/4，噩梦为14/2、34/3、46/5（HP/直接伤害）。目标值优先于泛用Boss强化与层增量，仅匹配当前层`boss_node.monster`的Boss；其他敌人、剧情Boss与教程保留原公式。血月等运行修正随后计算；此矩阵为首轮试测值，并非最终平衡。
 
-[Campaign](../core/campaign_rules.gd)维护`state.journey={profile_id,layer_index,layer_voyage,cleared}`。全局voyage单调增长，层内航次独立；cleared记录依序击败的Boss。Ⅰ/ⅡBoss获胜后，仍先老化、整理容量、生存结算，死亡不跨层。存活后全局+1、层索引+1、层内归1，保留筏格、设备、燃料、进度、牌、成长、遗物、环境及随机状态；新航次正常执行一次环境、AP设值、生产、涌泉和候选生成，不额外恢复。
+[Campaign](../core/campaign_rules.gd)维护`state.journey={profile_id,layer_index,layer_voyage,cleared}`。全局voyage单调增长，层内航次独立；cleared记录依序击败的Boss。Ⅰ/ⅡBoss获胜后，仍先老化、整理容量；本航次食水与饥渴伤害已在出发时结算，轮末不重复收费，死亡不跨层。存活后全局+1、层索引+1、层内归1，保留筏格、设备、燃料、进度、牌、成长、遗物、环境及随机状态；新航次正常执行一次环境、AP设值、生产、涌泉和候选生成，不额外恢复。
 
-ⅢBoss获胜且生存结算通过才`survived`；Boss离开/撤退不能跳层，结果确认及当次生存结算后`withdrawn`。Ⅰ/Ⅱ不提前生成整局报告、积分或解锁；整局结束仍按全局completed发点，失败也按真实已完成数结算一次。教程无Boss，剧情不扩为25航次。
+ⅢBoss获胜、完成轮末整理且存活才`survived`；Boss离开/撤退不能跳层，结果确认及当次轮末整理后`withdrawn`。Ⅰ/Ⅱ不提前生成整局报告、积分或解锁；整局结束仍按全局completed发点，失败也按真实已完成数结算一次。教程无Boss，剧情不扩为25航次。
 
 ## 生存费用与计数
 
-[balance](../content/data/balance.json)集中定义survival/combat/growth/economy。生存基础食水30、SAN15，各层delta独立；仅挑战模式按当前难度/层档`survival_multipliers`逐项计算`roundi((基础+层delta)*倍率)`一次；简单1.0、困难1.1、噩梦1.2，因此三层食水为20/30/40、22/33/44、24/36/48，可按层独立调整。SAN不加难度费用。随后加天气、减避浪并限制最低0。出发把当前层、难度、当时生效天气、avoidWave形成的逐项食水费用锁进flags，并保存来源供恢复核对；恢复使用同一个纯计算函数和锁定来源，不读取当前天气。顺流各−5、避浪各−5、暴雨饱食+15；本航次后得天气/避浪留给以后。持有遗物的减耗在实际轮末重新查询，故收尾丢弃会影响本轮。
+[balance](../content/data/balance.json)集中定义survival/combat/growth/economy。生存基础食水30、SAN15，各层delta独立；仅挑战模式按当前难度/层档`survival_multipliers`逐项计算`roundi((基础+层delta)*倍率)`一次；简单1.0、困难1.1、噩梦1.2，因此三层食水为20/30/40、22/33/44、24/36/48，可按层独立调整。SAN不加难度费用。随后加天气、减避浪并限制最低0。确认航行时按当前层、难度、当时生效天气、avoidWave计算逐项食水费用，并用同一个纯计算函数立即扣除；费用不再锁进flags，也没有跨航次的待结算来源，恢复时不会重复结算本次出发。顺流各−5、避浪各−5、暴雨饱食+15；`avoidWave` 由本次出发消费，节点新获得的标记留给以后。持有遗物的减耗在确认航行时查询，故须在出发前持有才对本航次生效。
 
 [Survival](../core/survival_rules.gd)共用costs/quote/settle。当前`progressive_modes:["challenge"]`：挑战扣费后该项<=0（含恰好归零）时分别累计饥饿/缺水次数，伤害按1、2、3…，默认独立上限5，配置<=0无上限。上限只截断伤害，不截断计数；恢复时本次不触发但不清计数。次数跨层保存，新局归零。剧情和教程显式保留每项1伤、合计最多2，不增长挑战计数。
 
@@ -50,6 +50,6 @@
 
 ## 保存、内容版本与入口
 
-目录加载后由Campaign/Survival/Encounter/Environment/Shop各自校验所有新表及交叉引用，全部进入内容指纹。快照schema2、`godot-flow-v03-02`、`xorshift32-godot-v1`；旧版本/指纹不符明确拒绝、保留原文件，不做迁移。保存层进度、独立计数、费用来源、实例访问、事件随机分支、受控模板、环境剩余/刷新/雨触发标记和全部随机流；恢复不重抽或重复结算。新剧情档保留11航次配对校验，旧回廊只读例外不变。
+目录加载后由Campaign/Survival/Encounter/Environment/Shop各自校验所有新表及交叉引用，全部进入内容指纹。快照schema2、`godot-flow-v03-03`、`xorshift32-godot-v1`；旧版本/指纹不符明确拒绝、保留原文件，不做迁移。保存层进度、独立计数、费用来源、实例访问、事件随机分支、受控模板、环境剩余/刷新/雨触发标记和全部随机流；恢复不重抽或重复结算。新剧情档保留11航次配对校验，旧回廊只读例外不变。
 
 针对性入口：`tests/test_v03_campaign.gd`、`test_v03_survival.gd`、`test_v03_journey_flow.gd`、`test_v03_encounters.gd`、`test_v03_weather.gd`、`test_v03_weather_stage.gd`、`test_v03_projection.gd`。另有`test_environment.gd`、`test_difficulty.gd`、`test_recall_restore.gd`及当前Agent路线；它们的实际运行结果须查当次证据，列出入口不等于全部验收完成。

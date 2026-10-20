@@ -22,30 +22,50 @@ func install(s,id: String,index: int,level: int=1) -> bool:
 func fixture(id: String,effects: Array) -> void:
 	catalog._tables.relics[id]={"id":id,"name":id,"description":"test","price":0,"enabled":true,"effects":effects}
 func test_survival() -> void:
+	# Held modifiers are priced into the departure quote and charged by that same
+	# departure, so acquiring before departure is what reduces the real cost.
 	var s=fresh(); s.state.player.hunger=100; s.state.player.hydration=100
-	check(s.dispatch("voyage",{"id":s.state.candidates[0].visit_id}),"depart before acquisition")
 	acquire(s,"test-food"); acquire(s,"test-water")
-	check(s.state.flags.voyage_survival_cost==30,"held discounts do not change locked base")
+	var held: Dictionary=s.Survival.quote(s).costs
+	check(held.hunger==25 and held.hydration==25,"held discounts reduce the departure quote")
+	check(s.dispatch("voyage",{"id":s.state.candidates[0].visit_id}),"depart with discounts")
+	check(s.state.player.hunger==75 and s.state.player.hydration==75,"departure charges the discounted costs")
+	check(str(s.state.logs).contains("食物25、饮水25"),"departure log reports the actual costs")
+	# Round end no longer charges survival; it only ages the raft and cleans up.
 	s.state.phase="aftermath"; s=roundtrip(s)
-	check(s.dispatch("end_voyage"),"settle after acquisition")
-	check(s.state.player.hunger==75 and s.state.player.hydration==75,"acquired after departure applies at actual settlement")
-	check(str(s.state.logs).contains("食物扣25、饮水扣25"),"settlement log reports actual costs")
+	check(s.dispatch("end_voyage"),"end voyage after a paid departure")
+	check(s.state.player.hunger==75 and s.state.player.hydration==75,"round end never charges survival")
+	# Frozen reductions from avoidWave and a favourable current stack with the relic.
 	s=fresh(); s.state.player.hunger=100; s.state.player.hydration=100
 	acquire(s,"test-food"); s.state.flags.avoidWave=true; s.EnvironmentRules.add(s,"current",true)
-	s.dispatch("voyage",{"id":s.state.candidates[0].visit_id}); s.state.phase="aftermath"
-	check(s.state.flags.voyage_survival_cost==20,"avoid wave and current base stack")
-	check(s.dispatch("end_voyage") and s.state.player.hunger==85 and s.state.player.hydration==80,"held discount stacks separately with frozen reductions")
-	s=fresh(); s.state.player.hunger=100; s.state.player.hydration=100
-	acquire(s,"test-food"); s.dispatch("voyage",{"id":s.state.candidates[0].visit_id})
+	var stacked: Dictionary=s.Survival.quote(s).costs
+	# story base 30, relic -5, avoidWave -5, favourable current -5.
+	check(stacked.hunger==15 and stacked.hydration==20,"avoid wave and current stack with the relic discount")
+	check(s.dispatch("voyage",{"id":s.state.candidates[0].visit_id}),"stacked departure")
+	check(s.state.player.hunger==85 and s.state.player.hydration==80,"stacked reductions are charged once")
+	check(not s.state.flags.avoidWave,"avoid wave is spent by the departure that used it")
+	# A relic acquired after the departure cannot re-price or re-charge that voyage.
 	s.state.phase="aftermath"; s.give("wood",20)
-	check(s.dispatch("end_voyage") and s.phase()=="discard","settlement waits for discard")
-	check(Collectibles.discard(s,s.state.collectibles.items[0].uid),"discard held discount")
+	var paid: int=s.state.player.hunger
+	check(s.dispatch("end_voyage") and s.phase()=="discard","overflow still waits for discard")
 	while s.phase()=="discard": check(s.dispatch("discard",{"uid":s.state.hand[-1].uid}),"finish discard")
-	check(s.state.player.hunger==70,"discarded discount does not apply")
+	check(s.state.player.hunger==paid,"discard cleanup never recharges survival")
+	# A relic discarded before the next departure is no longer charged.
+	s.state.phase="navigation"; s.state.node={}; s.Encounter.candidates(s)
+	check(not s.state.candidates.is_empty(),"next round offers a destination")
+	var held_next: Dictionary=s.Survival.quote(s).costs
+	check(Collectibles.discard(s,s.state.collectibles.items[0].uid),"discard held discount")
+	var base_next: Dictionary=s.Survival.quote(s).costs
+	check(int(base_next.hunger)==int(held_next.hunger)+5,"discarding removes exactly the held discount")
+	var next_food: int=s.state.player.hunger; var next_water: int=s.state.player.hydration
+	check(s.dispatch("voyage",{"id":s.state.candidates[0].visit_id}),"departure after discard")
+	check(s.state.player.hunger==maxi(0,next_food-int(base_next.hunger)) and s.state.player.hydration==maxi(0,next_water-int(base_next.hydration)),"discarded discount is not charged")
+	# Stacked discounts still clamp the real cost to zero.
 	s=fresh(); s.state.player.hunger=100; s.state.player.hydration=100
 	for index in range(7): acquire(s,"test-food")
-	s.state.phase="aftermath"
-	check(s.dispatch("end_voyage") and s.state.player.hunger==100,"stacked discounts clamp cost to zero")
+	check(int(s.Survival.quote(s).costs.hunger)==0,"stacked discounts clamp the quote to zero")
+	check(s.dispatch("voyage",{"id":s.state.candidates[0].visit_id}),"clamped departure")
+	check(s.state.player.hunger==100,"clamped departure costs nothing")
 func test_install() -> void:
 	var s=fresh(); acquire(s,"test-install")
 	s.give("plastic",2); s.give("wood")

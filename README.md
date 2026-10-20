@@ -1,5 +1,5 @@
 # Deep Surge · 深潮（Godot）
-<!-- doc-status: current; doc-role: entry; content-version: godot-flow-v03-02; reviewed: 2026-10-20 -->
+<!-- doc-status: current; doc-role: entry; content-version: godot-flow-v03-03; reviewed: 2026-10-21 -->
 
 当前整合分支为 `codex/integrate-v03-relics`，保留原工作树。内容为三层挑战、20件新藏品、10个寻物节点和局部刷新/手机界面；当次验收见[整合记录](evidence/safe-integration-20261020.md)。
 
@@ -20,7 +20,7 @@
 | 剧情模式（暂停） | 首页、选档、相关设置与帮助默认隐藏；保留原11节点代码及配对保存，不恢复开发 |
 | 回溯潮涌 | 五幕开局序章及原本地旧归档只读回放；新独立剧情档已读场景暂未接入 |
 
-常规循环：导航选择 → 出发 → 准备 → 节点文字/选项/商店/战斗 → 结果 → 收尾 → 老化与容量整理 → 食水结算 → 下一轮生产、涌泉与导航，或终局。
+常规循环：导航选择 → 出发（结算SAN、灯、食水与饥渴伤害） → 准备 → 节点文字/选项/商店/战斗 → 结果 → 收尾 → 老化与容量整理 → 下一轮生产、涌泉与导航，或终局。出发生存结算致死则当场终局，轮末不重复扣费。
 
 AP、候选、战斗和设备的详细数值以 [当前机制](docs/current-game-mechanics.md) 和相应专题为准。提案与历史演示不作为现行规则。
 
@@ -28,7 +28,7 @@ AP、候选、战斗和设备的详细数值以 [当前机制](docs/current-game
 
 ## 保存与当前边界
 
-- 当前格式为 schema 2，内容 `godot-flow-v03-02`，随机算法 `xorshift32-godot-v1`；旧版本兼容/迁移不在范围，不兼容时明确拒绝并保留原文件。
+- 当前格式为 schema 2，内容 `godot-flow-v03-03`，随机算法 `xorshift32-godot-v1`；旧版本兼容/迁移不在范围，不兼容时明确拒绝并保留原文件。
 - `user://godot-flow-v02.json` 原子保存共享 profile/最近结算及单个当前教程或挑战局；异常退出后可从最后一次成功保存的完整操作继续，重启先进入首页。
 - 剧情槽位 `user://narrative/<id>.json` 同时包含叙事状态和配对 gameplay 快照，必须从剧情模式明确加载；活动指针不代表启动时自动挂载。
 - 教程完成、难度解锁等在独立 `user://deep-surge-meta.json`。保存失败应显示错误，不能冒充保存成功。
@@ -56,7 +56,7 @@ python -m unittest discover -s tests -p test_agent_stdio.py -v
 Godot_v4.7.2-stable_win64_console.exe --path . --script res://tests/test_partial_refresh.gd
 ```
 
-0.3专项入口：`tests/test_v03_campaign.gd`、`test_v03_survival.gd`、`test_v03_journey_flow.gd`、`test_v03_encounters.gd`、`test_v03_weather.gd`、`test_v03_projection.gd`。实施代码已接入，当前验收进度见[0.3验证草稿](evidence/v03-development-verification.md)；路线已完成，图形、真机触摸和发行导出按记录分别核对。
+0.3专项入口：`tests/test_v03_campaign.gd`、`test_v03_survival.gd`、`test_v03_journey_flow.gd`、`test_v03_encounters.gd`、`test_v03_weather.gd`、`test_v03_projection.gd`。实施代码已接入，当前验收进度见[0.3验证草稿](evidence/v03-development-verification.md)；本次[出发生存结算验证](evidence/survival-departure-20261021/README.md)记录54项回归、7条当前路线与桌面GPU结果，真机触摸和发行导出仍单独核对。
 
 实际运行范围和限制查 [验证索引](evidence/README.md)，不把列出的命令当作已经执行。GPU、真实触摸与发行导出单独验收。
 

@@ -1,6 +1,6 @@
 # 环境与天气投放（0.3）
 
-2026-10-20核对。效果定义在[environments](../content/data/environments.json)，投放定义在[weather_profiles](../content/data/weather_profiles.json)，由当前层引用；[EnvironmentRules](../core/environment_rules.gd)只管理生命周期、修正请求与公开投影，不直接增删候选。当前参数均为试测。
+2026-10-21核对。效果定义在[environments](../content/data/environments.json)，投放定义在[weather_profiles](../content/data/weather_profiles.json)，由当前层引用；[EnvironmentRules](../core/environment_rules.gd)只管理生命周期、修正请求与公开投影，不直接增删候选。当前参数均为试测。
 
 ## 当前环境
 
@@ -12,7 +12,7 @@
 | bloodMoon / 血月 | 敌人直接伤害+1，普通胜利额外币1；挑战战斗类别相对权重×1.3 | 2航次/负面3 |
 | confusion / 混乱 | 移动25%概率偏航到另一候选，只记实际访问 | 2航次/负面2 |
 | headwind / 逆流 | 每航次首次成功制造或安装额外1AP，共享一次标记 | 2航次/不随机投放 |
-| current / 顺流 | 出发锁定食水费用各−5，可叠避浪 | 2航次/正面3 |
+| current / 顺流 | 出发结算食水费用各−5，可叠避浪 | 2航次/正面3 |
 | spring / 漂流丰收 | 下次实际涌泉额外随机基础资源1，领取后移除 | 消费时移除/正面1 |
 | rain / 暴雨 | 每航次开始、生产前损坏2～3个不同完好功能格（含空格）；额外饱食+15 | 2航次/ⅡⅢ负面3 |
 | battleSquall / 猎潮 | 普通导航所有3槽战斗，合法节点不足用当前层授权模板；战斗权重×2 | 2航次/ⅡⅢ负面3 |
@@ -35,7 +35,7 @@ Environment.navigation_modifiers返回软category_weights、minimum_battles、al
 - fix_heading：有偏航风险时木头1、0AP，只保护本次移动。
 - 灯塔请求导引需完好燃灯，0AP且不耗燃料；下一航次公开所有候选，混乱风险降为10%。
 
-state.buffs保存id/active_from/remaining/pending_refresh；state.environment保存rolled/settled/rain_voyage标记、可见性/侦察、定向/导引、逆流首次标记和最近移动。环境抽取与暴雨只耗environment流，偏航只耗movement流。save/restore校验ID、期限、互斥、数量及标记，雨读档不重复生效。快照schema2、godot-flow-v03-02，旧版本拒绝并保留。
+state.buffs保存id/active_from/remaining/pending_refresh；state.environment保存rolled/settled/rain_voyage标记、可见性/侦察、定向/导引、逆流首次标记和最近移动。环境抽取与暴雨只耗environment流，偏航只耗movement流。save/restore校验ID、期限、互斥、数量及标记，雨读档不重复生效。快照schema2、godot-flow-v03-03，旧版本拒绝并保留。
 
 HUD显示环境名称、待生效、剩余与刷新说明；挑战航次显示`Ⅱ · 航行3/10`。Agent同用environments/navigation及enemy_direct_damage，不公开环境池、原始效果配置或随机流。真实规则雾与3D表现雾独立。
 

@@ -21,7 +21,6 @@ func fixture(id: String, changes: Dictionary = {}):
 	s.dispatch("new",{"mode":"challenge","origin":"strong","seed":22})
 	s._auto_advancing=true; s.state.phase="story"; s.state.story_step="choice"
 	# Manual arrival keeps the legal current journey/weather and departure lock.
-	s.Survival.lock_costs(s)
 	s.state.node=local_catalog.entry("nodes",id); s.state.node.visit_id="reward-test"
 	s.state.candidates=[]; s.Encounter.arrived(s)
 	return s

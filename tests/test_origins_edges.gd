@@ -32,7 +32,7 @@ func same_save(s, message: String):
 func battle(s):
 	s.state.node=catalog.entry("nodes","battle"); s.state.node.visit_id="edge-battle"
 	s.state.phase="story"; s.state.story_step="choice"; s.state.hand=[]
-	s.Survival.lock_costs(s); s.Encounter.arrived(s)
+	s.Encounter.arrived(s)
 	check(s.dispatch("fight"),"battle enter"); s.state.battle.hp=100
 func finish_voyage(s):
 	if s.phase()=="navigation": check(s.dispatch("voyage",{"id":s.state.candidates[0].visit_id}),"depart")
@@ -131,7 +131,7 @@ func test_merchant():
 	s.dispatch("abandon"); check(s.dispatch("new",{"mode":"challenge","origin":"merchant","seed":22}),"merchant inheritance new")
 	check(s.state.coins==6,"origin and inheritance coins add")
 	s.state.node=catalog.entry("nodes","trader"); s.state.node.visit_id="edge-shop"; s.state.phase="story"; s.state.story_step="choice"
-	s.Survival.lock_costs(s); s.Encounter.arrived(s)
+	s.Encounter.arrived(s)
 	check(s.dispatch("shop_enter"),"shop enter"); s.profile.purchases.coupon=1
 	var before=s.snapshot(); var row=s.Shop.view(s).stock[3]
 	check(row.price==maxi(1,row.base_price-2),"coupon then first-shop trait")
@@ -144,7 +144,7 @@ func test_merchant():
 	check(s.Shop.view(s).stock[0].price==1,"resource price untouched")
 	finish_voyage(s)
 	s.state.node=catalog.entry("nodes","trader"); s.state.node.visit_id="edge-shop-2"; s.state.phase="story"; s.state.story_step="choice"
-	s.Survival.lock_costs(s); s.Encounter.arrived(s)
+	s.Encounter.arrived(s)
 	check(s.dispatch("shop_enter"),"second shop enter")
 	s=same_save(s,"second shop count")
 	row=s.Shop.view(s).stock[3]

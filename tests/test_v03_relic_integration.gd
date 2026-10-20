@@ -44,7 +44,7 @@ func test_public_art() -> void:
 	var s=fresh()
 	for id in NODES:
 		s.state.node=catalog.entry("nodes",id); s.state.node.visit_id="art-contract"
-		s.state.phase="story"; s.state.story_step="choice"; s.Survival.lock_costs(s); s.Encounter.arrived(s)
+		s.state.phase="story"; s.state.story_step="choice"; s.Encounter.arrived(s)
 		var before: Dictionary=s.snapshot()
 		var v: Dictionary=s.view()
 		check(v.node.get("art","")==s.state.node.art,"safe display art survives public projection: "+id)
@@ -107,28 +107,51 @@ func progress(s) -> bool:
 func test_live_survival_modifiers() -> void:
 	for id in ["kelpRation","copperStill","emberFuse","tideBoneBlade","crimsonVial"]:
 		var s=fresh()
-		check(s.dispatch("voyage",{"id":s.state.candidates[0].visit_id}),"departure before modifier: "+id)
-		var base: Dictionary=s.state.flags.voyage_survival_costs.duplicate(true)
-		var basis: Dictionary=s.state.flags.voyage_cost_basis.duplicate(true)
-		var initial: Dictionary=s.Survival.quote(s).costs
-		check(s.Collectibles.acquire(s,id),"acquire after departure: "+id)
 		var stat: String="hunger" if id in ["kelpRation","tideBoneBlade"] else "hydration"
 		var delta: int=-5 if id in ["kelpRation","copperStill"] else 5
-		check(s.Survival.quote(s).costs[stat]==maxi(0,int(initial[stat])+delta),"live quote uses acquired modifier: "+id)
-		check(same(s.state.flags.voyage_survival_costs,base) and same(s.state.flags.voyage_cost_basis,basis),"acquisition preserves base/weather lock: "+id)
-		s=restored(s)
+		var initial: Dictionary=s.Survival.quote(s).costs
+		check(s.Collectibles.acquire(s,id),"acquire before departure: "+id)
 		var held: Dictionary=s.Survival.quote(s).costs
-		var settlement=restored(s)
-		var food: int=settlement.state.player.hunger;var water: int=settlement.state.player.hydration
-		check(settlement.Survival.settle(settlement),"held modifier settlement: "+id)
-		check(settlement.state.player.hunger==maxi(0,food-int(held.hunger)) and settlement.state.player.hydration==maxi(0,water-int(held.hydration)),"settlement uses acquired modifier: "+id)
-		check(s.dispatch("discard_collectible",{"uid":s.state.collectibles.items[0].uid}),"discard after departure: "+id)
-		check(s.Survival.quote(s).costs==initial,"discard updates live quote: "+id)
-		check(same(s.state.flags.voyage_survival_costs,base) and same(s.state.flags.voyage_cost_basis,basis),"discard preserves base/weather lock: "+id)
+		check(held[stat]==maxi(0,int(initial[stat])+delta),"preview applies the held modifier: "+id)
+		# Food and water are charged by the departure itself, so a modifier held at
+		# that moment is exactly what the run pays.
+		var food: int=s.state.player.hunger; var water: int=s.state.player.hydration
+		check(s.dispatch("voyage",{"id":s.state.candidates[0].visit_id}),"departure with modifier: "+id)
+		check(s.state.player.hunger==maxi(0,food-int(held.hunger)) and s.state.player.hydration==maxi(0,water-int(held.hydration)),"departure charges the held modifier: "+id)
+		# quote() is a live preview of the NEXT departure, not a historical bill.
+		# A late kelp restores 25 food once, but never refunds the previous fare.
+		var paid_player: Dictionary=s.state.player.duplicate(true)
+		var late_id: String="copperStill" if id=="kelpRation" else "kelpRation"
+		var late_stat: String="hydration" if late_id=="copperStill" else "hunger"
+		check(s.Collectibles.acquire(s,late_id),"late acquisition: "+id)
+		var expected_food: int=mini(int(paid_player.hunger)+25,int(s.state.player.hunger_max)) if late_id=="kelpRation" else int(paid_player.hunger)
+		check(s.state.player.hunger==expected_food and s.state.player.hydration==paid_player.hydration and s.state.player.hp==paid_player.hp and s.state.player.sanity==paid_player.sanity,"late acquisition only applies its one-time restoration, with no refund or extra fare: "+id)
+		var live_costs: Dictionary=held.duplicate(true)
+		live_costs[late_stat]=maxi(0,int(live_costs[late_stat])-5)
+		check(s.Survival.quote(s).costs==live_costs,"late modifier immediately changes the next-departure preview: "+id)
+		var after_acquire: Dictionary=s.snapshot()
+		s.Survival.quote(s); s.view(); s.Survival.quote(s)
+		check(s.snapshot()==after_acquire,"repeated live previews never settle or restore again: "+id)
+		var round_end_player: Dictionary=s.state.player.duplicate(true)
+		s.state.phase="aftermath"; check(s.dispatch("end_voyage"),"round end after modifier: "+id)
+		check(s.state.player==round_end_player,"round end never charges survival or SAN again: "+id)
+		# Keep the late reward, release the original modifier, then actually depart.
 		s=restored(s)
-		food=s.state.player.hunger;water=s.state.player.hydration
-		check(s.Survival.settle(s),"discarded modifier settlement: "+id)
-		check(s.state.player.hunger==maxi(0,food-int(initial.hunger)) and s.state.player.hydration==maxi(0,water-int(initial.hydration)),"settlement uses discarded modifier: "+id)
+		s.state.phase="navigation"; s.state.node={}; s.Encounter.candidates(s)
+		check(not s.state.candidates.is_empty(),"next round offers a destination: "+id)
+		check(s.Collectibles.discard(s,s.state.collectibles.items[0].uid),"discard original modifier before next departure: "+id)
+		var latest_costs: Dictionary=initial.duplicate(true)
+		latest_costs[late_stat]=maxi(0,int(latest_costs[late_stat])-5)
+		check(s.Survival.quote(s).costs==latest_costs,"next preview reflects both late acquisition and original discard: "+id)
+		var next_food: int=s.state.player.hunger; var next_water: int=s.state.player.hydration
+		check(s.dispatch("voyage",{"id":s.state.candidates[0].visit_id}),"departure with latest held modifiers: "+id)
+		check(s.state.player.hunger==maxi(0,next_food-int(latest_costs.hunger)) and s.state.player.hydration==maxi(0,next_water-int(latest_costs.hydration)),"next departure charges current holdings exactly once: "+id)
+		# discard() clears holdings, while acquisition history remains serializable.
+		for item in s.state.collectibles.items:
+			if item.held: check(s.Collectibles.discard(s,item.uid),"discard held modifier: "+id)
+		check(s.state.collectibles.items.all(func(item):return not item.held),"every acquired modifier is released: "+id)
+		var base_next: Dictionary=s.Survival.quote(s).costs
+		check(base_next.hunger==initial.hunger and base_next.hydration==initial.hydration,"discard restores the base preview: "+id)
 func _init() -> void:
 	catalog=load("res://content/catalog.gd").new(); check(catalog.load_catalog(),"catalog")
 	test_pools();test_public_art();test_battle_restore_and_cross_layer();test_live_survival_modifiers()

@@ -34,15 +34,14 @@ func _init() -> void:
 	s.state.flags.avoidWave=true
 	check(Survival.base_costs(s).hunger==43,"avoidWave subtracts five after multiplier/weather")
 	s.state.phase="action"; s.state.voyage=7
-	Survival.lock_costs(s)
-	s.state.buffs=[]
-	check(Survival.costs(s).hunger==43,"environment changes do not reprice locked cost")
-	check(Survival.valid(s,s.state),"locked basis revalidates without current weather")
+	# The real departure spends avoidWave; clear it here so the next checks see a
+	# neutral basis.
+	s.state.buffs=[]; s.state.flags.avoidWave=false
+	check(Survival.valid(s,s.state),"a settled departure carries no pending fee")
 	var tampered: Dictionary=s.state.duplicate(true)
-	tampered.flags.voyage_survival_costs.hunger+=1; tampered.flags.voyage_survival_cost+=1
-	check(not Survival.valid(s,tampered),"tampered locked fee rejected")
-	tampered=s.state.duplicate(true); tampered.difficulty="nightmare"
-	check(not Survival.valid(s,tampered),"locked basis binds difficulty")
+	tampered.flags.voyage_survival_costs={"hunger":43,"hydration":43}
+	tampered.flags.voyage_survival_cost=43; tampered.flags.voyage_cost_basis={"layer_id":"open_sea","difficulty":"hard","weather":[],"avoid_wave":true}
+	check(not Survival.valid(s,tampered),"obsolete departure lock fields are rejected outright")
 	for mode in ["story","tutorial"]:
 		s.state.mode=mode; s.state.journey.layer_index=0
 		check(Survival.base_costs(s).hunger==30,"nonchallenge food unchanged "+mode)
@@ -55,41 +54,41 @@ func _init() -> void:
 	for n in range(7):
 		s.state.journey.layer_index=mini(n,2)
 		s.state.player.hunger=0; s.state.player.hydration=100
-		s.state.flags.voyage_survival_costs={"hunger":0,"hydration":0}
 		var before: int=s.state.player.hp
-		Survival.settle(s)
+		var hunger_damage: int=Survival.damage(c,s.state,"hunger")
+		Survival.settle_departure(s,{"costs":{"hunger":0,"hydration":0},"deprivation":{"hunger":hunger_damage,"hydration":0,"total":hunger_damage}})
 		check(s.state.player.hp==before-mini(n+1,5),"<=0 shortage step one cap five across layers")
 	check(s.state.deprivation.hunger==7 and s.state.deprivation.hydration==0,"independent counts persist across layers")
 	var persisted=Session.new(c)
 	check(persisted.dispatch("new",{"mode":"challenge","difficulty":"hard","origin":"strong","seed":91}),"hard save scenario starts")
 	persisted.state.flags.avoidWave=true
 	check(persisted.EnvironmentRules.add(persisted,"rain",true),"apply departure rain")
-	check(persisted.dispatch("voyage",{"id":persisted.state.candidates[0].visit_id}),"real departure locks cost")
+	var food_before: int=persisted.state.player.hunger
+	var water_before: int=persisted.state.player.hydration
+	var departure: Dictionary=Survival.departure_quote(persisted)
+	check(int(departure.costs.hunger)==32 and int(departure.costs.hydration)==17,"hard shallows departure fee is hunger 22+15-5 and thirst 22-5")
+	check(persisted.dispatch("voyage",{"id":persisted.state.candidates[0].visit_id}),"real departure charges the fee")
+	check(persisted.state.player.hunger==food_before-32,"departure deducts the food fee once")
+	check(persisted.state.player.hydration==water_before-17,"departure deducts the water fee once")
 	persisted.state.buffs=[]
 	var saved: Dictionary=JSON.parse_string(JSON.stringify(persisted.snapshot()))
 	var restored=Session.new(c)
-	check(restored.restore(saved),"JSON restore retains historical weather basis")
-	check(Survival.costs(restored).hunger==32,"restored hard shallows fee is 22+15-5")
+	check(restored.restore(saved),"JSON restore of a charged departure")
+	check(restored.state.player.hunger==food_before-32,"restore never recharges an already settled departure")
 	var bad_save: Dictionary=saved.duplicate(true)
-	bad_save.state.flags.voyage_survival_costs.hunger+=1
-	bad_save.state.flags.voyage_survival_cost+=1
+	bad_save.state.flags.voyage_survival_costs={"hunger":99,"hydration":99}
+	bad_save.state.flags.voyage_survival_cost=99
 	var restored_before: Dictionary=restored.snapshot()
-	check(not restored.restore(bad_save),"actual restore rejects coordinated scalar/map fee tampering")
+	check(not restored.restore(bad_save),"actual restore rejects a reinstated pending fee")
 	check(restored.snapshot()==restored_before,"rejected restore preserves session")
-	var stripped: Dictionary=saved.duplicate(true)
-	for key in ["voyage_survival_costs","voyage_survival_cost","voyage_cost_basis"]: stripped.state.flags.erase(key)
-	check(not restored.restore(stripped),"actual restore rejects removal of all departure fee fields")
 	for phase in ["preparation","story","interaction","battle","aftermath","discard"]:
 		var pending: Dictionary=saved.state.duplicate(true)
 		pending.phase=phase
-		check(Survival.valid(persisted,pending),"pending voyage accepts complete fee at "+phase)
+		check(Survival.valid(persisted,pending),"post-departure phase needs no fee lock at "+phase)
 		for key in ["voyage_survival_costs","voyage_survival_cost","voyage_cost_basis"]: pending.flags.erase(key)
-		check(not Survival.valid(persisted,pending),"pending voyage requires fee at "+phase)
-	var ended: Dictionary=saved.state.duplicate(true)
-	ended.phase="finished"
-	check(Survival.valid(persisted,ended),"finished before survival may retain lock")
-	for key in ["voyage_survival_costs","voyage_survival_cost","voyage_cost_basis"]: ended.flags.erase(key)
-	check(Survival.valid(persisted,ended),"finished after survival may omit settled lock")
+		check(Survival.valid(persisted,pending),"post-departure phase stays valid without fee fields at "+phase)
+		pending.flags.voyage_survival_cost=0
+		check(not Survival.valid(persisted,pending),"a single obsolete fee field is still rejected at "+phase)
 	var tables: Dictionary=c._tables.duplicate(true)
 	for bad in [-1.0,INF,NAN,"1"]:
 		var mutated: Dictionary=tables.duplicate(true)

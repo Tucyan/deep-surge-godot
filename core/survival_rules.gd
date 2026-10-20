@@ -35,23 +35,8 @@ static func cost_basis(ctx) -> Dictionary:
 static func base_costs(ctx) -> Dictionary:
 	return departure_costs(ctx.catalog,ctx.state,cost_basis(ctx))
 
-static func lock_costs(ctx) -> Dictionary:
-	var basis: Dictionary=cost_basis(ctx)
-	var costs: Dictionary=departure_costs(ctx.catalog,ctx.state,basis)
-	ctx.state.flags.voyage_cost_basis=basis
-	ctx.state.flags.voyage_survival_costs={"hunger":costs.hunger,"hydration":costs.hydration}
-	# Legacy read-only clients can still show their scalar while migrating to costs.
-	ctx.state.flags.voyage_survival_cost=costs.hunger
-	ctx.state.flags.avoidWave=false
-	return costs
-
 static func costs(ctx) -> Dictionary:
-	var flags: Dictionary=ctx.state.get("flags",{})
-	var base: Dictionary=flags.get("voyage_survival_costs",{})
-	if base.is_empty():
-		if flags.has("voyage_survival_cost"): base={"hunger":int(flags.voyage_survival_cost),"hydration":int(flags.voyage_survival_cost)}
-		else: base=base_costs(ctx)
-	return Effects.survival_costs(ctx.state,ctx.catalog,{"hunger":int(base.hunger),"hydration":int(base.hydration)})
+	return Effects.survival_costs(ctx.state,ctx.catalog,base_costs(ctx))
 
 static func damage(catalog,state: Dictionary,stat: String) -> int:
 	if not progressive(catalog,state): return 1
@@ -61,23 +46,33 @@ static func damage(catalog,state: Dictionary,stat: String) -> int:
 	var cap: int=int(config.get(stat+"_cap",5))
 	return mini(amount,cap) if cap>0 else amount
 
-static func quote(ctx) -> Dictionary:
-	var consumption: Dictionary=costs(ctx)
+static func departure_quote(ctx) -> Dictionary:
+	## Quote the whole departure transaction at once: food, water, the sanity fare
+	## and the deprivation damage the food/water shortfall is about to cause.
+	var quoted: Dictionary=departure_costs(ctx.catalog,ctx.state,cost_basis(ctx))
+	var consumption: Dictionary=Effects.survival_costs(ctx.state,ctx.catalog,{"hunger":int(quoted.hunger),"hydration":int(quoted.hydration)})
 	var loss := {"hunger":0,"hydration":0,"total":0}
 	for stat in ["hunger","hydration"]:
 		if int(ctx.state.player[stat])-int(consumption[stat])<=0: loss[stat]=damage(ctx.catalog,ctx.state,stat)
 	loss.total=int(loss.hunger)+int(loss.hydration)
-	return {"pending":ctx.state.flags.has("voyage_survival_costs") or ctx.state.flags.has("voyage_survival_cost"),"costs":consumption,"food_water_cost":int(consumption.hunger),"deprivation":loss,"counts":ctx.state.get("deprivation",{}).duplicate(true)}
+	return {"costs":consumption,"food_water_cost":int(consumption.hunger),"sanity":int(quoted.sanity),"deprivation":loss,"counts":ctx.state.get("deprivation",{}).duplicate(true)}
 
-static func settle(ctx) -> bool:
-	var q: Dictionary=quote(ctx)
-	for key in ["voyage_survival_cost","voyage_survival_costs","voyage_cost_basis"]: ctx.state.flags.erase(key)
+static func settle_departure(ctx, q: Dictionary) -> void:
+	## Consume a departure quote. Food, water and the HP loss they inflict settle in
+	## the same transaction as the SAN payment, so no survival debt survives the
+	## voyage. avoidWave is spent here and cannot leak into the next departure.
 	for stat in ["hunger","hydration"]:
 		ctx.change(stat,-int(q.costs[stat]),"movement")
 		if int(q.deprivation[stat])>0 and progressive(ctx.catalog,ctx.state): ctx.state.deprivation[stat]+=1
 	ctx.change("hp",-int(q.deprivation.total),"deprivation")
-	ctx.log_text("轮末整理完成：食物扣%d、饮水扣%d；饥饿/缺水造成%d生命损失。" % [q.costs.hunger,q.costs.hydration,q.deprivation.total])
-	return ctx.alive()
+	ctx.state.flags.avoidWave=false
+
+static func quote(ctx) -> Dictionary:
+	## Read-only preview of the next departure. Nothing is ever pending: food, water
+	## and deprivation damage are charged when the player confirms the voyage.
+	var preview: Dictionary=departure_quote(ctx)
+	preview["pending"]=false
+	return preview
 
 static func valid_content(tables: Dictionary) -> bool:
 	var b: Variant=tables.get("balance",{}).get("survival")
@@ -107,24 +102,8 @@ static func valid(ctx,state: Dictionary) -> bool:
 	for stat in ["hunger","hydration"]:
 		if not Campaign.integer(counters.get(stat)) or counters[stat]<0 or counters[stat]>state.voyage: return false
 		if not progressive(ctx.catalog,state) and counters[stat]!=0: return false
-	var flags: Dictionary=state.flags
-	# Every in-flight phase follows departure and precedes survival settlement.
-	# Finished may retain a departure lock (early death/abandon) or have settled it.
-	if state.phase in ["preparation","story","interaction","battle","aftermath","discard"] and not flags.has("voyage_survival_costs"): return false
-	if flags.has("voyage_survival_costs"):
-		if not flags.voyage_survival_costs is Dictionary or flags.voyage_survival_costs.size()!=2: return false
-		for stat in ["hunger","hydration"]:
-			if not Campaign.integer(flags.voyage_survival_costs.get(stat)) or flags.voyage_survival_costs[stat]<0: return false
-		if state.phase in ["navigation","chapterComplete"]: return false
-		var basis: Variant=flags.get("voyage_cost_basis")
-		if not basis is Dictionary or basis.size()!=4 or basis.get("layer_id")!=Campaign.layer(ctx.catalog,state).id or basis.get("difficulty")!=state.difficulty or not basis.get("weather") is Array or not basis.get("avoid_wave") is bool: return false
-		var seen: Array=[]
-		for id in basis.weather:
-			if not id is String or id in seen or ctx.catalog.entry("environments",id).is_empty(): return false
-			seen.append(id)
-		var expected: Dictionary=departure_costs(ctx.catalog,state,basis)
-		for stat in ["hunger","hydration"]:
-			if int(flags.voyage_survival_costs[stat])!=int(expected[stat]): return false
-		if flags.get("voyage_survival_cost")!=flags.voyage_survival_costs.hunger: return false
-	elif flags.has("voyage_survival_cost") or flags.has("voyage_cost_basis"): return false
+	# Food, water and deprivation damage settle inside the departure command, so a
+	# current save never carries a pending survival lock in any phase.
+	for key in ["voyage_survival_cost","voyage_survival_costs","voyage_cost_basis"]:
+		if state.flags.has(key): return false
 	return true

@@ -1,8 +1,8 @@
 # 生命与饥渴伤害（0.3）
 
-2026-10-20核对。三档开局生命基准12/10/8，出身/永久成长继续叠加。挑战食水航耗Ⅰ20/Ⅱ30/Ⅲ40为试测，SAN仍15；挑战饥饿/缺水独立累计1、2、3…，默认每项上限5，上限<=0无上限；次数跨层/恢复保留。当前progressive_modes仅challenge，story/tutorial各1、合计最多2，计数不增加。刚好扣至0也触发，轮末容量整理后结算。普通战前离开/战内撤退均4生命、可致死，遗迹保留入场生命保护、教程禁撤退。参数源及预览见[配置契约](v03-configuration.md)。
+2026-10-21核对（内容godot-flow-v03-03）。三档开局生命基准12/10/8，出身/永久成长继续叠加。挑战食水航耗Ⅰ20/Ⅱ30/Ⅲ40为试测，SAN仍15；挑战饥饿/缺水独立累计1、2、3…，默认每项上限5，上限<=0无上限；次数跨层/恢复保留。当前progressive_modes仅challenge，story/tutorial各1、合计最多2，计数不增加。刚好扣至0也触发，**结算时点为确认航行（`voyage`），与精神航耗同一次事务完成**。普通战前离开/战内撤退均4生命、可致死，遗迹保留入场生命保护、教程禁撤退。参数源及预览见[配置契约](v03-configuration.md)。
 
-验证入口：`tests/test_v03_survival.gd`、`test_v03_journey_flow.gd`、`test_v03_encounters.gd`。本轮验收见[0.3验证草稿](../evidence/v03-development-verification.md)。
+验证入口：`tests/test_v03_survival.gd`、`test_voyage_survival.gd`、`test_v03_journey_flow.gd`、`test_v03_encounters.gd`。本轮验收见[0.3验证草稿](../evidence/v03-development-verification.md)。
 
 ## 以下为2026-10-15起的历史试测来源
 
@@ -35,6 +35,10 @@
 
 验证、游玩数据与局限见[当次验证](../evidence/health-balance-verification.md)。
 
-## v20 结算时机
+## 确认航行时结算（当前）
 
-食水航耗和由饥渴造成的生命损失在轮末弃牌完成后统一结算；不超限则直接结算。精神/灯仍在出发时处理，战斗和事件伤害仍立即处理。剧情先完成夜间安排和弃牌，夜间休息恢复可影响本航次结算。生命归零则停止，不开始下一轮生产或成功终局。具体顺序见[当前机制](current-game-mechanics.md)，验证见[弃牌后生存结算](../evidence/survival-v20-verification.md)。
+食水航耗和由饥渴造成的生命损失在确认航行（`voyage`）时与精神航耗一次性结算：`voyage` 先扣精神、由灯恢复精神，再扣饱食与水分并立即扣除饥渴伤害，最后统一判定死亡。轮末（`end_voyage`）只做老化、增益到期与超限弃牌，不再结算食水。生命归零时 `voyage` 当场结束本局，不进入准备或下一轮生产。具体顺序见[当前机制](current-game-mechanics.md)，验证见`tests/test_voyage_survival.gd`与`tests/test_v03_survival.gd`。
+
+## 历史：v20 轮末弃牌后结算（已被上一节取代）
+
+以下为2026-10-15至2026-10-20之间的历史契约，仅供追溯，不代表当前行为。食水航耗和由饥渴造成的生命损失曾在轮末弃牌完成后统一结算；不超限则直接结算。剧情先完成夜间安排和弃牌，夜间休息恢复可影响本航次结算。验证见[弃牌后生存结算](../evidence/survival-v20-verification.md)。

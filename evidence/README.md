@@ -6,6 +6,7 @@
 
 | 范围 | 记录 |
 |---|---|
+| 出发生存结算 v03-03 | [2026-10-21 规则、当前路线与GPU验证](survival-departure-20261021/README.md) |
 | 上下文/文档维护 | [2026-10-19 文档更新](documentation-context-verification.md) |
 | 应用架构、会话、动作目录、当前路线 | [2026-10-19 架构验证](architecture-health-verification.md) |
 | 出身 v2 | [出身验证](origins-v2-verification.md) |

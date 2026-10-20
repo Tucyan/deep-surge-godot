@@ -85,7 +85,7 @@ func _init() -> void:
 	var source=load("res://core/game_session.gd").new(c)
 	check(source.restore(before),"独立导航夹具恢复")
 	source.state=battle_fixture.state.duplicate(true)
-	source.Survival.lock_costs(source); source.Encounter.arrived(source)
+	source.Encounter.arrived(source)
 	check(battling.restore(source.snapshot()),"战斗统计夹具")
 	check(battling.dispatch("fight") and battling.dispatch("battle_end") and battling.dispatch("battle_end"),"实际进入第三战斗回合")
 	check(battling.dispatch("abandon"),"战斗中放弃")

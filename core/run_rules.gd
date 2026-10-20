@@ -41,14 +41,15 @@ static func voyage(ctx, id: String) -> bool:
 	s.visits[node.id] = int(s.visits.get(node.id,0)) + 1
 	s.last_node = node.id
 	ctx.discover("node." + node.id)
-	var departure: Dictionary=ctx.Survival.lock_costs(ctx)
+	var departure: Dictionary=ctx.Survival.departure_quote(ctx)
 	var sanity_cost: int=int(departure.sanity)
 	ctx.change("sanity",-sanity_cost,"movement")
 	for cell in s.cells:
 		if cell.status == "intact" and cell.equipment.get("id","") == "lamp" and cell.equipment.fuel > 0:
 			ctx.change("sanity",15+5*(int(cell.equipment.level)-1),"lamp"); cell.equipment.fuel -= 1
 			Stats.device_used(s,"lamp",cell.id)
-	ctx.log_text("抵达%s；移动支付SAN%d，食物%d、饮水%d在轮末弃牌完成后结算。" % [node.name,sanity_cost,departure.hunger,departure.hydration])
+	ctx.Survival.settle_departure(ctx,departure)
+	ctx.log_text("抵达%s；出发结算：精神%d、食物%d、饮水%d；饥饿/缺水造成%d生命损失。" % [node.name,sanity_cost,departure.costs.hunger,departure.costs.hydration,departure.deprivation.total])
 	if not ctx.alive(): return true
 	s.phase = "preparation"
 	return true
@@ -438,9 +439,6 @@ static func raft_action(ctx, command: String, args: Dictionary) -> bool:
 		return true
 	return false
 
-static func settle_survival(ctx) -> bool:
-	return ctx.Survival.settle(ctx)
-
 static func settle(ctx) -> bool:
 	var s: Dictionary = ctx.state
 	if ctx.phase() != "aftermath": return ctx.fail("先完成当前节点结果剧情")
@@ -492,8 +490,8 @@ static func produce_at_round_start(ctx) -> void:
 
 static func next_voyage(ctx) -> void:
 	var s: Dictionary = ctx.state
-	# Capacity is satisfied: charge survival before production or any successful ending.
-	if not settle_survival(ctx): return
+	# Capacity is satisfied. Survival was already charged at departure, so the round
+	# can close straight into production or a successful ending.
 	if s.flags.get("boss_withdrawn",false) or not ctx.Campaign.can_advance(ctx):
 		ctx.finish("withdrawn")
 		return

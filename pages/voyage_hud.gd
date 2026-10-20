@@ -441,7 +441,7 @@ func navigation_content(header_parent: Node, row_parent: Node) -> void:
 		for candidate in context.get("candidates",[]):
 			if str(candidate.get("visit_id","")) == picked: selected = candidate; break
 	if selected.is_empty():
-		_nav_track(W.text(header_parent,"选择目的地；出发扣精神，轮末弃牌后扣食水。",16,W.MUTED),false)
+		_nav_track(W.text(header_parent,"选择目的地；出发时结算精神、食物与水分。",16,W.MUTED),false)
 	else:
 		var title := W.text(header_parent,str(selected.name),21,W.INK)
 		title.name = "NavigationDestinationTitle"
@@ -569,11 +569,11 @@ func heading_text() -> String:
 
 func survival_text() -> String:
 	var quote: Dictionary=context.get("survival_settlement",{})
-	if quote.is_empty(): return "轮末生存结算以当前食水与航耗为准。"
+	if quote.is_empty(): return "出发时按当前食水与航耗结算。"
 	var costs: Dictionary=quote.get("costs",{})
 	var damage: Dictionary=quote.get("deprivation",{})
 	var counts: Dictionary=quote.get("counts",{})
-	return "轮末弃牌后：饱食扣%d，水分扣%d。\n累计饥饿%d次、缺水%d次。\n按当前食水预计损失%d生命（饥饿%d、缺水%d）。" % [int(costs.get("hunger",0)),int(costs.get("hydration",0)),int(counts.get("hunger",0)),int(counts.get("hydration",0)),int(damage.get("total",0)),int(damage.get("hunger",0)),int(damage.get("hydration",0))]
+	return "出发时结算：饱食扣%d，水分扣%d。\n累计饥饿%d次、缺水%d次。\n按当前食水预计损失%d生命（饥饿%d、缺水%d）。" % [int(costs.get("hunger",0)),int(costs.get("hydration",0)),int(counts.get("hunger",0)),int(counts.get("hydration",0)),int(damage.get("total",0)),int(damage.get("hunger",0)),int(damage.get("hydration",0))]
 
 ## Same-phase operation refresh. The caller verifies that no board topology or
 ## panel transition occurred; only value labels, policy and the hand projection

@@ -138,15 +138,6 @@
         "cooldown": 3
       },
       {
-        "node": "winch",
-        "weight": 1,
-        "min_voyage": 1,
-        "max_voyage": 99,
-        "max_visits": 1,
-        "scope": "layer",
-        "cooldown": 3
-      },
-      {
         "node": "duel",
         "weight": 1,
         "min_voyage": 1,
@@ -351,15 +342,6 @@
       },
       {
         "node": "sharedMeal",
-        "weight": 1,
-        "min_voyage": 1,
-        "max_voyage": 99,
-        "max_visits": 1,
-        "scope": "layer",
-        "cooldown": 3
-      },
-      {
-        "node": "winch",
         "weight": 1,
         "min_voyage": 1,
         "max_voyage": 99,
@@ -581,15 +563,6 @@
       },
       {
         "node": "sharedMeal",
-        "weight": 1,
-        "min_voyage": 1,
-        "max_voyage": 99,
-        "max_visits": 1,
-        "scope": "layer",
-        "cooldown": 3
-      },
-      {
-        "node": "winch",
         "weight": 1,
         "min_voyage": 1,
         "max_voyage": 99,
@@ -837,15 +810,6 @@
         "cooldown": 3
       },
       {
-        "node": "winch",
-        "weight": 1,
-        "min_voyage": 4,
-        "max_voyage": 99,
-        "max_visits": 1,
-        "scope": "run",
-        "cooldown": 3
-      },
-      {
         "node": "duel",
         "weight": 1,
         "min_voyage": 4,
@@ -989,15 +953,6 @@
         "node": "sharedMeal",
         "weight": 1,
         "min_voyage": 1,
-        "max_voyage": 99,
-        "max_visits": 1,
-        "scope": "run",
-        "cooldown": 3
-      },
-      {
-        "node": "winch",
-        "weight": 1,
-        "min_voyage": 4,
         "max_voyage": 99,
         "max_visits": 1,
         "scope": "run",

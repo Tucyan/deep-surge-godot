@@ -1,5 +1,5 @@
 # 应用编排与刷新边界
-<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v03-02; reviewed: 2026-10-20 -->
+<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v03-03; reviewed: 2026-10-21 -->
 
 2026-10-20。当前工程为 Godot；根目录 Three.js 契约仅供历史追溯。
 
@@ -15,7 +15,7 @@
 | `application/hud_projection.gd` | 对可见输入生成保留签名，不包含增长的统计事件、规则随机流、未来池或非战斗日志历史 |
 | `core/collectible_rules.gd` / `effect_query.gd` / `effect_rules.gd` | 潮汐遗物实例与恢复校验 / 纯查询组合修正 / 获得、使用计数及战斗激活清理；详细生命周期见[潮汐遗物契约](collectible-effects.md) |
 | `core/relic_rewards.gd` | 潮汐遗物奖励描述校验、固定/随机抽取及统一发放；战斗、事件与商店复用，目录加载校验节点奖励引用 |
-| `core/campaign_rules.gd` / `survival_rules.gd` | 纯航程/层查询与跨层进度；逐项费用锁定、饥渴计数及共用预览/结算，均不依赖UI或存储 |
+| `core/campaign_rules.gd` / `survival_rules.gd` | 纯航程/层查询与跨层进度；逐项出发费用、饥渴计数及共用预览/结算，均不依赖UI或存储 |
 | `core/navigation_rules.gd` / `environment_rules.gd` | 当前层合法池、天气请求、授权模板补位与环境生命周期；仅真实换轮生成，不由页面重抽 |
 | `core/game_session.gd` | 唯一玩法命令边界；规则与可恢复随机保持独立，不依赖上述应用模块 |
 

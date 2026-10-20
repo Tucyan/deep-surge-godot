@@ -1,0 +1,133 @@
+{
+  "routes": [
+    {
+      "route": "standard-challenge",
+      "version": "godot-flow-v03-03",
+      "fingerprint": "1c214cb08b92d531636fec3b4e33b889c900526306aa031f7944a965eabe00fb",
+      "steps": 222,
+      "expected": {
+        "phase": "finished",
+        "outcome": "dead",
+        "completed": 17.0
+      },
+      "status": "published",
+      "independent_replay": {
+        "steps": 222,
+        "prefix_sha256": "6673fe4808574451c153ca6b4860fdaf43b5ea66f3935a50d1b7e461fa2ef74b",
+        "result_equal": true,
+        "elapsed_seconds": 5.187
+      }
+    },
+    {
+      "route": "standard-story",
+      "version": "godot-flow-v03-03",
+      "fingerprint": "1c214cb08b92d531636fec3b4e33b889c900526306aa031f7944a965eabe00fb",
+      "steps": 160,
+      "expected": {
+        "phase": "finished",
+        "outcome": "survived",
+        "completed": 11
+      },
+      "status": "published",
+      "independent_replay": {
+        "steps": 160,
+        "prefix_sha256": "3c598a14bd15f1a0c521b82db40a09ab9c635a90dfda9d6ae7ba6cb786e3793e",
+        "result_equal": true,
+        "elapsed_seconds": 3.437
+      }
+    },
+    {
+      "route": "hard-challenge",
+      "version": "godot-flow-v03-03",
+      "fingerprint": "1c214cb08b92d531636fec3b4e33b889c900526306aa031f7944a965eabe00fb",
+      "steps": 321,
+      "expected": {
+        "phase": "finished",
+        "outcome": "dead",
+        "completed": 24.0
+      },
+      "status": "published",
+      "independent_replay": {
+        "steps": 321,
+        "prefix_sha256": "4be6a17619e7cf46dfbcccefc033cc5b6ac8e3ba1f07512bf035ed0549740147",
+        "result_equal": true,
+        "elapsed_seconds": 9.469
+      }
+    },
+    {
+      "route": "hard-story",
+      "version": "godot-flow-v03-03",
+      "fingerprint": "1c214cb08b92d531636fec3b4e33b889c900526306aa031f7944a965eabe00fb",
+      "steps": 180,
+      "expected": {
+        "phase": "finished",
+        "outcome": "survived",
+        "completed": 11
+      },
+      "status": "published",
+      "independent_replay": {
+        "steps": 180,
+        "prefix_sha256": "2f9bb62deb51b1d4284ae5e811fa8d93435eafaf9dc86666cb7e48fa7821e1bf",
+        "result_equal": true,
+        "elapsed_seconds": 4.203
+      }
+    },
+    {
+      "route": "nightmare-challenge",
+      "version": "godot-flow-v03-03",
+      "fingerprint": "1c214cb08b92d531636fec3b4e33b889c900526306aa031f7944a965eabe00fb",
+      "steps": 78,
+      "expected": {
+        "phase": "finished",
+        "outcome": "dead",
+        "completed": 6
+      },
+      "status": "published",
+      "independent_replay": {
+        "steps": 78,
+        "prefix_sha256": "a02278fabd2074eab5b16b27c3082c30355fdefe4b25a52e762ade11c0c586f2",
+        "result_equal": true,
+        "elapsed_seconds": 1.547
+      }
+    },
+    {
+      "route": "nightmare-story",
+      "version": "godot-flow-v03-03",
+      "fingerprint": "1c214cb08b92d531636fec3b4e33b889c900526306aa031f7944a965eabe00fb",
+      "steps": 187,
+      "expected": {
+        "phase": "finished",
+        "outcome": "dead",
+        "completed": 10
+      },
+      "status": "published",
+      "independent_replay": {
+        "steps": 187,
+        "prefix_sha256": "fc64aeae86cdd69135f50fcb66f1b0ae07bf281e62c3845921125b42eba351d7",
+        "result_equal": true,
+        "elapsed_seconds": 4.484
+      }
+    },
+    {
+      "route": "standard-failure",
+      "version": "godot-flow-v03-03",
+      "fingerprint": "1c214cb08b92d531636fec3b4e33b889c900526306aa031f7944a965eabe00fb",
+      "steps": 44,
+      "expected": {
+        "phase": "finished",
+        "outcome": "dead",
+        "completed": 4
+      },
+      "status": "published",
+      "independent_replay": {
+        "steps": 44,
+        "prefix_sha256": "5e29005b7172490de289fa56bd64a9955967fc1f2017fc127aa0e5ed71f1a097",
+        "result_equal": true,
+        "elapsed_seconds": 1.25
+      }
+    }
+  ],
+  "all_same_fingerprint": true,
+  "test_routes": "PASS (executed=7, stale=13, failed=0)",
+  "timeout_or_tool_changes": false
+}

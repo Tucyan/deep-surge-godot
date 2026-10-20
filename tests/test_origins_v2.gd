@@ -16,7 +16,7 @@ func stocked(origin: String, count: int):
 func battle(s):
 	s.state.node=catalog.entry("nodes","crabBattle"); s.state.node.visit_id="v2-test"
 	s.state.phase="story"; s.state.story_step="choice"
-	s.Survival.lock_costs(s); s.Encounter.arrived(s)
+	s.Encounter.arrived(s)
 	check(s.dispatch("fight"),"enter battle"); s.state.battle.hp=100
 func shield(s) -> int:
 	var total:=0

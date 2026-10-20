@@ -10,7 +10,6 @@ func _init() -> void:
 	check(preload("res://core/origin_rules.gd").battle_weight(s.state,"battle",40)==60,"zealot multiplies layer weight")
 	s.state.node=catalog.entry("nodes","crabBattle"); s.state.node.visit_id="test-battle"
 	s.state.phase="story"; s.state.story_step="choice"
-	s.Survival.lock_costs(s) # Manual arrival fixture includes the real departure contract.
 	check(s.Battle.enter(s,"crab"),"battle starts")
 	s.state.battle.turn=2
 	var hp: int=s.state.player.hp
@@ -73,7 +72,6 @@ func test_chest(catalog) -> void:
 		s.state.rng=preload("res://core/random_streams.gd").create(seed*19349663)
 		s.state.node=chest.duplicate(true);s.state.node.visit_id="chest-test";s.Encounter.arrived(s)
 		s.state.phase="story";s.state.story_step="choice"
-		s.Survival.lock_costs(s) # Manual arrival fixture includes the real departure contract.
 		var coins: int=preload("res://core/inventory.gd").count(s.state,"coin")
 		check(s.dispatch("option",{"id":"open"}),"open chest once")
 		check(preload("res://core/inventory.gd").count(s.state,"coin")==coins+3,"advertised chest reward paid before outcome")
@@ -91,7 +89,6 @@ func test_continuation(catalog) -> void:
 	var s=fresh(catalog)
 	s.state.node={"id":"continuation-test","kind":"event","visit_id":"continue-1","stages":[[{"id":"fight","name":"迎战","battle":{"enemy":"biter","return_stage":1}}],[{"id":"done","name":"收尾"}]]}
 	s.Encounter.arrived(s);s.state.phase="story";s.state.story_step="choice"
-	s.Survival.lock_costs(s) # Manual arrival fixture includes the real departure contract.
 	check(s.dispatch("option",{"id":"fight"}),"deterministic option enters existing battle")
 	var completed: int=s.state.completed
 	s.state.battle.hp=1
@@ -104,13 +101,11 @@ func test_continuation(catalog) -> void:
 func test_exits(catalog) -> void:
 	var s=fresh(catalog)
 	s.state.node=catalog.entry("nodes","crabBattle");s.state.node.visit_id="exit-test";s.state.phase="story";s.state.story_step="choice";s.Encounter.arrived(s)
-	s.Survival.lock_costs(s) # Manual arrival fixture includes the real departure contract.
 	var hp: int=s.state.player.hp
 	check(s.dispatch("leave_encounter"),"prebattle leave dispatched")
 	check(s.state.player.hp==hp-4,"prebattle leave charges same four HP once")
 	check(not s.dispatch("leave_encounter") and s.state.player.hp==hp-4,"same exit cannot charge twice")
 	s=fresh(catalog);s.state.node=catalog.entry("nodes","ruin");s.state.node.visit_id="ruin-test";s.state.phase="story";s.state.story_step="choice";s.Encounter.arrived(s)
-	s.Survival.lock_costs(s) # Manual arrival fixture includes the real departure contract.
 	hp=s.state.player.hp;check(s.dispatch("fight"),"protected ruin battle")
 	s.state.battle.turn=2;s.state.player.hp=hp-2
 	check(s.dispatch("retreat") and s.state.player.hp==hp,"ruin retreat retains explicit HP protection")

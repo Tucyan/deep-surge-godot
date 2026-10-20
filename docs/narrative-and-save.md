@@ -1,5 +1,5 @@
 # 独立剧情与配对存档
-<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v03-02; reviewed: 2026-10-20 -->
+<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v03-03; reviewed: 2026-10-21 -->
 
 剧情模式开发暂停；`flow_app.gd` 的 `story_mode_visible` 默认关闭，相关选档、设置和帮助入口隐藏。本文保留的剧情能力供后续恢复；独立序章、回溯潮涌和普通节点事件仍可用。
 
@@ -44,7 +44,7 @@
 
 叙事state包括affinity、flags、items、clues、rest_count、ending、applied_beats、skipped_beats、seen_scenes、choices、cursor和prefs。gameplay使用GameSession.snapshot，含schema2、内容版本、内容指纹、随机算法、revision、state/profile及最近结算。
 
-当前玩法内容为 `godot-flow-v03-02`，指纹包含潮汐遗物及journeys/layers/balance/node_pools/navigation_profiles/weather_profiles/battle_templates/shop_profiles全部定义。玩法状态保存journey（档案ID、层索引、层内航次、Boss胜利记录）、deprivation独立计数、锁定费用及层/天气/避浪来源、临时节点模板与来源、事件已选随机结果及环境rain_voyage一次性标记。恢复逐项核对，不接受任意临时敌人、奖励或伪造航耗。配对快照同时保存 `state.collectibles` 的实例、历史、剩余次数与激活标记，以及商店的 `relics/relic_purchased`；恢复进行结构、定义、唯一UID、次数范围及战斗激活阶段校验。恢复不重新执行获得奖励、开战触发或抽取货架，详见[潮汐遗物契约](collectible-effects.md)。旧内容版本和指纹不符的玩法档明确拒绝，不作迁移，并保留原文件。
+当前玩法内容为 `godot-flow-v03-03`，指纹包含潮汐遗物及journeys/layers/balance/node_pools/navigation_profiles/weather_profiles/battle_templates/shop_profiles全部定义。玩法状态保存journey（档案ID、层索引、层内航次、Boss胜利记录）、deprivation独立计数、临时节点模板与来源、事件已选随机结果及环境rain_voyage一次性标记。食水费用在确认航行时一次性结算并即时扣除，状态中不再保存待结算的费用锁定；恢复后不得重复结算本次出发的消耗。恢复逐项核对，不接受任意临时敌人、奖励或伪造航耗。配对快照同时保存 `state.collectibles` 的实例、历史、剩余次数与激活标记，以及商店的 `relics/relic_purchased`；恢复进行结构、定义、唯一UID、次数范围及战斗激活阶段校验。恢复不重新执行获得奖励、开战触发或抽取货架，详见[潮汐遗物契约](collectible-effects.md)。旧内容版本和指纹不符的玩法档明确拒绝，不作迁移，并保留原文件。
 
 剧情多槽位已经包含配对玩法快照；这不等于挑战模式拥有跨进程多槽位保存。剧情模式加载必须验证当前章节/版本、玩法长度11、mode=story及voyage/phase与已应用节拍一致，再同时替换有效会话。旧版本兼容或迁移不是要求；解析器可容忍的未知字段不代表正式入口承诺旧章节可载入。
 

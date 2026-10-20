@@ -1,0 +1,738 @@
+[
+  {
+    "style": "maximal",
+    "n": 10,
+    "mean_final_level": 9.1,
+    "mean_wins": 8.2,
+    "mean_voyages": 11.2,
+    "per_voyage": [
+      {
+        "voyage": 1,
+        "n": 10,
+        "mean_level": 1.1,
+        "min": 1,
+        "max": 2
+      },
+      {
+        "voyage": 2,
+        "n": 10,
+        "mean_level": 1.6,
+        "min": 1,
+        "max": 2
+      },
+      {
+        "voyage": 3,
+        "n": 10,
+        "mean_level": 2,
+        "min": 1,
+        "max": 3
+      },
+      {
+        "voyage": 4,
+        "n": 10,
+        "mean_level": 2.7,
+        "min": 2,
+        "max": 4
+      },
+      {
+        "voyage": 5,
+        "n": 10,
+        "mean_level": 3.6,
+        "min": 3,
+        "max": 5
+      },
+      {
+        "voyage": 6,
+        "n": 9,
+        "mean_level": 4.11,
+        "min": 4,
+        "max": 5
+      },
+      {
+        "voyage": 7,
+        "n": 6,
+        "mean_level": 4.5,
+        "min": 4,
+        "max": 5
+      },
+      {
+        "voyage": 8,
+        "n": 5,
+        "mean_level": 5.2,
+        "min": 4,
+        "max": 6
+      },
+      {
+        "voyage": 9,
+        "n": 3,
+        "mean_level": 6.67,
+        "min": 6,
+        "max": 7
+      },
+      {
+        "voyage": 10,
+        "n": 3,
+        "mean_level": 7.67,
+        "min": 7,
+        "max": 8
+      },
+      {
+        "voyage": 11,
+        "n": 3,
+        "mean_level": 8.67,
+        "min": 8,
+        "max": 9
+      },
+      {
+        "voyage": 12,
+        "n": 3,
+        "mean_level": 9.67,
+        "min": 9,
+        "max": 10
+      },
+      {
+        "voyage": 13,
+        "n": 3,
+        "mean_level": 10.67,
+        "min": 10,
+        "max": 11
+      },
+      {
+        "voyage": 14,
+        "n": 3,
+        "mean_level": 11.67,
+        "min": 11,
+        "max": 12
+      },
+      {
+        "voyage": 15,
+        "n": 3,
+        "mean_level": 13.67,
+        "min": 13,
+        "max": 14
+      },
+      {
+        "voyage": 16,
+        "n": 3,
+        "mean_level": 14.67,
+        "min": 14,
+        "max": 15
+      },
+      {
+        "voyage": 17,
+        "n": 3,
+        "mean_level": 15.67,
+        "min": 15,
+        "max": 16
+      },
+      {
+        "voyage": 18,
+        "n": 3,
+        "mean_level": 16.33,
+        "min": 15,
+        "max": 17
+      },
+      {
+        "voyage": 19,
+        "n": 2,
+        "mean_level": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "voyage": 20,
+        "n": 2,
+        "mean_level": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "voyage": 21,
+        "n": 2,
+        "mean_level": 20,
+        "min": 20,
+        "max": 20
+      },
+      {
+        "voyage": 22,
+        "n": 2,
+        "mean_level": 21,
+        "min": 21,
+        "max": 21
+      },
+      {
+        "voyage": 23,
+        "n": 2,
+        "mean_level": 21.5,
+        "min": 21,
+        "max": 22
+      },
+      {
+        "voyage": 24,
+        "n": 1,
+        "mean_level": 23,
+        "min": 23,
+        "max": 23
+      },
+      {
+        "voyage": 25,
+        "n": 1,
+        "mean_level": 25,
+        "min": 25,
+        "max": 25
+      }
+    ]
+  },
+  {
+    "style": "risk",
+    "n": 10,
+    "mean_final_level": 11.2,
+    "mean_wins": 10.2,
+    "mean_voyages": 13.6,
+    "per_voyage": [
+      {
+        "voyage": 1,
+        "n": 10,
+        "mean_level": 1.1,
+        "min": 1,
+        "max": 2
+      },
+      {
+        "voyage": 2,
+        "n": 10,
+        "mean_level": 1.6,
+        "min": 1,
+        "max": 2
+      },
+      {
+        "voyage": 3,
+        "n": 10,
+        "mean_level": 2,
+        "min": 1,
+        "max": 3
+      },
+      {
+        "voyage": 4,
+        "n": 10,
+        "mean_level": 2.6,
+        "min": 2,
+        "max": 4
+      },
+      {
+        "voyage": 5,
+        "n": 10,
+        "mean_level": 3.6,
+        "min": 3,
+        "max": 5
+      },
+      {
+        "voyage": 6,
+        "n": 10,
+        "mean_level": 4.2,
+        "min": 4,
+        "max": 5
+      },
+      {
+        "voyage": 7,
+        "n": 7,
+        "mean_level": 4.43,
+        "min": 4,
+        "max": 5
+      },
+      {
+        "voyage": 8,
+        "n": 6,
+        "mean_level": 5.17,
+        "min": 4,
+        "max": 6
+      },
+      {
+        "voyage": 9,
+        "n": 4,
+        "mean_level": 6.75,
+        "min": 6,
+        "max": 7
+      },
+      {
+        "voyage": 10,
+        "n": 4,
+        "mean_level": 7.75,
+        "min": 7,
+        "max": 8
+      },
+      {
+        "voyage": 11,
+        "n": 4,
+        "mean_level": 8.75,
+        "min": 8,
+        "max": 9
+      },
+      {
+        "voyage": 12,
+        "n": 4,
+        "mean_level": 9.5,
+        "min": 8,
+        "max": 10
+      },
+      {
+        "voyage": 13,
+        "n": 4,
+        "mean_level": 10.25,
+        "min": 8,
+        "max": 11
+      },
+      {
+        "voyage": 14,
+        "n": 4,
+        "mean_level": 11.25,
+        "min": 9,
+        "max": 12
+      },
+      {
+        "voyage": 15,
+        "n": 4,
+        "mean_level": 13.25,
+        "min": 11,
+        "max": 14
+      },
+      {
+        "voyage": 16,
+        "n": 4,
+        "mean_level": 14.25,
+        "min": 12,
+        "max": 15
+      },
+      {
+        "voyage": 17,
+        "n": 4,
+        "mean_level": 15.25,
+        "min": 13,
+        "max": 16
+      },
+      {
+        "voyage": 18,
+        "n": 4,
+        "mean_level": 16.25,
+        "min": 14,
+        "max": 17
+      },
+      {
+        "voyage": 19,
+        "n": 4,
+        "mean_level": 17.25,
+        "min": 15,
+        "max": 18
+      },
+      {
+        "voyage": 20,
+        "n": 4,
+        "mean_level": 18.25,
+        "min": 16,
+        "max": 19
+      },
+      {
+        "voyage": 21,
+        "n": 4,
+        "mean_level": 19.25,
+        "min": 17,
+        "max": 20
+      },
+      {
+        "voyage": 22,
+        "n": 4,
+        "mean_level": 19.75,
+        "min": 17,
+        "max": 21
+      },
+      {
+        "voyage": 23,
+        "n": 3,
+        "mean_level": 21.33,
+        "min": 20,
+        "max": 22
+      },
+      {
+        "voyage": 24,
+        "n": 2,
+        "mean_level": 23,
+        "min": 23,
+        "max": 23
+      },
+      {
+        "voyage": 25,
+        "n": 2,
+        "mean_level": 25,
+        "min": 25,
+        "max": 25
+      }
+    ]
+  },
+  {
+    "style": "balanced",
+    "n": 10,
+    "mean_final_level": 8.9,
+    "mean_wins": 8,
+    "mean_voyages": 11.2,
+    "per_voyage": [
+      {
+        "voyage": 1,
+        "n": 10,
+        "mean_level": 1.1,
+        "min": 1,
+        "max": 2
+      },
+      {
+        "voyage": 2,
+        "n": 10,
+        "mean_level": 1.6,
+        "min": 1,
+        "max": 2
+      },
+      {
+        "voyage": 3,
+        "n": 10,
+        "mean_level": 2,
+        "min": 1,
+        "max": 3
+      },
+      {
+        "voyage": 4,
+        "n": 10,
+        "mean_level": 2.7,
+        "min": 2,
+        "max": 4
+      },
+      {
+        "voyage": 5,
+        "n": 10,
+        "mean_level": 3.6,
+        "min": 3,
+        "max": 5
+      },
+      {
+        "voyage": 6,
+        "n": 9,
+        "mean_level": 4.11,
+        "min": 4,
+        "max": 5
+      },
+      {
+        "voyage": 7,
+        "n": 6,
+        "mean_level": 4.33,
+        "min": 4,
+        "max": 5
+      },
+      {
+        "voyage": 8,
+        "n": 5,
+        "mean_level": 5,
+        "min": 4,
+        "max": 6
+      },
+      {
+        "voyage": 9,
+        "n": 3,
+        "mean_level": 6.67,
+        "min": 6,
+        "max": 7
+      },
+      {
+        "voyage": 10,
+        "n": 3,
+        "mean_level": 7.67,
+        "min": 7,
+        "max": 8
+      },
+      {
+        "voyage": 11,
+        "n": 3,
+        "mean_level": 8.67,
+        "min": 8,
+        "max": 9
+      },
+      {
+        "voyage": 12,
+        "n": 3,
+        "mean_level": 9.67,
+        "min": 9,
+        "max": 10
+      },
+      {
+        "voyage": 13,
+        "n": 3,
+        "mean_level": 10.67,
+        "min": 10,
+        "max": 11
+      },
+      {
+        "voyage": 14,
+        "n": 3,
+        "mean_level": 11.67,
+        "min": 11,
+        "max": 12
+      },
+      {
+        "voyage": 15,
+        "n": 3,
+        "mean_level": 13.67,
+        "min": 13,
+        "max": 14
+      },
+      {
+        "voyage": 16,
+        "n": 3,
+        "mean_level": 14.67,
+        "min": 14,
+        "max": 15
+      },
+      {
+        "voyage": 17,
+        "n": 3,
+        "mean_level": 15.67,
+        "min": 15,
+        "max": 16
+      },
+      {
+        "voyage": 18,
+        "n": 3,
+        "mean_level": 16.33,
+        "min": 15,
+        "max": 17
+      },
+      {
+        "voyage": 19,
+        "n": 2,
+        "mean_level": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "voyage": 20,
+        "n": 2,
+        "mean_level": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "voyage": 21,
+        "n": 2,
+        "mean_level": 20,
+        "min": 20,
+        "max": 20
+      },
+      {
+        "voyage": 22,
+        "n": 2,
+        "mean_level": 20.5,
+        "min": 20,
+        "max": 21
+      },
+      {
+        "voyage": 23,
+        "n": 2,
+        "mean_level": 21,
+        "min": 20,
+        "max": 22
+      },
+      {
+        "voyage": 24,
+        "n": 1,
+        "mean_level": 23,
+        "min": 23,
+        "max": 23
+      },
+      {
+        "voyage": 25,
+        "n": 1,
+        "mean_level": 25,
+        "min": 25,
+        "max": 25
+      }
+    ]
+  },
+  {
+    "style": "careful",
+    "n": 10,
+    "mean_final_level": 11.1,
+    "mean_wins": 10,
+    "mean_voyages": 17.1,
+    "per_voyage": [
+      {
+        "voyage": 1,
+        "n": 10,
+        "mean_level": 1.1,
+        "min": 1,
+        "max": 2
+      },
+      {
+        "voyage": 2,
+        "n": 10,
+        "mean_level": 1.3,
+        "min": 1,
+        "max": 2
+      },
+      {
+        "voyage": 3,
+        "n": 10,
+        "mean_level": 1.7,
+        "min": 1,
+        "max": 3
+      },
+      {
+        "voyage": 4,
+        "n": 10,
+        "mean_level": 2.1,
+        "min": 1,
+        "max": 3
+      },
+      {
+        "voyage": 5,
+        "n": 10,
+        "mean_level": 3.1,
+        "min": 2,
+        "max": 4
+      },
+      {
+        "voyage": 6,
+        "n": 10,
+        "mean_level": 3.4,
+        "min": 3,
+        "max": 4
+      },
+      {
+        "voyage": 7,
+        "n": 8,
+        "mean_level": 3.5,
+        "min": 3,
+        "max": 5
+      },
+      {
+        "voyage": 8,
+        "n": 8,
+        "mean_level": 3.88,
+        "min": 3,
+        "max": 6
+      },
+      {
+        "voyage": 9,
+        "n": 6,
+        "mean_level": 5,
+        "min": 3,
+        "max": 7
+      },
+      {
+        "voyage": 10,
+        "n": 6,
+        "mean_level": 5.67,
+        "min": 3,
+        "max": 8
+      },
+      {
+        "voyage": 11,
+        "n": 6,
+        "mean_level": 6.33,
+        "min": 3,
+        "max": 9
+      },
+      {
+        "voyage": 12,
+        "n": 6,
+        "mean_level": 7,
+        "min": 3,
+        "max": 10
+      },
+      {
+        "voyage": 13,
+        "n": 6,
+        "mean_level": 7.83,
+        "min": 4,
+        "max": 11
+      },
+      {
+        "voyage": 14,
+        "n": 6,
+        "mean_level": 8.5,
+        "min": 4,
+        "max": 12
+      },
+      {
+        "voyage": 15,
+        "n": 6,
+        "mean_level": 10.5,
+        "min": 6,
+        "max": 14
+      },
+      {
+        "voyage": 16,
+        "n": 6,
+        "mean_level": 11.17,
+        "min": 6,
+        "max": 15
+      },
+      {
+        "voyage": 17,
+        "n": 6,
+        "mean_level": 11.67,
+        "min": 6,
+        "max": 16
+      },
+      {
+        "voyage": 18,
+        "n": 6,
+        "mean_level": 12.17,
+        "min": 6,
+        "max": 17
+      },
+      {
+        "voyage": 19,
+        "n": 6,
+        "mean_level": 12.67,
+        "min": 6,
+        "max": 17
+      },
+      {
+        "voyage": 20,
+        "n": 6,
+        "mean_level": 13.33,
+        "min": 6,
+        "max": 18
+      },
+      {
+        "voyage": 21,
+        "n": 5,
+        "mean_level": 15.2,
+        "min": 6,
+        "max": 19
+      },
+      {
+        "voyage": 22,
+        "n": 5,
+        "mean_level": 15.8,
+        "min": 6,
+        "max": 20
+      },
+      {
+        "voyage": 23,
+        "n": 5,
+        "mean_level": 16.2,
+        "min": 6,
+        "max": 20
+      },
+      {
+        "voyage": 24,
+        "n": 4,
+        "mean_level": 16.75,
+        "min": 7,
+        "max": 20
+      },
+      {
+        "voyage": 25,
+        "n": 4,
+        "mean_level": 18.25,
+        "min": 9,
+        "max": 22
+      }
+    ]
+  }
+]

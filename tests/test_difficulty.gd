@@ -28,7 +28,6 @@ func _init() -> void:
 		check(not rejected.dispatch("new",{"mode":"challenge","origin":"fool","seed":22,"difficulty":row[0],"starting_resources":selected}) and rejected.snapshot()==before,"too many resources rejected atomically")
 		for enemy_row in [["sentinel",row[5],row[6]],["boss",row[7],row[8]]]:
 			s=fresh(row[0]); s.state.phase="story"; s.state.story_step="choice"; s.state.node=catalog.entry("nodes","boss" if enemy_row[0]=="boss" else "ruin"); s.state.node.visit_id="difficulty-test"
-			s.Survival.lock_costs(s) # Manual arrival fixture includes the real departure contract.
 			check(s.dispatch("fight"),"enter scaled battle")
 			check(s.state.battle.hp==enemy_row[1] and s.Battle.incoming_damage(s)==enemy_row[2],"rounded normal/boss HP and damage")
 			var snapshot: Dictionary=s.snapshot(); var rng: Dictionary=s.state.rng.duplicate(true)

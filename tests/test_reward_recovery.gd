@@ -26,8 +26,14 @@ func scenario(block_slot: bool, bad_ending: bool) -> void:
 	app._close_narrative()
 	app.narrative.current_beat = {}; app.narrative.current_scene = {}
 	app.session.state.voyage = 4; app.session.state.completed = 3
+	# This fixture skips completed story nodes, so position the paired gameplay
+	# in the same layer-local voyage and explicitly supply its weather history.
+	app.session.state.journey.layer_voyage = 4
+	preload("res://tests/weather_history_fixture.gd").complete_before_start(app.session)
 	app.session.EnvironmentRules.start_round(app.session)
 	app.session.Rules.candidates(app.session)
+	var paired_probe = app.Session.new(app.catalog)
+	check(paired_probe.restore(JSON.parse_string(JSON.stringify(app.session.snapshot()))), "pre-ending gameplay fixture is a legal current-version save")
 	app.narrative.data.state.applied_beats = ["C1-N01", "C1-N02", "C1-N03"]
 	if not bad_ending: app.narrative.data.state.applied_beats.append("C1-N04")
 	check(app.save_narrative_quiet(), "pre-ending slot saved")

@@ -1,6 +1,6 @@
 # 结算页面与记录契约
 
-2026-10-20核对，内容godot-flow-v03-02。执行依据为 [结算评分](../core/settlement.gd) 和 [运行统计](../core/run_statistics.gd)，本文件描述 Godot 实际实现；原V0.2设计稿未随当前仓库提供。评分版本 settlement-score-v2、统计版本 run-stats-v1、奖励版本 completed-nodes-v1；权重与评级仍为试测参数。
+2026-10-21核对，内容godot-flow-v03-03。执行依据为 [结算评分](../core/settlement.gd) 和 [运行统计](../core/run_statistics.gd)，本文件描述 Godot 实际实现；原V0.2设计稿未随当前仓库提供。评分版本 settlement-score-v2、统计版本 run-stats-v1、奖励版本 completed-nodes-v1；权重与评级仍为试测参数。
 
 ## 页面
 
@@ -24,7 +24,7 @@ chapterComplete保持活动局，只展示章节成绩与待结算节点，实�
 
 ## 存档
 
-当前schema2、内容godot-flow-v03-02、随机xorshift32-godot-v1，内容指纹须一致。state/profile/last_settlement同文件原子提交；旧版本与旧指纹明确拒绝且保留，不做迁移。保存报告及完整航程/层/计数/模板来源，恢复不重算或重发终局奖励，异常完成数、身份、分数公式与进度拒绝。
+当前schema2、内容godot-flow-v03-03、随机xorshift32-godot-v1，内容指纹须一致。state/profile/last_settlement同文件原子提交；旧版本与旧指纹明确拒绝且保留，不做迁移。保存报告及完整航程/层/计数/模板来源，恢复不重算或重发终局奖励，异常完成数、身份、分数公式与进度拒绝。
 
 挑战共25航次，Ⅰ/ⅡBoss胜利不会触发整局结算报告或局外发奖；正常完成生存后跨层。ⅢBoss获胜并生存才survived；Boss退出withdrawn不能跨层，死亡优先。整局涌潮点仍等于真实全局completed，失败/放弃亦如此，只发一次。剧情仍11航次及run_id配对领取去重；教程独立完成。见[配置契约](v03-configuration.md)和[保存契约](narrative-and-save.md)。
 

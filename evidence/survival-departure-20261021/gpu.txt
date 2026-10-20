@@ -1,0 +1,4 @@
+PASS tests/voyage_survival_ui.gd
+PASS tests/voyage_survival_discard_ui.gd
+PASS test_relic_art
+V03 SUITES: 3/3 PASS

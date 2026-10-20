@@ -17,7 +17,6 @@ func fresh():
 func encounter(id: String):
 	var s=fresh()
 	# Manual arrival keeps the legal current journey/weather and departure lock.
-	s.Survival.lock_costs(s)
 	s.state.phase="story"; s.state.story_step="choice"
 	s.state.node=catalog.entry("nodes",id); s.state.node.visit_id="expedition-test"
 	s.state.candidates=[]; s.state.ap=6

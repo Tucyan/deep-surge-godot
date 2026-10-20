@@ -6,10 +6,10 @@
       "expected": {
         "phase": "finished",
         "outcome": "dead",
-        "completed": 18.0
+        "completed": 17.0
       },
-      "steps": 235,
-      "version": "godot-flow-v03-02"
+      "steps": 222,
+      "version": "godot-flow-v03-03"
     },
     {
       "id": "standard-story",
@@ -17,10 +17,10 @@
       "expected": {
         "phase": "finished",
         "outcome": "survived",
-        "completed": 11.0
+        "completed": 11
       },
       "steps": 160,
-      "version": "godot-flow-v03-02"
+      "version": "godot-flow-v03-03"
     },
     {
       "id": "hard-challenge",
@@ -28,10 +28,10 @@
       "expected": {
         "phase": "finished",
         "outcome": "dead",
-        "completed": 18.0
+        "completed": 24.0
       },
-      "steps": 236,
-      "version": "godot-flow-v03-02"
+      "steps": 321,
+      "version": "godot-flow-v03-03"
     },
     {
       "id": "hard-story",
@@ -39,10 +39,10 @@
       "expected": {
         "phase": "finished",
         "outcome": "survived",
-        "completed": 11.0
+        "completed": 11
       },
       "steps": 180,
-      "version": "godot-flow-v03-02"
+      "version": "godot-flow-v03-03"
     },
     {
       "id": "nightmare-challenge",
@@ -50,10 +50,10 @@
       "expected": {
         "phase": "finished",
         "outcome": "dead",
-        "completed": 7
+        "completed": 6
       },
-      "steps": 89,
-      "version": "godot-flow-v03-02"
+      "steps": 78,
+      "version": "godot-flow-v03-03"
     },
     {
       "id": "nightmare-story",
@@ -61,10 +61,10 @@
       "expected": {
         "phase": "finished",
         "outcome": "dead",
-        "completed": 10.0
+        "completed": 10
       },
-      "steps": 190,
-      "version": "godot-flow-v03-02"
+      "steps": 187,
+      "version": "godot-flow-v03-03"
     },
     {
       "id": "standard-failure",
@@ -72,10 +72,10 @@
       "expected": {
         "phase": "finished",
         "outcome": "dead",
-        "completed": 5
+        "completed": 4
       },
-      "steps": 51,
-      "version": "godot-flow-v03-02"
+      "steps": 44,
+      "version": "godot-flow-v03-03"
     }
   ],
   "historical_paths": [

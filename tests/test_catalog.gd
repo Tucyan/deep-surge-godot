@@ -1,20 +1,24 @@
 extends SceneTree
 
+var failures := 0
+func check(ok: bool, reason: String = "catalog assertion") -> void:
+	if not ok: failures += 1; printerr("FAIL: " + reason)
+
 func _init() -> void:
 	var catalog = load("res://content/catalog.gd").new()
-	assert(catalog.load_catalog(), catalog.error)
-	assert(catalog.table("cards").size() == 26)
+	check(catalog.load_catalog(), catalog.error)
+	check(catalog.table("cards").size() == 26)
 	for id in ["shieldRack","generator","fishingNet","crate"]:
-		assert(catalog.entry("cards",id).kind=="equipment")
-	assert(catalog.table("nodes").size() == 18)
+		check(catalog.entry("cards",id).kind=="equipment")
+	check(catalog.table("nodes").size() == 32, "18 base nodes, three layer bosses, sealed chest and ten relic nodes")
 	var card: Dictionary = catalog.entry("cards", "water")
 	card.name = "changed"
-	assert(catalog.entry("cards", "water").name == "淡水")
+	check(catalog.entry("cards", "water").name == "淡水")
 	var assets = load("res://presentation/asset_catalog.gd").new()
 	var texture: Texture2D = assets.texture("card.water")
-	assert(texture == assets.texture("card.water"))
-	assert(texture.get_size() == Vector2(1312, 1199))
-	assert(not assets.show_label("card.water"))
-	assert(assets.texture("missing.id") != null)
-	print("CATALOG / ASSET CACHE: PASS")
-	quit(0)
+	check(texture == assets.texture("card.water"))
+	check(texture.get_size() == Vector2(1312, 1199))
+	check(not assets.show_label("card.water"))
+	check(assets.texture("missing.id") != null)
+	print("CATALOG / ASSET CACHE: %s" % ("PASS" if failures == 0 else "FAIL"))
+	quit(failures)

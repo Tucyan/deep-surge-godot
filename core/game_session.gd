@@ -19,7 +19,7 @@ const EffectQuery = preload("res://core/effect_query.gd")
 const EffectRules = preload("res://core/effect_rules.gd")
 const Campaign = preload("res://core/campaign_rules.gd")
 const Survival = preload("res://core/survival_rules.gd")
-const VERSION := "godot-flow-v03-02"
+const VERSION := "godot-flow-v03-03"
 const ORIGINS = Origins.DEFINITIONS
 var catalog: RefCounted
 var state: Dictionary = {}

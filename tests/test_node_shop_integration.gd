@@ -14,8 +14,7 @@ func fixture(id: String, variant: String = ""):
 	s._auto_advancing=true; s.state.phase="story"; s.state.story_step="choice"; s.state.hand=[]
 	s.state.voyage=7; s.state.journey={"profile_id":"challenge","layer_index":1,"layer_voyage":2,"cleared":["shallows"]}; s.state.completed=6
 	preload("res://tests/weather_history_fixture.gd").complete_before_start(s)
-	s.EnvironmentRules.start_round(s); s.Survival.lock_costs(s)
-	s.state.node=catalog.entry("nodes",id)
+	s.EnvironmentRules.start_round(s);	s.state.node=catalog.entry("nodes",id)
 	if variant!="":
 		for v in s.state.node.variants:
 			if v.id==variant: s.state.node.merge(v,true); s.state.node.id=id; s.state.node.variant_id=variant; break

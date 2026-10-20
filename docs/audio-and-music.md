@@ -1,5 +1,5 @@
 # 背景音乐与音频
-<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v03-02; reviewed: 2026-10-20 -->
+<!-- doc-status: current; doc-role: contract; content-version: godot-flow-v03-03; reviewed: 2026-10-21 -->
 
 表现层的非剧情背景音乐（BGM）。只读运行摘要决定放哪首，不写 `GameSession`、不消耗规则随机、不改变任何结算。开场序章与回廊重播自带配乐与旁白，不走本导演。
 

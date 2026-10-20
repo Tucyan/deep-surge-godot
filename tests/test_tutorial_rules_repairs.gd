@@ -40,7 +40,9 @@ func _init() -> void:
 	for id in T.TEXTS:
 		var text: String = str(T.TEXTS[id][1])
 		check(not text.contains("固定") and not text.contains("没有随机"),"lesson does not explain scripted randomness: "+id)
+	var opening_hunger: int = s.state.player.hunger
 	step(s,"voyage",{"id":s.state.candidates[0].visit_id})
+	check(s.state.player.hunger == opening_hunger-30,"food settles at departure")
 	step(s,"salvage"); step(s,"salvage"); step(s,"craft",{"id":"filter"})
 	step(s,"install",{"uid":uid(s,"filter"),"auto":true})
 	# Verify the teaching explanation against the production implementation.
@@ -61,9 +63,9 @@ func _init() -> void:
 	step(s,"enter"); step(s,"advance"); step(s,"option",{"id":"wood"}); step(s,"advance")
 	var hunger: int = s.state.player.hunger
 	step(s,"end_voyage")
-	check(s.phase() == "discard" and s.state.player.hunger == hunger,"food settles only after discard")
+	check(s.phase() == "discard" and s.state.player.hunger == hunger,"round end does not charge food while discarding")
 	discard_rest(s)
-	check(s.state.player.hunger == hunger-30,"food settles after capacity is valid")
+	check(s.state.player.hunger == hunger,"capacity completion does not charge food again")
 	var water_before: int = s.state.player.hydration
 	var food_before: int = s.state.player.hunger
 	var base_ap: int = s.state.ap

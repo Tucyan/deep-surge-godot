@@ -1,5 +1,5 @@
 # Deep Surge 文档索引
-<!-- doc-status: current; doc-role: entry; content-version: godot-flow-v03-02; reviewed: 2026-10-20 -->
+<!-- doc-status: current; doc-role: entry; content-version: godot-flow-v03-03; reviewed: 2026-10-21 -->
 
 当前工程为 Godot。先按任务选择下表主文档，再阅读专题；详细数值与行为只在对应主文档维护。文档、代码或测试冲突时需核对，不用历史条目覆盖现行实现。
 

@@ -140,7 +140,7 @@ func test_chest_and_templates(catalog) -> void:
 			check(not s.Encounter.valid_node(s,altered,"challenge"),"cross-layer template tampering rejected")
 			# Arrival quota and hidden branch use the common permanent definition.
 			s.state.flags.node_visits={}; s.state.buffs=[]
-			chest.visit_id="chest-stage"; s.state.node=chest; s.Encounter.arrived(s); s.state.phase="story"; s.state.story_step="choice"; s.Survival.lock_costs(s)
+			chest.visit_id="chest-stage"; s.state.node=chest; s.Encounter.arrived(s); s.state.phase="story"; s.state.story_step="choice"
 			var public: Dictionary=s.view()
 			check(public.event_options.size()>0 and public.event_options.all(func(o):return not o.has("outcomes") and not o.has("battle")),"three-tier chest event options hide branch")
 			check(not JSON.stringify(public.node).contains("crab_elite") and not JSON.stringify(public.node).contains("70"),"three-tier chest node hides probability and enemy")
