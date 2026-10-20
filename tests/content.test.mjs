@@ -72,7 +72,7 @@ test('v11正式商店商品集合、提高设备报价与卡牌类型明确', ()
 test('v10整合旧节点身份，普通战斗与遗迹数值契约保持不变', () => {
   const nodes = read('nodes');
   for(const id of Object.keys(NODES)) assert.equal(nodes[id]?.id,id,`保留旧入口${id}`);
-  const added=['provision','sharedMeal','workshop','winch','duel','fallback','sealedLarder','powderWreck','kelpDryingRack','silentWayfinder','boneHunter','shellGraveyard','drownedMint','rescuePontoon','coralShrine','riggersCache','boss_shallows','boss_open_sea','boss_abyss','sealedChest'];
+  const added=['provision','sharedMeal','workshop','winch','duel','fallback','sealedLarder','powderWreck','kelpDryingRack','silentWayfinder','boneHunter','shellGraveyard','drownedMint','rescuePontoon','coralShrine','riggersCache','boss_shallows','boss_open_sea','boss_abyss','sealedChest','restCove','relicCache','tollGate','luckyDrift','deepCache'];
   assert.deepEqual(Object.keys(nodes).sort(),[...Object.keys(NODES),...added].sort());
   assert.equal(nodes.ruin.difficulty, 'hard');
   for(const id of ['battle','jellyBattle','crabBattle','ruin','boss']) {

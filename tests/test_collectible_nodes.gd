@@ -2,6 +2,7 @@ extends SceneTree
 const Session=preload("res://core/game_session.gd")
 const Encounter=preload("res://core/encounter_rules.gd")
 const Navigation=preload("res://core/navigation_rules.gd")
+const Assets=preload("res://presentation/asset_catalog.gd")
 const NEW_IDS=["restCove","relicCache","tollGate","luckyDrift","deepCache"]
 const RETIRED=["sealedLarder","powderWreck","kelpDryingRack","silentWayfinder","boneHunter","shellGraveyard","drownedMint","rescuePontoon","coralShrine","riggersCache","sealedChest"]
 const FIRST_VOYAGE={"restCove":2,"relicCache":3,"tollGate":4,"luckyDrift":5,"deepCache":5}
@@ -76,8 +77,48 @@ func test_lucky_drift_stages() -> void:
 		if outcome.get("battle",{}).is_empty(): continue
 		check(outcome.battle.return_stage==3,"final reach battle resumes at the valid terminal fourth stage")
 	check(node.stages[3].size()==1 and node.stages[3][0].id=="done","fourth stage is terminal completion")
+
+func test_event_text_and_art_coverage() -> void:
+	var rest: Dictionary=catalog.entry("nodes","camp")
+	var cove: Dictionary=catalog.entry("nodes","restCove")
+	check(cove.get("name","")==rest.get("name","") and cove.get("name","")=="灯火休整地","cove is a separate node with the lighthouse's display name")
+	check(cove.get("options",[])!=rest.get("options",[]),"cove has distinct outcomes from the lighthouse")
+	check(rest.get("art","")!="" and cove.get("art","")!="","both separately pooled rest nodes provide registered art")
+	check(cove.get("id","")!="camp" and cove.get("name","")=="灯火休整地","same-name cove remains an independent node")
+	check(cove.get("description","").find("旧船骸")>=0,"cove keeps its own source-matched setting")
+	var crab_camp: Dictionary=catalog.entry("nodes","duel")
+	check(crab_camp.get("art","")=="node.event.crab-camp","crab camp references its dedicated event art")
+	var manifest: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://assets/manifest.json"))
+	check(manifest.get("assets",{}).get("node.event.crab-camp",{}).get("path","").ends_with("node-great-crab.png"),"crab camp art maps to the ZIP crab-nest illustration")
+	var ids: Array=[]
+	for layer in ["shallows","open_sea","abyss"]:
+		for entry in catalog.entry("node_pools",layer).entries:
+			if entry.node not in ids: ids.append(entry.node)
+	var asset_catalog=Assets.new()
+	for id in ids:
+		if id.begins_with("drift/") or id=="storm/hold":
+			var parent="drift" if id.begins_with("drift/") else "storm"
+			var variant_id=id.get_slice("/",1)
+			var variant: Dictionary=catalog.entry("nodes",parent).variants.filter(func(v):return v.id==variant_id)[0]
+			var variant_art=str(variant.get("art", ""))
+			check(not variant_art.is_empty() and asset_catalog.has_asset(variant_art) and not asset_catalog.show_label(variant_art),"active node variant art resolves to a real registered image: "+id)
+			check(not str(variant.get("description", "")).is_empty(),"active node variant has authored event prose: "+id)
+			for option in variant.get("options",[]):
+				check(not str(option.get("description","")).is_empty(),"active variant choice has authored outcome copy: %s/%s" % [id,str(option.get("id",""))])
+			continue
+		var node: Dictionary=catalog.entry("nodes",id)
+		check(not str(node.get("description","")).is_empty(),"active node has authored event prose: "+id)
+		if id in ["restCove","relicCache","tollGate","deepCache","provision","sharedMeal","workshop","duel","fallback"]:
+			for option in node.get("options",[]):
+				check(not str(option.get("description","")).is_empty(),"active event choice has authored outcome copy: %s/%s" % [id,str(option.get("id",""))])
+		var art=str(node.get("art", ""))
+		check(not art.is_empty() and asset_catalog.has_asset(art) and not asset_catalog.show_label(art),"active node art resolves to a real registered image: "+id)
+	for id in ["boss_shallows","boss_open_sea","boss_abyss"]:
+		var boss: Dictionary=catalog.entry("nodes",id)
+		var art=str(boss.get("art", ""))
+		check(not art.is_empty() and asset_catalog.has_asset(art) and not asset_catalog.show_label(art),"layer boss art resolves to a real registered image: "+id)
 func _init() -> void:
 	catalog=load("res://content/catalog.gd").new(); check(catalog.load_catalog(),"catalog loads")
-	test_pool_replacement(); test_layer_quota_and_reset(); test_lucky_drift_stages()
+	test_pool_replacement(); test_layer_quota_and_reset(); test_lucky_drift_stages(); test_event_text_and_art_coverage()
 	print("COLLECTIBLE NODES: %s (%d checks)" % ["PASS" if failures==0 else "FAIL",checks]); quit(failures)
 
